@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	
+	<bean id="activitiMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.activiti.mapper.ActivitiMapper" />
+	</bean>
+	<!-- 
+	<bean id="activitiManage" class="${common.package}.activiti.service.ActivitiManage"/>
+	 -->
+	<!-- activiti相关配置 -->
+	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+	  	<property name="dataSource" ref="dataSource" />
+	  	<property name="transactionManager" ref="transactionManager" />
+	  	<property name="databaseType" value="${activiti.database.type}" />
+	  	<property name="history" value="full" />
+	  	<!--
+	  	<property name="databaseSchemaUpdate" value="true" />
+	  	<property name="jobExecutorActivate" value="false" />
+	  	<property name="deploymentResources" value="classpath*:/org/activiti/spring/test/autodeployment/autodeploy.*.bpmn20.xml" />--> 
+	</bean>
+  
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean" destroy-method="destroy">
+		<property name="processEngineConfiguration" ref="processEngineConfiguration" />
+	</bean>
+	
+	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />
+	<bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />
+	<bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />
+	<bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />
+	<bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+	<bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService" />
+	      
+  	<bean id="demoDataGenerator" class="hdsec.web.project.activiti.demo.DemoDataGenerator" init-method="init">
+	    <!-- Set following properties to false if certain demo data is not wanted -->
+	    <!-- 
+	    <property name="createDemoUsersAndGroups" value="true" />
+	     -->
+	    <property name="createDemoProcessDefinitions" value="true" />
+  	</bean>
+  	
+  	
+  	<!-- 批量流程管理 -->
+  	<bean id="activiti.addprocess" class="${common.package}.activiti.action.AddProcessAction" scope="prototype" />
+  	<bean id="activiti.manageprocess" class="${common.package}.activiti.action.ManageProcessAction" scope="prototype" />
+  	<bean id="activiti.delprocess" class="${common.package}.activiti.action.DelProcessAction" scope="prototype" />
+  	<bean id="activiti.updateprocess" class="${common.package}.activiti.action.UpdateProcessAction" scope="prototype" />
+  	
+  	<!-- 操作标记管理 -->
+  	<bean id="activiti.managejobtype" class="${common.package}.activiti.action.ManageJobTypeAction" scope="prototype" />
+  	<bean id="activiti.switchjobtype" class="${common.package}.activiti.action.SwitchJobTypeAction" scope="prototype" />
+</beans>

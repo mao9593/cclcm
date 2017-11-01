@@ -1,0 +1,2177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.user.mapper.UserMapper">
+
+	<resultMap id="SimpleSecPostMap" type="post">
+		<result property="post_id" column="post_id"/>
+		<result property="post_name" column="post_name"/>
+	</resultMap>
+	<resultMap id="SecCommonGroupMap" type="seccommongroup">
+        <result property="group_id" column="group_id"/>
+        <result property="group_name" column="group_name"/>
+        <result property="group_order" column="group_order"/>
+        <result property="user_iidd" column="user_iidd"/>
+    </resultMap>
+    <resultMap id="SecCommonContactMap" type="seccommoncontact">
+        <result property="contact_id" column="contact_id"/>
+        <result property="contact_code" column="contact_code"/>
+        <result property="contact_type" column="contact_type"/>
+        <result property="group_id" column="group_id"/>
+        <result property="user_name" column="user_name"/>
+        <result property="dept_name" column="dept_name"/>
+        <result property="post_name" column="post_name"/>
+    </resultMap>
+    <resultMap id="UserDeptMap" type="secuserdept">
+		<result property="dept_id" column="dept_id"/>
+		<result property="dept_name" column="dept_name"/>
+		<result property="terr_name" column="terr_name"/>
+		<result property="dept_type_name" column="dept_type_name"/>
+		<result property="dept_level_name" column="dept_level_name"/>
+	</resultMap>
+	<select id="getSecUser" resultType="secuser" parameterType="secuser">
+		<![CDATA[			  
+		   	select  u.user_iidd, u.real_user_id, user_name, status,u.post_id,u.security_code,user_type,u.idcard,u.pass_num,
+		   			u.print_method,u.print_permission,u.ext_code,r.*, ss.security_name,u.is_sealed,
+			   		p.post_name,u.dept_id,dp.dept_cs, dp.dept_name,st.terr_code, st.terr_name
+			FROM    sec_user u left join real_user r on(u.real_user_id=r.real_user_id) 
+		    left join sec_user_post p  ON (u.post_id = p.post_id)
+			left join sec_dept dp       ON (u.dept_id = dp.dept_id)
+			left join sec_territory st  ON (dp.terr_code = st.terr_code)
+			left join user_security ss on(ss.security_code = u.security_code)
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		UPPER(u.user_iidd) LIKE UPPER('%'+#{user_iidd}+'%')
+				]]>
+   			</if>
+   			<if test="user_name !=null and user_name != ''">
+   				<![CDATA[
+			 		AND UPPER(u.user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+			<if test="com_telephone !=null and com_telephone != ''">
+   				<![CDATA[
+			 		AND UPPER(r.com_telephone) LIKE UPPER('%'+#{com_telephone}+'%')
+				]]>
+   			</if>
+			<if test="base_sex != null and base_sex != ''">
+   				<![CDATA[
+			 		AND UPPER(r.base_sex) = UPPER (#{base_sex})
+				]]>
+   			</if>
+			<if test="pass_num != null and pass_num != ''">
+   				<![CDATA[
+			 		AND UPPER(u.pass_num) LIKE UPPER ('%'+#{pass_num}+'%')
+				]]>
+   			</if>
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		AND dp.dept_cs like (select dept_cs from sec_dept sdp where sdp.dept_id=#{dept_id})+'%' and dp.is_sealed='N'
+				]]>
+   			</if>
+   			<if test="security_code != null and security_code != ''">
+   				<![CDATA[
+			 		AND u.security_code = #{security_code}
+				]]>
+   			</if>
+   			<if test="status != null">
+   				<![CDATA[
+			 		AND u.status = #{status}
+				]]>
+   			</if>
+   			and user_type != 0 and u.is_sealed = 'N'
+   		</trim>
+   		order by dp.dept_cs asc,u.rank asc, u.user_name collate Chinese_PRC_CS_AS_KS_WS
+	</select>
+	<select id="getSecUserByUid" resultType="secuser" parameterType="string">
+		<![CDATA[			  
+		   		select  u.user_iidd, u.real_user_id, user_name, status,u.post_id,user_type
+		   			,u.security_code,u.idcard,u.pass_num,u.print_method,u.print_permission,u.ext_code,r.*,u.is_sealed, 
+			   		p.post_name,u.dept_id,dp.dept_cs, dp.dept_name,st.terr_code, st.terr_name,ss.security_name,rank
+			FROM    sec_user u left join real_user r on(u.real_user_id=r.real_user_id) 
+		    left join sec_user_post p  ON (u.post_id = p.post_id)
+			left join sec_dept dp       ON (u.dept_id = dp.dept_id)
+			left join sec_territory st  ON (dp.terr_code = st.terr_code)
+			left join user_security ss on(ss.security_code = u.security_code)
+			 where u.user_iidd = #{user_iidd}
+   		]]>
+	</select>
+	<select id="getSecUserByIdcard" resultType="secuser" parameterType="string">
+		<![CDATA[			  
+		   		select  u.user_iidd, u.real_user_id, user_name, status,u.post_id,user_type
+		   			,u.security_code,u.idcard,u.pass_num,u.print_method,u.print_permission,u.ext_code,r.*,u.is_sealed, 
+			   		p.post_name,u.dept_id,dp.dept_cs, dp.dept_name,st.terr_code, st.terr_name,ss.security_name
+			FROM    sec_user u left join real_user r on(u.real_user_id=r.real_user_id) 
+		    left join sec_user_post p  ON (u.post_id = p.post_id)
+			left join sec_dept dp       ON (u.dept_id = dp.dept_id)
+			left join sec_territory st  ON (dp.terr_code = st.terr_code)
+			left join user_security ss on(ss.security_code = u.security_code)
+			 where u.idcard = #{idcard}
+   		]]>
+	</select>
+	<select id="getAllOperCodeByUserId" resultType="string" parameterType="string">
+		<![CDATA[
+			SELECT OPER_CODE FROM SEC_ROLE_OPER SRO
+				WHERE ROLE_ID IN (SELECT ROLE_ID FROM SEC_ROLE_USER WHERE USER_IIDD=#{userId})
+					AND (SELECT IS_SEALED FROM SEC_ROLE SR WHERE SR.ROLE_ID=SRO.ROLE_ID) = 'N' 
+			ORDER BY OPER_CODE
+   		]]>
+	</select>
+	<select id="getAllPostAsCon" resultMap="SimpleSecPostMap">
+		<![CDATA[
+			SELECT POST_ID,POST_NAME FROM SEC_USER_POST WHERE IS_SEALED='N'
+			ORDER BY POST_LEVEL DESC
+   		]]>
+	</select>
+	<select id="getSecCommonGroupByUserId" resultMap="SecCommonGroupMap" parameterType="string">
+		<![CDATA[
+	        SELECT group_id,group_name,group_order,user_iidd
+	        from sec_common_group
+	        where user_iidd=#{userId}
+	        order by group_order
+        ]]>
+    </select>
+    <select id="getCommonContactForDept" resultMap="SecCommonContactMap" parameterType="map">
+    	<![CDATA[
+	        select c.contact_id,c.contact_code,c.contact_type,c.group_id,'' user_name,d.dept_name,'' post_name
+	        from sec_common_contact c,sec_common_group g ,sec_dept d
+	        where c.group_id=g.group_id and c.contact_code=d.dept_id
+	        and c.contact_type=2
+    	]]>
+        <if test="dept_id != null and dept_id != ''">
+        	<if test="child == '0'">
+        		and d.dept_id in
+        		<foreach item="item" index="index" collection="dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+        	</if>
+        	<if test="child == '1'">
+        		and
+        		<foreach item="item" index="index" collection="dept_id" open="(" separator="or" close=")">
+					d.dept_id like #{item}+'%'
+				</foreach>
+        	</if>
+        </if>
+        and g.user_iidd=#{user_iidd}
+    </select>
+    <select id="queryCommonContactForUser" resultMap="SecCommonContactMap" parameterType="map">
+	    <![CDATA[
+	        select distinct c.contact_id,c.contact_code,c.contact_type,c.group_id,u.user_name,
+			'' dept_name,p.post_name
+	        from sec_common_contact c
+	        left join sec_common_group g on (c.group_id=g.group_id and c.contact_type=1)
+	        left join sec_user u on(c.contact_code=u.user_iidd)
+	        left join sec_user_post p on(u.post_id=p.post_id) 
+			left join sec_user_spec us on(u.user_iidd=us.user_iidd)
+			left join sec_dept d on(u.dept_id=d.dept_id)
+			left join sec_role_user ru on(u.user_iidd=ru.user_iidd)
+			left join SEC_ROLE_OPER ae on(ru.role_id=ae.role_id)
+			left join SEC_OPER oe on(ae.oper_code=oe.oper_code) 
+	        where and g.user_iidd=#{user_iidd}
+	    ]]>
+        <if test="oper_code != null and oper_code != ''">
+        	and oe.oper_code in
+        	<foreach item="item" index="index" collection="oper_code" open="(" separator="," close=")">
+					#{item}
+			</foreach>
+		</if>		
+        <if test="dept_id != null and dept_id != ''">
+        	<if test="child == '0'">
+        		and ud.dept_id in
+        		<foreach item="item" index="index" collection="dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+        	</if>
+        	<if test="child == '1'">
+        		and
+        		<foreach item="item" index="index" collection="dept_id" open="(" separator="or" close=")">
+					d.dept_id like #{item}+'%'
+				</foreach>
+        	</if>
+        </if>
+    </select>
+    <select id="getDeptTree" resultType="depttree">
+	    <![CDATA[
+	        SELECT dept_id, dept_name, dept_parent_id, dept_desc, dept_level_code
+	        FROM sec_dept
+	        WHERE dept_level_code!=0 and is_sealed='N'
+	        order by cast(dept_rank as decimal) asc,dept_cs
+         ]]>
+    </select>
+    <select id="getUserByDeptSize" resultType="int" parameterType="map">
+		<![CDATA[			  
+		   	select  count(1)
+			FROM    sec_user u left join real_user r on(u.real_user_id=r.real_user_id)   
+			left join sec_dept dp       ON (u.dept_id = dp.dept_id)
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="userId != null and userId != ''" >
+   				<![CDATA[
+			 		UPPER(u.user_iidd) LIKE UPPER('%'+#{userId}+'%')
+				]]>
+   			</if>
+   			<if test="user_name !=null and user_name != ''">
+   				<![CDATA[
+			 		AND UPPER(u.user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+   			<if test="pass_num !=null and pass_num != ''">
+   				<![CDATA[
+			 		AND UPPER(u.pass_num) LIKE UPPER('%'+#{pass_num}+'%')
+				]]>
+   			</if>
+			<if test="com_telephone !=null and com_telephone != ''">
+   				<![CDATA[
+			 		AND UPPER(r.com_telephone) LIKE UPPER('%'+#{com_telephone}+'%')
+				]]>
+   			</if>
+   			<if test="com_mobile !=null and com_mobile != ''">
+   				<![CDATA[
+			 		AND UPPER(r.com_mobile) LIKE UPPER('%'+#{com_mobile}+'%')
+				]]>
+   			</if>
+   			<if test="status != null and status != ''">
+   				<![CDATA[
+			 		AND u.status = #{status}
+				]]>
+   			</if>
+   			<if test="role_id != null and role_id != ''">
+   				<![CDATA[
+			 		AND u.user_iidd in (select user_iidd from sec_role_user where role_id=#{role_id})
+				]]>
+   			</if>
+   			<if test="isAllDept == '' and mainDeptId != ''">
+   				<![CDATA[
+   					AND dp.dept_cs like (select dept_cs from sec_dept sdp where sdp.dept_id=#{mainDeptId})+'%' and dp.is_sealed='N'
+				]]>
+   			</if>
+   			<if test="dept_ids != null and dept_ids != ''">
+				and u.dept_id in
+				<foreach item="item" index="index" collection="dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+   			<if test="is_sealed != null and is_sealed != ''">
+   				<![CDATA[
+			 		AND u.is_sealed = #{is_sealed}
+				]]>
+   			</if>
+   			<if test="security_code != null and security_code != ''">
+   				<![CDATA[
+			 		AND u.security_code = #{security_code}
+				]]>
+   			</if>
+   			<if test="no_user_iidd !=null and no_user_iidd != ''">
+   				<![CDATA[
+			 		AND UPPER(u.user_iidd) NOT LIKE UPPER('%'+#{no_user_iidd}+'%')
+				]]>
+   			</if>
+   				and user_type !=0
+   		</trim>
+	</select>
+    <select id="getUserByDept" resultType="secuser" parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[			  
+		   	select  u.user_iidd, user_name, u.dept_id, u.security_code, u.idcard, u.pass_num,u.print_method,u.print_permission,
+		   	 		u.is_sealed del_status, r.*,status, dp.dept_name,dp.dept_cs,us.security_name
+			FROM sec_user u 
+				left join real_user r on(u.real_user_id=r.real_user_id)
+				left join sec_dept dp on(u.dept_id = dp.dept_id)
+				left join user_security us on(u.security_code = us.security_code)
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="userId != null and userId != ''" >
+   				<![CDATA[
+			 		UPPER(u.user_iidd) LIKE UPPER('%'+#{userId}+'%')
+				]]>
+   			</if>
+   			<if test="user_name !=null and user_name != ''">
+   				<![CDATA[
+			 		AND UPPER(u.user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+   			<if test="pass_num !=null and pass_num != ''">
+   				<![CDATA[
+			 		AND UPPER(u.pass_num) LIKE UPPER('%'+#{pass_num}+'%')
+				]]>
+   			</if>
+			<if test="com_telephone !=null and com_telephone != ''">
+   				<![CDATA[
+			 		AND UPPER(r.com_telephone) LIKE UPPER('%'+#{com_telephone}+'%')
+				]]>
+   			</if>
+   			<if test="com_mobile !=null and com_mobile != ''">
+   				<![CDATA[
+			 		AND UPPER(r.com_mobile) LIKE UPPER('%'+#{com_mobile}+'%')
+				]]>
+   			</if>
+   			<if test="status != null and status != ''">
+   				<![CDATA[
+			 		AND u.status = #{status}
+				]]>
+   			</if>
+   			<if test="role_id != null and role_id != ''">
+   				<![CDATA[
+			 		AND u.user_iidd in (select user_iidd from sec_role_user where role_id=#{role_id})
+				]]>
+   			</if>
+   			<if test="isAllDept == '' and mainDeptId != ''">
+   				<![CDATA[
+   					AND dp.dept_cs like (select dept_cs from sec_dept sdp where sdp.dept_id=#{mainDeptId})+'%' and dp.is_sealed='N'
+				]]>
+   			</if>
+   			<if test="dept_ids != null and dept_ids != ''">
+				and u.dept_id in
+				<foreach item="item" index="index" collection="dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+   			<if test="is_sealed != null and is_sealed != ''">
+   				<![CDATA[
+			 		AND u.is_sealed = #{is_sealed}
+				]]>
+   			</if>
+   			<if test="security_code != null and security_code != ''">
+   				<![CDATA[
+			 		AND u.security_code = #{security_code}
+				]]>
+   			</if>
+   			<if test="user_iidd !=null and user_iidd != ''">
+   				<![CDATA[
+			 		AND u.user_iidd=#{user_iidd}
+				]]>
+   			</if>
+   			<if test="no_user_iidd !=null and no_user_iidd != ''">
+   				<![CDATA[
+			 		AND UPPER(u.user_iidd) NOT LIKE UPPER('%'+#{no_user_iidd}+'%')
+				]]>
+   			</if>
+   				and user_type !=0
+   		</trim>
+   		order by dp.dept_cs asc, u.rank asc, u.user_name collate Chinese_PRC_CS_AS_KS_WS
+	</select>
+	<select id="getDeptNameByDeptId" resultType="string" parameterType="string">
+		<![CDATA[
+			select dept_name from sec_dept where dept_id=#{dept_id}
+		]]>
+	</select>
+	<select id="getAllSubsysAsCon" resultType="secsubsys">
+		<![CDATA[
+			select subsys_code,subsys_name,subsys_desc,oper_code_prefix,
+				(select count(oper_code) from sec_oper where subsys_code = ss.subsys_code) as oper_count,
+				(select count(role_id) from sec_role where sec_role.is_sealed='N' and subsys_code=ss.subsys_code) as role_count,
+				(select count(dept_id) from sec_dept_subsys sds where sds.subsys_code=ss.subsys_code and (select is_sealed from sec_dept sd where sd.dept_id=sds.dept_id)='N') as dept_count
+			from sec_subsys ss where ss.is_sealed = 'N' order by oper_code_prefix
+		]]>
+	</select>
+	<select id="getAllSubsys" resultType="secsubsys">
+		<![CDATA[
+			select subsys_code,subsys_name,subsys_desc,oper_code_prefix,ss.is_sealed,
+				(select count(oper_code) from sec_oper where subsys_code = ss.subsys_code) as oper_count,
+				(select count(role_id) from sec_role where sec_role.is_sealed='N' and subsys_code=ss.subsys_code) as role_count,
+				(select count(dept_id) from sec_dept_subsys sds where sds.subsys_code=ss.subsys_code and (select is_sealed from sec_dept sd where sd.dept_id=sds.dept_id)='N') as dept_count
+			from sec_subsys ss order by oper_code_prefix
+		]]>
+	</select>
+	<select id="getSecRoleBySubsys" resultType="secrole" parameterType="map">
+		<![CDATA[	
+			select * from sec_role
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="role_name != null and role_name != ''" >
+   				<![CDATA[
+			 		role_name LIKE '%'#{role_name}'%'
+				]]>
+   			</if>
+   			<if test="subsys_code != null and subsys_code != ''" >
+   				<![CDATA[
+			 		and subsys_code = #{subsys_code}
+				]]>
+   			</if>	
+	        and role_type=#{role_type} and is_sealed='N' 
+	        order by role_type
+		</trim>
+	</select>
+	<select id="getRoleHasUserCount" resultType="int" parameterType="string">
+		<![CDATA[
+			select count(*) from sec_role_user where role_id=#{role_id} 
+		]]>
+	</select>
+	<select id="getRoleNameCount" resultType="int" parameterType="string">
+		<![CDATA[
+			select count(*) from sec_role where role_name=#{role_name} and is_sealed='N'
+		]]>
+	</select>
+	<insert id="addSecRole" parameterType="secrole">
+		<![CDATA[
+			insert into sec_role(role_id,role_name,subsys_code,role_desc,role_type)
+			values(#{role_id},#{role_name},#{subsys_code},#{role_desc},#{role_type})
+		]]>
+	</insert>
+	<update id="delSecRoleByRoleId" parameterType="string">
+		<![CDATA[
+			update sec_role set is_sealed = 'Y' where role_id=#{role_id}
+		]]>
+	</update>
+	<select id="getSecRoleByRoleId" resultType="secrole" parameterType="string">
+		<![CDATA[
+			select * from sec_role where role_id=#{role_id}
+		]]>
+	</select>
+	<update id="updateSecRole" parameterType="map">
+		<![CDATA[
+			update sec_role 
+				set role_name=#{role_name},
+					role_desc=#{role_desc}
+			where role_id=#{role_id}
+		]]>
+	</update>
+	<select id="getSubsysBySubsysCode" resultType="secsubsys" parameterType="string">
+		<![CDATA[
+			select subsys_code,subsys_name,subsys_desc,oper_code_prefix,
+				(select count(oper_code) from sec_oper where subsys_code=ss.subsys_code) as oper_count,
+				(select count(role_id) from sec_role where sec_role.is_sealed='N' and subsys_code=ss.subsys_code) as role_count,
+				(select count(dept_id) from sec_dept_subsys sds where sds.subsys_code=ss.subsys_code and (select is_sealed from sec_dept sd where sd.dept_id=sds.dept_id)='N') as dept_count 
+			from sec_subsys ss where ss.subsys_code=#{subsys_code}
+		]]>
+	</select>
+	<select id="getUserByRole" resultType="secuser" parameterType="string">
+		<![CDATA[			  
+		   	select  u.user_iidd, user_name, r.*,
+			   		status, dp.dept_name,p.post_name,ss.security_name
+			FROM    sec_user u left join real_user r on(u.real_user_id=r.real_user_id) 
+					left join sec_role_user ru on (u.user_iidd = ru.user_iidd) 
+					left join sec_user_post p  ON (u.post_id = p.post_id)
+					left join sec_dept dp ON (u.dept_id = dp.dept_id)
+					left join user_security ss on(ss.security_code = u.security_code)
+			where  role_id=#{role_id} and u.is_sealed='N' 
+   			order by dp.dept_cs asc, u.rank asc, u.user_name collate Chinese_PRC_CS_AS_KS_WS
+   		]]>
+	</select>
+	<select id="getSubsysCodeByRoleId" resultType="string" parameterType="string">
+		<![CDATA[	
+			select subsys_code from sec_role where role_id=#{role_id}
+		]]>
+	</select>
+	<select id="getSecOperBySubsys" resultType="secoperation" parameterType="string">
+		<![CDATA[	
+			SELECT * from sec_oper  where subsys_code=#{subsys_code} and en_prvt_oper='N'		
+        ]]>
+	</select>
+	<select id="getConfigedOperByRoleAndSubsys" resultType="string" parameterType="map">
+		<![CDATA[
+			SELECT DISTINCT OPER_CODE FROM SEC_ROLE_OPER WHERE ROLE_ID = #{role_id}
+		]]>
+	</select>
+	<delete id="deleteModifiedOperByRole" parameterType="map">
+		<![CDATA[
+			delete from sec_role_oper
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="role_id != null and role_id !=''">
+				<![CDATA[
+				role_id=#{role_id}
+				]]>
+			</if>
+			<if test="operCodes != null and operCodes != ''">
+        		and oper_code in
+        		<foreach item="item" index="index" collection="operCodes" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+        	</if>
+		</trim>
+	</delete>
+	<insert id="addRoleOper" parameterType="acl">
+		<![CDATA[
+			insert into sec_role_oper(role_id,oper_code)
+			    values(#{role_id}, #{oper_code})
+		]]>
+	</insert>
+	<select id="getPostByDeptAsCon" resultMap="SimpleSecPostMap" parameterType="string">
+		<![CDATA[
+			SELECT POST_ID,POST_NAME 
+			FROM SEC_USER_POST
+			WHERE  POST_ID IN (SELECT POST_ID FROM SEC_DEPT_POST WHERE dept_id=#{dept_id})
+				AND IS_SEALED='N'
+			order by POST_NAME collate Chinese_PRC_CS_AS_KS_WS
+   		]]>
+	</select>
+	<insert id="addSecUser" parameterType="secuser">
+		<![CDATA[
+			INSERT INTO SEC_USER(USER_IIDD,REAL_USER_ID,USER_NAME,USER_PPWW,SECURITY_CODE,IDCARD,PASS_NUM,PRINT_METHOD,PRINT_PERMISSION,DEPT_ID,STATUS
+						,USER_TYPE,LAST_CHANGE_PW_TIME,RANK)
+	        VALUES (#{user_iidd},#{real_user_id},#{user_name},#{user_ppww},#{security_code},#{idCard},#{pass_num},#{print_method},#{print_permission},#{dept_id},1
+	        		,1,getdate(),#{rank})
+	    ]]>
+	</insert>
+	<update id="updateUserStatus" parameterType="map">
+		<![CDATA[
+			update sec_user set 
+				status=#{status},
+				logfail_times=0
+		]]>
+		<if test="status eq '1'.toString()">
+			<![CDATA[
+				,lock_time = getdate()
+			]]>
+		</if>
+		<if test="status eq '0'.toString()">
+			<![CDATA[
+				,lock_time = null
+			]]>
+		</if>
+		<![CDATA[
+			where user_iidd = #{user_iidd}
+		]]>
+	</update>
+	<update id="delSecUserById" parameterType="string">
+		<![CDATA[
+			update sec_user set is_sealed = 'Y' where user_iidd=#{user_iidd}
+		]]>
+	</update>
+	<select id="getUserIdList" resultType="string" parameterType="map">
+		<![CDATA[			  
+		   	select  u.user_iidd
+			FROM    sec_user u   left join sec_user_post p  ON (u.post_id = p.post_id)
+			left join sec_dept dp  ON (u.dept_id = dp.dept_id)
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		UPPER(u.user_iidd) LIKE UPPER('%'+#{user_iidd}+'%')
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		AND UPPER(u.user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+			<if test="com_telephone != null and com_telephone != ''">
+   				<![CDATA[
+			 		AND UPPER(u.com_telephone) LIKE UPPER('%'+#{com_telephone}+'%')
+				]]>
+   			</if>
+   			<if test="status != null and status != ''">
+   				<![CDATA[
+			 		AND u.status = #{status}
+				]]>
+   			</if>
+   			<if test="post_id !=null and post_id!= ''">
+   				<![CDATA[
+			 		AND u.post_id = #{post_id}
+				]]>
+   			</if>
+   			<if test="isAllDept == '' and mainDeptId != ''">
+   				<![CDATA[
+			 		AND dp.dept_id = #{mainDeptId}
+				]]>
+   			</if>
+   			and u.is_sealed='N' and u.user_type !=0
+   		</trim>
+   		order by u.user_iidd
+	</select>
+	<update id="updateSecUser" parameterType="map">
+		<![CDATA[
+			update sec_user set
+				user_name=#{user_name},
+				post_id=#{post_id},
+				security_code=#{security_code},
+				idcard=#{idCard},
+				pass_num=#{pass_num},
+				print_method=#{print_method},
+				print_permission=#{print_permission},
+				rank=#{rank}
+		]]>
+		<if test="real_user_id != null and real_user_id != ''">
+			<![CDATA[
+		 		,real_user_id=#{real_user_id}
+			]]>
+		</if>
+			where user_iidd=#{user_iidd}
+	</update>
+	<update id="updateSecUserName" parameterType="map">
+		<![CDATA[
+			update sec_user set
+				user_name=#{user_name}
+			where user_iidd=#{user_iidd}]]>
+	</update>
+	<update id="updateRealUser" parameterType="map">
+		<![CDATA[
+			update real_user set
+				base_username=#{base_username},
+				base_sex=#{base_sex},
+				base_nation=#{base_nation},]]>
+				<if test="base_birthday != null" >
+					base_birthday=#{base_birthday},
+   				</if>
+   				<![CDATA[		
+				base_birthplace=#{base_birthplace},
+				base_nativeplace=#{base_nativeplace},
+				base_country=#{base_country},
+				base_politics=#{base_politics},]]>
+				<if test="base_joinpartytime != null" >
+					base_joinpartytime=#{base_joinpartytime},
+   				</if>
+   				<![CDATA[		
+				edu_education=#{edu_education},
+				edu_degree=#{edu_degree},
+				edu_school=#{edu_school},
+				edu_major=#{edu_major},
+				edu_language=#{edu_language},
+				edu_familiarity=#{edu_familiarity},
+				com_residency=#{com_residency},
+				com_police=#{com_police},
+				com_address=#{com_address},
+				com_telephone=#{com_telephone},
+				com_mobile=#{com_mobile},
+				com_email=#{com_email},
+				job_category=#{job_category},
+				job_seclevel=#{job_seclevel},
+				job_adminpost=#{job_adminpost},
+				job_techpost=#{job_techpost},
+				job_techtitle=#{job_techtitle},
+				job_humansort=#{job_humansort},]]>
+				<if test="job_insectime != null" >
+					job_insectime=#{job_insectime},
+   				</if>
+   				<if test="job_workyears != null" >
+					job_workyears=#{job_workyears},
+   				</if>
+   				<![CDATA[		
+				job_employtype=#{job_employtype},
+				job_passnum=#{job_passnum},
+				job_passlevel=#{job_passlevel},]]>
+				<if test="job_inposttime != null" >
+					job_inposttime=#{job_inposttime},
+   				</if>
+   				<if test="job_offposttime != null" >
+					job_offposttime=#{job_offposttime},
+   				</if>
+   				<![CDATA[		
+					job_resume=#{job_resume}
+				]]>
+   		<![CDATA[ 
+			where real_user_id=(select real_user_id from sec_user where user_iidd=#{user_iidd})
+		]]>
+	</update>
+	<update id="resetUserPwd" parameterType="map">
+		<![CDATA[
+			update sec_user set
+				user_ppww =#{user_ppww}
+			where user_iidd=#{user_iidd}
+		]]>
+	</update>
+	<select id="getUserDeptByUser" resultMap="UserDeptMap" parameterType="string">
+		<![CDATA[
+			select d.dept_id, dept_name, dept_type_name, dept_level_name, terr_name
+				from   sec_dept d left join  sec_dept_type dt on (d.dept_type_code = dt.dept_type_code)
+	                  left join sec_territory t on(d.terr_code=t.terr_code)
+	                  left join sec_dept_level dl on(d.dept_level_code = dl.dept_level_code)
+	        where dept_id =(select dept_id from sec_user where user_iidd=#{user_iidd})
+		]]>
+	</select>
+	<select id="getRoleListByUser" resultType="secrole" parameterType="map">
+		<![CDATA[
+			SELECT r.*
+			FROM sec_role r left join sec_role_user ru on(ru.role_id=r.role_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="subsys_code != null and subsys_code != ''" >
+   				<![CDATA[
+			 		and subsys_code=#{subsys_code}
+				]]>
+   			</if>
+   			<if test="role_type != null and role_type != ''" >
+   				<![CDATA[
+			 		and role_type=#{role_type}
+				]]>
+   			</if>
+   			<if test="role_type == null or role_type == ''" >
+   				<![CDATA[
+			 		and role_type !=1
+				]]>
+   			</if>
+   			 and is_sealed='N' and ru.user_iidd=#{user_iidd} order by r.role_id
+   		</trim>
+	</select>
+	<select id="getDeptPostCount" resultType="int" parameterType="map">
+		<![CDATA[
+			SELECT count(1) from sec_dept_post
+			where post_id=#{post_id} and dept_id=#{dept_id}
+		]]>
+	</select>
+	<update id="updateUserDept" parameterType="map">
+		<![CDATA[
+			update sec_user set dept_id=#{dept_id}
+			where user_iidd=#{user_iidd} and dept_id=#{old_dept_id}
+		]]>
+	</update>
+	<update id="clearUserPostByUser" parameterType="string">
+		<![CDATA[
+			update sec_user set post_id = null
+			where user_iidd=#{user_iidd} 
+		]]>
+	</update>
+	<delete id="deleteUserRoleByUser" parameterType="map">
+		<![CDATA[
+			delete from sec_role_user 
+			where user_iidd=#{user_iidd}
+				and role_id in (select role_id from sec_role 
+					where subsys_code=#{subsys_code} and role_type=#{role_type})
+		]]>
+	</delete>
+	<insert id="addUserRoleRel" parameterType='secroleuser'>
+		<![CDATA[
+			insert into sec_role_user(role_id,user_iidd,domain,domain_table)
+				values(#{role_id},#{user_iidd},#{domain},#{domain_table})
+		]]>
+	</insert>
+	<select id="getOperTreeBySubsys" resultType="opertree" parameterType="string">
+		<![CDATA[
+			SELECT   oper_code,oper_name,substring(oper_code, 1, len(oper_code) - 2) AS oper_parent_code,oper_desc
+	        from sec_oper where subsys_code=#{subsys_code} and en_prvt_oper='N'	order by oper_code
+        ]]>
+	</select>
+	<select id="getSecOperByCodeAndSubsys" resultType="secoperation" parameterType="map">
+		<![CDATA[
+			SELECT * from sec_oper 
+			where oper_code=#{oper_code} and subsys_code=#{subsys_code} and en_prvt_oper='N'
+														
+        ]]>
+	</select>
+	<select id="getSubOperCountByCode" resultType="int" parameterType="map">
+		<![CDATA[
+			SELECT count(*) from sec_oper
+			WHERE subsys_code = #{subsys_code}  and
+				oper_code like #{oper_code}
+		 ]]>
+	</select>
+	<select id="getSubOperListByCode" resultType="secoperation" parameterType="map">
+		<![CDATA[
+			SELECT * from sec_oper
+			where subsys_code = #{subsys_code} and oper_code like #{oper_code}
+			ORDER BY oper_code DESC
+        ]]>
+	</select>
+	<select id="getOperCountByCode" resultType="int" parameterType='string'>
+		<![CDATA[
+			SELECT count(*) from sec_oper 
+			WHERE  oper_code = #{oper_code}
+		 ]]>
+	</select>
+	<insert id="addSecOper" parameterType="secoperation">
+		<![CDATA[
+			insert into sec_oper (oper_code,oper_name,oper_desc,subsys_code,web_url,icon_path,web_mark,server_mark,en_prvt_oper,en_directory)
+			values ( #{oper_code},#{oper_name},#{oper_desc},#{subsys_code},#{web_url},#{icon_path},#{web_mark},#{server_mark},#{en_prvt_oper},#{en_directory})
+		]]>
+	</insert>
+	<delete id="delRoleOperByOper" parameterType="map">
+		<![CDATA[
+			DELETE FROM sec_role_oper
+			where oper_code=#{oper_code}
+		]]>
+	</delete>
+	<delete id="delSecOperByCode" parameterType="map">
+		<![CDATA[
+			DELETE FROM sec_oper
+			where oper_code=#{oper_code}
+		]]>
+	</delete>
+	<select id="getSecOperCodeWithSub" resultType="string" parameterType="map">
+		<![CDATA[
+			SELECT oper_code from sec_oper 
+			where oper_code like #{oper_code}+'%'
+		]]>
+	</select>
+	<update id="updateSecOper" parameterType="secoperation">
+		<![CDATA[
+			update sec_oper set
+					oper_name=#{oper_name},
+					oper_desc=#{oper_desc},
+					web_url=#{web_url},
+					icon_path=#{icon_path},
+					web_mark=#{web_mark},
+					server_mark=#{server_mark},
+					dir_rank=#{dir_rank}				
+			where oper_code=#{oper_code}
+		]]>
+	</update>
+	<select id="getSecDeptById" resultType="secdept" parameterType="string">
+		<![CDATA[
+			SELECT dept_type_code,dept_id,dept_name,terr_code,dept_level_code,dept_desc,dept_parent_id,dept_cs,dept_rank,ext_code
+        	FROM sec_dept
+        	WHERE dept_id=#{dept_id}
+        	ORDER BY dept_cs
+		]]>
+	</select>
+    <select id="getSecTerrByCode" resultType="secterritory" parameterType="string">
+    	<![CDATA[
+      		SELECT   terr_code,terr_name,terr_desc,
+      			(select count(dept_id) from sec_dept sd where sd.terr_code=st.terr_code and sd.is_sealed='N') as dept_count
+        	FROM   sec_territory st
+        	WHERE  terr_code=#{value}
+        ]]>
+    </select>
+    <select id="getSecDeptLevelByCode" resultType="secdeptlevel" parameterType="string">
+    	<![CDATA[
+	        SELECT dept_level_code,dept_level_name,dept_level_desc
+	        FROM sec_dept_level
+	        WHERE dept_level_code=#{dept_level_code}
+     	]]>
+    </select>
+    <select id="getSecDeptTypeByCode" resultType="secdepttype" parameterType="string">
+    	<![CDATA[
+     		SELECT   dept_type_code,dept_type_name,dept_type_desc,is_sealed
+       		FROM   sec_dept_type
+       		WHERE  dept_type_code=#{dept_type_code}
+        ]]>
+    </select>
+    <select id="getSubsysListByDeptId" resultType="secsubsys" parameterType="string">
+    	<![CDATA[
+    		select subsys_code,subsys_name,subsys_desc,oper_code_prefix,
+				(select count(oper_code) from sec_oper where subsys_code=ss.subsys_code) as oper_count,
+				(select count(role_id) from sec_role where sec_role.is_sealed='N' and subsys_code=ss.subsys_code) as role_count,
+				(select count(dept_id) from sec_dept_subsys where subsys_code=ss.subsys_code) as dept_count 
+    		from sec_subsys ss 
+    		where ss.subsys_code 
+    			in(select subsys_code 
+    				from sec_dept_subsys where dept_id=#{dept_id})
+    	]]>
+    </select>
+	<select id="getUserCountByDeptCsWithSub" resultType="int" parameterType="string">
+		<![CDATA[
+			SELECT count(user_iidd) from sec_user
+				where sec_user.is_sealed='N' and dept_id in (select dept_id from sec_dept where dept_cs like #{dept_cs}+'%' and sec_dept.is_sealed='N') 
+		]]>
+	</select>
+	<select id="getAllSecTerritory" resultType="secterritory">
+    	<![CDATA[
+      		SELECT   terr_code,terr_name,terr_desc,
+      				(select count(dept_id) from sec_dept sd where sd.terr_code=st.terr_code and sd.is_sealed='N') as dept_count
+        	FROM   sec_territory st
+        ]]>
+    </select>
+	<select id="getAllSecDeptLevel" resultType="secdeptlevel">
+    	<![CDATA[
+	        SELECT dept_level_code,dept_level_name,dept_level_desc
+	        FROM sec_dept_level
+     	]]>
+    </select>
+    <select id="getAllSecDeptType" resultType="secdepttype">
+    	<![CDATA[
+     		SELECT   dept_type_code,dept_type_name,dept_type_desc,is_sealed
+       		FROM   sec_dept_type
+        ]]>
+    </select>
+	<select id="getSubDeptListByDeptCs" resultType="secdept" parameterType="string">
+		<![CDATA[
+			SELECT * from sec_dept 
+			where dept_cs like #{dept_cs}+'__'
+			ORDER BY dept_cs DESC
+        ]]>
+	</select>
+	<select id="getSecDeptCountByDeptCs" resultType="int" parameterType='string'>
+		<![CDATA[
+			SELECT count(*) from sec_dept 
+			WHERE  dept_cs = #{dept_cs}
+		 ]]>
+	</select>
+	<insert id="addSecDept" parameterType="map">
+		<![CDATA[
+			insert into sec_dept (dept_id,dept_cs,dept_parent_id,dept_name
+				,dept_type_code,terr_code,dept_level_code,dept_desc,dept_rank,ext_code)
+				values(#{dept_id},#{dept_cs},#{dept_parent_id},#{dept_name}
+				,#{dept_type_code},#{secTerr_code},#{dept_level_code},#{dept_desc},#{dept_rank},#{ext_code})
+		]]>
+	</insert>
+	<insert id="addSecDeptSubsys" parameterType="map">
+		<![CDATA[
+			insert into sec_dept_subsys (dept_id,subsys_code)
+				values(#{dept_id},#{subsys_code})
+		]]>
+	</insert>
+	<delete id="deleteDeptSubsysByDept" parameterType="string">
+		<![CDATA[
+			delete from sec_dept_subsys where dept_id=#{dept_id}
+		]]>
+	</delete>
+	<update id="updateSecDept" parameterType="map">
+		<![CDATA[
+			update sec_dept set
+					dept_name = #{dept_name},
+					dept_desc = #{dept_desc},
+					terr_code = #{secTerr_code},
+					dept_level_code = #{dept_level_code},
+					dept_type_code = #{dept_type_code},
+					dept_rank = #{dept_rank},
+					ext_code = #{ext_code}
+				where dept_id=#{dept_id}
+		]]>
+	</update>
+	<select id="getSecDeptIdWithSub" resultType="string" parameterType="string">
+		<![CDATA[
+			SELECT dept_id from sec_dept 
+			where is_sealed='N' and dept_cs like (select dept_cs from sec_dept where dept_id=#{dept_id})+'%'
+		]]>
+	</select>
+	<update id="delSecDeptById" parameterType="string">
+		<![CDATA[
+			update sec_dept set is_sealed = 'Y' where dept_id=#{dept_id}
+		]]>
+	</update>
+	<select id="getDeptPostListByDept" resultType="secuserpost" parameterType="map">
+		<![CDATA[
+			select distinct up.post_id,post_name,post_desc,post_level,post_class,
+		]]>
+		<if test="rel eq 'IN'">
+			(select count(user_iidd) from sec_user su where su.is_sealed='N' and post_id=up.post_id and dept_id=#{dept_id}) as user_count
+			from sec_user_post up left join sec_dept_post dp on up.post_id = dp.post_id
+			where up.is_sealed='N' and dp.dept_id=#{dept_id}
+		</if>
+		<if test="rel eq 'OUT'">
+			0 as user_count
+			from sec_user_post up left join sec_dept_post dp on up.post_id = dp.post_id
+			where up.is_sealed='N' and up.post_id not in(select post_id from sec_dept_post where dept_id=#{dept_id})
+		</if>
+			order by post_class asc
+	</select>
+	<delete id="deleteDeptPostByDept" parameterType="string">
+		<![CDATA[
+			delete from sec_dept_post where dept_id=#{dept_id}
+		]]>
+	</delete>
+	<insert id="addDeptPostRel" parameterType="map">
+		<![CDATA[
+			insert into sec_dept_post(dept_id,post_id) 
+				values (#{dept_id},#{post_id})
+		]]>
+	</insert>
+	<select id="getSecUserPostByUser" resultType="secuserpost" parameterType="string">
+		<![CDATA[
+			select post_id,post_name,post_desc,post_level,post_class
+			from sec_user_post 
+			where is_sealed='N' and post_id =(select post_id from sec_user where user_iidd=#{user_iidd})
+		]]>
+	</select>
+	<select id="getAllUserPostList" resultType="secuserpost">
+		<![CDATA[
+			select distinct up.post_id,post_name,post_desc,post_level,post_class,up.is_sealed,
+			(select count(user_iidd) from sec_user su where su.is_sealed='N' and post_id=up.post_id ) as user_count
+			from sec_user_post up order by post_level desc
+		]]>
+	</select>
+	<insert id="addSecUserPost" parameterType="secuserpost">
+		<![CDATA[
+			insert into sec_user_post(post_id,post_name,post_desc) values (#{post_id},#{post_name},#{post_desc})
+		]]>
+	</insert>
+	<update id="delSecUserPostById" parameterType="string">
+		<![CDATA[
+			update sec_user_post set is_sealed = 'Y' where post_id=#{post_id}
+		]]>
+	</update>
+	<select id="getSecUserPostById" resultType="secuserpost" parameterType="string">
+		<![CDATA[
+			select post_id,post_name,post_desc,post_level,post_class
+			from sec_user_post where post_id=#{post_id}
+		]]>
+	</select>
+	<update id="updateSecUserPost" parameterType="secuserpost">
+		<![CDATA[
+			update sec_user_post 
+				set post_name=#{post_name},
+					post_desc=#{post_desc}
+			where post_id=#{post_id}
+		]]>
+	</update>
+	<select id="getUserByPost" resultType="secuser" parameterType="string">
+		<![CDATA[
+			select  u.user_iidd, user_name, r.*,
+			   		status, dp.dept_name,p.post_name,ss.security_name
+			FROM    sec_user u left join real_user r on(u.real_user_id=r.real_user_id) 
+					left join sec_user_post p  ON (u.post_id = p.post_id)
+					left join sec_dept dp  ON (dp.dept_id = u.dept_id)
+					left join user_security ss on(ss.security_code = u.security_code)
+			where  u.is_sealed='N' and u.post_id=#{post_id} and u.user_type != 0
+			order by dp.dept_cs asc, u.rank asc, u.user_name collate Chinese_PRC_CS_AS_KS_WS
+   		]]>
+	</select>
+	<select id="getDeptByPost" resultType="string" parameterType="string">
+		<![CDATA[
+			select dept_name from sec_dept 
+			where is_sealed='N' and dept_id in (select dept_id from sec_dept_post where post_id=#{post_id})
+   		]]>
+	</select>
+	<update id="updatePostLevel" parameterType="map">
+		<![CDATA[
+			update sec_user_post set post_level=#{post_level}
+			where post_id = #{post_id}
+   		]]>
+	</update>
+	<update id="updatePostClass" parameterType="map">
+		<![CDATA[
+			update sec_user_post set post_class=#{post_class}
+			where post_id = #{post_id}
+   		]]>
+	</update>
+	<select id="getAllDeptType" resultType="secdepttype">
+		<![CDATA[
+			SELECT dept_type_code,dept_type_name,dept_type_desc,sdt.is_sealed,
+				(select count(dept_id) from sec_dept sd where sd.is_sealed='N' and dept_type_code=sdt.dept_type_code) as dept_count 
+			FROM SEC_DEPT_TYPE sdt order by dept_type_code asc
+		]]>
+	</select>
+	<insert id="addDeptType" parameterType="secdepttype">
+		<![CDATA[
+			insert into sec_dept_type(dept_type_code,dept_type_name,dept_type_desc) 
+			values (#{dept_type_code},#{dept_type_name},#{dept_type_desc})
+		]]>
+	</insert>
+	<select id="getDeptTypeByCode" resultType="secdepttype" parameterType="string">
+		<![CDATA[
+			SELECT dept_type_code,dept_type_name,dept_type_desc,sdt.is_sealed,
+				(select count(dept_id) from sec_dept sd where sd.is_sealed='N' and dept_type_code=sdt.dept_type_code) as dept_count
+			FROM SEC_DEPT_TYPE  sdt
+			WHERE sdt.DEPT_TYPE_CODE=#{dept_type_code}
+		]]>
+	</select>
+	<update id="delDeptTypeByCode" parameterType="string">
+		<![CDATA[
+			UPDATE SEC_DEPT_TYPE SET IS_SEALED = 'Y' WHERE DEPT_TYPE_CODE=#{dept_type_code}
+		]]>
+	</update>
+	<update id="updateDeptType" parameterType="secdepttype">
+		<![CDATA[
+			update sec_dept_type 
+			set dept_type_name=#{dept_type_name},
+				dept_type_desc=#{dept_type_desc}
+			where dept_type_code=#{dept_type_code}
+		]]>
+	</update>
+	<select id="getDeptLevel" resultType="secdeptlevel">
+		<![CDATA[
+			SELECT dept_level_code,dept_level_name,dept_level_desc,is_sealed
+			FROM SEC_DEPT_LEVEL  order by dept_level_code asc
+		]]>
+	</select>
+	<insert id="addSubsys" parameterType="secsubsys">
+		<![CDATA[
+			INSERT INTO SEC_SUBSYS(SUBSYS_CODE,SUBSYS_NAME,SUBSYS_DESC,OPER_CODE_PREFIX) 
+			VALUES(#{subsys_code},#{subsys_name},#{subsys_desc},#{oper_code_prefix})
+		]]>
+	</insert>
+	<update id="updateSubsys" parameterType="secsubsys">
+		<![CDATA[
+			update sec_subsys
+			set subsys_name=#{subsys_name},
+				subsys_desc=#{subsys_desc}
+			where subsys_code = #{subsys_code}
+		]]>
+	</update>
+	<update id="delSubsysByCode" parameterType="string">
+		<![CDATA[
+			update sec_subsys set is_sealed = 'Y' where subsys_code=#{subsys_code}
+		]]>
+	</update>
+	<select id="getSecLevel" resultType="seclevel">
+		<![CDATA[
+			SELECT ss.seclv_code,seclv_name,seclv_rank
+			FROM SEC_USER_SECLV ss where ss.is_sealed='N' order by seclv_rank asc
+		]]>
+	</select>
+	<select id="getAllSecLevel" resultType="seclevel">
+		<![CDATA[
+			SELECT ss.seclv_code,seclv_name,seclv_rank,ss.is_sealed
+			FROM SEC_USER_SECLV ss order by is_sealed, seclv_rank asc
+		]]>
+	</select>
+	<select id="getRealUserIdWithSub" resultType="string" parameterType="string">
+		<![CDATA[
+			SELECT real_user_id from real_user 
+			where real_user_id like #{value}+'%' 
+			order by real_user_id asc
+		]]>
+	</select>
+	<insert id="insertRealUser" parameterType="secuser">
+		<![CDATA[
+			insert into real_user(
+				real_user_id,
+				base_username,
+				base_sex,
+				base_nation,
+	 			base_birthday,
+				base_birthplace,
+				base_nativeplace,
+				base_country,
+				base_politics,
+				base_joinpartytime,
+				edu_education,
+				edu_degree,
+				edu_school,
+	 			edu_major,	
+	 			edu_language,
+	 			edu_familiarity,
+	 			com_residency,
+	 			com_police,
+	 			com_address,
+	 			com_telephone,
+	 			com_mobile,
+	 			com_email,
+	 			job_category,
+	 			job_seclevel,
+	 			job_adminpost,
+	 			job_techpost,
+	 			job_techtitle,
+	 			job_humansort,
+	 			job_insectime,
+	 			job_workyears,
+	 			job_employtype,
+	 			job_passnum,
+	 			job_passlevel,
+				job_inposttime,
+				job_offposttime,
+	 			job_resume) 
+			values (#{real_user_id},
+					#{base_username},
+					#{base_sex},
+					#{base_nation},]]>
+					<if test="base_birthday != null">
+			   			#{base_birthday},
+			   		</if>
+			   		<if test="base_birthday == null">
+			   			null,
+			   		</if>
+   		<![CDATA[
+   			#{base_birthplace},
+   			#{base_nativeplace},
+   			#{base_country},
+   			#{base_politics},]]>
+   			<if test="base_joinpartytime != null">
+	   			#{base_joinpartytime},
+	   		</if>
+	   		<if test="base_joinpartytime == null">
+	   			null,
+	   		</if>
+	   	<![CDATA[
+   			#{edu_education},
+   			#{edu_degree},
+   			#{edu_school},
+   			#{edu_major},
+   			#{edu_language},
+   			#{edu_familiarity},
+   			#{com_residency},
+   			#{com_police},
+   			#{com_address},
+   			#{com_telephone},
+   			#{com_mobile},
+   			#{com_email},
+   			#{job_category},
+   			#{job_seclevel},
+   			#{job_adminpost},
+   			#{job_techpost},
+   			#{job_techtitle},
+   			#{job_humansort},]]>
+   			<if test="job_insectime != null">
+	   			#{job_insectime},
+	   		</if>
+	   		<if test="job_insectime == null">
+	   			null,
+	   		</if>
+	   		<if test="job_workyears != null">
+	   			#{job_workyears},
+	   		</if>
+	   		<if test="job_workyears == null">
+	   			null,
+	   		</if>
+	   	<![CDATA[
+   			#{job_employtype},
+   			#{job_passnum},
+   			#{job_passlevel},]]>
+   			<if test="job_inposttime != null">
+	   			#{job_inposttime},
+	   		</if>
+	   		<if test="job_inposttime == null">
+	   			null,
+	   		</if>
+	   		<if test="job_offposttime != null">
+	   			#{job_offposttime},
+	   		</if>
+	   		<if test="job_offposttime == null">
+	   			null,
+	   		</if>
+	   	<![CDATA[
+   			#{job_resume}
+   			)
+		]]>
+	</insert>
+	<select id="getRoleListByUserAndSubsys" resultType="secrole" parameterType="map">
+		<![CDATA[
+			SELECT * FROM sec_role r left join sec_role_user ru on(ru.role_id=r.role_id)
+			where subsys_code=#{subsys_code} and r.is_sealed='N'
+   					and role_type=#{role_type} and ru.user_iidd=#{user_iidd}
+		]]>
+	</select>
+	<insert id="addSubsysRootOper" parameterType="secsubsys">
+		<![CDATA[
+			INSERT INTO SEC_OPER (OPER_CODE,OPER_NAME,SUBSYS_CODE,EN_PRVT_OPER,EN_DIRECTORY)
+			VALUES(#{oper_code_prefix},#{subsys_name},#{subsys_code},'N','Y')
+		]]>
+	</insert>
+	<insert id="addTerritory" parameterType="secterritory">
+		<![CDATA[
+			INSERT INTO SEC_TERRITORY(TERR_CODE,TERR_NAME,TERR_DESC)
+			VALUES(#{terr_code},#{terr_name},#{terr_desc})
+		]]>
+	</insert>
+	<update id="delSubsysRootOper" parameterType="string">
+		<![CDATA[
+			update sec_oper set is_sealed = 'Y' where subsys_code=#{subsys_code}
+		]]>
+	</update>
+	<update id="delTerrByCode" parameterType="string">
+		<![CDATA[
+			update sec_territory set is_sealed = 'Y' where terr_code=#{terr_code}
+		]]>
+	</update>
+	<update id="updateTerritory" parameterType="secterritory">
+		<![CDATA[
+			update sec_territory
+			set terr_name=#{terr_name},
+				terr_desc=#{terr_desc}
+			where terr_code = #{terr_code}
+		]]>
+	</update>
+	<select id="getSecLevelByCode" resultType="seclevel" parameterType="int">
+		<![CDATA[
+			SELECT SECLV_CODE,SECLV_NAME,SECLV_RANK,OTHERNAME
+			FROM SEC_USER_SECLV SS WHERE SS.SECLV_CODE=#{seclv_code}
+		]]>
+	</select>
+	<insert id="addSeclv" parameterType="seclevel">
+		<![CDATA[
+			insert into sec_user_seclv(seclv_code,seclv_name,seclv_rank,othername) 
+			values(#{seclv_code},#{seclv_name},#{seclv_rank},#{othername})
+		]]>
+	</insert>
+	<update id="delSecLvByCode" parameterType="int">
+		<![CDATA[
+			update sec_user_seclv set is_sealed = 'Y' where seclv_code=#{seclv_code}
+		]]>
+	</update>
+	<update id="updateSeclv" parameterType="seclevel">
+		<![CDATA[
+			update sec_user_seclv 
+			set seclv_name=#{seclv_name},
+				seclv_rank=#{seclv_rank},
+				othername=#{othername}
+			where seclv_code=#{seclv_code} 
+		]]>
+	</update>
+	<select id="getSecDeptByType" resultType="secdept" parameterType="string">
+		<![CDATA[
+			select * from sec_dept where is_sealed='N' and dept_type_code =#{dept_type_code}
+		]]>
+	</select>
+	<select id="getSecDeptByLevel" resultType="secdept" parameterType="int">
+		<![CDATA[
+			select * from sec_dept where is_sealed='N' and dept_level_code =#{dept_level_code}
+		]]>
+	</select>
+	<select id="getSecDeptByTerr" resultType="secdept" parameterType="string">
+		<![CDATA[
+			select * from sec_dept where is_sealed='N' and terr_code =#{terr_code}
+		]]>
+	</select>
+	<select id="getRealUser" resultType="realuser" parameterType="map">
+		<![CDATA[
+			select ru.*,(select count(user_iidd) from sec_user su where su.is_sealed='N' and su.real_user_id=ru.real_user_id) 
+				as secUser_count from real_user ru 
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="base_username != ''">
+   				<![CDATA[
+			 		AND UPPER(base_username) LIKE UPPER('%'+#{base_username}+'%')
+				]]>
+   			</if>
+			<if test="com_telephone != ''">
+   				<![CDATA[
+			 		AND UPPER(com_telephone) LIKE UPPER('%'+#{com_telephone}+'%')
+				]]>
+   			</if>
+   			<choose>
+   				<when test="binduser eq 'N'.toString()">
+   					<![CDATA[
+   					AND (SELECT COUNT(USER_IIDD) FROM sec_user su WHERE su.is_sealed='N' and su.REAL_USER_ID=ru.real_user_id)=0
+					]]>
+   				</when>
+   				<when test="binduser eq 'Y'.toString()">
+   					<![CDATA[
+   					AND (SELECT COUNT(USER_IIDD) FROM sec_user su WHERE su.is_sealed='N' and su.REAL_USER_ID=ru.real_user_id)>0
+					]]>
+   				</when>
+   			</choose>
+			<if test="job_passnum != ''">
+   				<![CDATA[
+			 		AND UPPER(job_passnum) LIKE UPPER ('%'+#{job_passnum}+'%')
+				]]>
+   			</if>
+   		</trim>
+   			order by base_username collate Chinese_PRC_CS_AS_KS_WS
+	</select>
+	<select id="getRealUserById" resultType="realuser" parameterType="string">
+		<![CDATA[
+			select ru.*,(select count(user_iidd) from sec_user su where  su.is_sealed='N' and su.real_user_id=ru.real_user_id) 
+				as secUser_count from real_user ru where real_user_id=#{real_user_id} 
+		]]>
+	</select>
+	<update id="delRealUserById" parameterType="string">
+		<![CDATA[
+			update real_user set is_sealed = 'Y' where real_user_id=#{real_user_id}
+		]]>
+	</update>
+	<select id="getSimpleSecUserByReal" resultType="secuser" parameterType="string">
+		<![CDATA[
+			select user_iidd,user_name 
+			from sec_user su where  su.is_sealed='N' and real_user_id=#{real_user_id}
+		]]>
+	</select>
+	<update id="updateRealUserByReal" parameterType="realuser">
+		<![CDATA[
+			update real_user set
+				base_username=#{base_username},
+				base_sex=#{base_sex},
+				base_nation=#{base_nation},]]>
+				<if test="base_birthday != null" >
+					base_birthday=#{base_birthday},
+   				</if>
+   				<![CDATA[		
+				base_birthplace=#{base_birthplace},
+				base_nativeplace=#{base_nativeplace},
+				base_country=#{base_country},
+				base_politics=#{base_politics},]]>
+				<if test="base_joinpartytime != null" >
+					base_joinpartytime=#{base_joinpartytime},
+   				</if>
+   				<![CDATA[		
+				edu_education=#{edu_education},
+				edu_degree=#{edu_degree},
+				edu_school=#{edu_school},
+				edu_major=#{edu_major},
+				edu_language=#{edu_language},
+				edu_familiarity=#{edu_familiarity},
+				com_residency=#{com_residency},
+				com_police=#{com_police},
+				com_address=#{com_address},
+				com_telephone=#{com_telephone},
+				com_mobile=#{com_mobile},
+				com_email=#{com_email},
+				job_category=#{job_category},
+				job_seclevel=#{job_seclevel},
+				job_adminpost=#{job_adminpost},
+				job_techpost=#{job_techpost},
+				job_techtitle=#{job_techtitle},
+				job_humansort=#{job_humansort},]]>
+				<if test="job_insectime != null" >
+					job_insectime=#{job_insectime},
+   				</if>
+   				<if test="job_workyears != null" >
+					job_workyears=#{job_workyears},
+   				</if>
+   				<![CDATA[		
+				job_employtype=#{job_employtype},
+				job_passnum=#{job_passnum},
+				job_passlevel=#{job_passlevel},]]>
+				<if test="job_inposttime != null" >
+					job_inposttime=#{job_inposttime},
+   				</if>
+   				<if test="job_offposttime != null" >
+					job_offposttime=#{job_offposttime},
+   				</if>
+   				<![CDATA[		
+					job_resume=#{job_resume}
+					where real_user_id=#{real_user_id}
+				]]>
+	</update>
+	<select id="getAllMenuOper" resultType="secoperation">
+		<![CDATA[
+			select * from sec_oper where len(oper_code)=4 order by dir_rank asc
+		]]>
+	</select>
+	<select id="getSubOperByCode" resultType="secoperation" parameterType="string">
+		<![CDATA[
+			select * from sec_oper where oper_code like #{oper_code} order by oper_code
+		]]>
+	</select>	
+	<select id="getAllSecDept" resultType="secdept">
+		<![CDATA[
+			select * from sec_dept where is_sealed='N' order by dept_cs
+		]]>
+	</select>
+	<select id="authenticate" resultType="int" parameterType="map">
+		<![CDATA[
+			select count(1) from sec_user 
+			where user_iidd=#{user_iidd}
+				and user_ppww=#{user_ppww}
+				and is_sealed='N'
+				and (status = 0 or (status = 1 and datediff(minute,lock_time,getdate()) > 10))
+		]]>
+	</select>
+	<insert id="addSubsysAdminRole" parameterType="secrole">
+		<![CDATA[
+			insert into sec_role(role_name,subsys_code,role_desc,role_type)
+			values(#{role_name},#{subsys_code},#{role_desc},#{role_type})
+		]]>
+	</insert>
+	<insert id="addSubsysSpecialRole" parameterType="secrole">
+		<![CDATA[
+			insert into sec_role(role_name,subsys_code,role_desc,role_type,role_spec_key)
+			values(#{role_name},#{subsys_code},#{role_desc},#{role_type},#{role_spec_key})
+		]]>
+	</insert>
+	<select id="getSecRole" resultType="secrole" parameterType="map">
+		<![CDATA[	
+			select * from sec_role
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="role_name != null and role_name != ''" >
+   				<![CDATA[
+			 		role_name LIKE '%'+#{role_name}+'%'
+				]]>
+   			</if>
+   			<if test="subsys_code != null and subsys_code != ''" >
+   				<![CDATA[
+			 		and subsys_code = #{subsys_code}
+				]]>
+   			</if>	
+	        and role_type!=1 and is_sealed = 'N' order by role_type
+		</trim>
+	</select>
+	<select id="getAllSecRole" resultType="secrole" parameterType="map">
+		<![CDATA[	
+			select * from sec_role
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="role_name != null and role_name != ''" >
+   				<![CDATA[
+			 		role_name LIKE '%'+#{role_name}+'%'
+				]]>
+   			</if>
+   			<if test="subsys_code != null and subsys_code != ''" >
+   				<![CDATA[
+			 		and subsys_code = #{subsys_code}
+				]]>
+   			</if>	
+	        and role_type!=1 order by role_type
+		</trim>
+	</select>
+	<select id="getAdminRoleBySubsys" resultType="secrole" parameterType="map">
+		<![CDATA[	
+			select * from sec_role
+			where role_type=#{role_type} and is_sealed='N'
+			 	and subsys_code=#{subsys_code}
+		]]>
+	</select>
+	<select id="getAdminRoleIdByUser" resultType="int" parameterType="map">
+		<![CDATA[	
+			select role_id from sec_role
+			where role_type=#{role_type}
+				and is_sealed='N'
+			 	and subsys_code=#{subsys_code}
+			 	and role_id in (select role_id from sec_role_user where user_iidd=#{user_iidd})
+		]]>
+	</select>
+	<select id="getSpecialRoleBySubsys" resultType="secrole" parameterType="map">
+		<![CDATA[	
+			select * from sec_role
+			where role_type=#{role_type} and is_sealed='N'
+			 	and subsys_code=#{subsys_code}
+		]]>
+	</select>
+	<select id="getSpecialRoleIdByUser" resultType="int" parameterType="map">
+		<![CDATA[	
+			select role_id from sec_role
+			where role_type=#{role_type}
+				and is_sealed='N'
+			 	and subsys_code=#{subsys_code}
+			 	and role_id in (select role_id from sec_role_user where user_iidd=#{user_iidd})
+		]]>
+	</select>
+	<select id="getScopeMemberCode" resultType="string" parameterType="string">
+		<![CDATA[	
+			select member_code from sec_domain_member
+			where domain=#{domain}
+		]]>
+	</select>
+	<select id="getSubsysNameByRoleId" resultType="string" parameterType="string">
+		<![CDATA[	
+			select subsys_name from sec_subsys
+			where subsys_code=(select subsys_code from sec_role where role_id=#{role_id})
+		]]>
+	</select>
+	<select id="getDomainByUserAndRole" resultType="string" parameterType="map">
+		<![CDATA[
+			select domain from sec_role_user 
+			where user_iidd=#{user_iidd} and role_id=#{role_id}
+		]]>
+	</select>
+	<delete id="delScopeMemberCode" parameterType="string">
+		<![CDATA[
+			delete from sec_domain_member where domain=#{domain}
+		]]>
+	</delete>
+	<insert id="addScopeMemberCode" parameterType="map">
+		<![CDATA[
+			insert into sec_domain_member(domain, member_code)
+			 values(#{domain},#{member_code})
+		]]>
+	</insert>
+	<delete id="delScopeMemberCodeByUser" parameterType="string">
+		<![CDATA[
+			delete from sec_domain_member 
+			where domain =(select domain from sec_role_user where user_iidd = #{user_iidd} 
+							and len(domain) >0) 
+		]]>
+	</delete>
+	<select id="getSpecialRoleByUserOnly" resultType="secrole" parameterType="map">
+		<![CDATA[	
+			select * from sec_role
+			where role_type=#{role_type} and is_sealed='N'
+			 	and role_id in (select role_id from sec_role_user where user_iidd=#{user_iidd})
+		]]>
+	</select>
+	<select id="getSpecialOperByUserOnly" resultType="string" parameterType="string">
+		<![CDATA[
+			SELECT WEB_URL FROM SEC_OPER 
+			WHERE OPER_CODE IN (SELECT DISTINCT OPER_CODE FROM SEC_ROLE_OPER SRO
+				WHERE SRO.ROLE_ID IN (SELECT ROLE_ID FROM SEC_ROLE_USER WHERE USER_IIDD=#{userId})
+					AND ROLE_ID IN (SELECT ROLE_ID FROM SEC_ROLE WHERE ROLE_TYPE=4 and sec_role.is_sealed='N'))
+   		]]>
+   	</select>
+   	<select id="getAllOperByUserOnly" resultType="string" parameterType="string">
+		<![CDATA[
+			SELECT WEB_URL FROM SEC_OPER 
+			WHERE OPER_CODE IN (SELECT DISTINCT OPER_CODE FROM SEC_ROLE_OPER
+				WHERE ROLE_ID IN (SELECT ROLE_ID FROM SEC_ROLE_USER WHERE USER_IIDD=#{userId}))
+   		]]>
+   	</select>
+   	<select id="getNonOperByUserOnly" resultType="string" parameterType="string">
+		<![CDATA[
+			SELECT WEB_URL FROM SEC_OPER 
+			WHERE OPER_CODE NOT IN (SELECT DISTINCT OPER_CODE FROM SEC_ROLE_OPER
+				WHERE ROLE_ID IN (SELECT ROLE_ID FROM SEC_ROLE_USER WHERE USER_IIDD=#{userId}))
+				AND WEB_URL IS NOT NULL
+   		]]>
+   	</select>
+   	<select id="getSecUserList" resultType="secuser" parameterType="map">
+   		<![CDATA[			  
+		   	select  u.user_iidd, u.real_user_id, user_name, status,u.post_id,user_type,
+		   			u.security_code,u.idcard,u.pass_num,u.print_method,u.print_permission,ext_code,r.*, ss.security_name,
+			   		p.post_name,u.dept_id,u.dept_cs, dp.dept_name,st.terr_code, st.terr_name
+			FROM    sec_user u left join real_user r on(u.real_user_id=r.real_user_id) 
+		    left join sec_user_post p  ON (u.post_id = p.post_id)
+			left join sec_dept dp       ON (u.dept_id = dp.dept_id)
+			left join sec_territory st  ON (dp.terr_code = st.terr_code)
+			left join user_security ss on(ss.security_code = u.security_code)
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		UPPER(u.user_iidd) LIKE UPPER('%'+#{user_iidd}+'%')
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		AND UPPER(u.user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+   			<![CDATA[
+   				and u.is_sealed='N' and user_type != 0
+   			]]>
+   		</trim>
+   	</select>
+   	<select id="getPostByPostId" parameterType="string" resultType="post">
+   		<![CDATA[			  
+		   	select post_id,post_name FROM sec_user_post where post_id=#{post_id}
+   		]]>
+   	</select>
+   	<select id="getConfigItemValue" parameterType="string" resultType="configitem">
+   		<![CDATA[			  
+		   	select item_key,item_value,startuse FROM sec_config where item_key=#{item_key}
+   		]]>
+   	</select>
+   	<update id="updateConfigItem" parameterType="configitem">
+   		<![CDATA[			  
+		   	update sec_config set 
+		   		item_value = #{item_value},
+		   		startuse =#{startuse}
+		   		where item_key=#{item_key}
+   		]]>
+   	</update>
+   	
+   	<select id="getPwdUpdateDays" parameterType="string" resultType="int">
+   		<![CDATA[			  
+		   	select datediff(day,last_change_pw_time,getdate()) from sec_user where user_iidd=#{user_iidd}
+   		]]>
+   	</select>
+   	<update id="changeUserPwd" parameterType="map">
+   		<![CDATA[			  
+		   	update sec_user set 
+		   		user_ppww = #{user_pwd},
+		   		last_change_pw_time = getdate()
+		   	where user_iidd = #{user_iidd}
+   		]]>
+   	</update>
+ 
+   	<update id="default_password" parameterType="map">
+   		<![CDATA[			  
+		   	update sec_user set 
+		   		user_ppww = #{user_pwd},
+		   		last_change_pw_time = getdate()
+		   	where user_iidd = #{user_iidd}
+   		]]>
+   	</update>
+   	
+   	<select id="getLogfailTimes" parameterType="string" resultType="int">
+   		<![CDATA[			  
+		   	select logfail_times from sec_user where user_iidd=#{user_iidd}
+   		]]>
+   	</select>
+   	<update id="logfailTimesPlus" parameterType="map">
+   		<![CDATA[			  
+		   	update sec_user
+		   		set logfail_times = #{times} 
+		   	where user_iidd=#{user_iidd}
+   		]]>
+   	</update>
+   	<select id="getUserNameByUserId" resultType="string" parameterType="string">
+   		<![CDATA[			  
+		   	select user_name from sec_user where user_iidd=#{user_iidd}
+   		]]>
+   	</select>
+   	<select id="getDeptNameByUserId" resultType="string" parameterType="string">
+   		<![CDATA[			  
+		   	select dept_name from sec_dept sd 
+		   	where dept_id =(select dept_id from sec_user where user_iidd = #{user_iidd}) 
+   		]]>
+   	</select>
+   	<select id="getMaxPostClassByDept" parameterType="string" resultType="int">
+   		<![CDATA[
+   		select max(post_class) from sec_user_post 
+   			where post_id in(select post_id from sec_dept_post where dept_id=#{dept_id})
+   		]]>
+   	</select>
+   	<select id="getSecUserPostByDeptId" parameterType="string" resultType="secuserpost">
+   		<![CDATA[
+   			select * from sec_user_post 
+   			where post_id in(select post_id from sec_dept_post where dept_id = #{dept_id})
+   				and is_sealed='N' order by post_class
+   		]]>
+   	</select>
+   	<select id="getPostClassByDeptId" parameterType="string" resultType="string">
+   		<![CDATA[
+   			select distinct post_class from sec_user_post 
+   				where post_id in(select post_id from sec_dept_post where dept_id = #{dept_id})
+   				and is_sealed='N' order by post_class
+   		]]>
+   	</select>
+   	<select id="getRoleNameByRoleId" parameterType="string" resultType="string">
+   		<![CDATA[
+   			select role_name from sec_role where role_id=#{role_id}  
+   		]]>
+   	</select>
+   	<select id="getAllowSecLevelByUserId" resultType="seclevel" parameterType="string">
+		<![CDATA[
+			SELECT ss.seclv_code,seclv_name,seclv_rank
+			FROM SEC_USER_SECLV ss 
+			where ss.seclv_rank >=(
+				select seclv_rank from SEC_USER_SECLV sus where sus.seclv_code =(
+					select seclv_code from sec_user where user_iidd=#{user_iidd}
+				)
+			) and ss.is_sealed = 'N'
+			order by seclv_rank asc
+		]]>
+	</select>
+	<select id="getFuzzyUser" parameterType="map" resultType="approveruser">
+		<![CDATA[
+			SELECT SU.USER_IIDD,USER_NAME FROM SEC_USER SU LEFT JOIN SEC_DEPT SD ON(SU.DEPT_ID = SD.DEPT_ID)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="dept_id != null and dept_id != ''" >
+   				<![CDATA[
+			 		AND SD.DEPT_CS LIKE (SELECT DEPT_CS FROM SEC_DEPT WHERE DEPT_ID = #{dept_id})+'%'
+				]]>
+   			</if>
+   			<![CDATA[
+   				AND SU.IS_SEALED='N' AND (SU.USER_IIDD LIKE '%'+#{fuzzy}+'%' OR SU.USER_NAME LIKE '%'+#{fuzzy}+'%')
+   			]]>
+   		</trim>
+	</select>
+	<select id="getFuzzyUserByUserId" parameterType="map" resultType="approveruser">
+		<![CDATA[
+			SELECT SU.USER_IIDD,USER_NAME FROM SEC_USER SU LEFT JOIN SEC_DEPT SD ON(SU.DEPT_ID = SD.DEPT_ID)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="dept_id != null and dept_id != ''" >
+   				<![CDATA[
+			 		AND SD.DEPT_CS LIKE (SELECT DEPT_CS FROM SEC_DEPT WHERE DEPT_ID = #{dept_id})+'%'
+				]]>
+   			</if>
+   			<![CDATA[
+   				AND SU.IS_SEALED='N' AND SU.USER_IIDD LIKE '%'+#{user_iidd}+'%'
+   			]]>
+   		</trim>
+	</select>
+	<select id="getFuzzyUserByUserName" parameterType="map" resultType="approveruser">
+		<![CDATA[
+			SELECT SU.USER_IIDD,USER_NAME FROM SEC_USER SU LEFT JOIN SEC_DEPT SD ON(SU.DEPT_ID = SD.DEPT_ID)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="dept_id != null and dept_id != ''" >
+   				<![CDATA[
+			 		AND SD.DEPT_CS LIKE (SELECT DEPT_CS FROM SEC_DEPT WHERE DEPT_ID = #{dept_id})+'%'
+				]]>
+   			</if>
+   			<![CDATA[
+   				AND SU.IS_SEALED='N' AND SU.USER_NAME LIKE '%'+#{user_name}+'%'
+   			]]>
+   		</trim>
+	</select>
+	<select id="getFuzzyUserDept" parameterType="map" resultType="user">
+		<![CDATA[
+			select s.user_iidd,s.user_name,s.dept_id,urole.role_type,d.dept_name,d.parent1,d.parent2,d.parent3,d.parent4,d.parent5
+			from sec_user s 
+			left join (select distinct(sru.user_iidd),sr.role_type from 
+				(select user_iidd,role_id from sec_role_user) sru 
+				left join (select role_id,role_type from sec_role) sr on (sru.role_id = sr.role_id)) urole on (s.user_iidd = urole.user_iidd)
+			left join ( select sd.dept_id,sd.dept_name,sd.dept_parent_id,p1.dept_name parent1,p1.parent2,p1.parent3,p1.parent4,p1.parent5,sd.dept_cs
+				from sec_dept sd
+				left join (
+					select p1.dept_id,p1.dept_name,p1.dept_parent_id,p2.dept_name parent2,p2.parent3,p2.parent4,p2.parent5
+					from sec_dept p1 
+					     left join (select p2.dept_id,p2.dept_name,p2.dept_parent_id,p3.dept_name parent3,p3.parent4,p3.parent5
+					     from sec_dept p2
+							left join (select p3.dept_id,p3.dept_name,p3.dept_parent_id ,p4.dept_name parent4,p4.parent5
+							from sec_dept p3
+								left join (select p4.dept_id,p4.dept_name,p4.dept_parent_id,p5.dept_name parent5 
+								from sec_dept p4
+									left join (select p5.dept_id,p5.dept_name,p5.dept_parent_id 
+									from sec_dept p5) p5 on (p5.dept_id = p4.dept_parent_id)
+								) p4 on (p3.dept_parent_id = p4.dept_id) 
+							) p3 on (p2.dept_parent_id = p3.dept_id)
+						     ) p2 on (p1.dept_parent_id = p2.dept_id)
+						) p1 on (p1.dept_id = sd.dept_parent_id)) d on (s.dept_id = d.dept_id) 			
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="dept_id != null and dept_id != ''" >
+   				<![CDATA[
+			 		AND D.DEPT_CS LIKE (SELECT DEPT_CS FROM SEC_DEPT WHERE DEPT_ID = #{dept_id})+'%'
+				]]>
+   			</if>
+   			<![CDATA[
+   				AND S.IS_SEALED='N' AND UROLE.ROLE_TYPE='3' AND (S.USER_IIDD LIKE '%'+#{fuzzy}+'%' OR S.USER_NAME LIKE '%'+#{fuzzy}+'%')
+   			]]>
+   		</trim>
+	</select>
+	<select id="getSecDeptByDeptCs" parameterType="string" resultType="secdept">
+		<![CDATA[
+			SELECT dept_type_code,dept_id,dept_name,terr_code,dept_level_code,dept_desc,dept_parent_id,dept_cs
+        	FROM sec_dept
+        	WHERE dept_cs=#{dept_cs}
+		]]>
+	</select>
+	<select id="getAllSecurityList" resultType="usersecurity">
+		<![CDATA[
+			SELECT us.*,(select count(user_iidd) from sec_user su where su.is_sealed='N' and su.security_code = us.security_code) as user_count
+        	FROM user_security us
+		]]>
+	</select>
+	<select id="getSecurityList" resultType="usersecurity">
+		<![CDATA[
+			SELECT us.*,(select count(user_iidd) from sec_user su where su.is_sealed='N' and su.security_code = us.security_code) as user_count
+        	FROM user_security us where is_sealed='N'
+		]]>
+	</select>
+	<insert id="addSecurity" parameterType="usersecurity">
+		<![CDATA[
+			INSERT INTO USER_SECURITY(SECURITY_CODE,SECURITY_NAME,SECURITY_DESC)
+				VALUES(#{security_code},#{security_name},#{security_desc})
+		]]>
+	</insert>
+	<select id="getSecurityByCode" parameterType="string" resultType="usersecurity">
+		<![CDATA[
+			SELECT us.*,(select count(user_iidd) from sec_user su where su.is_sealed='N' and su.security_code = us.security_code) as user_count
+        	FROM user_security us
+        	WHERE SECURITY_CODE=#{security_code}
+		]]>
+	</select>
+	<update id="delSecurityByCode" parameterType="string">
+		<![CDATA[
+			UPDATE USER_SECURITY SET IS_SEALED='Y' WHERE SECURITY_CODE=#{security_code}
+		]]>
+	</update>
+	<select id="getSeclvNamesByCodes" parameterType="map" resultType="string">
+		<![CDATA[
+			select seclv_name from sec_user_seclv where seclv_code in
+		]]>
+		<foreach item="item" index="index" collection="codeList" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<update id="updateSecurity" parameterType="usersecurity">
+		<![CDATA[
+			update user_security set
+				security_name=#{security_name},
+				security_desc=#{security_desc},
+				print_value=#{print_value},
+				copy_value=#{copy_value},
+				import_value=#{import_value},
+				burn_value=#{burn_value},
+				copy_burn_value=#{copy_burn_value},
+				device_value=#{device_value},
+				default_value=#{default_value}
+			where security_code=#{security_code}		
+		]]>
+	</update>
+	<select id="getSecurityByUser" parameterType="string" resultType="usersecurity">
+		<![CDATA[
+			SELECT us.*
+        	FROM user_security us
+        	WHERE SECURITY_CODE=(select security_code from sec_user where user_iidd=#{user_iidd})
+		]]>
+	</select>
+	<select id="getSeclvListByCodes" parameterType="map" resultType="seclevel">
+		<![CDATA[
+			select * from sec_user_seclv where is_sealed = 'N' and (seclv_code is null
+		]]>
+		<if test="codeList != null and codeList != ''" >
+			or seclv_code in
+			<foreach item="item" index="index" collection="codeList" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		) order by seclv_rank asc
+	</select>
+	<select id="getSecDeptByUserId" parameterType="string" resultType="secdept">
+		<![CDATA[
+			select dp.* from sec_dept dp
+			where dept_id =(select dept_id from sec_user where user_iidd=#{user_iidd})
+		]]>
+	</select>
+	<insert id="addSecDeptAdmin" parameterType="secdeptadmin">
+		<![CDATA[
+			insert into sec_dept_admin(user_iidd,dept_id,dept_cs,is_inherit)
+			values(#{user_iidd},#{dept_id},#{dept_cs},#{is_inherit})
+		]]>
+	</insert>
+	<select id="getRoleIdListByUser" resultType="string" parameterType="map">
+		<![CDATA[
+			SELECT role_id FROM sec_role 
+			where subsys_code=#{subsys_code} and role_type=#{role_type} 
+					and role_id in(select role_id from sec_role_user where user_iidd=#{user_iidd})
+		]]>
+	</select>
+	<delete id="delSecDeptAdminByUser" parameterType="string">
+		<![CDATA[
+			delete from sec_dept_admin where user_iidd=#{user_iidd} and typeflag = 'MANAGE'
+		]]>
+	</delete>
+	<select id="getAdminDeptIdListByUser" parameterType="string" resultType="string">
+		<![CDATA[
+			select dept_id from sec_dept_admin where user_iidd=#{user_iidd} and typeflag = 'MANAGE'
+		]]>
+	</select>
+	<select id="getDeptNameListByIdList" parameterType="map" resultType="string">
+		<![CDATA[
+			select dept_name from sec_dept where is_sealed ='N' and dept_id in
+		]]>
+		<foreach item="item" index="index" collection="deptIdList" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="getAdminInheritByUser" parameterType="string" resultType="string">
+		<![CDATA[
+			select top 1 is_inherit from sec_dept_admin where user_iidd=#{user_iidd} and typeflag = 'MANAGE'
+		]]>
+	</select>
+	<select id="getSecurityCodeByName" parameterType="string" resultType="string">
+		<![CDATA[
+			select security_code from user_security where security_name = #{security_name}
+		]]>
+	</select>
+	<select id="getDeptIdByName" parameterType="string" resultType="string">
+		<![CDATA[
+			select dept_id from sec_dept where dept_name = #{dept_name} and is_sealed ='N'
+		]]>
+	</select>
+	<select id="getUserCountByUserId" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from sec_user where user_iidd=#{user_iidd}
+		]]>
+	</select>
+	<select id="getSeclvCountByCodeName" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from sec_user_seclv where seclv_code=#{seclv_code} or seclv_name=#{seclv_name}
+		]]>
+	</select>
+	<select id="getModuleEnableCount" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from sys_module where UPPER(module_code)=UPPER(#{module_code}) and module_enable='Y'
+		]]>
+	</select>
+	<select id="getRoleIdByTypeAndKey" parameterType="map" resultType="string">
+		<![CDATA[
+			select role_id from sec_role where role_type=#{role_type} and role_spec_key=#{role_spec_key}
+		]]>
+	</select>
+	<select id="getSecUserCountByPassNum" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from sec_user 
+			where pass_num=#{pass_num} and is_sealed ='N'
+		]]>
+	</select>
+	<update id="updateViewStatus" parameterType="map">
+		<![CDATA[
+			update transfer_message set readed =1
+				where charindex(#{url} , linkurl) > 0
+				and charindex(#{accept_user_iidd} , linkurl) > 0;
+		]]>
+	</update>
+	<select id="getSecUserIdByPassNum" parameterType="string" resultType="string">
+		<![CDATA[
+			select user_iidd from sec_user 
+			where pass_num=#{pass_num} and is_sealed ='N'
+		]]>
+	</select>
+	<update id="recoverSecUserById" parameterType="string">
+		<![CDATA[
+			update sec_user set is_sealed = 'N' where user_iidd=#{user_iidd}
+		]]>
+	</update>
+	<update id="recoverSecLvByCode" parameterType="int">
+		<![CDATA[
+			update sec_user_seclv set is_sealed = 'N' where seclv_code=#{seclv_code}
+		]]>
+	</update>
+	<insert id="addSysSeclevel" parameterType="map">
+		<![CDATA[
+			insert into sys_seclevel(seclv_code,leak_time,archive_time,allow_reprint,is_paper_audit,is_cd_audit) 
+			values(#{seclv_code},#{leak_time},#{archive_time},#{allow_reprint},#{is_paper_audit},#{is_cd_audit})
+		]]>
+	</insert>
+	<select id="getSeclvCountByName" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from sec_user_seclv where seclv_name=#{seclv_name}
+		]]>
+	</select>
+	<select id="getSeclvCountByRank" parameterType="int" resultType="int">
+		<![CDATA[
+			select count(1) from sec_user_seclv where seclv_rank=#{seclv_rank}
+		]]>
+	</select>
+	<select id="getSeclvCountByCode" parameterType="int" resultType="int">
+		<![CDATA[
+			select count(1) from sec_user_seclv where seclv_code=#{seclv_code}
+		]]>
+	</select>
+	<select id="getSeclvCodeByName" parameterType="string" resultType="int">
+		<![CDATA[
+			select seclv_code from sec_user_seclv where seclv_name=#{seclv_name}
+		]]>
+	</select>
+	<select id="getSeclvCodeByRank" parameterType="int" resultType="int">
+		<![CDATA[
+			select seclv_code from sec_user_seclv where seclv_rank=#{seclv_rank}
+		]]>
+	</select>
+	<select id="getSeclvList" parameterType="map" resultType="seclevel">
+		<![CDATA[
+			SELECT * FROM SEC_USER_SECLV  
+		]]>
+		<if test="is_sealed != null and is_sealed != ''">
+   				<![CDATA[
+			 		where is_sealed = #{is_sealed}
+				]]>
+		</if>
+		order by is_sealed, seclv_rank asc
+	</select>
+	<select id="getAllCommonUserCount"  resultType="int">
+		<![CDATA[
+			select count(1) from (
+				select distinct r.user_iidd from sec_role_user r,sec_user u where r.user_iidd = u.user_iidd
+				and u.is_sealed = 'N'
+				and role_id in ('10','11')
+			)count
+		]]>
+	</select>
+	<delete id="delSecDeptAdminByUserRole" parameterType="map">
+		<![CDATA[
+			delete from sec_dept_admin where user_iidd=#{user_iidd} and role_id=#{role_id} and typeflag = 'MANAGE'
+		]]>
+	</delete>
+	<select id="getUserLocked" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from sec_user 
+			where user_iidd=#{user_iidd} and status = 1 and datediff(minute,lock_time,getdate()) < 10
+		]]>
+	</select>
+	<select id="getSeclvCount"  resultType="int">
+		<![CDATA[
+			select count(1) from sec_user_seclv
+			where is_sealed = 'N'
+		]]>
+	</select>
+	<select id="getSeclvCountByOthername" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from sec_user_seclv where othername=#{othername}
+		]]>
+	</select>
+	<select id="getSeclvCodeByOthername" parameterType="string" resultType="int">
+		<![CDATA[
+			select seclv_code from sec_user_seclv where othername=#{othername}
+		]]>
+	</select>
+	<select id="getSysConfigItemValue" parameterType="string" resultType="string">
+		<![CDATA[
+			select item_value FROM sec_config where item_key=#{item_key}
+		]]>
+	</select>
+	
+		<select id="getSecOperBySubsysAll" resultType="secoperation" parameterType="string">
+		<![CDATA[	
+			SELECT * from sec_oper  where subsys_code=#{subsys_code} 		
+        ]]>
+	</select>
+	<select id="getSysConfigAdminVersion"  resultType="int">
+		<![CDATA[
+			select count(1) from sec_config
+			where item_key='ADMIN_VERSION'
+		]]>
+	</select>
+	<delete id="delSysConfigAdminVersion">
+		<![CDATA[
+			delete from sec_config where item_key='ADMIN_VERSION'
+		]]>
+	</delete>
+	<delete id="delSysManageUserMenu">
+		<![CDATA[
+			DELETE FROM SEC_ROLE_OPER WHERE ROLE_ID = '2' AND OPER_CODE = '01020102';
+		]]>
+	</delete>
+   <update id="updateSysManageUserMenu">
+		<![CDATA[
+			update sec_role_oper set role_id = '3' where role_id = '2' and oper_code = '01020106'
+		]]>
+	</update>
+	<insert id="insertSysConfigAdminVersion">
+		<![CDATA[
+			insert into sec_config(item_key,item_name,item_type,startuse) 
+			values('ADMIN_VERSION','三员用户管理权限为科工集团版本','ADMIN_VERSION',0)
+		]]>
+	</insert>
+	<insert id="insertSysManageUserMenu">
+		<![CDATA[
+			INSERT INTO SEC_ROLE_OPER(ROLE_ID,OPER_CODE) VALUES ('2','01020102');
+		]]>
+	</insert>
+	 <update id="updateSysManageUserMenuDept">
+		<![CDATA[
+			update sec_role_oper set role_id = '2' where role_id = '3' and oper_code = '01020106'
+		]]>
+	</update>
+	<select id="getIpConfigIsExist"  resultType="int" parameterType="string">
+		<![CDATA[
+			select count(*) from sec_config where item_key =#{userType}
+		]]>
+	</select>
+	<select id="getIpConfigStartuse"  resultType="int" parameterType="string">
+		<![CDATA[
+		select startuse from sec_config where item_key =#{userType}
+		]]>
+	</select>
+	<select id="getLimitIpConfig"  resultType="string" parameterType="string">
+		<![CDATA[
+		select item_value from sec_config where item_key =#{userType}
+		]]>
+	</select>
+	<select id="getUserIdByRole" resultType="string" parameterType="map">
+		<![CDATA[
+			SELECT ru.user_iidd
+			FROM sec_role r left join sec_role_user ru on(ru.role_id=r.role_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="role_name != null and role_name != ''" >
+   				<![CDATA[
+			 		and is_sealed='N' and r.role_name=#{role_name} order by r.role_id
+				]]>
+   			</if>
+   		</trim>
+	</select>
+	<select id="getDefaultPwd" resultType="string" parameterType="string">
+		<![CDATA[
+			select item_value from sec_config where item_key =#{item_key}
+		]]>
+	</select>
+	<select id="getCurUserPwd" resultType="string" parameterType="string">
+		<![CDATA[
+			select user_ppww from sec_user where user_iidd = #{user_iidd}
+		]]>
+	</select>
+	<select id="getUser_iiddsGroup" resultType="string" parameterType="string">
+		<![CDATA[
+			select user_iidd from SEC_DEPT_ADMIN group by user_iidd
+		]]>
+	</select>
+	<select id="getRole_idsGroup" resultType="string" parameterType="string">
+		<![CDATA[
+			select role_id from SEC_DEPT_ADMIN where user_iidd=#{user_iidd} group by role_id
+		]]>
+	</select>
+	<select id="getDept_idsByTwo" resultType="string" parameterType="string">
+		<![CDATA[
+			select dept_id from SEC_DEPT_ADMIN where user_iidd =#{user_iidd} and role_id=#{role_id}
+		]]>
+	</select>
+	<select id="getDept_idsIsY" resultType="string" parameterType="string">
+		<![CDATA[
+			select dept_id From SEC_DEPT where is_sealed='N'
+		]]>
+	</select>
+	<insert id="addSecDeptAdmin1" parameterType="map">
+		<![CDATA[
+			insert into sec_dept_admin(user_iidd,role_id,dept_id,dept_cs,is_inherit)
+			values(#{user_iidd},#{role_id},#{dept_id},#{dept_cs},'N')
+		]]>
+	</insert>
+	<insert id="insertProxyInfo" parameterType="map">
+		<![CDATA[
+			insert into sec_role_user(user_iidd,role_id,is_proxy,agent)
+			values(#{user_iidd},#{role_id},#{is_proxy},#{agent})
+		]]>
+	</insert>
+	<delete id="deleteProxyInfo" parameterType="map">
+		<![CDATA[
+			delete from sec_role_user where USER_IIDD = #{user_iidd} and IS_PROXY=#{is_proxy} and AGENT = #{agent}
+		]]>
+	</delete>
+	<select id="getAgentByUser_iidd" resultType="SecRoleUser" parameterType="map">
+		<![CDATA[
+			select * From SEC_ROLE_USER
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="is_proxy != null and is_proxy != ''" >
+   				<![CDATA[
+			 		and is_proxy = #{is_proxy}
+				]]>
+   			</if>
+   		</trim>
+	</select>
+</mapper> 

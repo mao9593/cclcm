@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="secplaceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.secplace.mapper.SecplaceMapper" />
+	</bean>
+	<!-- 涉密场所添加-->
+	<bean id="secplace.addsecplace" class="${common.package}.secplace.action.AddSecplaceAction" scope="prototype" />
+	<!-- 查看涉密场所台账-->
+	<bean id="secplace.managesecplace" class="${common.package}.secplace.action.ManageSecplaceAction" scope="prototype" />
+	<!-- 修改涉密场所-->
+	<bean id="secplace.updatesecplace" class="${common.package}.secplace.action.UpdateSecplaceAction" scope="prototype" />
+	<!-- 通过条码号查看涉密场所详细信息-->
+	<bean id="secplace.viewsecplacedetail" class="${common.package}.secplace.action.ViewSecplaceDetailAction" scope="prototype" />
+	<!-- 添加外来人员进入涉密场所申请-->
+	<bean id="secplace.addentersecplaceevent" class="${common.package}.secplace.action.AddEnterSecplaceEventAction" scope="prototype" />
+	<!-- 添加涉密场所申请-->
+	<bean id="secplace.addsecplaceevent" class="${common.package}.secplace.action.AddSecplaceEventAction" scope="prototype" />
+	<!--查看涉密场所申请列表-->
+	<bean id="secplace.viewsecplaceevent" class="${common.package}.secplace.action.ViewSecplaceEventAction" scope="prototype" />
+	<!--查看涉密场所申请详细信息-->
+	<bean id="secplace.viewsecplaceeventdetail" class="${common.package}.secplace.action.ViewSecplaceEventDetailAction" scope="prototype" />
+	<!--查看涉密场所申请待审批列表-->
+	<bean id="secplace.managesecplaceaprvjob" class="${common.package}.secplace.action.ManageSecplaceAprvJobAction" scope="prototype" />
+	<!--查看涉密场所申请已审批列表-->
+	<bean id="secplace.viewsecplaceaprvjob" class="${common.package}.secplace.action.ViewSecplaceAprvJobAction" scope="prototype" />
+	<!--查看进入涉密场所申请列表-->
+	<bean id="secplace.viewentersecplaceevent" class="${common.package}.secplace.action.ViewEnterSecplaceEventAction" scope="prototype" />
+	<!--查看进入涉密场所待审批列表-->
+	<bean id="secplace.manageentersecplaceaprvjob" class="${common.package}.secplace.action.ManageEnterSecplaceAprvJobAction" scope="prototype" />
+	<!--查看进入涉密场所已审批列表-->
+	<bean id="secplace.viewentersecplaceaprvjob" class="${common.package}.secplace.action.ViewEnterSecplaceAprvJobAction" scope="prototype" />
+	<!--查看进入涉密场所申请详细-->
+	<bean id="secplace.viewentersecplaceeventdetail" class="${common.package}.secplace.action.ViewEnterSecplaceEventDetailAction" scope="prototype" />
+	<!--审批进入涉密场所-->
+	<bean id="secplace.approveentersecplacejob" class="${common.package}.secplace.action.ApproveEnterSecplaceJobAction" scope="prototype" />
+	<!--删除上传的文件-->
+	<bean id="secplace.deluploadedfile" class="${common.package}.secplace.action.DelUploadedFileAction" scope="prototype" />
+	<!--审批涉密场所-->
+	<bean id="secplace.approvesecplacejob" class="${common.package}.secplace.action.ApproveSecplaceJobAction" scope="prototype" />
+	<!--删除事件-->
+	<bean id="secplace.deleteevent" class="${common.package}.secplace.action.DeleteEventAction" scope="prototype" />
+	 <!-- 获得匹配的涉密场所 -->
+    <bean id="secplace.getfuzzysecplace" class="${common.package}.secplace.action.GetFuzzySecplaceAction" scope="prototype" />
+
+</beans>

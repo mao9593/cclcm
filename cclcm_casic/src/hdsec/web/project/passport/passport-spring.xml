@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="passportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.passport.mapper.PassportMapper" />
+	</bean>
+	<!-- 护照添加-->
+	<bean id="passport.addpassport" class="${common.package}.passport.action.AddPassportAction" scope="prototype" />
+	<!-- 查看护照台账-->
+	<bean id="passport.managepassport" class="${common.package}.passport.action.ManagePassportAction" scope="prototype" />
+	<!-- 护照批量录入-->
+	<bean id="passport.importpassport" class="${common.package}.passport.action.ImportPassportAction" scope="prototype" />
+	<!-- 通过条码查看计算机信息-->
+	<bean id="passport.viewpassportdetail" class="${common.package}.passport.action.ViewPassportDetailAction" scope="prototype" />
+	<!-- 修改计算机信息-->
+	<bean id="passport.updatepassport" class="${common.package}.passport.action.UpdatePassportAction" scope="prototype" />
+	<!-- 导出护照信息-->
+	<bean id="passport.exportpassport" class="${common.package}.passport.action.ExportPassportAction" scope="prototype" />
+</beans>

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.client.mapper.ClientMapper">
+	<select id="getSysModuleList" parameterType="map" resultType="sysmodule">
+		<![CDATA[
+			select * from sys_module	
+		]]>
+	</select>
+	<select id="getSysCVSList" parameterType="map" resultType="syscvs">
+		<![CDATA[
+			select sc.* ,su.user_name,su.dept_id,dp.dept_name from sys_cvs sc	
+			    left join (select user_iidd,user_name,dept_id from sec_user) su on (sc.user_iidd = su.user_iidd)
+			    left join (select dept_id,dept_name from sec_dept) dp ON (su.dept_id = dp.dept_id)
+		]]>
+		<if test="not is_all">
+			<![CDATA[
+				where is_sealed='N'
+			]]>
+		</if>
+		order by is_sealed
+	</select>
+	<select id="getCVSByCode" parameterType="string" resultType="syscvs">
+		<![CDATA[
+			select sc.* ,su.user_name,su.dept_id,dp.dept_name from sys_cvs sc	
+			    left join (select user_iidd,user_name,dept_id from sec_user) su on (sc.user_iidd = su.user_iidd)
+			    left join (select dept_id,dept_name from sec_dept) dp ON (su.dept_id = dp.dept_id)
+			where cvs_code=#{cvs_code}	
+		]]>
+	</select>
+	<update id="updateCVS" parameterType="map">
+		<![CDATA[
+			update sys_cvs 
+				set set_version=#{set_version}
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="cvs_code != null and cvs_code != ''">
+   				<![CDATA[
+   					AND cvs_code=#{cvs_code}
+				 ]]>
+			</if>
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		AND user_iidd in (select user_iidd from sec_user where dept_id = #{dept_id})
+				]]>
+   			</if>
+   		</trim>
+	</update>
+	<select id="getCVSListByCondition" parameterType="map" resultType="syscvs">
+		<![CDATA[
+			select sc.* ,su.user_name,su.dept_id,dp.dept_name from sys_cvs sc	
+			    left join (select user_iidd,user_name,dept_id from sec_user) su on (sc.user_iidd = su.user_iidd)
+			    left join (select dept_id,dept_name from sec_dept) dp ON (su.dept_id = dp.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		UPPER(su.user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		AND su.dept_id=#{dept_id}
+				]]>
+   			</if>
+			<if test="is_sealed != null and is_sealed != ''">
+   				<![CDATA[
+			 		AND sc.is_sealed=#{is_sealed}
+				]]>
+   			</if>
+   		</trim>
+	</select>
+	<select id="getPrintEventNum" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from event_print event
+				left join(select job_code,job_status from job_process) jp on(event.job_code = jp.job_code)  
+			where user_iidd=#{user_iidd} and job_status=#{job_status} and (print_status is null or print_status=0)
+		]]>
+	</select>
+	<select id="getBurnEventNum" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from event_burn event
+				left join(select job_code,job_status from job_process) jp on(event.job_code = jp.job_code)  
+			where user_iidd=#{user_iidd} and job_status=#{job_status} and (burn_status is null or burn_status=0)
+		]]>
+	</select>
+	<select id="getCopyEventNum" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from event_copy event
+				left join(select job_code,job_status from job_process) jp on(event.job_code = jp.job_code)  
+			where user_iidd=#{user_iidd} and job_status=#{job_status} and (copy_status is null or copy_status=0)
+		]]>
+	</select>
+	<select id="getEnterEventNum" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from event_import event
+				left join(select job_code,job_status from job_process) jp on(event.job_code = jp.job_code)  
+			where user_iidd=#{user_iidd} and job_status=#{job_status} and (import_status is null or import_status=0)
+		]]>
+	</select>
+	<select id="getTransferEventNum" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from event_transfer event
+				left join(select job_code,job_status from job_process) jp on(event.job_code = jp.job_code)  
+			where user_iidd=#{user_iidd} and job_status=#{job_status} and (transfer_status is null or transfer_status=0)
+		]]>
+	</select>
+	<select id="getDeviceEventNum" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from event_device event
+				left join(select job_code,job_status from job_process) jp on(event.job_code = jp.job_code)  
+			where user_iidd=#{user_iidd} and job_status=#{job_status} and (device_status is null or device_status=0)
+		]]>
+	</select>
+	<select id="getHandlePaperNum" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from entity_paper entity
+				left join(select job_code,job_status,jobtype_code from job_process) jp on(entity.job_code = jp.job_code)  
+			where duty_user_iidd=#{user_iidd} and jobtype_code=#{jobType.jobTypeCode} and job_status=#{job_status} and (paper_state is null or paper_state=0)
+		]]>
+	</select>
+	<select id="getHandleCDNum" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from entity_cd entity
+				left join(select job_code,job_status,jobtype_code from job_process) jp on(entity.job_code = jp.job_code)  
+			where duty_user_iidd=#{user_iidd} and jobtype_code=#{jobType.jobTypeCode} and job_status=#{job_status} and (cd_state is null or cd_state=0)
+		]]>
+	</select>
+	<select id="getHandleJobCountByEntityInstanceId" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1)	from job_process jp
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			jp.instance_id in
+	   		<foreach item="item" index="index" collection="instanceIdList" open="(" separator="," close=")">
+				#{item} 
+			</foreach>
+			<![CDATA[
+				and (select count(job_code) from entity_${type} where job_code = jp.job_code)>0  
+			]]>
+		</trim>
+	</select>
+	<select id="getPendingWorkCount" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1)	from client_msg where accept_user_iidd=#{user_iidd} and oper_type=#{oper_type} and message_type=#{message_type} and is_read=0
+		]]>
+	</select>
+	<delete id="delClientMsgByJobCode" parameterType="string">
+		<![CDATA[
+			delete from client_msg where job_code=#{job_code}
+		]]>
+	</delete>
+	<select id="getHandleDeviceEventNum" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from entity_device entity
+				left join(select job_code,job_status,jobtype_code from job_process) jp on(entity.job_code = jp.job_code)  
+			where duty_user_iidd=#{user_iidd} and jobtype_code=#{jobType.jobTypeCode} and job_status=#{job_status} and (device_state is null or paper_state=0)
+		]]>
+	</select>
+	<delete id="delRetrieveMsgByUser" parameterType="map">
+		<![CDATA[
+			delete from client_msg 
+			where accept_user_iidd=#{user_iidd}
+				and message_type=#{message_type}
+				and oper_type=#{oper_type}
+		]]>
+	</delete>
+	<select id="getUserByIdentity" parameterType="map" resultType="secuser">
+		<![CDATA[
+			select top 1 from sec_user 
+			where idcard=#{idcard}
+		]]>
+	</select>
+	<select id="getOperTypeByJobCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select oper_type from client_msg where job_code=#{job_code} 
+		]]>
+	</select>
+	<select id="getDirRankByOperCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select dir_rank from sec_oper where oper_code=#{oper_code} 
+		]]>
+	</select>
+	<select id="getClientMessage" parameterType="map" resultType="clientmsg">
+		<![CDATA[
+			select
+        		distinct cm.*,USER_IIDD,DEPT_ID
+        	from
+        		client_msg cm,
+		]]>
+		<choose>
+  			<when test="oper_type =='PRINT'">
+   				<![CDATA[
+			 		EVENT_PRINT
+       	    	where
+        			cm.JOB_CODE=EVENT_PRINT.JOB_CODE 
+        			and cm.accept_user_iidd=#{accept_user_iidd}
+        			and cm.oper_type=#{oper_type}
+        			and cm.message_type=1
+				]]>
+   			</when>	
+  			<when test="oper_type=='BURN'">
+   				<![CDATA[
+			 		EVENT_BURN
+       	    	where
+        			cm.JOB_CODE=EVENT_BURN.JOB_CODE 
+        			and cm.accept_user_iidd=#{accept_user_iidd}
+        			and cm.oper_type=#{oper_type}
+        			and cm.message_type=1
+				]]>
+   			</when>	
+   			<when test="oper_type=='COPY' || oper_type=='OUTCOPY'">
+   				<![CDATA[
+			 		EVENT_COPY
+       	    	where
+        			cm.JOB_CODE=EVENT_COPY.JOB_CODE 
+        			and cm.accept_user_iidd=#{accept_user_iidd}
+        			and cm.oper_type=#{oper_type}
+        			and cm.message_type=1
+				]]>
+   			</when>	
+   			<when test="oper_type=='TRANSFER'">
+   				<![CDATA[
+			 		EVENT_TRANSFER
+       	    	where
+        			cm.JOB_CODE=EVENT_TRANSFER.JOB_CODE 
+        			and cm.accept_user_iidd=#{accept_user_iidd}
+        			and cm.oper_type=#{oper_type}
+        			and cm.message_type=1
+				]]>
+   			</when>	
+   			<when test="oper_type=='DEVICE'">
+   				<![CDATA[
+			 		EVENT_DEVICE
+       	    	where
+        			cm.JOB_CODE=EVENT_DEVICE.JOB_CODE 
+        			and cm.accept_user_iidd=#{accept_user_iidd}
+        			and cm.oper_type=#{oper_type}
+        			and cm.message_type=1
+				]]>
+   			</when>	
+   			<when test="oper_type=='BORROW'">
+   				<![CDATA[
+			 		EVENT_BORROW
+       	    	where
+        			cm.JOB_CODE=EVENT_BORROW.JOB_CODE 
+        			and cm.accept_user_iidd=#{accept_user_iidd}
+        			and cm.oper_type=#{oper_type}
+        			and cm.message_type=1
+				]]>
+   			</when>	
+   			<when test="oper_type=='CHANGE'">
+   				<![CDATA[
+			 		EVENT_CHANGE
+       	    	where
+        			cm.JOB_CODE=EVENT_CHANGE.JOB_CODE 
+        			and cm.accept_user_iidd=#{accept_user_iidd}
+        			and cm.oper_type=#{oper_type}
+        			and cm.message_type=1
+				]]>
+   			</when>	
+   			<when test="oper_type=='LEADIN'">
+   				<![CDATA[
+			 		EVENT_IMPORT
+       	    	where
+        			cm.JOB_CODE=EVENT_IMPORT.JOB_CODE 
+        			and cm.accept_user_iidd=#{accept_user_iidd}
+        			and cm.oper_type=#{oper_type}
+        			and cm.message_type=1
+				]]>
+   			</when>	
+  		</choose>
+	</select>
+	<select id="getClientMessage1" parameterType="map" resultType="clientmsg">
+		<![CDATA[
+			select
+        		distinct cm.*,DUTY_USER_IIDD USER_IIDD,DUTY_DEPT_ID DEPT_ID
+        	from
+        		client_msg cm,
+		]]>
+		<choose>
+  			<when test="oper_type=='SEND_PAPER' || oper_type=='FILE_PAPER' || oper_type=='DESTROY_PAPER' || oper_type=='DELAY_PAPER'">
+   				<![CDATA[
+			 		ENTITY_PAPER
+       	    	where
+        			cm.JOB_CODE=ENTITY_PAPER.JOB_CODE 
+        			and cm.accept_user_iidd=#{accept_user_iidd}
+        			and cm.oper_type=#{oper_type}
+        			and cm.message_type=1
+				]]>
+   			</when>	
+  			<otherwise>
+  				<![CDATA[
+			 		ENTITY_CD
+       	    	where
+        			cm.JOB_CODE=ENTITY_CD.JOB_CODE 
+        			and cm.accept_user_iidd=#{accept_user_iidd}
+        			and cm.oper_type=#{oper_type}
+        			and cm.message_type=1
+				]]>
+  			</otherwise>
+  		</choose>
+	</select>
+	<select id="getClientMessage2" parameterType="map" resultType="clientmsg">
+		<![CDATA[
+				select
+        			distinct cm.*,ed.DUTY_USER_IIDD USER_IIDD,su.DEPT_ID
+        		from
+        			client_msg cm,ENTITY_DEVICE ed,sec_user su
+       	    	where
+        			cm.JOB_CODE=ed.JOB_CODE 
+        			and ed.DUTY_USER_IIDD=su.USER_IIDD
+        			and cm.accept_user_iidd=#{accept_user_iidd}
+        			and cm.oper_type=#{oper_type}
+        			and cm.message_type=1
+		]]>
+	</select>
+	<select id="getDeptName" parameterType="string" resultType="string">
+		<![CDATA[
+		   select dept_name from sec_dept where dept_id=#{dept_id}
+		]]>
+	</select>
+	<select id="getUserName" parameterType="string" resultType="string">
+		<![CDATA[
+			 select user_name from sec_user where user_iidd=#{user_iidd}
+		]]>
+	</select>
+	<select id="getPendingWorkCount1" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1)	from client_msg where accept_user_iidd=#{user_iidd} and oper_type=#{oper_type} and message_type=#{message_type}
+		]]>
+	</select>
+		<select id="getConsoleByCode" parameterType="string" resultType="sysconsole">
+		<![CDATA[
+			select * from sys_console where console_code=#{console_code}	 	
+		]]>
+	</select>
+	<select id="getTask" parameterType="Map" resultType="clienttask">
+   	    <![CDATA[
+   	       select * from client_msg
+   	    ]]>
+   	    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="accept_user_iidd != null and accept_user_iidd != ''" >
+   				<![CDATA[
+			 		and accept_user_iidd = #{accept_user_iidd}
+				]]>
+   			</if>
+   			<if test="message_type != null and message_type != ''" >
+   				<![CDATA[
+			 		and message_type = #{message_type}
+				]]>
+   			</if>
+   			<if test="message_note_type != null and message_note_type != ''" >
+   				<![CDATA[
+			 		and (message_type <> 1) and (is_read = 0)
+				]]>
+   			</if>
+   		</trim>
+   			<![CDATA[
+			 		order by insert_time desc
+			]]>
+   	</select>
+</mapper>  

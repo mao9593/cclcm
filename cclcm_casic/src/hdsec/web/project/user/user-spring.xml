@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	
+	<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.user.mapper.UserMapper" />
+	</bean>
+	
+	<bean id="deptListUtil" class="${common.package}.common.util.DeptListUtil"/>
+	
+	<!-- action 的bean id命名为{moduleName.actionName}-->
+	<bean id="user.login" class="${common.package}.user.action.LoginAction" scope="prototype"/>
+	<bean id="user.index" class="${common.package}.user.action.IndexAction" scope="prototype"/>
+	<bean id="user.error" class="${common.package}.user.action.ErrorAction"	scope="prototype"/>
+	<bean id="user.logout" class="${common.package}.user.action.LogoutAction" scope="prototype"/>
+	<bean id="user.viewsecuser" class="${common.package}.user.action.ViewSecUserAction" scope="prototype" />
+	<bean id="user.getdeptlist" class="${common.package}.user.action.GetDeptListAction" scope="prototype" />
+	<bean id="user.configcommontree" class="${common.package}.user.action.ConfigCommonTreeAction" scope="prototype" />
+	<bean id="user.getalldeptlist" class="${common.package}.user.action.GetAllDeptListAction" scope="prototype" />
+	<bean id="user.managesecuser" class="${common.package}.user.action.ManageSecUserAction" scope="prototype" />
+	<bean id="user.getdepttree" class="${common.package}.user.action.GetDeptTreeAction" scope="prototype" />
+	<bean id="user.viewuserbydept" class="${common.package}.user.action.ViewUserByDeptAction" scope="prototype" />
+	<bean id="user.managesecrole" class="${common.package}.user.action.ManageSecRoleAction" scope="prototype" />
+	<bean id="user.addsecrole" class="${common.package}.user.action.AddSecRoleAction" scope="prototype" />
+	<bean id="user.delsecrole" class="${common.package}.user.action.DelSecRoleAction" scope="prototype" />
+	<bean id="user.updatesecrole" class="${common.package}.user.action.UpdateSecRoleAction" scope="prototype" />
+	<bean id="user.viewuserbyrole" class="${common.package}.user.action.ViewUserByRoleAction" scope="prototype" />
+	<bean id="user.prepconfigrole" class="${common.package}.user.action.ConfigRolePrepAction" scope="prototype" />
+	<bean id="user.configroleapply" class="${common.package}.user.action.ConfigRoleApplyAction" scope="prototype" />
+	<bean id="user.configroleupdate" class="${common.package}.user.action.ConfigRoleUpdateAction" scope="prototype" />
+	<bean id="user.addsecuser" class="${common.package}.user.action.AddSecUserAction" scope="prototype" />
+	<bean id="user.checkuserid" class="${common.package}.user.action.CheckUserIdAction" scope="prototype" />
+	<bean id="user.setuserstatus" class="${common.package}.user.action.SetUserStatusAction" scope="prototype" />
+	<bean id="user.delsecuser" class="${common.package}.user.action.DelSecUserAction" scope="prototype" />
+	<bean id="user.updatesecuser" class="${common.package}.user.action.UpdateSecUserAction" scope="prototype" />
+	<bean id="user.updatesecuserbase" class="${common.package}.user.action.UpdateSecUserBaseAction" scope="prototype" />
+	<bean id="user.resetuserpwd" class="${common.package}.user.action.ResetUserPwdAction" scope="prototype" />
+	<bean id="user.updatesecuserother" class="${common.package}.user.action.UpdateSecUserOtherAction" scope="prototype" />
+	<bean id="user.updateuserdept" class="${common.package}.user.action.UpdateUserDeptAction" scope="prototype" />
+	<bean id="user.manageuserrole" class="${common.package}.user.action.ManageUserRoleAction" scope="prototype" />
+	<bean id="user.selectrole" class="${common.package}.user.action.SelectRoleAction" scope="prototype" />
+	<bean id="user.updateuserrole" class="${common.package}.user.action.UpdateUserRoleAction" scope="prototype" />
+	<bean id="user.manageoper" class="${common.package}.user.action.ManageOperAction" scope="prototype" />
+	<bean id="user.getopertree" class="${common.package}.user.action.GetOperTreeAction" scope="prototype" />
+	<bean id="user.configoper" class="${common.package}.user.action.ConfigOperAction" scope="prototype" />
+	<bean id="user.addsecoper" class="${common.package}.user.action.AddSecOperAction" scope="prototype" />
+	<bean id="user.delsecoper" class="${common.package}.user.action.DelSecOperAction" scope="prototype" />
+	<bean id="user.updatesecoper" class="${common.package}.user.action.UpdateSecOperAction" scope="prototype" />
+	<bean id="user.managedept" class="${common.package}.user.action.ManageDeptAction" scope="prototype" />
+	<bean id="user.configdept" class="${common.package}.user.action.ConfigDeptAction" scope="prototype" />
+	<bean id="user.addsecdept" class="${common.package}.user.action.AddSecDeptAction" scope="prototype" />
+	<bean id="user.managedeptsubsys" class="${common.package}.user.action.ManageDeptSubsysAction" scope="prototype" />
+	<bean id="user.updatesecdept" class="${common.package}.user.action.UpdateSecDeptAction" scope="prototype" />
+	<bean id="user.delsecdept" class="${common.package}.user.action.DelSecDeptAction" scope="prototype" />
+	<bean id="user.managedeptpost" class="${common.package}.user.action.ManageDeptPostAction" scope="prototype" />
+	<bean id="user.onlineuserstatus" class="${common.package}.user.action.OnlineUserStatusAction" scope="prototype" />
+	<bean id="user.configoulimit" class="${common.package}.user.action.ConfigOuLimitAction" scope="prototype" />
+	<bean id="user.viewonlineuser" class="${common.package}.user.action.ViewOnlineUserAction" scope="prototype" />
+	<bean id="user.viewuserdetail" class="${common.package}.user.action.ViewUserDetailAction" scope="prototype" />
+	<bean id="user.managepost" class="${common.package}.user.action.ManagePostAction" scope="prototype" />
+	<bean id="user.addpost" class="${common.package}.user.action.AddPostAction" scope="prototype" />
+	<bean id="user.delpost" class="${common.package}.user.action.DelPostAction" scope="prototype" />
+	<bean id="user.updatepost" class="${common.package}.user.action.UpdatePostAction" scope="prototype" />
+	<bean id="user.viewuserbypost" class="${common.package}.user.action.ViewUserByPostAction" scope="prototype" />
+	<bean id="user.viewdeptbypost" class="${common.package}.user.action.ViewDeptByPostAction" scope="prototype" />
+	<bean id="user.configpostorder" class="${common.package}.user.action.ConfigPostOrderAction" scope="prototype" />
+	<bean id="user.configpostclass" class="${common.package}.user.action.ConfigPostClassAction" scope="prototype" />
+	<bean id="user.manageother" class="${common.package}.user.action.ManageOtherAction" scope="prototype" />
+	<bean id="user.getconfigtree" class="${common.package}.user.action.GetConfigTreeAction" scope="prototype" />
+	<bean id="user.managedepttype" class="${common.package}.user.action.ManageDeptTypeAction" scope="prototype" />
+	<bean id="user.adddepttype" class="${common.package}.user.action.AddDeptTypeAction" scope="prototype" />
+	<bean id="user.deldepttypee" class="${common.package}.user.action.DelDeptTypeAction" scope="prototype" />
+	<bean id="user.updatedepttype" class="${common.package}.user.action.UpdateDeptTypeAction" scope="prototype" />
+	<bean id="user.viewdeptlevel" class="${common.package}.user.action.ViewDeptLevelAction" scope="prototype" />
+	<bean id="user.managesubsys" class="${common.package}.user.action.ManageSubsysAction" scope="prototype" />
+	<bean id="user.addsubsys" class="${common.package}.user.action.AddSubsysAction" scope="prototype" />
+	<bean id="user.updatesubsys" class="${common.package}.user.action.UpdateSubsysAction" scope="prototype" />
+	<bean id="user.delsubsys" class="${common.package}.user.action.DelSubsysAction" scope="prototype" />
+	<bean id="user.viewseclevel" class="${common.package}.user.action.ViewSecLevelAction" scope="prototype" />
+	<bean id="user.manageterr" class="${common.package}.user.action.ManageTerrAction" scope="prototype" />
+	<bean id="user.addterritory" class="${common.package}.user.action.AddTerritoryAction" scope="prototype" />
+	<bean id="user.delterritory" class="${common.package}.user.action.DelTerritoryAction" scope="prototype" />
+	<bean id="user.updateterritory" class="${common.package}.user.action.UpdateTerritoryAction" scope="prototype" />
+	<bean id="user.addseclv" class="${common.package}.user.action.AddSeclvAction" scope="prototype" />
+	<bean id="user.delseclv" class="${common.package}.user.action.DelSeclvAction" scope="prototype" />
+	<bean id="user.updateseclv" class="${common.package}.user.action.UpdateSeclvAction" scope="prototype" />
+	<bean id="user.viewdeptbytype" class="${common.package}.user.action.ViewDeptByTypeAction" scope="prototype" />
+	<bean id="user.viewdeptbylevel" class="${common.package}.user.action.ViewDeptByLevelAction" scope="prototype" />
+	<bean id="user.viewdeptbyterr" class="${common.package}.user.action.ViewDeptByTerrAction" scope="prototype" />
+	<bean id="user.viewrealuser" class="${common.package}.user.action.ViewRealUserAction" scope="prototype" />
+	<bean id="user.getrealuser" class="${common.package}.user.action.GetRealUserAction" scope="prototype" />
+	<bean id="user.delrealuser" class="${common.package}.user.action.DelRealUserAction" scope="prototype" />
+	<bean id="user.viewsecuserbyreal" class="${common.package}.user.action.ViewSecUserByRealAction" scope="prototype" />
+	<bean id="user.updaterealuser" class="${common.package}.user.action.UpdateRealUserAction" scope="prototype" />
+	<bean id="user.viewsecrole" class="${common.package}.user.action.ViewSecRoleAction" scope="prototype" />
+	<bean id="user.viewsecoper" class="${common.package}.user.action.ViewSecOperAction" scope="prototype" />
+	<bean id="user.viewoperdetail" class="${common.package}.user.action.ViewOperDetailAction" scope="prototype" />
+	<bean id="user.getadminrole" class="${common.package}.user.action.GetAdminRoleAction" scope="prototype" />
+	<bean id="user.getspecialrole" class="${common.package}.user.action.GetSpecialRoleAction" scope="prototype" />
+	<bean id="user.configscopeterr" class="${common.package}.user.action.ConfigScopeTerrAction" scope="prototype" />
+	<bean id="user.configscopedept" class="${common.package}.user.action.ConfigScopeDeptAction" scope="prototype" />
+	<bean id="user.getscopedeptcode" class="${common.package}.user.action.GetScopeDeptCodeAction" scope="prototype" />
+	<bean id="user.updatespecialrole" class="${common.package}.user.action.UpdateSpecialRoleAction" scope="prototype" />
+	<bean id="user.updateadminrole" class="${common.package}.user.action.UpdateAdminRoleAction" scope="prototype" />
+	<bean id="user.configlogin" class="${common.package}.user.action.ConfigLoginAction" scope="prototype" />
+	<bean id="user.changepwd" class="${common.package}.user.action.ChangePwdAction" scope="prototype" />
+	<bean id="user.holdsession" class="${common.package}.user.action.HoldSessionAction" scope="prototype" />
+	<bean id="user.setupparam" class="${common.package}.user.action.SetupParamAction" scope="prototype" />
+	<bean id="user.managesecurity" class="${common.package}.user.action.ManageSecurityAction" scope="prototype" />
+	<bean id="user.addsecurity" class="${common.package}.user.action.AddSecurityAction" scope="prototype" />
+	<bean id="user.delsecurity" class="${common.package}.user.action.DelSecurityAction" scope="prototype" />
+	<bean id="user.configsecurity" class="${common.package}.user.action.ConfigSecurityAction" scope="prototype" />
+	<bean id="user.viewsecuritydetail" class="${common.package}.user.action.ViewSecurityDetailAction" scope="prototype" />
+	<bean id="user.configdeptadmin" class="${common.package}.user.action.ConfigDeptAdminAction" scope="prototype" />
+	<bean id="user.importsecuser" class="${common.package}.user.action.ImportSecUserAction" scope="prototype" />
+	<bean id="user.checkpassnum" class="${common.package}.user.action.CheckPassNumAction" scope="prototype" />
+	<bean id="user.recoversecuser" class="${common.package}.user.action.RecoverSecUserAction" scope="prototype" />
+	<bean id="user.recoverseclv" class="${common.package}.user.action.RecoverSeclvAction" scope="prototype" />
+	<bean id="user.submitactivationcode" class="${common.package}.user.action.SubmitActivatinCodeAction" scope="prototype" />
+	<bean id="user.managefirstdir" class="${common.package}.user.action.ManageFirstDirAction" scope="prototype" />
+	<bean id="user.updatefirstdir" class="${common.package}.user.action.UpdateFirstDirAction" scope="prototype" />
+</beans>

@@ -1,0 +1,862 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="basic" namespace="/basic" extends="struts-default">
+		<!-- 用途管理 -->
+		<action name="manageusage" class="basic.manageusage">
+			<result>/html/basic/manageusage.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addusage" class="basic.addusage">
+			<result>/html/basic/addusage.jsp</result>
+			<result name="ok" type="redirect">/basic/manageusage.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delusage" class="basic.delusage">
+			<result type="redirect">/basic/manageusage.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateusage" class="basic.updateusage">
+			<result>/html/basic/updateusage.jsp</result>
+			<result name="ok" type="redirect">/basic/manageusage.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="recoverusage" class="basic.recoverusage">
+			<result type="redirect">/basic/manageusage.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	<!-- 特殊打印类型管理-->
+		<action name="managespecialpapertype" class="basic.managespecialpapertype">
+			<result>/html/basic/managespecialpapertype.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addspecialpapertype" class="basic.addspecialpapertype">
+			<result>/html/basic/addspecialpapertype.jsp</result>
+			<result name="ok" type="redirect">/basic/managespecialpapertype.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatespecialpapertype" class="basic.updatespecialpapertype">
+			<result>/html/basic/updatespecialpapertype.jsp</result>
+			<result name="ok" type="redirect">/basic/managespecialpapertype.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 项目管理 -->
+		<action name="manageproject" class="basic.manageproject">
+			<result>/html/basic/manageproject.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addproject" class="basic.addproject">
+			<result>/html/basic/addproject.jsp</result>
+			<result name="ok" type="redirect">/basic/manageproject.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delproject" class="basic.delproject">
+			<result type="redirect">/basic/manageproject.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateproject" class="basic.updateproject">
+			<result>/html/basic/updateproject.jsp</result>
+			<result name="ok" type="redirect">/basic/manageproject.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+
+		<!-- 一体机管理 -->
+		<action name="managemfp" class="basic.managemfp">
+			<result>/html/basic/managemfp.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addmfp" class="basic.addmfp">
+			<result>/html/basic/addmfp.jsp</result>
+			<result name="ok" type="redirect">/basic/managemfp.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delmfp" class="basic.delmfp">
+			<result type="redirect">/basic/managemfp.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatemfp" class="basic.updatemfp">
+			<result>/html/basic/updatemfp.jsp</result>
+			<result name="ok" type="redirect">/basic/managemfp.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 刻录机管理 -->
+		<action name="manageburner" class="basic.manageburner">
+			<result>/html/basic/manageburner.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addburner" class="basic.addburner">
+			<result>/html/basic/addburner.jsp</result>
+			<result name="ok" type="redirect">/basic/manageburner.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delburner" class="basic.delburner">
+			<result type="redirect">/basic/manageburner.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateburner" class="basic.updateburner">
+			<result>/html/basic/updateburner.jsp</result>
+			<result name="ok" type="redirect">/basic/manageburner.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 打印机管理 -->
+		<action name="manageprinter" class="basic.manageprinter">
+			<result>/html/basic/manageprinter.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addprinter" class="basic.addprinter">
+			<result>/html/basic/addprinter.jsp</result>
+			<result name="ok" type="redirect">/basic/manageprinter.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delprinter" class="basic.delprinter">
+			<result type="redirect">/basic/manageprinter.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateprinter" class="basic.updateprinter">
+			<result>/html/basic/updateprinter.jsp</result>
+			<result name="ok" type="redirect">/basic/manageprinter.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewprinterdetail" class="basic.updateprinter">
+			<result>/html/basic/viewprinterdetail.jsp</result>
+			<result name="ok" type="redirect">/basic/manageprinter.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	 	<action name="configprinter" class="basic.configprinter">
+			<result>/html/basic/configprinter.jsp</result>
+			<result name="ok" type="redirect">/basic/manageprinter.action</result>
+			<result name="configprinter" type="redirect">/basic/configprinter.action?printer_code=${printer_code}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	 	
+		<!-- 控制台管理 -->
+		<action name="manageconsole" class="basic.manageconsole"> 
+			<result>/html/basic/manageconsole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addconsole" class="basic.addconsole">
+			<result>/html/basic/addconsole.jsp</result>
+			<result name="ok" type="redirect">/basic/manageconsole.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="updateconsole" class="basic.updateconsole">
+			<result>/html/basic/updateconsole.jsp</result>
+			<result name="ok" type="redirect">/basic/manageconsole.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delconsole" class="basic.delconsole">
+			<result type="redirect">/basic/manageconsole.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="recoverconsole" class="basic.recoverconsole">
+			<result type="redirect">/basic/manageconsole.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 流程任务管理 -->
+		<action name="addmultiprocessjob" class="basic.addmultiprocessjob">
+			<result>/html/basic/addmultiprocessjob.jsp</result>
+			<result name="ok">/html/basic/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addprocessjob" class="basic.addprocessjob">
+			<result>/html/basic/addprocessjob.jsp</result>
+			<result name="ok">/html/basic/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="canceljob" class="basic.canceljob">
+			<result type="redirect">${actionContext}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="closejob" class="basic.closejob">
+			<result type="redirect">${actionContext}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getnextapprover" class="basic.getnextapprover">
+			<result>/html/basic/getnextapprover.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewjobdetail" class="basic.viewjobdetail">
+			<result>/html/basic/viewjobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="vieweventdetail" class="basic.vieweventdetail">
+			<result type="redirect">${actionContext}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addtransferprocessjob" class="basic.addtransferprocessjob">
+			<result>/html/basic/addtransferprocessjob.jsp</result>
+			<result name="ok">/html/basic/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 审批任务管理 -->
+		<action name="manageaprvjob" class="basic.manageaprvjob">
+			<result>/html/basic/manageaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvejob" class="basic.approvejob">
+			<result>/html/basic/approvejob.jsp</result>
+			<result type="redirect" name="ok">/basic/manageaprvjob.action?type=${type}&amp;file_src=${file_src}</result>
+			<result name="exception">/html/error.jsp</result> 
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewaprvjob" class="basic.viewaprvjob">
+			<result>/html/basic/viewaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 配置密级 -->
+		<action name="configseclv" class="basic.configseclv">
+			<result>/html/basic/configseclv.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getfuzzyuser" class="basic.getfuzzyuser">
+			<result>/html/basic/getfuzzyuser.jsp</result>
+			<result name="CR">/html/basic/getfuzzycreateuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getproxyfuzzyuser" class="basic.getproxyfuzzyuser">
+			<result>/html/basic/getfuzzyuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 智能回收柜管理 -->
+		<action name="managerecyclebox" class="basic.managerecyclebox">
+			<result>/html/basic/managerecyclebox.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addrecyclebox" class="basic.addrecyclebox">
+			<result>/html/basic/addrecyclebox.jsp</result>
+			<result name="ok" type="redirect">/basic/managerecyclebox.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delrecyclebox" class="basic.delrecyclebox">
+			<result type="redirect">/basic/managerecyclebox.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updaterecyclebox" class="basic.updaterecyclebox">
+			<result>/html/basic/updaterecyclebox.jsp</result>
+			<result name="ok" type="redirect">/basic/managerecyclebox.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 提交处理申请 -->
+		<action name="handlepaperjob" class="basic.handlepaperjob">
+			<result>/html/basic/handlepaperjob.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewselfpaperledger.action</result>
+			<result name="ok1" type="redirect">/ledger/viewdeptpaperledger.action</result>
+			<result name="ok2">/html/basic/comparedays.jsp</result>
+			<result name="secError" type="redirect">/ledger/viewselfpaperledger.action?secError=Y</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="handlecdjob" class="basic.handlecdjob">
+			<result>/html/basic/handlecdjob.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewselfcdledger.action</result>
+			<result name="ok1" type="redirect">/ledger/viewdeptcdledger.action</result>
+			<result name="ok2">/html/basic/comparedays.jsp</result>
+			<result name="secError" type="redirect">/ledger/viewselfcdledger.action?secError=Y</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 审批任务管理 -->
+		<action name="managehandlejob" class="basic.managehandlejob">
+			<result>/html/basic/managehandlejob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="handlejob" class="basic.handlejob">
+			<result>/html/basic/handlejob.jsp</result>
+			<result name="handlecd">/html/basic/handlejobforcd.jsp</result>
+			<result name="handledevice">/html/basic/handlejobfordevice.jsp</result>
+			<result type="redirect" name="ok">/basic/managehandlejob.action?type=${type}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewhandlejob" class="basic.viewhandlejob">
+			<result>/html/basic/viewhandlejob.jsp</result>
+			<result name="device">/html/device/viewhandledevicejob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewhandlejobdetail" class="basic.viewhandlejobdetail">
+			<result>/html/basic/viewhandlejobdetail.jsp</result>
+			<result name="handlecd">/html/basic/viewhandlejobdetailforcd.jsp</result>
+			<result name="handledevice">/html/basic/viewhandlejobdetailfordevice.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 打印管理设置 -->
+		<action name="configprint" class="basic.configprint">
+			<result>/html/basic/configprint.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 智能交换柜管理 -->
+		<action name="manageexchangebox" class="basic.manageexchangebox">
+			<result>/html/basic/manageexchangebox.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addexchangebox" class="basic.addexchangebox">
+			<result>/html/basic/addexchangebox.jsp</result>
+			<result name="ok" type="redirect">/basic/manageexchangebox.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delexchangebox" class="basic.delexchangebox">
+			<result type="redirect">/basic/manageexchangebox.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateexchangebox" class="basic.updateexchangebox">
+			<result>/html/basic/updateexchangebox.jsp</result>
+			<result name="ok" type="redirect">/basic/manageexchangebox.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="viewuserproxy" class="basic.viewuserproxy">
+			<result>/html/basic/viewuserproxy.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="addproxy" class="basic.addproxy">
+			<result>/html/basic/adduserproxy.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="adduserproxy" class="basic.adduserproxy">
+			<result>/html/basic/viewuserproxy.jsp</result>
+			<result type="redirect" name="ok">/basic/viewuserproxy.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="deleteuserproxy" class="basic.deleteuserproxy">
+			<result>/html/basic/viewuserproxy.jsp</result>
+			<result type="redirect" name="ok">/basic/viewuserproxy.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="delprinteruser" class="basic.delprinteruser">
+			<result>/html/basic/configprinter.jsp</result>
+			<result name="configprinter" type="redirect">/basic/configprinter.action?printer_code=${printer_code}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="viewuseraprvproxy" class="basic.viewuseraprvproxy">
+			<result>/html/basic/viewuseraprvproxy.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="addaprvproxy" class="basic.addaprvproxy">
+			<result>/html/basic/adduseraprvproxy.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="adduseraprvproxy" class="basic.adduseraprvproxy">
+			<result>/html/basic/viewuseraprvproxy.jsp</result>
+			<result type="redirect" name="ok">/basic/viewuseraprvproxy.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="deleteuseraprvproxy" class="basic.deleteuseraprvproxy">
+			<result>/html/basic/viewuseraprvproxy.jsp</result>
+			<result type="redirect" name="ok">/basic/viewuseraprvproxy.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 地点管理 -->
+		<action name="viewplace" class="basic.viewplace">
+			<result>/html/basic/viewplace.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addplace" class="basic.addplace">
+			<result>/html/basic/addplace.jsp</result>
+			<result type="redirect" name="ok">/basic/viewplace.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateplace" class="basic.updateplace">
+			<result>/html/basic/updateplace.jsp</result>
+			<result name="ok" type="redirect">/basic/viewplace.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delplace" class="basic.delplace">
+			<result type="redirect">/basic/viewplace.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 接收归档管理 -->
+		<action name="viewapplycdfile" class="basic.viewapplycdfile">
+			<result>/html/basic/viewapplycdfile.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewapplypaperfile" class="basic.viewapplypaperfile">
+			<result>/html/basic/viewapplypaperfile.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getapplyfile" class="basic.getapplyfile">
+			<result name="CD" type="redirect">/basic/viewapplycdfile.action</result>
+			<result name="PAPER" type="redirect">/basic/viewapplypaperfile.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="filetouse" class="basic.filetouse">
+			<result name="CD" type="redirect">/ledger/viewselfcdledger.action</result>
+			<result name="PAPER" type="redirect">/ledger/viewselfpaperledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewfilecd" class="basic.viewfilecd">
+			<result>/html/basic/viewfilecd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewfilepaper" class="basic.viewfilepaper">
+			<result>/html/basic/viewfilepaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportfilepaper" class="basic.exportfilepaper">
+			<result>/html/basic/viewfilepaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportfilecd" class="basic.exportfilecd">
+			<result>/html/basic/viewfilecd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 条码设置 -->
+		<action name="managebarcode" class="basic.managebarcode">
+			<result>/html/basic/managebarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addbarcode" class="basic.addbarcode">
+			<result>/html/basic/addbarcode.jsp</result>
+			<result name="ok" type="redirect">/basic/managebarcode.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delbarcode" class="basic.delbarcode">
+			<result name="ok" type="redirect">/basic/managebarcode.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatebarcode" class="basic.updatebarcode">
+			<result>/html/basic/updatebarcode.jsp</result>
+			<result name="ok" type="redirect">/basic/managebarcode.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 纸张统计-->
+		<action name="viewpaperstatic" class="basic.viewpaperstatic">
+			<result>/html/basic/viewpaperstatic.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpaperstaticbyseclv" class="basic.viewpaperstaticbyseclv">
+			<result>/html/basic/viewpaperstaticbyseclv.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpaperstaticbycolor" class="basic.viewpaperstaticbycolor">
+			<result>/html/basic/viewpaperstaticbycolor.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpaperstaticbydouble" class="basic.viewpaperstaticbydouble">
+			<result>/html/basic/viewpaperstaticbydouble.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpaperstaticbysize" class="basic.viewpaperstaticbysize">
+			<result>/html/basic/viewpaperstaticbysize.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpaperstaticbyall" class="basic.viewpaperstaticbyall">
+			<result>/html/basic/viewpaperstaticbyall.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 版本管理 -->
+		<action name="uploadnewversion" class="basic.uploadnewversion">
+			<result>/html/basic/uploadnewversion.jsp</result>
+			<result name="CLIENT" type="redirect">/basic/viewversionfile.action</result>
+			<result name="CONSOLE" type="redirect">/basic/viewconsoleversionfile.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deluploadedfile" class="basic.deluploadedfile">
+			<result>/html/burn/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewversionfile" class="basic.viewversionfile">
+			<result>/html/basic/viewversionfile.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewconsoleversionfile" class="basic.viewconsoleversionfile">
+			<result>/html/basic/viewconsoleversionfile.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageconsoleversion" class="basic.manageconsole">
+			<result>/html/basic/manageconsoleversion.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateconsoleversion" class="basic.updateconsoleversion">
+			<result>/html/basic/updateconsoleversion.jsp</result>
+			<result name="ok" type="redirect">/basic/manageconsoleversion.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 空间使用告警设置 -->
+		<action name="spaceusedalarm" class="basic.spaceusedalarm">
+			<result>/html/basic/spaceusedalarm.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 光盘统计-->
+		<action name="viewcdstatic" class="basic.viewcdstatic">
+			<result>/html/basic/viewcdstatic.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 安装包管理 -->
+		<action name="uploadsetupfiles" class="basic.uploadsetupfiles">
+			<result>/html/basic/uploadsetupfiles.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 交接确认模块配置 -->
+		<action name="configconfirm" class="basic.configconfirm">
+			<result>/html/basic/configconfirm.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 常用文档下载 -->
+		<action name="downloadfile" class="basic.downloadfile">
+			<result>/html/basic/downloadfile.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看通用信息-->
+		<action name="viewinfo" class="basic.viewinfo">
+			<result>/html/basic/viewinfo.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deluploadedpermissionfile" class="basic.deluploadedpermissionfile">
+			<result>/html/burn/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 强制关闭错误流程任务-->
+		<action name="viewclosejob" class="basic.viewclosejob">
+			<result>/html/basic/viewclosejob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewclosejobdetail" class="basic.viewclosejobdetail">
+			<result>/html/basic/viewclosejobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="closewrongjob" class="basic.closewrongjob">
+			<result type="redirect">/basic/viewclosejob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 设置是否开启自审批 -->
+		<action name="configselfapprove" class="basic.configselfapprove">
+			<result>/html/basic/configselfapprove.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 为用户角色配置部门 -->
+		<action name="configdeptforuser" class="basic.configdeptforuser">
+			<result>/html/user/configdeptforuser.jsp</result>
+			<result name="ok">/html/user/configdeptforuseronly.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configdeptbyrole" class="basic.configdeptbyrole">
+			<result>/html/basic/result.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 关键字管理 -->
+		<action name="managekeyword" class="basic.managekeyword">
+			<result>/html/basic/managekeyword.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addkeyword" class="basic.addkeyword">
+			<result>/html/basic/addkeyword.jsp</result>
+			<result name="ok" type="redirect">/basic/managekeyword.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delkeyword" class="basic.delkeyword">
+			<result type="redirect">/basic/managekeyword.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatekeyword" class="basic.updatekeyword">
+			<result>/html/basic/updatekeyword.jsp</result>
+			<result name="ok" type="redirect">/basic/managekeyword.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> 
+		<!-- 添加打印机时，检测控制台个数 -->
+		<action name="checkprinternum" class="basic.checkprinternum">
+			<result>/html/basic/checkprinternum.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 消息提醒设置 -->
+		<action name="configremindmsg" class="basic.configremindmsg">
+			<result>/html/basic/configremindmsg.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 文件拒绝归档 -->
+		<action name="rejectfilepaper" class="basic.rejectfilepaper">
+			<result>/html/basic/rejectfile.jsp</result>
+			<result name="ok" type="redirect">/basic/viewapplypaperfile.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 光盘拒绝归档 -->
+		<action name="rejectfilecd" class="basic.rejectfilecd">
+			<result>/html/basic/rejectfile.jsp</result>
+			<result name="ok" type="redirect">/basic/viewapplycdfile.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 配置载体拒收后状态 -->
+		<action name="configsendrejectstatus" class="basic.configsendrejectstatus">
+			<result>/html/basic/configsendrejectstatus.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 上传常用文档 -->
+		<action name="uploadfile" class="basic.uploadfile">
+			<result>/html/basic/uploadfile.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 默认密码设置-->
+		<action name="defaultpassword" class="basic.defaultpassword">
+			<result>/html/user/defaultpassword.jsp</result>
+			<result name="fail">/html/user/defaultpassword.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+        <!-- 处理文件送销 -->
+		<action name="handlepapersenddestroy" class="basic.handlepapersenddestroy">
+			<result>/html/basic/handlepapersenddestroy.jsp</result>
+			<result name="secError" type="redirect">/ledger/viewrecycledpaper.action?secError=Y</result>
+			<result name="ok" type="redirect">/ledger/viewrecycledpaper.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 处理光盘送销 -->
+		<action name="handlecdsenddestroy" class="basic.handlecdsenddestroy">
+			<result>/html/basic/handlecdsenddestroy.jsp</result>
+			<result name="secError" type="redirect">/ledger/viewrecycledcd.action?secError=Y</result>
+			<result name="ok" type="redirect">/ledger/viewrecycledcd.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 设置三员登录IP-->
+		<action name="threeadminloginip" class="basic.threeadminloginip">
+			<result>/html/basic/threeadminloginip.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 系统管理员设置重置密码 -->
+		<action name="sysresetuserpwd" class="basic.sysresetuserpwd">
+			<result>/html/basic/sysresetuserpwd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 审计管理员设置重置密码 -->
+		<action name="audresetuserpwd" class="basic.audresetuserpwd">
+			<result>/html/basic/audresetuserpwd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 配置系统全局参数，当前只有标记失败最长时间 -->
+		<action name="configsystem" class="basic.configsystem">
+			<result>/html/basic/configsystem.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 处理"全部提交"申请 -->
+		<action name="handlesubmitall" class="basic.handlesubmitall">
+			<result name="paper_success">/html/basic/handlepaperjob.jsp</result>
+			<result name="paper_ok" type="redirect">/ledger/viewselfpaperledger.action</result>
+			<result name="paper_ok1" type="redirect">/ledger/viewdeptpaperledger.action</result>
+			<result name="paper_secError" type="redirect">/ledger/viewselfpaperledger.action?secError=Y</result>
+			<result name="cd_success">/html/basic/handlecdjob.jsp</result>
+			<result name="cd_ok" type="redirect">/ledger/viewselfcdledger.action</result>
+			<result name="cd_ok1" type="redirect">/ledger/viewdeptcdledger.action</result>
+			<result name="cd_secError" type="redirect">/ledger/viewselfcdledger.action?secError=Y</result>
+			<result type="redirect" name="ok_null">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 处理"全部提交"申请 -->
+		<action name="applyall" class="basic.applyall">
+			<result name="cd_success" type="redirect">/basic/viewapplycdfile.action</result>
+			<result name="paper_success" type="redirect">/basic/viewapplypaperfile.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="adduserapproveproxy" class="basic.adduserapproveproxy">
+			<result>/html/basic/adduserapproveproxy.jsp</result>
+			<result type="redirect" name="ok">/basic/viewuserproxy.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configexceltemplet" class="basic.configexceltemplet">
+			<result>/html/basic/configexceltemplet.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateexceltemplet" class="basic.updateexceltemplet">
+			<result type="redirect" name="ok">/basic/configexceltemplet.action</result>
+			<result name="paper">/html/basic/exportpaperconfig.jsp</result>
+			<result name="cd">/html/basic/exportcdconfig.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configuserforrole" class="basic.configuserforrole">
+			<result type="redirect" name="ok">/user/managesecrole.action</result>
+			<result>/html/basic/configuserforrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 设置是否开启回收送销 -->
+		<action name="configrecoverdestroy" class="basic.configrecoverdestroy">
+			<result>/html/basic/configrecoverdestroy.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 兼职审批-->
+		<action name="configparttimedept" class="basic.configparttimedept">
+			<result>/html/basic/result.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 设置是否开启消息提醒功能 -->
+		<action name="configremind" class="basic.configremind">
+			<result>/html/basic/configremind.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 可输出交接单密级配置 -->
+		<action name="configreceiptvsseclv" class="basic.configreceiptvsseclv">
+			<result>/html/basic/configreceiptvsseclv.jsp</result>
+			<result name="update" type="redirect">/basic/configreceiptvsseclv.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 控制台退出密码设置 -->
+		<action name="configconsoleexitpassword" class="basic.configconsoleexitpassword">
+			<result>/html/basic/configconsoleexitpassword.jsp</result>
+			<result name="update" type="redirect">/basic/configconsoleexitpassword.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 刻录管理设置 -->
+		<action name="configburn" class="basic.configburn">
+			<result>/html/basic/configburn.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configdepttopersonmode" class="basic.configdepttopersonmode">
+			<result>/html/basic/configdepttopersonmode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

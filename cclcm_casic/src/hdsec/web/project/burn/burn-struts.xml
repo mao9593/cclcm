@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="burn" namespace="/burn" extends="struts-default">
+		<!-- 刻录作业管理 -->
+		<action name="addburnevent" class="burn.addburnevent">
+			<result>/html/burn/addburnevent.jsp</result>
+			<result name="ok" type="redirect">/burn/manageburnevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addnasburnevent" class="burn.addnasburnevent">
+			<result>/html/burn/addnasburnevent.jsp</result>
+			<result name="ok" type="redirect">/burn/managenasburnevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deluploadedfile" class="burn.deluploadedfile">
+			<result>/html/burn/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageburnevent" class="burn.manageburnevent">
+			<result>/html/burn/manageburnevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managenasburnevent" class="burn.managenasburnevent">
+			<result>/html/burn/managenasburnevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="submitburnevent" class="burn.submitburnevent">
+			<result>/html/burn/submitburnevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewburneventdetail" class="burn.viewburneventdetail">
+			<result>/html/burn/viewburneventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewnasburneventdetail" class="burn.viewnasburneventdetail">
+			<result>/html/burn/viewnasburneventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateburnevent" class="burn.updateburnevent">
+			<result>/html/burn/updateburnevent.jsp</result>
+			<result type="redirect" name="ok">/burn/manageburnevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatenasburnevent" class="burn.updatenasburnevent">
+			<result>/html/burn/updatenasburnevent.jsp</result>
+			<result type="redirect" name="ok">/burn/managenasburnevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delburnevent" class="burn.delburnevent">
+			<result type="redirect">/burn/manageburnevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="downloadfile" class="burn.downloadfile">
+			<result>/html/burn/blank.jsp</result>
+			<result name = "ledger">/html/ledger/blank.jsp</result>
+			<result name="blank">/html/burn/filenotexsit.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 刻录任务管理 -->
+		<action name="manageburnjob" class="burn.manageburnjob">
+			<result>/html/basic/managejob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 刻录审批 -->
+		<action name="manageburnaprvjob" class="burn.manageburnaprvjob">
+			<result>/html/burn/manageburnaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveburnjob" class="burn.approveburnjob">
+			<result>/html/burn/approveburnjob.jsp</result>
+			<result type="redirect" name="ok">/burn/manageburnaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewburnaprvjob" class="burn.viewburnaprvjob">
+			<result>/html/burn/viewburnaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="showrisklistburn" class="burn.showrisklistburn">
+			<result>/html/burn/showrisklistburn.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

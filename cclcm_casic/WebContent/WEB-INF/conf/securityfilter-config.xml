@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE securityfilter-config PUBLIC
+    "-//SecurityFilter.org//DTD Security Filter Configuration 2.0//EN"
+    "http://www.securityfilter.org/dtd/securityfilter-config_2_0.dtd">
+
+<securityfilter-config>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/login.action</form-login-page>
+            <form-error-page>/errorLogon.jsp</form-error-page>
+          <form-default-page>/main.jsp</form-default-page>
+        </form-login-config>
+    </login-config>
+	<!-- 此处配置登录认证的类 renmingfei -->
+    <realm className="hdsec.web.project.user.action.UnifySecurityRealm"></realm>
+
+</securityfilter-config>

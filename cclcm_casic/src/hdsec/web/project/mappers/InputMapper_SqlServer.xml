@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.input.mapper.InputMapper">
+	<!-- <select id="getMsgUsageList" resultType="sysmsgusage">
+		<![CDATA[
+			select * from sec_msgusage; 
+		]]>
+	</select> -->
+    <insert id="addMsgUsageList" parameterType="string">
+		<![CDATA[
+			insert into sec_msgusage (message_usage) values(#{message_usage})	
+		]]>
+	</insert>
+	<delete id="deleteMsgUsageList" parameterType="int">
+		<![CDATA[
+			delete from sec_msgusage where id=#{id}
+		]]>
+	</delete>
+	<!-- <select id="getMsgUsageListByMessage" parameterType="map" resultType="sysmsgusage">
+		<![CDATA[
+			select sm.* from sec_msgusage sm
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		<if test="message != null and message != ''">
+				and sm.message_usage in 
+				<foreach item="item" index="index" collection="message" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>	
+		</trim>
+	</select> -->
+	 <insert id="addInputEvent" parameterType="inputevent">
+		<![CDATA[
+			insert into event_input(
+			event_code,
+			user_iidd,
+			dept_id,
+			job_code,
+			seclv_code,
+			file_list,
+			file_seclevel,
+			message_usage,
+			personal,
+			address,
+			file_num,
+			summ,
+			med_type,
+			apply_time,
+			operate_time,
+			cd_num,
+			internet_num,
+			input_state,
+			usage_code,
+			project_code
+			)values(
+			#{event_code},
+			#{user_iidd},
+			#{dept_id},
+			#{job_code},
+			#{seclv_code},
+			#{file_list},
+			#{file_seclevel},
+			#{message_usage},
+			#{personal},
+			#{address},
+			#{file_num},
+			#{summ},
+			#{med_type},
+			#{apply_time},
+			#{operate_time},
+			#{cd_num},
+			#{internet_num},
+			#{input_state},
+			#{usage_code},
+			#{project_code}
+			)
+		]]>
+	</insert>
+	<select id="getInputEventList" parameterType="map" resultType="inputevent">
+		<![CDATA[
+			select ei.*,jp.*,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_input ei
+				left join job_process jp on(ei.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ei.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ei.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ei.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ei.usage_code=syu.usage_code)
+				left join sys_project sp on (ei.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ei.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ei.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ei.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ei.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="input_state != null" >
+   				<![CDATA[
+			 		and ei.input_state = #{input_state}
+				]]>
+   			</if>
+   			<if test="job_status != null and job_status != ''" >
+	  			<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+		   	</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getJobCodeByEventCode" resultType="string" parameterType="string">
+		<![CDATA[
+			select job_code from event_input where event_code= #{event_code} 
+		]]>
+	</select>
+	<select id="getEventCodeByJobCode" resultType="string" parameterType="string">
+		<![CDATA[
+			select event_code from event_input where job_code=#{job_code}
+		]]>	
+	</select>
+	<select id="getInputEventByEventCode" resultType="inputevent" parameterType="string">
+		<![CDATA[
+			select * from event_input where event_code= #{event_code} 
+		]]>
+	</select>
+	<select id="getInputEventByCode" resultType="inputevent" parameterType="string">
+		<![CDATA[
+			select ei.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_input ei
+				left join job_process jp on(ei.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ei.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ei.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ei.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ei.usage_code=syu.usage_code)
+				left join sys_project sp on (ei.project_code=sp.project_code)
+			where event_code=#{event_code} 
+		]]>
+	</select>
+	<delete id="cancelInputEventByCode" parameterType="string">
+		<![CDATA[
+			delete from event_input where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getInputEventListByJobCode" resultType="inputevent" parameterType="string">
+		<![CDATA[
+			select ei.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_input ei
+				left join job_process jp on(ei.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ei.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ei.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ei.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ei.usage_code=syu.usage_code)
+				left join sys_project sp on (ei.project_code=sp.project_code)
+			where ei.job_code=#{job_code} 
+		]]>
+	</select>
+	<update id="updateInputEventState" parameterType="map">
+		<![CDATA[
+			update event_input set
+				input_state=#{input_state},
+				operate_time=#{operate_time},
+				input_user_iidd=#{input_user_iidd},
+				input_user_name=#{input_user_name},
+				cd_num=#{cd_num},
+				internet_num=#{internet_num}
+				file_num=#{file_num},
+				file_list=#{file_list},
+				file_seclevel=#{file_seclevel},
+			where event_code=#{event_code}	
+		]]>	
+	</update>
+	
+	<select id="getEfileInputEventList" parameterType="map" resultType="inputevent">
+		<![CDATA[
+			select ei.*,jp.*,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_input ei
+				left join job_process jp on(ei.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ei.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ei.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ei.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ei.usage_code=syu.usage_code)
+				left join sys_project sp on (ei.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ei.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and su.user_name = #{user_name}
+				]]>
+   			</if>
+   			<if test="dept_name != null and dept_name != ''" >
+   				<![CDATA[
+			 		and sd.dept_name = #{dept_name}
+				]]>
+   			</if>
+   			<if test="dept_id != null and dept_id != ''" >
+   				<![CDATA[
+			 		and ei.dept_id = #{dept_id}
+				]]>
+   			</if>
+   			<if test="file_title != null and file_title != ''" >
+   				<![CDATA[
+			 		and UPPER(ei.file_list) LIKE UPPER('%'+#{file_title}+'%')
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ei.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="dept_ids != null and dept_ids != ''">
+				and sd.dept_id in
+				<foreach item="item" index="index" collection="dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+   			<if test="usage_code != null and usage_code != ''" >
+   				<![CDATA[
+			 		and ei.usage_code = #{usage_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ei.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ei.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="input_state != null" >
+   				<![CDATA[
+			 		and ei.input_state = #{input_state}
+				]]>
+   			</if>
+   			<if test="job_status != null and job_status != ''" >
+	  			<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+		   	</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getEfileInputEventListSize" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1)
+			 from event_input ei
+				left join job_process jp on(ei.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ei.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ei.dept_id=sd.dept_id)			
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ei.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and su.user_name = #{user_name}
+				]]>
+   			</if>
+   			<if test="dept_name != null and dept_name != ''" >
+   				<![CDATA[
+			 		and sd.dept_name = #{dept_name}
+				]]>
+   			</if>
+   			<if test="dept_id != null and dept_id != ''" >
+   				<![CDATA[
+			 		and ei.dept_id = #{dept_id}
+				]]>
+   			</if>
+   			<if test="file_title != null and file_title != ''" >
+   				<![CDATA[
+			 		and UPPER(ei.file_list) LIKE UPPER('%'+#{file_title}+'%')
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ei.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="dept_ids != null and dept_ids != ''">
+				and sd.dept_id in
+				<foreach item="item" index="index" collection="dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+   			<if test="usage_code != null and usage_code != ''" >
+   				<![CDATA[
+			 		and ei.usage_code = #{usage_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ei.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ei.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="input_state != null" >
+   				<![CDATA[
+			 		and ei.input_state = #{input_state}
+				]]>
+   			</if>
+   			<if test="job_status != null and job_status != ''" >
+	  			<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+		   	</if>
+   		</trim>
+	</select>
+</mapper> 

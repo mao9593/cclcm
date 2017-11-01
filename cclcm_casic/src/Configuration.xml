@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 指定别名包，则该包下的类自动拥有别名，别名为类名全部字母小写 -->
+	<typeAliases>
+		<package name="hdsec.web.project.user.model"/>
+		<package name="hdsec.web.project.log.model"/>
+		<package name="hdsec.web.project.print.model"/>
+		<package name="hdsec.web.project.activiti.model"/>
+		<package name="hdsec.web.project.basic.model"/>
+		<package name="hdsec.web.project.burn.model"/>
+		<package name="hdsec.web.project.common"/>
+		<package name="hdsec.web.project.ledger.model"/>
+		<package name="hdsec.web.project.device.model"/>
+		<package name="hdsec.web.project.client.model"/>
+		<package name="hdsec.web.project.copy.model"/>
+		<package name="hdsec.web.project.enter.model"/>
+		<package name="hdsec.web.project.transfer.model"/>
+		<package name="hdsec.web.project.borrow.model"/>
+		<package name="hdsec.web.project.storage.model"/>
+		<package name="hdsec.web.project.change.model"/>
+		<package name="hdsec.web.project.user.model"/>
+		<package name="hdsec.web.project.log.model"/>
+		
+		<package name="hdsec.web.project.securityuser.model"/>
+		<package name="hdsec.web.project.education.model"/>
+		<package name="hdsec.web.project.secplace.model"/>
+		<package name="hdsec.web.project.plan.model"/>
+		<package name="hdsec.web.project.secactivity.model"/>
+		<package name="hdsec.web.project.computer.model"/> 
+		<package name="hdsec.web.project.publicity.model"/> 
+		<package name="hdsec.web.project.secmanage.model"/>
+		<package name="hdsec.web.project.securitydept.model"/>  
+		<package name="hdsec.web.project.infosystem.model"/> 
+		<package name="hdsec.web.project.passport.model"/> 
+		<package name="hdsec.web.project.carriermanage.model"/>
+		
+		<package name="hdsec.web.project.webservice.model"/>
+		<!-- 
+		<package name="hdsec.web.project.archives.model"/>
+		<package name="hdsec.web.project.archiveType.model"/>
+		<package name="hdsec.web.project.file.model"/>
+		<package name="hdsec.web.project.form.model"/>
+		<package name="hdsec.web.project.program.model"/>
+		 -->
+		<package name="hdsec.web.project.arch.model"/>
+		<package name="hdsec.web.project.disc.model"/>
+		<package name="hdsec.web.project.asset.model"/>
+		<package name="hdsec.web.project.input.model"/>
+	</typeAliases>
+	<!-- 
+	<mappers>
+		<mapper resource="hdsec/web/project/mappers/UserMapper.xml"/>
+		<mapper resource="hdsec/web/project/mappers/LogMapper.xml"/>
+		<mapper resource="hdsec/web/project/mappers/ActivitiMapper.xml"/>
+	</mappers>
+	 -->
+	 <mappers>
+		<mapper resource="hdsec/web/project/mappers/UserMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/LogMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/ActivitiMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/PrintMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/BurnMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/BasicMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/LedgerMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/DeviceMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/ClientMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/CopyMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/EnterMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/TransferMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/BorrowMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/StorageMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/ChangeMapper_SqlServer.xml"/>
+		<!-- 
+		<mapper resource="hdsec/web/project/mappers/ArchivesMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/ArchiveTypeMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/FormMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/FileMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/ProgramMapper_SqlServer.xml"/>
+		 -->
+		<mapper resource="hdsec/web/project/mappers/ArchMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/DiscMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/AssetMapper_SqlServer.xml"/>
+		
+		<mapper resource="hdsec/web/project/mappers/ComputerMapper_SqlServer.xml"/> 
+		<mapper resource="hdsec/web/project/mappers/PublicityMapper_SqlServer.xml"/> 
+		<mapper resource="hdsec/web/project/mappers/SecManageMapper_SqlServer.xml"/>
+        <mapper resource="hdsec/web/project/mappers/SecuritydeptMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/InfosystemMapper_SqlServer.xml"/> 
+		<mapper resource="hdsec/web/project/mappers/PassportMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/SecurityUserMapper_SqlServer.xml"/> 
+		<mapper resource="hdsec/web/project/mappers/SecplaceMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/SecActiMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/EducationMapper_SqlServer.xml"/>
+		<mapper resource="hdsec/web/project/mappers/InputMapper_SqlServer.xml"/>
+		<!-- <mapper resource="hdsec/web/project/mappers/PlanMapper_SqlServer.xml"/>   -->
+	</mappers>
+</configuration>

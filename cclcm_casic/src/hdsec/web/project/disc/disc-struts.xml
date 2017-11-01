@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="disc" namespace="/disc" extends="struts-default">		
+		<!-- 录入空白盘 -->
+		<action name="addspacecdjob" class="disc.addspacecdjob">
+			<result>/html/disc/addspacecdjob.jsp</result>
+			<result name="ok" type="redirect">/disc/managespacecdenterlistjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 录入空白盘记录 -->
+		<action name="managespacecdenterlistjob" class="disc.managespacecdenterlistjob">
+			<result>/html/disc/managespacecdenterlistjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewborrowspacecd" class="disc.viewborrowspacecd">
+			<result>/html/disc/viewborrowspacecd.jsp</result>
+			<result name="ok" type="redirect">/disc/viewdeptspacecdledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managespacecdlistjob" class="disc.managespacecdlistjob">
+			<result>/html/disc/managespacecdlistjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>		
+		<!-- 部门空白盘管理 -->
+		<action name="viewdeptspacecdledger" class="disc.viewdeptspacecdledger">
+			<result>/html/disc/viewdeptspacecdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="spacecdchangeuse" class="disc.spacecdchangeuse">
+			<result>/html/disc/spacecdchangeuse.jsp</result>
+			<result name="ok" type="redirect">/disc/viewdeptspacecdledger.action</result>
+			<result name="yes" type="redirect">/disc/viewdeptchangespacecdledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 部门中转盘管理 -->
+		<action name="viewdeptchangespacecdledger" class="disc.viewdeptchangespacecdledger">
+			<result>/html/disc/viewdeptchangespacecdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewspacecdinfo" class="disc.viewspacecdinfo">
+			<result>/html/disc/viewspacecdinfo.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addapplyspacecdjob" class="disc.addapplyspacecdjob">
+			<result>/html/disc/addapplyspacecdjob.jsp</result>
+			<result name="ok" type="redirect">/disc/submitspacecdevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageborrowspacecdlist" class="disc.manageborrowspacecdlist">
+			<result>/html/disc/manageborrowspacecdlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewspacecdledgerinfo" class="disc.viewspacecdledgerinfo">
+			<result>/html/disc/viewspacecdledgerinfo.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="cancelhandlespacecd" class="disc.cancelhandlespacecd">
+			<result type="redirect">/disc/spacecdapply.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managespacecdaprvjob" class="disc.managespacecdaprvjob">
+			<result>/html/disc/managespacecdaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 载体空白盘任务审批处理-->
+		<action name="approvespacecdjob" class="disc.approvespacecdjob">
+			<result>/html/disc/approvespacecdjob.jsp</result>
+			<result name="ok" type="redirect">/disc/managespacecdaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewspacecdhandlejob" class="disc.viewspacecdhandlejob">
+			<result>/html/disc/viewspacecdhandlejob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewselfspacecdledger" class="disc.viewselfspacecdledger">
+			<result>/html/disc/viewselfspacecdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="spacecdchangeselfentitycd" class="disc.spacecdchangeselfentitycd">
+			<result>/html/disc/spacecdchangeselfentitycd.jsp</result>
+			<result name="ok" type="redirect">/disc/viewselfspacecdledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewgivespacecdledger" class="disc.viewgivespacecdledger">
+			<result>/html/disc/viewgivespacecdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="spacecdchangedeptentitycd" class="disc.spacecdchangedeptentitycd">
+			<result type="redirect">/disc/viewdeptchangespacecdledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="spacecdreturn" class="disc.spacecdreturn">
+			<result>/html/disc/viewdeptspacecdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewspacecdhandlejobdetail" class="disc.viewspacecdhandlejobdetail">
+			<result>/html/disc/viewspacecdhandlejobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 提交空白盘领用审批 -->
+		<action name="addspacecdprocessjob" class="disc.addspacecdprocessjob">
+			<result>/html/disc/addspacecdprocessjob.jsp</result>
+			<result name="ok" >/html/print/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="submitspacecdevent" class="disc.submitspacecdevent">
+			<result>/html/disc/viewborrowspacecd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="viewspacecdstock" class="disc.viewspacecdstock">
+			<result>/html/disc/viewspacecdstock.jsp</result>
+			<result name="ok" type="redirect">/disc/viewspacecdstock.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewwaitingjoblist" class="disc.viewwaitingjoblist">
+			<result>/html/disc/viewwaitingjoblist.jsp</result>
+			<result name="ok" type="redirect">/disc/viewdeptspacecdledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managedeptspacecdledger" class="disc.managedeptspacecdledger">
+			<result>/html/disc/managedeptspacecdledger.jsp</result>
+			<result name="ok" type="redirect">/disc/viewwaitingjoblist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="viewspacecdeventdetail" class="disc.viewspacecdeventdetail">
+			<result>/html/disc/viewspacecdeventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- <action name="assignspacecdjob" class="disc.assignspacecdjob">
+		    <result>/html/disc/assignspacecdjob.jsp</result>
+			<result name="ok" type="redirect">/disc/viewdeptspacecdledger.action</result>
+			<result name="yes" type="redirect">/disc/viewdeptchangespacecdledger.action</result> 
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> -->
+		<action name="delspacecdevent" class="disc.delspacecdevent">
+			<result type="redirect">/disc/submitspacecdevent.action</result>
+			<result name="ok" type="redirect"> /disc/addapplyspacecdjob.action?</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delmultispacecdevent" class="disc.delmultispacecdevent">
+			<result type="redirect">/disc/submitspacecdevent.action</result>
+			<result name="ok" type="redirect"> /disc/addapplyspacecdjob.action?</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 空白盘领用申请驳回 -->
+		<!-- <action name="cancelhandlespacecd" class="ledger.cancelhandlespacecd">
+			<result type="redirect">/disc/viewwaitingjoblist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> -->		
+	</package>
+</struts>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="copy" namespace="/copy" extends="struts-default">		
+	
+		<!-- 复印作业管理 -->
+		<action name="viewpersonalpaperledger" class="copy.viewpersonalpaperledger">
+			<result>/html/copy/viewpersonalpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addcopyevent" class="copy.addcopyevent">
+			<result>/html/copy/addcopyevent.jsp</result>
+			<result name="ok" type="redirect">/copy/submitcopyevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managecopyevent" class="copy.managecopyevent">
+			<result>/html/copy/managecopyevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="submitcopyevent" class="copy.submitcopyevent">
+			<result>/html/copy/submitcopyevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatecopyevent" class="copy.updatecopyevent">
+			<result>/html/copy/updatecopyevent.jsp</result>
+			<result type="redirect" name="ok">/copy/submitcopyevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delcopyevent" class="copy.delcopyevent">
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewcopyeventdetail" class="copy.viewcopyeventdetail">
+			<result>/html/copy/viewcopyeventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managecopyeventlist" class="copy.managecopyeventlist">
+			<result>/html/copy/managecopyeventlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateisbarcode" class="copy.updateisbarcode">
+			<result type="redirect">/copy/managecopyeventlist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatecopystatus" class="copy.updatecopystatus">
+			<result>/html/copy/barcodes.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewcopypaperledger" class="copy.viewcopypaperledger">
+			<result>/html/copy/viewcopypaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 配置条码格式 -->
+		<action name="configbarcode" class="copy.configbarcode">
+			<result>/html/copy/configbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 补打条码 -->
+		<action name="reprintbarcode" class="copy.reprintbarcode">
+			<result>/html/copy/barcodes.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 通过个人纸质台帐提交复印审批申请 -->
+		<action name="submitcopyeventbyledger" class="copy.submitcopyeventbyledger">
+			<result>/html/copy/submitcopyeventbyledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 添加复印申请 -->
+		<action name="addcopyprocessjob" class="copy.addcopyprocessjob">
+			<result>/html/copy/addcopyprocessjob.jsp</result>
+			<result name="ok">/html/copy/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>		
+		<!-- 查看复印申请列表 -->
+		<action name="managecopyjob" class="copy.managecopyjob">
+			<result>/html/copy/managecopyjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看复印任务详细 -->
+		<action name="viewcopyjobdetail" class="copy.viewcopyjobdetail">
+			<result>/html/copy/viewcopyjobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 取消复印申请 -->
+		<action name="cancelcopyevent" class="copy.cancelcopyevent">
+			<result>/html/copy/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 审批复印任务 -->
+		<action name="managecopyaprvjob" class="copy.managecopyaprvjob">
+			<result>/html/copy/managecopyaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvecopyjob" class="copy.approvecopyjob">
+			<result>/html/copy/approvecopyjob.jsp</result>
+			<result type="redirect" name="ok">/copy/managecopyaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewcopyaprvjob" class="copy.viewcopyaprvjob">
+			<result>/html/copy/viewcopyaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 外来文件复印申请 -->
+		<action name="addcopyeventbyenter" class="copy.addcopyeventbyenter">
+			<result>/html/copy/addcopyeventbyenter.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addcopyprocessjobbyenter" class="copy.addcopyprocessjobbyenter">
+			<result>/html/copy/addcopyprocessjobbyenter.jsp</result>
+			<result name="ok">/html/copy/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managecopyjobbyenter" class="copy.managecopyjobbyenter">
+			<result>/html/copy/managecopyjobbyenter.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managecopyaprvjobbyenter" class="copy.managecopyaprvjobbyenter">
+			<result>/html/copy/managecopyaprvjobbyenter.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewcopyaprvjobbyenter" class="copy.viewcopyaprvjobbyenter">
+			<result>/html/copy/viewcopyaprvjobbyenter.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managecopyeventlistbyenter" class="copy.managecopyeventlistbyenter">
+			<result>/html/copy/managecopyeventlistbyenter.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewcopypaperledgerbyenter" class="copy.viewcopypaperledgerbyenter">
+			<result>/html/copy/viewcopypaperledgerbyenter.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 取消外部复印申请 -->
+		<action name="cancelcopyeventbyenter" class="copy.cancelcopyeventbyenter">
+			<result>/html/copy/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 合并复印管理 -->
+		<action name="managecopyeventlistbymerge" class="copy.managecopyeventlistbymerge">
+			<result>/html/copy/managecopyeventlistbymerge.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewcopypaperledgerbymerge" class="copy.viewcopypaperledgerbymerge">
+			<result>/html/copy/viewcopypaperledgerbymerge.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

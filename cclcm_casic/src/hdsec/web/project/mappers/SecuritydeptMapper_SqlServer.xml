@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.securitydept.mapper.SecurityDeptMapper">
+	<select id="getSecurityUsers" parameterType="map" resultType="SecurityDept">
+	<![CDATA[
+			select * from  SEC_SECURITYDEPT
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id!= null and id != ''">
+   				<![CDATA[
+			 		and id = #{id}
+				]]>
+			</if>
+			<if test="name != null and name != ''">
+   				<![CDATA[
+			 		and name = #{name}
+				]]>
+			</if>
+			<if test="work != null and work != ''">
+   				<![CDATA[
+			 		and work = #{work}
+				]]>
+			</if>
+			<if test="type != null and type != ''">
+   				<![CDATA[
+			 		and type = #{type}
+				]]>
+			</if>
+			<if test="post != null and post != ''">
+   				<![CDATA[
+			 		and post = #{post}
+				]]>
+			</if>
+			<if test="telephone != null and telephone != ''">
+   				<![CDATA[
+			 		and telephone = #{telephone}
+				]]>
+			</if>
+			<if test="mobile != null and mobile != ''">
+   				<![CDATA[
+			 		and mobile = #{mobile}
+				]]>
+			</if>
+			<if test="reark != null and reark != ''">
+   				<![CDATA[
+			 		and reark = #{reark}
+				]]>
+			</if>
+			<if test="rank != null and rank != ''">
+   				<![CDATA[
+			 		and rank = #{rank}
+				]]>
+			</if>
+		</trim>
+		<![CDATA[
+			 		order by type, rank
+				]]>
+     </select>
+     <insert id="addSecurityUser" parameterType="SecurityDept">
+		<![CDATA[
+			insert into SEC_SECURITYDEPT(name, post, telephone, mobile, address, reark, rank,work,type,email)
+			values(#{name},#{post},#{telephone},#{mobile},#{address},#{reark}, #{rank},#{work},#{type},#{email})
+		]]>
+	</insert>
+	<select id="getAllSecurityUsers" parameterType="map" resultType="SecurityDept">
+	<![CDATA[
+			select * from  SEC_SECURITYDEPT   
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<![CDATA[
+			 	type in(1,2,3,4)
+			]]>
+			<if test="name!= null and name != ''">
+			    and name =#{name} 
+			</if>
+			<if test="mobile!= null and mobile != ''">
+			    and mobile =#{mobile} 
+			</if>
+			<if test="post!= null and post != ''">
+			    and post =#{post} 
+			</if>
+			</trim>
+		<![CDATA[
+			 order by type, rank
+		]]>
+     </select>
+	<update id="updatesecurityUser" parameterType="SecurityDept">
+		<![CDATA[
+			update SEC_SECURITYDEPT 
+				set name=#{name},
+					post=#{post},
+					work=#{work},
+					telephone=#{telephone},
+					mobile=#{mobile},
+					email=#{email},
+					type=#{type},
+					address=#{address},
+					reark=#{reark},
+					rank=#{rank}
+			where id=#{id}		
+		]]>
+	</update>
+	<delete id="delSecurityUser" parameterType="map">
+	    <![CDATA[
+	    	delete from SEC_SECURITYDEPT where id = #{id}
+		]]>
+	</delete>
+	<select id="getFixSecertUsers" parameterType="map" resultType="SecurityDept">
+	<![CDATA[
+			select * from  SEC_SECURITYDEPT   
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<![CDATA[
+			 	type in(5,6,7,8)
+			]]>
+			<if test="name!= null and name != ''">
+			    and name =#{name} 
+			</if>
+			<if test="mobile!= null and mobile != ''">
+			    and mobile =#{mobile} 
+			</if>
+			<if test="post!= null and post != ''">
+			    and post =#{post} 
+			</if>
+			</trim>
+		<![CDATA[
+			 order by type, rank
+		]]>
+     </select>
+</mapper>

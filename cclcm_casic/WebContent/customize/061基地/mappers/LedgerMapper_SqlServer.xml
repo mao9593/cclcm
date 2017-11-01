@@ -1,0 +1,1563 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.ledger.mapper.LedgerMapper">
+	<select id="getAllCDLedgerList" resultType="entitycd"
+		parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+			select eb.conf_code,ed.*,sus.seclv_name,sp.project_name,jp.jobtype_code,jp.job_status,ru.user_name retrieve_user_name,du.user_name destroy_user_name,sr.box_name as retrieve_box_name
+			 from entity_cd ed
+			 left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code)
+			 left join (select project_code,project_name from sys_project) sp on(ed.project_code = sp.project_code)
+			 left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code)
+			 left join (select user_iidd, user_name from sec_user) ru on(ru.user_iidd = ed.retrieve_user_iidd)	
+			 left join (select user_iidd, user_name from sec_user) du on(du.user_iidd = ed.destroy_user_iidd)	
+			 left join (select event_code,conf_code from event_burn) eb on (eb.event_code = ed.event_code)
+			 left join (select box_code, box_name from sys_recyclebox) sr on(sr.box_code = ed.retrieve_box_code)	
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+
+			<if test="user_iidd != null and user_iidd != ''">
+				<![CDATA[
+					ed.duty_user_iidd = #{user_iidd}
+				]]>
+			</if>
+			<if test="is_burn_result">
+				<![CDATA[
+					and ed.cd_state in (0, 8, 9) 
+				]]>
+			</if>
+			<if test="is_retrieved">
+				<![CDATA[
+					and ed.cd_state = 1 
+				]]>
+			</if>
+			<if test="is_retrieve">
+				<![CDATA[
+					and ed.cd_state = 0 and ed.job_code is null
+				]]>
+			</if>
+			<if test="is_transfer">
+				<![CDATA[
+					and ed.cd_state = 0
+				]]>
+			</if>
+			<if test="is_handle">
+				<![CDATA[
+					and ed.cd_state = 0
+				]]>
+			</if>
+			<if test="data_type != null and data_type != ''">
+   				<![CDATA[
+			 		and ed.data_type = #{data_type}
+				]]>
+			</if>
+			<if test="cd_barcode != null and cd_barcode != ''">
+   				<![CDATA[
+			 		and UPPER(ed.cd_barcode) LIKE UPPER('%'+#{cd_barcode}+'%')
+				]]>
+			</if>
+			<if test="send_num != null and send_num != ''">
+   				<![CDATA[
+			 		and UPPER(ed.send_num) LIKE UPPER('%'+#{send_num}+'%')
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != '' and seclv_code != 0 ">
+   				<![CDATA[
+			 		and ed.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="duty_user_name != null and duty_user_name != ''">
+   				<![CDATA[
+			 		and UPPER(ed.duty_user_name) LIKE UPPER('%'+#{duty_user_name}+'%') 
+				]]>
+			</if>
+			<if test="duty_user_iidd != null and duty_user_iidd != ''">
+   				<![CDATA[
+			 		and ed.duty_user_iidd = #{duty_user_iidd}
+				]]>
+			</if>
+			<if test="start_time != null and start_time != ''">
+   				<![CDATA[
+			 		and ed.burn_time >= #{start_time}
+				]]>
+			</if>
+			<if test="end_time != null and end_time != ''">
+   				<![CDATA[
+			 		and ed.burn_time <= #{end_time}
+				]]>
+			</if>
+			<if test="cd_state != null and cd_state != ''">
+   				<![CDATA[
+			 		and ed.cd_state = #{cd_state}
+				]]>
+			</if>
+			<if test="has_job_code">
+				<![CDATA[
+					and ed.job_code is not null and ed.job_code != ''
+				]]>
+			</if>
+			<if test="scope != null and scope != ''">
+   				<![CDATA[
+			 		and ed.scope = #{scope}
+				]]>
+			</if>
+			<if test="current_dept_id != null and current_dept_id != ''">
+   				<![CDATA[
+			 		and (ed.scope_dept_id = #{current_dept_id} or ed.scope_dept_id in(select br_dept_id from dept_open_scope dos where dos.dept_id=#{current_dept_id}))
+				]]>
+			</if>
+			<if test="job_status != null and job_status != ''">
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="scope_dept != null and scope_dept != ''">
+   				<![CDATA[
+			 		and ed.scope = #{scope_dept}
+				]]>
+			</if>
+			<if test="scope_dept_id != null and scope_dept_id != ''">
+   				<![CDATA[
+			 		and ed.scope_dept_id = #{scope_dept_id}
+				]]>
+			</if>
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+   				<![CDATA[
+			 		and ed.duty_dept_id = #{duty_dept_id}
+				]]>
+			</if>
+			<if test="jobtype_code != null and jobtype_code != ''">
+   				<![CDATA[
+			 		and jp.jobtype_code = #{jobtype_code}
+				]]>
+			</if>
+			<if test="create_type != null and create_type != ''">
+   				<![CDATA[
+			 		and ed.create_type = #{create_type}
+				]]>
+			</if>
+			<if test="dept_ids != null and dept_ids != ''" >
+				and ed.duty_dept_id in 
+				<foreach item="item" index="index" collection="dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="retrieve_box_code != null and retrieve_box_code != ''">
+   				<![CDATA[
+			 		and ed.retrieve_box_code = #{retrieve_box_code}
+				]]>
+			</if>
+			<if test="admin_dept_ids != null and admin_dept_ids != ''" >
+				and ed.duty_dept_id in 
+				<foreach item="item" index="index" collection="admin_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ed.scope_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="admin_dept_ids_made != null and admin_dept_ids_made != ''" >
+				and ed.dept_id in 
+				<foreach item="item" index="index" collection="admin_dept_ids_made" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="conf_code != null and conf_code != ''">
+   				<![CDATA[
+			 		and UPPER(eb.conf_code) LIKE UPPER('%'+#{conf_code}+'%')
+				]]>
+			</if>
+			<if test="expire_status ==0">
+   				<![CDATA[
+			 		and (ed.expire_time >= #{coming_expire_time} or ed.expire_time is null)
+				]]>
+			</if>
+			<if test="expire_status ==1">
+   				<![CDATA[
+			 		and ed.expire_time <= #{expire_time} 
+				]]>
+			</if>
+			<if test="expire_status ==2">
+   				<![CDATA[
+			 		and (ed.expire_time > #{expire_time} and ed.expire_time < #{coming_expire_time})
+				]]>
+			</if>
+		</trim>
+		<choose>
+  			<when test="retrieve_time_sortable">
+   				<![CDATA[
+			 		order by ed.retrieve_time desc
+				]]>
+   			</when>	
+  			<when test="destroy_time_sortable">
+   				<![CDATA[
+			 		order by ed.destroy_time desc
+				]]>
+   			</when>	
+   			<otherwise>
+   				<![CDATA[
+			 		order by ed.burn_time desc
+				]]>
+   			</otherwise>
+  		</choose>
+	</select>
+	<select id="getAllCDLedgerSize" resultType="int" parameterType="map">
+		<![CDATA[
+			select count(1) from entity_cd ed	
+			left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code)
+			left join (select event_code,conf_code from event_burn) eb on (eb.event_code = ed.event_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+
+			<if test="user_iidd != null and user_iidd != ''">
+				<![CDATA[
+					ed.duty_user_iidd = #{user_iidd}
+				]]>
+			</if>
+			<if test="is_burn_result">
+				<![CDATA[
+					and ed.cd_state in (0, 8, 9)
+				]]>
+			</if>
+			<if test="is_retrieved">
+				<![CDATA[
+					and ed.cd_state = 1 
+				]]>
+			</if>
+			<if test="is_retrieve">
+				<![CDATA[
+					and ed.cd_state = 0 and ed.job_code is null
+				]]>
+			</if>
+			<if test="is_transfer">
+				<![CDATA[
+					and ed.cd_state = 0
+				]]>
+			</if>
+			<if test="is_handle">
+				<![CDATA[
+					and ed.cd_state = 0
+				]]>
+			</if>
+			<if test="data_type != null and data_type != ''">
+   				<![CDATA[
+			 		and ed.data_type = #{data_type}
+				]]>
+			</if>
+			<if test="cd_barcode != null and cd_barcode != ''">
+   				<![CDATA[
+			 		and UPPER(ed.cd_barcode) LIKE UPPER('%'+#{cd_barcode}+'%')
+				]]>
+			</if>
+			<if test="send_num != null and send_num != ''">
+   				<![CDATA[
+			 		and UPPER(ed.send_num) LIKE UPPER('%'+#{send_num}+'%')
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != '' and seclv_code != 0 ">
+   				<![CDATA[
+			 		and ed.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="duty_user_name != null and duty_user_name != ''">
+   				<![CDATA[
+			 		and UPPER(ed.duty_user_name) LIKE UPPER('%'+#{duty_user_name}+'%') 
+				]]>
+			</if>
+			<if test="duty_user_iidd != null and duty_user_iidd != ''">
+   				<![CDATA[
+			 		and ed.duty_user_iidd = #{duty_user_iidd}
+				]]>
+			</if>
+			<if test="start_time != null and start_time != ''">
+   				<![CDATA[
+			 		and ed.burn_time >= #{start_time}
+				]]>
+			</if>
+			<if test="end_time != null and end_time != ''">
+   				<![CDATA[
+			 		and ed.burn_time <= #{end_time}
+				]]>
+			</if>
+			<if test="cd_state != null and cd_state != ''">
+   				<![CDATA[
+			 		and ed.cd_state = #{cd_state}
+				]]>
+			</if>
+			<if test="has_job_code">
+				<![CDATA[
+					and ed.job_code is not null and ed.job_code != ''
+				]]>
+			</if>
+			<if test="scope != null and scope != ''">
+   				<![CDATA[
+			 		and ed.scope = #{scope}
+				]]>
+			</if>
+			<if test="current_dept_id != null and current_dept_id != ''">
+   				<![CDATA[
+			 		and (ed.scope_dept_id = #{current_dept_id} or ed.scope_dept_id in(select br_dept_id from dept_open_scope dos where dos.dept_id=#{current_dept_id}))
+				]]>
+			</if>
+			<if test="job_status != null and job_status != ''">
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="scope_dept != null and scope_dept != ''">
+   				<![CDATA[
+			 		and ed.scope = #{scope_dept}
+				]]>
+			</if>
+			<if test="scope_dept_id != null and scope_dept_id != ''">
+   				<![CDATA[
+			 		and ed.scope_dept_id = #{scope_dept_id}
+				]]>
+			</if>
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+   				<![CDATA[
+			 		and ed.duty_dept_id = #{duty_dept_id}
+				]]>
+			</if>
+			<if test="jobtype_code != null and jobtype_code != ''">
+   				<![CDATA[
+			 		and jp.jobtype_code = #{jobtype_code}
+				]]>
+			</if>
+			<if test="create_type != null and create_type != ''">
+   				<![CDATA[
+			 		and ed.create_type = #{create_type}
+				]]>
+			</if>
+			<if test="dept_ids != null and dept_ids != ''" >
+				and ed.duty_dept_id in 
+				<foreach item="item" index="index" collection="dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="retrieve_box_code != null and retrieve_box_code != ''">
+   				<![CDATA[
+			 		and ed.retrieve_box_code = #{retrieve_box_code}
+				]]>
+			</if>
+			<if test="admin_dept_ids != null and admin_dept_ids != ''" >
+				and ed.duty_dept_id in 
+				<foreach item="item" index="index" collection="admin_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ed.scope_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="admin_dept_ids_made != null and admin_dept_ids_made != ''" >
+				and ed.dept_id in 
+				<foreach item="item" index="index" collection="admin_dept_ids_made" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="conf_code != null and conf_code != ''">
+   				<![CDATA[
+			 		and UPPER(eb.conf_code) LIKE UPPER('%'+#{conf_code}+'%')
+				]]>
+			</if>
+			<if test="expire_status ==0">
+   				<![CDATA[
+			 		and (ed.expire_time >= #{coming_expire_time} or ed.expire_time is null)
+				]]>
+			</if>
+			<if test="expire_status ==1">
+   				<![CDATA[
+			 		and ed.expire_time <= #{expire_time} 
+				]]>
+			</if>
+			<if test="expire_status ==2">
+   				<![CDATA[
+			 		and (ed.expire_time > #{expire_time} and ed.expire_time < #{coming_expire_time})
+				]]>
+			</if>
+		</trim>
+	</select>
+	<select id="getOneCDLedgerById" resultType="entitycd"
+		parameterType="int">
+		<![CDATA[
+			select ed.*,ru.user_name retrieve_user_name,du.user_name destroy_user_name,sus.seclv_name,sp.project_name,jp.jobtype_code,jp.job_status,jp.output_user_name,jp.output_dept_name,eb.conf_code
+			from entity_cd ed
+			left join (select user_iidd, user_name from sec_user) ru on(ru.user_iidd = ed.retrieve_user_iidd)	
+			left join (select user_iidd, user_name from sec_user) du on(du.user_iidd = ed.destroy_user_iidd)	
+			left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code)
+			left join (select project_code,project_name from sys_project) sp on(ed.project_code = sp.project_code)
+			left join (select job_code,jobtype_code,job_status,output_user_name,output_dept_name from job_process) jp on(ed.job_code = jp.job_code)
+			left join (select event_code,conf_code from event_burn) eb on (eb.event_code = ed.event_code)
+			where cd_id = #{cd_id}	
+		]]>
+	</select>
+	<update id="updateRetrieveCDs" parameterType="map">
+		<![CDATA[
+			update entity_cd set cd_state=1, retrieve_type=1 where cd_id in	
+		]]>
+		<foreach item="item" collection="cd_ids" open="(" separator=","
+			close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="destroyRetrievedCDs" parameterType="map">
+		<![CDATA[
+			update entity_cd set 
+			cd_state=4 ,
+			destroy_time=#{destroy_time}, 
+			destroy_user_iidd =#{duty_user_iidd},
+			duty_user_iidd=#{duty_user_iidd},
+			duty_user_name=#{duty_user_name},
+			duty_dept_id=#{duty_dept_id},										
+			duty_dept_name=#{duty_dept_name}
+			where cd_id in	
+		]]>
+		<foreach item="item" collection="cd_ids" open="(" separator=","
+			close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="updateHandleCDs" parameterType="map">
+		<![CDATA[
+			update entity_cd set cd_state=3 where cd_id in 	
+		]]>
+		<foreach item="item" index="index" collection="cd_ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="signCD" parameterType="map">
+		<![CDATA[
+		update entity_cd 
+			set burn_result=0, fail_remark=#{fail_remark} 
+			where cd_id=#{cd_id}
+		]]>
+		<![CDATA[
+		update event_burn set burn_status=0 , apply_time = null
+			from event_burn eb, entity_cd ec
+			where eb.event_code = ec.event_code and ec.cd_id=#{cd_id} 
+		]]>
+	</update>
+	<update id="signPaper" parameterType="map">
+		<![CDATA[
+		update entity_paper 
+			set print_result=0, fail_remark=#{fail_remark}, page_count=#{page_count}
+			where paper_id=#{paper_id}
+		]]>
+		<![CDATA[
+		update event_print set print_status=0 , apply_time = null
+			from event_print eb, entity_paper ec
+			where eb.event_code = ec.event_code and ec.paper_id=#{paper_id} 
+		]]>
+	</update>
+
+	<select id="getAllPaperLedgerList" resultType="entitypaper"	parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+			select ed.*,sus.seclv_name,sp.project_name,jp.jobtype_code,jp.job_status,ru.user_name retrieve_user_name,du.user_name destroy_user_name,sr.box_name as retrieve_box_name,ep.keyword_content
+			 from entity_paper ed
+			 left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code)
+			 left join (select project_code,project_name from sys_project) sp on(ed.project_code = sp.project_code)
+			 left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code) 
+			 left join (select user_iidd, user_name from sec_user) ru on(ru.user_iidd = ed.retrieve_user_iidd)	
+			 left join (select user_iidd, user_name from sec_user) du on(du.user_iidd = ed.destroy_user_iidd)
+			 left join (select box_code, box_name from sys_recyclebox) sr on(sr.box_code = ed.retrieve_box_code)
+			 left join (select event_code,keyword_content,print_type from event_print) ep on (ep.event_code = ed.event_code)	
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''">
+				<![CDATA[
+					ed.duty_user_iidd = #{user_iidd}
+				]]>
+			</if>
+			<if test="is_print_result">
+				<![CDATA[
+					and ed.paper_state in (0, 8, 9)
+				]]>
+			</if>
+			<if test="is_graph">
+				<![CDATA[
+					and ep.print_type=2
+				]]>
+			</if>
+			<if test="is_retrieve">
+				<![CDATA[
+					and ed.paper_state = 0  and ed.job_code is null
+				]]>
+			</if>
+			<if test="is_transfer">
+				<![CDATA[
+					and ed.paper_state = 0
+				]]>
+			</if>
+			<if test="is_retrieved">
+				<![CDATA[
+					and ed.paper_state = 1 
+				]]>
+			</if>
+			<if test="is_handle">
+				<![CDATA[
+					and ed.paper_state = 0
+				]]>
+			</if>
+			<if test="has_job_code">
+				<![CDATA[
+					and ed.job_code is not null and ed.job_code != ''
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != '' and seclv_code != 0 ">
+   				<![CDATA[
+			 		and ed.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="is_reprint != null and is_reprint != ''">
+   				<![CDATA[
+			 		and ed.is_reprint = #{is_reprint}
+				]]>
+			</if>
+			<if test="job_status != null and job_status != ''">
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="printer_code != null and printer_code != ''">
+   				<![CDATA[
+			 		and ed.printer_code = #{printer_code}
+				]]>
+			</if>
+			<if test="duty_user_name != null and duty_user_name != ''">
+   				<![CDATA[
+			 		and UPPER(ed.duty_user_name) LIKE UPPER('%'+#{duty_user_name}+'%') 
+				]]>
+			</if>
+			<if test="duty_user_iidd != null and duty_user_iidd != ''">
+   				<![CDATA[
+			 		and ed.duty_user_iidd = #{duty_user_iidd}
+				]]>
+			</if>
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		and ed.dept_id = #{dept_id}
+				]]>
+			</if>
+			<if test="dept_name != null and dept_name != ''">
+   				<![CDATA[
+			 		and ed.dept_name = #{dept_name}
+				]]>
+			</if>
+			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		and ed.user_name = #{user_name}
+				]]>
+			</if>
+			<if test="start_time != null and start_time != ''">
+   				<![CDATA[
+			 		and ed.print_time >= #{start_time}
+				]]>
+			</if>
+			<if test="end_time != null and end_time != ''">
+   				<![CDATA[
+			 		and ed.print_time <= #{end_time}
+				]]>
+			</if>
+			<if test="paper_state != null and paper_state != ''">
+   				<![CDATA[
+			 		and ed.paper_state = #{paper_state}
+				]]>
+			</if>
+			<if test="paper_barcode != null and paper_barcode != ''">
+   				<![CDATA[
+			 		and UPPER(ed.paper_barcode) LIKE UPPER('%'+#{paper_barcode}+'%')
+				]]>
+			</if>
+			<if test="send_num != null and send_num != ''">
+   				<![CDATA[
+			 		and UPPER(ed.send_num) LIKE UPPER('%'+#{send_num}+'%')
+				]]>
+			</if>
+			<if test="file_title != null and file_title != ''">
+   				<![CDATA[
+			 		and UPPER(ed.file_title) LIKE UPPER('%'+#{file_title}+'%')
+				]]>
+			</if>
+			<if test="jobtype_code != null and jobtype_code != ''">
+   				<![CDATA[
+			 		and jp.jobtype_code = #{jobtype_code}
+				]]>
+			</if>
+			<if test="scope != null and scope != ''">
+   				<![CDATA[
+			 		and ed.scope = #{scope}
+				]]>
+			</if>
+			<if test="current_dept_id != null and current_dept_id != ''">
+   				<![CDATA[
+			 		and (ed.scope_dept_id = #{current_dept_id} or ed.scope_dept_id in(select br_dept_id from dept_open_scope dos where dos.dept_id=#{current_dept_id}))
+				]]>
+			</if>
+			<if test="scope_dept != null and scope_dept != ''">
+   				<![CDATA[
+			 		and ed.scope = #{scope_dept}
+				]]>
+			</if>
+			<if test="scope_dept_id != null and scope_dept_id != ''">
+   				<![CDATA[
+			 		and ed.scope_dept_id = #{scope_dept_id}
+				]]>
+			</if>
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+   				<![CDATA[
+			 		and ed.duty_dept_id = #{duty_dept_id}
+				]]>
+			</if>
+			<if test="create_type != null and create_type != ''">
+   				<![CDATA[
+			 		and ed.create_type = #{create_type}
+				]]>
+			</if>
+			<if test="dept_ids != null and dept_ids != ''" >
+				and ed.duty_dept_id in 
+				<foreach item="item" index="index" collection="dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="retrieve_box_code != null and retrieve_box_code != ''">
+   				<![CDATA[
+			 		and ed.retrieve_box_code = #{retrieve_box_code}
+				]]>
+			</if>
+			<if test="admin_dept_ids_made != null and admin_dept_ids_made != ''" >
+				and ed.dept_id in 
+				<foreach item="item" index="index" collection="admin_dept_ids_made" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="admin_dept_ids != null and admin_dept_ids != ''" >
+				and ed.duty_dept_id in 
+				<foreach item="item" index="index" collection="admin_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ed.scope_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="keyword_content != null and keyword_content != ''">
+   				<![CDATA[
+			 		and UPPER(ep.keyword_content) LIKE UPPER('%'+#{keyword_content}+'%')
+				]]>
+			</if>
+			<if test="expire_status ==0">
+   				<![CDATA[
+			 		and (ed.expire_time >= #{coming_expire_time} or ed.expire_time is null)
+				]]>
+			</if>
+			<if test="expire_status ==1">
+   				<![CDATA[
+			 		and ed.expire_time <= #{expire_time} 
+				]]>
+			</if>
+			<if test="expire_status ==2">
+   				<![CDATA[
+			 		and (ed.expire_time > #{expire_time} and ed.expire_time < #{coming_expire_time})
+				]]>
+			</if>
+		</trim>
+  		<choose>
+  			<when test="retrieve_time_sortable">
+   				<![CDATA[
+			 		order by ed.retrieve_time desc
+				]]>
+   			</when>	
+  			<when test="destroy_time_sortable">
+   				<![CDATA[
+			 		order by ed.destroy_time desc
+				]]>
+   			</when>	
+   			<otherwise>
+   				<![CDATA[
+			 		order by ed.paper_id desc
+				]]>
+   			</otherwise>
+  		</choose>
+	</select>
+	<select id="getAllPaperLedgerSize" resultType="int"	parameterType="map">
+		<![CDATA[
+			select count(1) from entity_paper ed
+			left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code)
+			left join (select event_code,keyword_content,print_type from event_print) ep on (ep.event_code = ed.event_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''">
+				<![CDATA[
+					ed.duty_user_iidd = #{user_iidd}
+				]]>
+			</if>
+			<if test="is_print_result">
+				<![CDATA[
+					and ed.paper_state in (0, 8, 9)
+				]]>
+			</if>
+			<if test="is_graph">
+				<![CDATA[
+					and ep.print_type=2
+				]]>
+			</if>
+			<if test="is_retrieve">
+				<![CDATA[
+					and ed.paper_state = 0  and ed.job_code is null
+				]]>
+			</if>
+			<if test="is_transfer">
+				<![CDATA[
+					and ed.paper_state = 0
+				]]>
+			</if>
+			<if test="is_retrieved">
+				<![CDATA[
+					and ed.paper_state = 1 
+				]]>
+			</if>
+			<if test="is_handle">
+				<![CDATA[
+					and ed.paper_state = 0
+				]]>
+			</if>
+			<if test="has_job_code">
+				<![CDATA[
+					and ed.job_code is not null and ed.job_code != ''
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != '' and seclv_code != 0 ">
+   				<![CDATA[
+			 		and ed.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="is_reprint != null and is_reprint != ''">
+   				<![CDATA[
+			 		and ed.is_reprint = #{is_reprint}
+				]]>
+			</if>
+			<if test="job_status != null and job_status != ''">
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="printer_code != null and printer_code != ''">
+   				<![CDATA[
+			 		and ed.printer_code = #{printer_code}
+				]]>
+			</if>
+			<if test="duty_user_name != null and duty_user_name != ''">
+   				<![CDATA[
+			 		and UPPER(ed.duty_user_name) LIKE UPPER('%'+#{duty_user_name}+'%') 
+				]]>
+			</if>
+			<if test="duty_user_iidd != null and duty_user_iidd != ''">
+   				<![CDATA[
+			 		and ed.duty_user_iidd = #{duty_user_iidd}
+				]]>
+			</if>
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		and ed.dept_id = #{dept_id}
+				]]>
+			</if>
+			<if test="dept_name != null and dept_name != ''">
+   				<![CDATA[
+			 		and ed.dept_name = #{dept_name}
+				]]>
+			</if>
+				<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		and ed.user_name = #{user_name}
+				]]>
+			</if>
+			<if test="start_time != null and start_time != ''">
+   				<![CDATA[
+			 		and ed.print_time >= #{start_time}
+				]]>
+			</if>
+			<if test="end_time != null and end_time != ''">
+   				<![CDATA[
+			 		and ed.print_time <= #{end_time}
+				]]>
+			</if>
+			<if test="paper_state != null and paper_state != ''">
+   				<![CDATA[
+			 		and ed.paper_state = #{paper_state}
+				]]>
+			</if>
+			<if test="paper_barcode != null and paper_barcode != ''">
+   				<![CDATA[
+			 		and UPPER(ed.paper_barcode) LIKE UPPER('%'+#{paper_barcode}+'%')
+				]]>
+			</if>
+			<if test="send_num != null and send_num != ''">
+   				<![CDATA[
+			 		and UPPER(ed.send_num) LIKE UPPER('%'+#{send_num}+'%')
+				]]>
+			</if>
+			<if test="file_title != null and file_title != ''">
+   				<![CDATA[
+			 		and UPPER(ed.file_title) LIKE UPPER('%'+#{file_title}+'%')
+				]]>
+			</if>
+			<if test="jobtype_code != null and jobtype_code != ''">
+   				<![CDATA[
+			 		and jp.jobtype_code = #{jobtype_code}
+				]]>
+			</if>
+			<if test="scope != null and scope != ''">
+   				<![CDATA[
+			 		and ed.scope = #{scope}
+				]]>
+			</if>
+			<if test="current_dept_id != null and current_dept_id != ''">
+   				<![CDATA[
+			 		and (ed.scope_dept_id = #{current_dept_id} or ed.scope_dept_id in(select br_dept_id from dept_open_scope dos where dos.dept_id=#{current_dept_id}))
+				]]>
+			</if>
+			<if test="scope_dept != null and scope_dept != ''">
+   				<![CDATA[
+			 		and ed.scope = #{scope_dept}
+				]]>
+			</if>
+			<if test="scope_dept_id != null and scope_dept_id != ''">
+   				<![CDATA[
+			 		and ed.scope_dept_id = #{scope_dept_id}
+				]]>
+			</if>
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+   				<![CDATA[
+			 		and ed.duty_dept_id = #{duty_dept_id}
+				]]>
+			</if>
+			<if test="create_type != null and create_type != ''">
+   				<![CDATA[
+			 		and ed.create_type = #{create_type}
+				]]>
+			</if>
+			<if test="dept_ids != null and dept_ids != ''" >
+				and ed.duty_dept_id in 
+				<foreach item="item" index="index" collection="dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="retrieve_box_code != null and retrieve_box_code != ''">
+   				<![CDATA[
+			 		and ed.retrieve_box_code = #{retrieve_box_code}
+				]]>
+			</if>
+			<if test="admin_dept_ids_made != null and admin_dept_ids_made != ''" >
+				and ed.dept_id in 
+				<foreach item="item" index="index" collection="admin_dept_ids_made" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="admin_dept_ids != null and admin_dept_ids != ''" >
+				and ed.duty_dept_id in 
+				<foreach item="item" index="index" collection="admin_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ed.scope_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="keyword_content != null and keyword_content != ''">
+   				<![CDATA[
+			 		and UPPER(ep.keyword_content) LIKE UPPER('%'+#{keyword_content}+'%')
+				]]>
+			</if>
+			<if test="expire_status ==0">
+   				<![CDATA[
+			 		and (ed.expire_time >= #{coming_expire_time} or ed.expire_time is null)
+				]]>
+			</if>
+			<if test="expire_status ==1">
+   				<![CDATA[
+			 		and ed.expire_time <= #{expire_time} 
+				]]>
+			</if>
+			<if test="expire_status ==2">
+   				<![CDATA[
+			 		and (ed.expire_time > #{expire_time} and ed.expire_time < #{coming_expire_time})
+				]]>
+			</if>
+		</trim>
+	</select>
+	<select id="getOnePaperLedgerById" resultType="entitypaper"	parameterType="string">
+		<![CDATA[
+			select ed.*,sus.seclv_name,sp.project_name,jp.jobtype_code,jp.job_status,ru.user_name retrieve_user_name,du.user_name destroy_user_name,jp.jobtype_code,jp.job_status,jp.output_user_name,jp.output_dept_name,ep.keyword_content
+			from entity_paper ed
+			 left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code)
+			 left join (select project_code,project_name from sys_project) sp on(ed.project_code = sp.project_code)
+			 left join (select job_code,jobtype_code,job_status,output_user_name,output_dept_name from job_process) jp on(ed.job_code = jp.job_code)
+			 left join (select user_iidd, user_name from sec_user) ru on(ru.user_iidd = ed.retrieve_user_iidd)	
+			 left join (select user_iidd, user_name from sec_user) du on(du.user_iidd = ed.destroy_user_iidd)
+			 left join (select event_code,keyword_content from event_print) ep on (ep.event_code = ed.event_code)
+			where paper_id = #{paper_id}	
+		]]>
+	</select>
+	<update id="updateRetrievePapers" parameterType="map">
+		<![CDATA[
+			update entity_paper set paper_state=1 , retrieve_type=1 where paper_id in	
+		]]>
+		<foreach item="item" collection="paper_ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="destroyRetrievedPapers" parameterType="map">
+		<![CDATA[
+			update entity_paper set 
+			paper_state=4 ,
+			destroy_time=#{destroy_time}, 
+			destroy_user_iidd =#{duty_user_iidd},
+			duty_user_iidd=#{duty_user_iidd},
+			duty_user_name=#{duty_user_name},
+			duty_dept_id=#{duty_dept_id},										
+			duty_dept_name=#{duty_dept_name}
+			where paper_id in	
+		]]>
+		<foreach item="item" collection="paper_ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="updateHandlePapers" parameterType="map">
+		<![CDATA[
+			update entity_paper set paper_state=3 where paper_id in 	
+		]]>
+		<foreach item="item" index="index" collection="paper_ids"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<insert id="saveEventTranfer" parameterType="eventtransfer">
+		<![CDATA[
+			insert into event_transfer(EVENT_CODE,USER_IIDD,DEPT_ID,SECLV_CODE,ENTITY_TYPE,BARCODE,PROJECT_CODE,USAGE_CODE,SUMM,ACCEPT_USER_IIDD,ACCEPT_DEPT_ID,APPLY_TIME,TRANSFER_STATUS,JOB_CODE,HIS_JOB_CODE)
+			values(#{event_code},#{user_iidd},#{dept_id},#{seclv_code},#{entity_type},#{barcode},#{project_code},#{usage_code},#{summ},#{accept_user_iidd},#{accept_dept_id},#{apply_time},#{transfer_status},#{job_code},#{his_job_code})
+		]]>
+		<![CDATA[
+			update entity_paper 
+				set paper_state = 5
+			where paper_barcode=#{barcode}
+		]]>
+	</insert>
+	<select id="getTransferEventList" parameterType="map" resultType="eventtransfer">
+		<![CDATA[
+			select e.*,ss.seclv_name,su.user_name,sd.dept_name,syu.usage_name,sp.project_name,jp.job_status,dept.dept_name accept_dept_name,a_user.user_name accept_user_name 
+			from event_transfer e
+			left join job_process jp on(e.job_code=jp.job_code)
+			left join (select seclv_code,seclv_name from sec_user_seclv) ss on (e.seclv_code=ss.seclv_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) su on(e.user_iidd=su.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(e.dept_id=sd.dept_id)
+			left join sys_usage syu on(e.usage_code=syu.usage_code)
+			left join sys_project sp on(e.project_code=sp.project_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) a_user on(e.accept_user_iidd=a_user.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) dept on(e.accept_dept_id = dept.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		
+			<if test="user_iidd != null and user_iidd != ''">
+   				<![CDATA[
+			 		and e.user_iidd = #{user_iidd} 
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != '' and seclv_code != 0 ">
+   				<![CDATA[
+			 		and e.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="duty_user_name != null and duty_user_name != ''">
+   				<![CDATA[
+			 		and e.duty_user_name = #{duty_user_name}
+				]]>
+			</if>
+			<if test="startTime != null and startTime != ''">
+   				<![CDATA[
+			 		and e.apply_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+   				<![CDATA[
+			 		and e.apply_time <= #{endTime}
+				]]>
+			</if>
+			<if test="entity_type != null and entity_type != ''">
+   				<![CDATA[
+			 		and e.entity_type = #{entity_type}
+				]]>
+			</if>
+			<if test="job_status != null and job_status != ''" >
+				<![CDATA[
+					and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="submitable">
+   				<![CDATA[
+			 		and e.transfer_status = 0
+				]]>
+			</if>
+			<if test="!is_transfering">
+   				<![CDATA[
+			 		and e.job_code = ''
+				]]>
+			</if>
+		</trim>
+	</select>
+	<select id="getPaperListByJobCode" parameterType="string" resultType="entitypaper">
+		<![CDATA[
+			select ed.*,sus.seclv_name,sp.project_name from entity_paper ed
+			 left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code)
+			 left join (select project_code,project_name from sys_project) sp on(ed.project_code = sp.project_code)
+			 left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code)
+			where ed.job_code=#{job_code}
+		]]>
+	</select>
+	<update id="cancelHandlePaperById" parameterType="string">
+		<![CDATA[
+			update entity_paper 
+				set job_code = null,paper_state = 0
+			where paper_id=#{paper_id}
+		]]>
+	</update>
+	<select id="getHandlePaperCountByJobCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from entity_paper where job_code=#{job_code}
+		]]>
+	</select>
+	<select id="getPaperByBarcode" parameterType="string" resultType="entitypaper">
+		<![CDATA[
+			select ed.*,sus.seclv_name,sp.project_name,jp.job_status,jp.jobtype_code,sur.user_name as retrieve_user_name,sud.user_name as destroy_user_name,jp.output_user_name,jp.output_dept_name,ep.keyword_content 
+			from entity_paper ed
+			 left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code)
+			 left join (select project_code,project_name from sys_project) sp on(ed.project_code = sp.project_code)
+			 left join (select job_code,jobtype_code,job_status,output_user_name,output_dept_name from job_process) jp on(ed.job_code = jp.job_code)
+			 left join (select user_iidd,user_name from sec_user) sur on (sur.user_iidd = ed.retrieve_user_iidd)
+			 left join (select user_iidd,user_name from sec_user) sud on (sud.user_iidd = ed.destroy_user_iidd)
+			 left join (select event_code,keyword_content from event_print) ep on (ep.event_code = ed.event_code)
+			where ed.paper_barcode=#{barcode}
+		]]>
+	</select>
+	<select id="getCycleItemListByBarcode" parameterType="string" resultType="cycleitem">
+		<![CDATA[
+			select * from cycle_record
+			where barcode=#{barcode} order by oper_time asc
+		]]>
+	</select>
+	<select id="getOneTransferEventByCode" parameterType="string" resultType="eventtransfer">
+		<![CDATA[
+			select e.*,sus.seclv_name,sp.project_name,dept.dept_name accept_dept_name,us.usage_name from event_transfer e
+			 left join sec_user_seclv sus on(e.seclv_code=sus.seclv_code)
+			 left join (select project_code,project_name from sys_project) sp on(e.project_code = sp.project_code)
+			 left join (select dept_id,dept_name from sec_dept) dept on(e.accept_dept_id = dept.dept_id)
+			 left join (select usage_code,usage_name from sys_usage) us on(us.usage_code = e.usage_code)
+			where e.event_code=#{event_code} 
+		]]>
+	</select>
+	
+	<select id="getDeptIdByUserId" parameterType="string" resultType="string">
+		<![CDATA[
+			select dept_id from sec_user where user_iidd = #{accept_user_iidd}
+		]]>
+	</select>
+	
+	<update id="deleteEventTransfer" parameterType="string">
+		<![CDATA[
+			update event_transfer 
+				set job_code = null
+			where event_code=#{event_code}
+		]]>
+		
+	</update>
+	<update id="updatePaperTransferStatus" parameterType="string">
+		<![CDATA[
+			update entity_paper 
+				set paper_state = 0
+			where paper_barcode=#{barcode}
+		]]>
+	</update>
+	
+	<update id="updateEventTransfer" parameterType="map">
+		<![CDATA[
+		update event_transfer set event_code=#{event_code}, summ=#{summ},accept_user_iidd=#{accept_user_iidd}
+		where event_code=#{event_code}
+		]]>
+	</update>
+	
+	<select id="getTransferEventByTransferId" parameterType="string" resultType="eventtransfer">
+		<![CDATA[
+		select e.*,ss.seclv_name,su.user_name,sd.dept_name,syu.usage_name,sp.project_name,jp.job_status,dept.dept_name accept_dept_name,a_user.user_name accept_user_name
+			from event_transfer e
+			left join job_process jp on(e.job_code=jp.job_code)
+			left join (select seclv_code,seclv_name from sec_user_seclv) ss on (e.seclv_code=ss.seclv_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) su on(e.user_iidd=su.user_iidd)
+			left join (select user_iidd,user_name,dept_id from sec_user) a_user on(e.accept_user_iidd=a_user.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(e.dept_id=sd.dept_id)
+			left join sys_usage syu on(e.usage_code=syu.usage_code)
+			left join sys_project sp on(e.project_code=sp.project_code)
+			left join (select dept_id,dept_name from sec_dept) dept on(e.accept_dept_id = dept.dept_id)
+			where e.id = #{id}
+		]]>
+	</select>
+	
+	<select id="getTransferEventByTransferCode" parameterType="string" resultType="eventtransfer">
+		<![CDATA[
+		select e.*,ss.seclv_name,su.user_name,sd.dept_name,syu.usage_name,sp.project_name,jp.job_status,dept.dept_name accept_dept_name,a_user.user_name accept_user_name
+			from event_transfer e
+			left join job_process jp on(e.job_code=jp.job_code)
+			left join (select seclv_code,seclv_name from sec_user_seclv) ss on (e.seclv_code=ss.seclv_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) su on(e.user_iidd=su.user_iidd)
+			left join (select user_iidd,user_name,dept_id from sec_user) a_user on(e.accept_user_iidd=a_user.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(e.dept_id=sd.dept_id)
+			left join sys_usage syu on(e.usage_code=syu.usage_code)
+			left join sys_project sp on(e.project_code=sp.project_code)
+			left join (select dept_id,dept_name from sec_dept) dept on(e.accept_dept_id = dept.dept_id)
+			where e.event_code = #{event_code}
+		]]>
+	</select>
+	
+	<select id="getJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code	from event_transfer where event_code = #{event_code}
+		]]>
+	</select>
+	
+	<update id="cancelTransferEventByEventCode" parameterType="string">
+		<![CDATA[
+			update event_transfer set
+				job_code = null
+			where event_code=#{event_code}
+		]]>
+	</update>
+	
+	<!-- 磁介质台帐 -->
+	<select id="getAllDeviceLedgerList" resultType="entitydevice"	parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[			 
+			 select ed.*,sd.dept_name,ss.seclv_name,suu.user_name,sdu.user_name as duty_user_name,sbu.user_name as borrow_user_name,jp.jobtype_code
+			 ,jp.job_status,borrow.dept_name borrow_dept_name,mt.typename med_type_name
+			 from entity_device ed
+		 	left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code)
+			left join sec_dept sd on(ed.dept_id = sd.dept_id)
+			left join (select u.user_iidd,s.dept_name from sec_dept s,sec_user u where s.dept_id = u.dept_id) borrow on (borrow_user_iidd = borrow.user_iidd)				
+			left join sec_user_seclv ss on(ed.seclv_code = ss.seclv_code)
+			left join (select user_iidd,user_name from sec_user) suu on(ed.user_iidd=suu.user_iidd)
+			left join (select user_iidd,user_name from sec_user) sdu on(ed.duty_user_iidd=sdu.user_iidd)
+			left join (select user_iidd,user_name from sec_user) sbu on(ed.borrow_user_iidd=sbu.user_iidd)
+			left join (select id,typename from med_type) mt on (ed.med_type=mt.id)	
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="borrow_user_iidd != null and borrow_user_iidd != ''">
+				<![CDATA[
+					ed.borrow_user_iidd = #{borrow_user_iidd}
+				]]>
+			</if>			
+			<if test="seclv_code != null and seclv_code != '' and seclv_code != 0 ">
+   				<![CDATA[
+			 		and ed.seclv_code = #{seclv_code}
+				]]>
+			</if>						
+			<if test="device_status != null and device_status != ''">
+   				<![CDATA[
+			 		and ed.device_status = #{device_status}
+				]]>
+			</if>
+			<if test="med_type != null and med_type != ''">
+   				<![CDATA[
+			 		and ed.med_type = #{med_type}
+				]]>
+			</if>
+			<if test="device_barcode != null and device_barcode != ''">
+   				<![CDATA[
+			 		and UPPER(ed.device_barcode) LIKE UPPER('%'+#{device_barcode}+'%')
+				]]>
+			</if>	
+			<if test="device_series != null and device_series != ''">
+   				<![CDATA[
+			 		and UPPER(ed.device_series) LIKE UPPER('%'+#{device_series}+'%')
+				]]>
+			</if>
+			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ed.enter_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ed.enter_time <= #{endTime}
+				]]>
+   			</if>
+			<if test="not is_all">
+			<![CDATA[
+				and ed.is_sealed='N'
+			]]>
+ 			</if>	
+ 			<choose>
+   				<when test="has_job_code">
+	   				<![CDATA[
+				 		and ed.job_code is not null and ed.job_code != ''
+					]]>
+	   				<if test="job_status != null and job_status != ''" >
+		   				<![CDATA[
+					 		and jp.job_status = #{job_status}
+						]]>
+		   			</if>
+	   			</when>	
+	   			<otherwise>
+	   				<![CDATA[
+				 		and (ed.job_code is null or (ed.job_code is not null and jp.job_status ='false'))
+					]]>
+	   			</otherwise>
+   			</choose>	
+		</trim>
+		<![CDATA[
+   				order by ed.is_sealed, ed.enter_time desc
+   			]]>
+	</select>
+	<select id="getAllDeviceLedgerSize" resultType="int"	parameterType="map">
+		<![CDATA[
+			select count(1) from entity_device ed
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="borrow_user_iidd != null and borrow_user_iidd != ''">
+				<![CDATA[
+					ed.borrow_user_iidd = #{borrow_user_iidd}
+				]]>
+			</if>			
+			<if test="seclv_code != null and seclv_code != '' and seclv_code != 0 ">
+   				<![CDATA[
+			 		and ed.seclv_code = #{seclv_code}
+				]]>
+			</if>						
+			<if test="device_status != null and device_status != ''">
+   				<![CDATA[
+			 		and ed.device_status = #{device_status}
+				]]>
+			</if>
+			<if test="med_type != null and med_type != ''">
+   				<![CDATA[
+			 		and ed.med_type = #{med_type}
+				]]>
+			</if>
+			<if test="device_barcode != null and device_barcode != ''">
+   				<![CDATA[
+			 		and UPPER(ed.device_barcode) LIKE UPPER('%'+#{device_barcode}+'%')
+				]]>
+			</if>	
+			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ed.enter_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ed.enter_time <= #{endTime}
+				]]>
+   			</if>
+			<if test="not is_all">
+			<![CDATA[
+				and ed.is_sealed='N'
+			]]>
+ 			</if>	
+ 			<choose>
+   				<when test="has_job_code">
+	   				<![CDATA[
+				 		and ed.job_code is not null and ed.job_code != ''
+					]]>
+	   				<if test="job_status != null and job_status != ''" >
+		   				<![CDATA[
+					 		and jp.job_status = #{job_status}
+						]]>
+		   			</if>
+	   			</when>	
+	   			<otherwise>
+	   				<![CDATA[
+				 		and (ed.job_code is null)
+					]]>
+	   			</otherwise>
+   			</choose>	
+		</trim>
+	</select>
+	<update id="cancelHandleCDById" parameterType="string">
+		<![CDATA[
+			update entity_cd 
+				set job_code = null, cd_state =0
+			where cd_id=#{cd_id}
+		]]>
+	</update>
+	<select id="getHandleCDCountByJobCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from entity_cd where job_code=#{job_code}
+		]]>
+	</select>
+	<select id="getCDListByJobCode" parameterType="string" resultType="entitycd">
+		<![CDATA[
+			select ed.*,sus.seclv_name,sp.project_name from entity_cd ed
+			 left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code)
+			 left join (select project_code,project_name from sys_project) sp on(ed.project_code = sp.project_code)
+			 left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code)
+			where ed.job_code=#{job_code}
+		]]>
+	</select>
+	<insert id="addCycleItem" parameterType="cycleitem">
+		<![CDATA[
+			insert into cycle_record(barcode,entity_type,oper_time,user_name,dept_name,oper)
+			values(#{barcode},#{entity_type},#{oper_time},#{user_name},#{dept_name},#{oper})	
+		]]>
+	</insert>
+	<select id="getDeviceListByJobCode" parameterType="string" resultType="entitydevice">
+		<![CDATA[
+			select ed.*,sus.seclv_name,sd.dept_name,suu.user_name,mt.typename med_type_name
+			from entity_device ed
+			 left join sec_dept sd on(ed.dept_id = sd.dept_id)
+			 left join (select user_iidd,user_name from sec_user) suu on(ed.user_iidd=suu.user_iidd)
+			 left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code)
+			 left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code)
+			 left join (select id,typename from med_type) mt on (ed.med_type=mt.id)
+			where ed.job_code=#{job_code}
+		]]>
+	</select>	
+	<update id="updateCDStateById" parameterType="map">
+		<![CDATA[
+			update entity_cd 
+				set cd_state = #{cd_state}
+			where cd_id = #{cd_id}
+		]]>
+	</update>	
+	<update id="updatePaperStateById" parameterType="map">
+		<![CDATA[
+			update entity_paper
+				set paper_state = #{paper_state}
+			where paper_id = #{paper_id}
+		]]>
+	</update>
+	<select id="getCDByBarcode" parameterType="string" resultType="entitycd">
+		<![CDATA[
+			select ed.*,sus.seclv_name,sp.project_name,jp.job_status,jp.jobtype_code,sur.user_name as retrieve_user_name,sud.user_name as destroy_user_name,jp.output_user_name,jp.output_dept_name,eb.conf_code from entity_cd ed
+			 left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code)
+			 left join (select project_code,project_name from sys_project) sp on(ed.project_code = sp.project_code)
+			 left join (select job_code,jobtype_code,job_status,output_user_name,output_dept_name from job_process) jp on(ed.job_code = jp.job_code)
+			 left join (select user_iidd,user_name from sec_user) sur on (sur.user_iidd = ed.retrieve_user_iidd)
+			 left join (select user_iidd,user_name from sec_user) sud on (sud.user_iidd = ed.destroy_user_iidd)
+			 left join (select event_code,conf_code from event_burn) eb on (eb.event_code = ed.event_code)
+			where ed.cd_barcode=#{barcode}
+		]]>
+	</select>
+	<update id="updatePaperStateByBarcode" parameterType="map">
+		<![CDATA[
+			update entity_paper 
+				set paper_state = #{paper_state}
+			where paper_barcode = #{paper_barcode}
+		]]>
+	</update>
+	<update id="updateCDStateByBarcode" parameterType="map">
+		<![CDATA[
+			update entity_cd 
+				set cd_state = #{cd_state}
+			where cd_barcode = #{cd_barcode}
+		]]>
+	</update>
+	<insert id="addRejectRecord" parameterType="rejectrecord">
+		<![CDATA[
+			insert into reject_record(
+			reject_code,
+			entity_barcode,
+			entity_type,
+			entity_name,
+			reject_time,
+			send_user_iidd,
+			send_dept_id,
+			reject_user_name,
+			reject_dept_name,
+			reject_type,
+			comment)
+			values(
+			#{reject_code},
+			#{entity_barcode},
+			#{entity_type},
+			#{entity_name},
+			#{reject_time},
+			#{send_user_iidd},
+			#{send_dept_id},
+			#{reject_user_name},
+			#{reject_dept_name},
+			#{reject_type},
+			#{comment})	
+		]]>
+	</insert>
+	<select id="getDeptListByDeptAdminUserId" parameterType="string" resultType="SecDept">
+		<![CDATA[
+			select sda.dept_id ,dept.dept_name
+			from sec_dept_admin sda
+			left join (select dept_id,dept_name from sec_dept) dept on(sda.dept_id = dept.dept_id)
+			where sda.user_iidd = #{deptadmin_user_iidd}
+		]]>
+	</select>
+	<update id="updateEntityCD" parameterType="map">
+		<![CDATA[
+			update entity_cd 
+				set duty_user_iidd=#{duty_user_iidd},
+					duty_user_name=#{duty_user_name},
+					duty_dept_id=#{duty_dept_id},										
+					duty_dept_name=#{duty_dept_name},
+					retrieve_time=#{retrieve_time},										
+					retrieve_user_iidd=#{retrieve_user_iidd},
+					cd_state=#{cd_state}					
+				where cd_id=#{cd_id}	
+		]]>
+	</update>
+	<update id="updateEntityPaper" parameterType="map">
+		<![CDATA[
+			update entity_paper 
+				set duty_user_iidd=#{duty_user_iidd},
+					duty_user_name=#{duty_user_name},
+					duty_dept_id=#{duty_dept_id},										
+					duty_dept_name=#{duty_dept_name},
+					retrieve_time=#{retrieve_time},										
+					retrieve_user_iidd=#{retrieve_user_iidd},
+					paper_state=#{paper_state}				
+				where paper_id=#{paper_id}	
+		]]>
+	</update>
+	<update id="resetEntityCDById" parameterType="string">
+		<![CDATA[
+			update entity_cd 
+				set retrieve_time=NULL,										
+					retrieve_user_iidd='',
+					cd_state=0,
+					job_code=null				
+				where cd_id=#{cd_id}	
+		]]>
+	</update>
+	<update id="resetEntityPaperById" parameterType="string">
+		<![CDATA[
+			update entity_paper 
+				set retrieve_time=NULL,										
+					retrieve_user_iidd='',
+					paper_state=0,
+					job_code=null			
+				where paper_id=#{paper_id}	
+		]]>
+	</update>
+	<select id="getPaperById" parameterType="string" resultType="entitypaper">
+		<![CDATA[
+			select *
+			from entity_paper
+			where paper_id = #{id}
+		]]>
+	</select>
+	<select id="getDeviceByBarcode" parameterType="string" resultType="entitydevice">
+		<![CDATA[
+			select ed.*,sd.dept_name,ss.seclv_name,suu.user_name,sdu.user_name as duty_user_name,sbu.user_name as borrow_user_name,jp.jobtype_code,jp.job_status,mt.typename med_type_name
+			from entity_device ed
+				left join sec_dept sd on(ed.dept_id = sd.dept_id)				
+				left join sec_user_seclv ss on(ed.seclv_code = ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) suu on(ed.user_iidd=suu.user_iidd)
+				left join (select user_iidd,user_name from sec_user) sdu on(ed.duty_user_iidd=sdu.user_iidd)
+				left join (select user_iidd,user_name from sec_user) sbu on(ed.borrow_user_iidd=sbu.user_iidd)
+				left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code)
+				left join (select id,typename from med_type) mt on (ed.med_type=mt.id)
+			where device_barcode=#{barcode}	
+		]]>
+	</select>
+	<select id="getCDById" parameterType="string" resultType="entitycd">
+		<![CDATA[
+			select *
+			from entity_cd
+			where cd_id = #{id}
+		]]>
+	</select>
+	<select id="checkShowPrintFile" parameterType="string" resultType="string">
+		<![CDATA[
+			select ss.is_paper_audit
+			from sys_seclevel ss
+			left join sec_user_seclv sus on (ss.seclv_code = sus.seclv_code)
+			where sus.seclv_code = #{seclv_code}
+		]]>
+	</select>
+	<select id="checkShowBurnFile" parameterType="string" resultType="string">
+		<![CDATA[
+			select ss.is_cd_audit
+			from sys_seclevel ss
+			left join sec_user_seclv sus on (ss.seclv_code = sus.seclv_code)
+			where sus.seclv_code = #{seclv_code}
+		]]>
+	</select>
+	<update id="updateRetrievePaper" parameterType="map">
+		<![CDATA[
+			update entity_paper set 
+				retrieve_type=1,
+				duty_user_iidd=#{duty_user_iidd},
+				duty_user_name=#{duty_user_name},
+				duty_dept_id=#{duty_dept_id},										
+				duty_dept_name=#{duty_dept_name},
+				retrieve_time=#{retrieve_time},										
+				retrieve_user_iidd=#{retrieve_user_iidd},
+				paper_state=#{paper_state}				
+			where paper_id=#{paper_id}	
+		]]>
+	</update>
+	<update id="updateRetrieveCD" parameterType="map">
+		<![CDATA[
+			update entity_cd set 
+				retrieve_type=1,
+				duty_user_iidd=#{duty_user_iidd},
+				duty_user_name=#{duty_user_name},
+				duty_dept_id=#{duty_dept_id},										
+				duty_dept_name=#{duty_dept_name},
+				retrieve_time=#{retrieve_time},										
+				retrieve_user_iidd=#{retrieve_user_iidd},
+				cd_state=#{cd_state}					
+			where cd_id=#{cd_id}	
+		]]>
+	</update>
+	<update id="resetPaperState" parameterType="string">
+		<![CDATA[
+			update entity_paper  set paper_state = 0, job_code = null where paper_id=#{paper_id}
+		]]>
+	</update>
+	<update id="resetCDState" parameterType="string">
+		<![CDATA[
+			update entity_cd  set cd_state = 0, job_code = null  where cd_id=#{cd_id}
+		]]>
+	</update>
+	<update id="resetPaperStateByBarcode" parameterType="string">
+		<![CDATA[
+			update entity_paper  set paper_state = 0  where paper_barcode=#{paper_barcode}
+		]]>
+	</update>
+	<update id="resetCDStateByBarcode" parameterType="string">
+		<![CDATA[
+			update entity_cd  set cd_state = 0  where cd_barcode=#{cd_barcode}
+		]]>
+	</update>
+	<update id="updatePaperSendCommentByBarcode" parameterType="map">
+		<![CDATA[
+		update entity_paper set fail_remark = isnull(fail_remark+',','') + #{comment} where paper_barcode=#{paper_barcode}
+		]]>
+	</update>
+	<update id="updateCDSendCommentByBarcode" parameterType="map">
+		<![CDATA[
+		update entity_cd set fail_remark = isnull(fail_remark+',','')+ #{comment} where cd_barcode=#{cd_barcode}
+		]]>
+	</update>
+	<select id="getRejectRecordByBarcode" parameterType="string" resultType="rejectrecord">
+		<![CDATA[
+			select * from reject_record where entity_barcode=#{entity_barcode}
+		]]>
+	</select>
+</mapper>  

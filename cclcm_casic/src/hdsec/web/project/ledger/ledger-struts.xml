@@ -1,0 +1,1127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="ledger" namespace="/ledger" extends="struts-default">
+		<!-- CD台账管理 -->
+		<action name="viewledger" class="ledger.viewledger">
+			<result>/html/ledger/viewledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewledgerinfo" class="ledger.viewledgerinfo">
+			<result>/html/ledger/viewledgerinfo.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpersonalledger" class="ledger.viewpersonalledger">
+			<result>/html/ledger/viewpersonalledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpersonalledgerinfo" class="ledger.viewledgerinfo">
+			<result>/html/ledger/viewledgerinfo.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewpersonalledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 回收，销毁，归档CD管理 -->
+		<action name="viewcd" class="ledger.viewcd">
+			<result>/html/ledger/viewcd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="retrievecd" class="ledger.retrievecd">
+			<result type="redirect">/ledger/viewcd.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="destroycd" class="ledger.destroycd">
+			<result type="redirect">/ledger/viewretrievedcd.action</result>
+			<result name="SELF" type="redirect">/ledger/selfclosedprocess.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewretrievedcd" class="ledger.viewretrievedcd">
+			<result>/html/ledger/viewretrievedcd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewhandlecd" class="ledger.viewhandlecd">
+			<result>/html/ledger/viewhandlecd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="handlecd" class="ledger.handlecd">
+			<result type="redirect">/ledger/viewhandlecd.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 回收，销毁，归档纸张管理 -->
+		<action name="viewpaper" class="ledger.viewpaper">
+			<result>/html/ledger/viewpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="retrievepaper" class="ledger.retrievepaper">
+			<result type="redirect">/ledger/viewpaper.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewretrievedpaper" class="ledger.viewretrievedpaper">
+			<result>/html/ledger/viewretrievedpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="destroypaper" class="ledger.destroypaper">
+			<result type="redirect">/ledger/viewretrievedpaper.action</result>
+			<result name="SELF" type="redirect">/ledger/selfclosedprocess.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewhandlepaper" class="ledger.viewhandlepaper">
+			<result>/html/ledger/viewhandlepaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="handlepaper" class="ledger.handlepaper">
+			<result type="redirect">/ledger/viewhandlepaper.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 导出日志 -->
+		<action name="exportcdledger" class="ledger.exportcdledger">
+			<result>/html/ledger/exportledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportpersonalcdledger" class="ledger.exportpersonalcdledger">
+			<result>/html/ledger/exportledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="exportpaperledger" class="ledger.exportpaperledger">
+			<result>/html/ledger/exportledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportpersonalpaperledger" class="ledger.exportpersonalpaperledger">
+			<result>/html/ledger/exportledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportpersonaldeviceledger" class="ledger.exportpersonaldeviceledger">
+			<result>/html/ledger/viewpersonaldeviceledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportpaperborrowledger" class="ledger.exportpaperborrowledger">
+			<result>/html/borrow/viewpaperborrowledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportcdborrowledger" class="ledger.exportcdborrowledger">
+			<result>/html/borrow/viewcdborrowledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportselfstorage" class="ledger.exportselfstorage">
+			<result>/html/storage/viewselfstorage.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportretrievedpaper" class="ledger.exportretrievedpaper">
+			<result>/html/ledger/viewretrievedpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportdestroypaper" class="ledger.exportdestroypaper">
+			<result>/html/ledger/viewdestroypaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportsendpaper" class="ledger.exportsendpaper">
+			<result>/html/ledger/viewsendpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportretrievedcd" class="ledger.exportretrievedcd">
+			<result>/html/ledger/viewretrievedcd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportdestroycd" class="ledger.exportdestroycd">
+			<result>/html/ledger/viewdestroycd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportsendcd" class="ledger.exportsendcd">
+			<result>/html/ledger/viewsendcd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+
+		<!-- 标记失败 -->
+		<action name="viewcdburnresult" class="ledger.viewcdburnresult">
+			<result>/html/ledger/viewcdburnresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="signburnresult" class="ledger.signburnresult">
+			<result>/html/ledger/signresult.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewcdburnresult.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpaperprintresult" class="ledger.viewpaperprintresult">
+			<result>/html/ledger/viewpaperprintresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="signprintresult" class="ledger.signprintresult">
+			<result>/html/ledger/signresult.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewpaperprintresult.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 纸质台账管理 -->
+		<action name="viewpaperledger" class="ledger.viewpaperledger">
+			<result>/html/ledger/viewpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpersonalpaperledger" class="ledger.viewpersonalpaperledger">
+			<result>/html/ledger/viewpersonalpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpaperledgerinfo" class="ledger.viewpaperledgerinfo">
+			<result>/html/ledger/viewpaperledgerinfo.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewpaperledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpersonalpaperledgerinfo" class="ledger.viewpaperledgerinfo">
+			<result>/html/ledger/viewpaperledgerinfo.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewpersonalpaperledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 提交纸质处理申请 -->
+		<action name="viewselfpaperledger" class="ledger.viewselfpaperledger">
+			<result>/html/ledger/viewselfpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managehandlepaper" class="ledger.managehandlepaper">
+			<result>/html/ledger/managehandlepaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="cancelhandlepaper" class="ledger.cancelhandlepaper">
+			<result type="redirect">/ledger/managehandlepaper.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 查看全生命周期详细信息 -->
+		<action name="viewcycledetail" class="ledger.viewcycledetail">
+			<result name="PAPER">/html/ledger/viewpapercycledetail.jsp</result>
+			<result name="DISC">/html/ledger/viewcdcycledetail.jsp</result>
+			<result name="DEVICE">/html/ledger/viewdevicecycledetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 磁介质台账管理 -->
+		<action name="viewpersonaldeviceledger" class="ledger.viewpersonaldeviceledger">
+			<result>/html/ledger/viewpersonaldeviceledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		
+		<!-- 提交光盘处理申请 -->
+		<action name="viewselfcdledger" class="ledger.viewselfcdledger">
+			<result>/html/ledger/viewselfcdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managehandlecd" class="ledger.managehandlecd">
+			<result>/html/ledger/managehandlecd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="cancelhandlecd" class="ledger.cancelhandlecd">
+			<result type="redirect">/ledger/managehandlecd.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 纸质外发处理 -->
+		<action name="handlesendpaper" class="ledger.handlesendpaper">
+			<result>/html/ledger/handlesendpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsendpaper" class="ledger.viewsendpaper">
+			<result>/html/ledger/viewsendpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="confirmsendpaper" class="ledger.confirmsendpaper">
+			<result>/html/ledger/confirmsendpaper.jsp</result>
+			<result name="ok" type="redirect">/ledger/handlesendpaper.action</result>
+			<result name="self" type="redirect">/ledger/selfclosedsendprocess.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="rejectsendpaper" class="ledger.rejectsendpaper">
+			<result>/html/ledger/rejectsend.jsp</result>
+			<result name="ok" type="redirect">/ledger/handlesendpaper.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 光盘外发处理 -->
+		<action name="handlesendcd" class="ledger.handlesendcd">
+			<result>/html/ledger/handlesendcd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsendcd" class="ledger.viewsendcd">
+			<result>/html/ledger/viewsendcd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="confirmsendcd" class="ledger.confirmsendcd">
+			<result>/html/ledger/confirmsendcd.jsp</result>
+			<result name="ok" type="redirect">/ledger/handlesendcd.action</result>
+			<result name="self" type="redirect">/ledger/selfclosedsendprocess.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="rejectsendcd" class="ledger.rejectsendcd">
+			<result>/html/ledger/rejectsend.jsp</result>
+			<result name="ok" type="redirect">/ledger/handlesendcd.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 部门管理员（部门台账） -->
+		<action name="viewdeptpaperledger" class="ledger.viewdeptpaperledger">
+		    <result name="JUMPLOADER" type="redirect">/ledger/viewdeptpaperledgerloader.action?${queryString}</result>
+			<result>/html/ledger/viewdeptpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdeptpaperledgerloader" class="ledger.viewdeptpaperledgerloader">
+            <result>/html/ledger/viewdeptpaperledgerloader.jsp</result>
+            <result name="exception">/html/error.jsp</result>
+            <result type="redirect" name="error">/error.action</result>
+        </action>
+		<action name="viewdeptcdledger" class="ledger.viewdeptcdledger">
+			<result>/html/ledger/viewdeptcdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportdeptpaperledger" class="ledger.exportdeptpaperledger">
+			<result>/html/ledger/viewdeptpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportdeptcdledger" class="ledger.exportdeptcdledger">
+			<result>/html/ledger/viewdeptcdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 部门管理员（部门用户台账） -->
+		<action name="viewdeptuserpaperledger" class="ledger.viewdeptuserpaperledger">
+			<result>/html/ledger/viewdeptuserpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdeptusercdledger" class="ledger.viewdeptusercdledger">
+			<result>/html/ledger/viewdeptusercdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportdeptuserpaperledger" class="ledger.exportdeptuserpaperledger">
+			<result>/html/ledger/viewdeptuserpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportdeptusercdledger" class="ledger.exportdeptusercdledger">
+			<result>/html/ledger/viewdeptusercdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 已销毁纸张列表 -->
+		<action name="viewdestroypaper" class="ledger.viewdestroypaper">
+			<result>/html/ledger/viewdestroypaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 已销毁光盘列表 -->
+		<action name="viewdestroycd" class="ledger.viewdestroycd">
+			<result>/html/ledger/viewdestroycd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 检测该密级文件是否有权限预览 -->
+		<action name="checkshowprintfile" class="ledger.checkshowprintfile">
+			<result>/html/ledger/checkshowprintfile.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 退回载体回收申请 -->
+		<action name="quithandlepaper" class="ledger.quithandlepaper">
+		    <result>/html/ledger/viewpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="quithandlecd" class="ledger.quithandlecd">
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 导出纸张统计 -->
+		<action name="exportpaperstaticbyseclv" class="ledger.exportpaperstaticbyseclv">
+			<result>/html/basic/viewpaperstaticbyseclv.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportpaperstaticbycolor" class="ledger.exportpaperstaticbycolor">
+			<result>/html/basic/viewpaperstaticbycolor.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportpaperstaticbydouble" class="ledger.exportpaperstaticbydouble">
+			<result>/html/basic/viewpaperstaticbydouble.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportpaperstaticbysize" class="ledger.exportpaperstaticbysize">
+			<result>/html/basic/viewpaperstaticbysize.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportpaperstaticbyall" class="ledger.exportpaperstaticbyall">
+			<result>/html/basic/viewpaperstaticbyall.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 审批通过后撤销载体闭环申请 -->
+		<action name="giveuphandlepaper" class="ledger.giveuphandlepaper">
+			<result type="redirect">/ledger/managehandlepaper.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="giveuphandlecd" class="ledger.giveuphandlecd">
+			<result type="redirect">/ledger/managehandlepaper.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewgraphpaper" class="ledger.viewgraphpaper">
+			<result>/html/ledger/viewgraphpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managepaperledger" class="ledger.managepaperledger">
+			<result>/html/ledger/managepaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageledger" class="ledger.manageledger">
+			<result>/html/ledger/manageledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 台账同步 -->
+		<action name="syncdata" class="ledger.syncdata">
+			<result>/html/ledger/syncdata.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看文件销毁申请记录 -->
+		<action name="destroypaperapply" class="ledger.destroypaperapply">
+			<result>/html/ledger/destroypaperapply.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看文件外发申请记录 -->
+		<action name="sendpaperapply" class="ledger.sendpaperapply">
+			<result>/html/ledger/sendpaperapply.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看文件归档申请记录 -->
+		<action name="filepaperapply" class="ledger.filepaperapply">
+			<result>/html/ledger/filepaperapply.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看文件延期留用申请记录 -->
+		<action name="delaypaperapply" class="ledger.delaypaperapply">
+			<result>/html/ledger/delaypaperapply.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看光盘销毁申请记录 -->
+		<action name="destroycdapply" class="ledger.destroycdapply">
+			<result>/html/ledger/destroycdapply.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看光盘外发申请记录 -->
+		<action name="sendcdapply" class="ledger.sendcdapply">
+			<result>/html/ledger/sendcdapply.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看光盘归档申请记录 -->
+		<action name="filecdapply" class="ledger.filecdapply">
+			<result>/html/ledger/filecdapply.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看光盘延期留用申请记录 -->
+		<action name="delaycdapply" class="ledger.delaycdapply">
+			<result>/html/ledger/delaycdapply.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 已回收文件列表 -->
+		<action name="viewrecycledpaper" class="ledger.viewrecycledpaper">
+			<result>/html/ledger/viewrecycledpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 文件送销申请列表 -->
+		<action name="viewsenddestroypaper" class="ledger.viewsenddestroypaper">
+			<result>/html/ledger/viewsenddestroypaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 送销任务详情 -->
+		<action name="viewsenddestroyjobdetail" class="ledger.viewsenddestroyjobdetail">
+			<result>/html/ledger/viewsenddestroyjobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 取消送销任务申请 -->
+		<action name="cancelsenddestroyjob" class="ledger.cancelsenddestroyjob">
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 送销审批任务管理 -->
+		<action name="managesenddestroycdaprvjob" class="ledger.managesenddestroycdaprvjob">
+			<result>/html/ledger/managesenddestroycdaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managesenddestroypaperaprvjob" class="ledger.managesenddestroypaperaprvjob">
+			<result>/html/ledger/managesenddestroypaperaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvesenddestroyjob" class="ledger.approvesenddestroyjob">
+			<result>/html/ledger/approvesenddestroyjob.jsp</result>
+			<result type="redirect" name="ok1">/ledger/managesenddestroypaperaprvjob.action</result>
+			<result type="redirect" name="ok2">/ledger/managesenddestroycdaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsenddestroypaperaprvjob" class="ledger.viewsenddestroypaperaprvjob">
+			<result>/html/ledger/viewsenddestroypaperaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsenddestroycdaprvjob" class="ledger.viewsenddestroycdaprvjob">
+			<result>/html/ledger/viewsenddestroycdaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 已回收光盘列表 -->
+		<action name="viewrecycledcd" class="ledger.viewrecycledcd">
+			<result>/html/ledger/viewrecycledcd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 光盘送销申请列表 -->
+		<action name="viewsenddestroycd" class="ledger.viewsenddestroycd">
+			<result>/html/ledger/viewsenddestroycd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 补打条码 -->
+		<action name="reprintburnbarcode" class="ledger.reprintburnbarcode">
+			<result>/html/ledger/burnbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 配置条码格式 -->
+		<action name="configbarcode" class="ledger.configbarcode">
+			<result>/html/ledger/configbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--  查看折合率-->
+		<action name="viewpaperconversionrate" class="ledger.viewpaperconversionrate">
+			<result>/html/basic/viewpaperconversionrate.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--  删除折合率-->
+		<action name="deletepaperconversionrate" class="ledger.deletepaperconversionrate">
+			<result type="redirect">viewpaperconversionrate.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--  更新折合率-->
+		<action name="updatepaperconversionrate" class="ledger.updatepaperconversionrate">
+			<result type="redirect">viewpaperconversionrate.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--  添加折合率-->
+		<action name="addpaperconversionrate" class="ledger.addpaperconversionrate">
+			<result type="redirect">viewpaperconversionrate.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--  显示已经有的备注-->
+		<action name="viewfailremark" class="ledger.viewfailremark">
+			<result >/html/ledger/viewfailremark.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--  添加已经有的备注-->
+		<action name="addorupdatefailremark" class="ledger.addorupdatefailremark">
+			<result >/html/ledger/viewfailremark.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 替换页回收 -->
+		<action name="viewreplacepage" class="ledger.viewreplacepage">
+			<result>/html/ledger/viewreplacepage.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="replacepageretrieve" class="ledger.replacepageretrieve">
+			<result>/html/ledger/replacepageretrieve.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewreplacepage.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 上传销毁回执单 -->
+		<action name="confirmdestroypaper" class="ledger.confirmdestroypaper">
+			<result>/html/ledger/confirmdestroypaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="uploaddestroyfiles" class="ledger.uploaddestroyfiles">
+			<result>/html/ledger/confirmdestroypaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 替换页销毁 -->
+		<action name="viewdestroyreplacepage" class="ledger.viewdestroyreplacepage">
+			<result>/html/ledger/viewdestroyreplacepage.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="replacepagedestroy" class="ledger.replacepagedestroy">
+			<result>/html/ledger/replacepagedestroy.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewdestroyreplacepage.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 文件外带处理-->
+		<action name="handlepapercarryoutjob" class="ledger.handlepapercarryoutjob">
+			<result>/html/ledger/handlepapercarryoutjob.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewselfpaperledger.action</result>
+			<result name="ok1" type="redirect">/ledger/viewdeptpaperledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 光盘外带处理-->
+		<action name="handlecdcarryoutjob" class="ledger.handlecdcarryoutjob">
+			<result>/html/ledger/handlecdcarryoutjob.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewselfcdledger.action</result>
+			<result name="ok1" type="redirect">/ledger/viewdeptcdledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 载体任务审批处理-->
+		<action name="managecarryoutaprvjob" class="ledger.managecarryoutaprvjob">
+			<result>/html/ledger/managecarryoutaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 载体任务审批处理-->
+		<action name="approvecarryoutjob" class="ledger.approvecarryoutjob">
+			<result>/html/ledger/approvecarryoutjob.jsp</result>
+			<result name="ok" type="redirect">/ledger/managecarryoutaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 载体任务审批记录-->
+		<action name="viewcarryouthandlejob" class="ledger.viewcarryouthandlejob">
+			<result>/html/ledger/viewcarryouthandlejob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 文件外带记录查询 -->
+		<action name="managecarryoutpaperjob" class="ledger.managecarryoutpaperjob">
+			<result>/html/ledger/managecarryoutpaperjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 光盘外带记录查询 -->
+		<action name="managecarryoutcdjob" class="ledger.managecarryoutcdjob">
+			<result>/html/ledger/managecarryoutcdjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 外带详细信息查看 -->
+		<action name="viewcarryoutjobdetail" class="ledger.viewcarryoutjobdetail">
+			<result>/html/ledger/viewcarryoutjobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 外带确认 -->
+		<action name="managecarryoutconfirmpapereventlist" class="ledger.managecarryoutconfirmpapereventlist">
+			<result>/html/ledger/managecarryoutconfirmpapereventlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managecarryoutconfirmcdeventlist" class="ledger.managecarryoutconfirmcdeventlist">
+			<result>/html/ledger/managecarryoutconfirmcdeventlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="handlecarryinconfirmjob" class="ledger.handlecarryinconfirmjob">
+			<result>/html/ledger/handlecarryinconfirmjob.jsp</result>
+			<result name="paper" type="redirect">/ledger/managecarryoutconfirmpapereventlist.action</result>
+			<result name="cd" type="redirect">/ledger/managecarryoutconfirmcdeventlist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="viewcarryoutcdeventlist" class="ledger.viewcarryoutcdeventlist">
+			<result>/html/ledger/viewcarryoutcdeventlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="viewcarryoutpapereventlist" class="ledger.viewcarryoutpapereventlist">
+			<result>/html/ledger/viewcarryoutpapereventlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 外带详情查询 -->
+		<action name="viewcarryoutinfo" class="ledger.viewcarryoutinfo">
+			<result>/html/ledger/viewcarryoutinfo.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 载体变更台账-->
+		<action name="viewmodifyledger" class="ledger.viewmodifyledger">
+			<result>/html/ledger/viewmodifyledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> 
+		<action name="handlemodifyjob" class="ledger.handlemodifyjob">
+			<result>/html/ledger/handlemodifyjob.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewmodifyledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> 
+		<!-- 变更审批--> 
+		<action name="managemodifyjob" class="ledger.managemodifyjob">
+			<result>/html/ledger/managemodifyjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvemodifyjob" class="ledger.approvemodifyjob">
+			<result>/html/ledger/approvemodifyjob.jsp</result>
+			<result name="ok" type="redirect">/ledger/managemodifyjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewmodifydetail" class="ledger.viewmodifydetail">
+			<result>/html/ledger/viewmodifydetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewmodifyjob" class="ledger.viewmodifyjob">
+			<result>/html/ledger/viewmodifyjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewmodjobdetail" class="ledger.viewmodjobdetail">
+			<result>/html/ledger/viewmodjobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 密级变更 确认-->
+		<action name="viewconfirmmodify" class="ledger.viewconfirmmodify">
+			<result>/html/ledger/viewconfirmmodify.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="confirmmodify" class="ledger.confirmmodify">
+		    <result>/html/ledger/confirmmodify.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewconfmodifyljob" class="ledger.viewconfmodifyljob">
+			<result>/html/ledger/viewconfmodifyljob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 处理载体变更申请记录-->
+		<action name="managemodifyledger" class="ledger.managemodifyledger">
+		    <result>/html/ledger/managemodifyledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 取消变更记录-->
+		<action name="cancelhandleledger" class="ledger.cancelhandleledger">
+		    <result>/html/ledger/managemodifyledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 查看审批流程信息-->
+		<action name="viewapprovalprocessdetail" class="ledger.viewapprovalprocessdetail">
+		    <result>/html/ledger/viewapprovalprocessdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 显示光盘可补打条码 -->
+		<action name="viewcdreprintbarcode" class="ledger.viewcdreprintbarcode">
+			<result>/html/ledger/viewcdreprintbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configcdbarcode" class="ledger.configcdbarcode">
+			<result>/html/ledger/configcdbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="reprintcdbarcode" class="ledger.reprintcdbarcode">
+			<result>/html/ledger/reprintpaperbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 文件补打条码 -->
+		<action name="reprintbarcodepaper" class="ledger.reprintbarcodepaper">
+			<result>/html/ledger/reprintbarcodepaper.jsp</result>
+			<result type="redirect" name="OK">/ledger/reprintbarcodepaper.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configpaperbarcode" class="ledger.configpaperbarcode">
+			<result>/html/ledger/configpaperbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="reprintpaperbarcode" class="ledger.reprintpaperbarcode">
+			<result>/html/ledger/reprintpaperbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 回收全部检索结果 -->
+		<action name="retrieveall" class="ledger.retrieveall">
+			<result name="paper_success" type="redirect">/ledger/viewpaper.action</result>
+			<result name="cd_success">/html/ledger/viewcd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 销毁全部检索结果 -->
+		<action name="destoryall" class="ledger.destoryall">
+			<result name="paper_success">/html/ledger/viewretrievedpaper.jsp</result>
+			<result name="cd_success">/html/ledger/viewretrievedcd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 个人纸质台账回收列表 -->
+		<action name="viewselfpaperrecycleledger" class="ledger.viewselfpaperrecycleledger">
+			<result>/html/ledger/viewselfpaperrecycleledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportpersonalpaperrecycleledger" class="ledger.exportpersonalpaperrecycleledger">
+			<result>/html/ledger/exportledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 补打交接单 -->
+		<action name="reprintsendconfirm" class="ledger.reprintsendconfirm">
+			<result type="redirect">/ledger/sendpaperapply.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="reprintsendconfirmcd" class="ledger.reprintsendconfirmcd">
+			<result type="redirect">/ledger/sendcdapply.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 科研工作手册台账 -->
+		<action name="viewdeptsecretpaperledger" class="ledger.viewdeptsecretpaperledger">
+			<result>/html/ledger/viewdeptsecretpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 预台帐打印 -->
+		<action name="viewexpectpaperledger" class="ledger.viewexpectpaperledger">
+			<result>/html/ledger/viewexpectpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 预台帐记录-->
+		<action name="viewselfexpectpaperledger" class="ledger.viewselfexpectpaperledger">
+			<result>/html/ledger/viewselfexpectpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="expectsignprintresult" class="ledger.expectsignprintresult">
+			<result>/html/ledger/expectsignprintresult.jsp</result>
+			<result name="ok" type="redirect">/ledger/viewexpectpaperledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="expectsignprintfail" class="ledger.expectsignprintfail">
+			<result name="ok" type="redirect">/ledger/viewexpectpaperledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 提交纸质处理申请 -->
+		<action name="viewexpectpaperledger" class="ledger.viewexpectpaperledger">
+			<result>/html/ledger/viewexpectpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--台账备注修改 -->
+		<action name="setremark" class="ledger.setremark">
+			<result type="redirect">/ledger/viewcycledetail.action?type=PAPER&amp;barcode=${paper_barcode}&amp;ledger_type=personal</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="selfclosedprocess" class="ledger.selfclosedprocess">
+			<result>/html/ledger/selfclosedprocess.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="selfclosedsendprocess" class="ledger.selfclosedsendprocess">
+			<result>/html/ledger/selfclosedsendprocess.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 载体录入台账删除修改记录 -->
+		<action name="papermodifyapply" class="ledger.papermodifyapply">
+			<result>/html/ledger/papermodifyapply.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 已归档载体二次处理任务模块 -->
+		<action name="handletempjob" class="ledger.handletempjob">
+			<result>/html/ledger/handletempjob.jsp</result>
+			<result name="ok" type="redirect">/ledger/managefilepaperevent.action</result>
+			<result name="cd" type="redirect">/ledger/managefilecdevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managefilepaperevent" class="ledger.managefilepaperevent">
+			<result>/html/ledger/managefilepaperevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="vieweventtempjobdetail" class="ledger.vieweventtempjobdetail">
+			<result>/html/ledger/vieweventtempjobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="cancelhandletemp" class="ledger.cancelhandletemp">
+			<result type="redirect">/ledger/managefilepaperevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managefilecdevent" class="ledger.managefilecdevent">
+			<result>/html/ledger/managefilecdevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="supervisedestroypaper" class="ledger.supervisedestroypaper">
+			<result>/html/ledger/supervisedestroypaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="confirmsupervise" class="ledger.confirmsupervise">
+			<result>/html/ledger/confirmsupervise.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageselfdestroypaperjob" class="ledger.manageselfdestroypaperjob">
+			<result>/html/ledger/manageselfdestroypaperjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 科研工作手册监销申请记录 -->
+		<action name="manageselfdestroysecretpaperjob" class="ledger.manageselfdestroysecretpaperjob">
+			<result>/html/ledger/manageselfdestroysecretpaperjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 科研工作手册监销确认 -->
+		<action name="supervisedestroysecretpaper" class="ledger.supervisedestroysecretpaper">
+			<result>/html/ledger/supervisedestroysecretpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 科研工作手册监销确认记录 -->
+		<action name="viewsupervisedestroysecretpaper" class="ledger.viewsupervisedestroysecretpaper">
+			<result>/html/ledger/viewsupervisedestroysecretpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 光盘自主销毁 -->
+		<action name="supervisedestroycd" class="ledger.supervisedestroycd">
+			<result>/html/ledger/supervisedestroycd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageselfdestroycdjob" class="ledger.manageselfdestroycdjob">
+			<result>/html/ledger/manageselfdestroycdjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 个人涉密台账查看 -->
+		<action name="viewselfsecuritypaperledger" class="ledger.viewselfsecuritypaperledger">
+			<result>/html/ledger/viewselfsecuritypaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+        <!-- 部门涉密台账查看 -->
+        <action name="viewdeptsecuritypaperledger" class="ledger.viewdeptsecuritypaperledger">
+            <result>/html/ledger/viewdeptsecuritypaperledger.jsp</result>
+            <result name="exception">/html/error.jsp</result>
+            <result type="redirect" name="error">/error.action</result>
+        </action>
+		
+		<!-- 文件监销确认记录 -->
+		<action name="viewsupervisedestroypaper" class="ledger.viewsupervisedestroypaper">
+			<result>/html/ledger/viewsupervisedestroypaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 光盘已监销确认记录-->
+		<action name="viewsupervisedestroycd" class="ledger.viewsupervisedestroycd">
+			<result>/html/ledger/viewsupervisedestroycd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 个人录入磁介质台账 -->
+		<action name="viewpersonalledindeviceledger" class="ledger.viewpersonalledindeviceledger">
+			<result>/html/ledger/viewpersonalledindeviceledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 个人磁介质待监销确认-->
+		<action name="supervisedestroydevice" class="ledger.supervisedestroydevice">
+			<result>/html/ledger/supervisedestroydevice.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 个人磁介质监销申请记录-->
+		<action name="manageselfdestroydevicejob" class="ledger.manageselfdestroydevicejob">
+			<result>/html/ledger/manageselfdestroydevicejob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 个人磁介质已监销确认记录-->
+		<action name="viewsupervisedestroydevice" class="ledger.viewsupervisedestroydevice">
+			<result>/html/ledger/viewsupervisedestroydevice.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 电子文件导入总台账 -->
+		<action name="viewefileinputledger" class="ledger.viewefileinputledger">
+			<result>/html/ledger/viewefileinputledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageefileinputledger" class="ledger.manageefileinputledger">
+			<result>/html/ledger/manageefileinputledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 电子文件导入部门台账 -->
+		<action name="viewdeptefileinputledger" class="ledger.viewdeptefileinputledger">
+			<result>/html/ledger/viewdeptefileinputledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 导出电子文件台账 -->
+		<action name="exportdeptefileinputledger" class="ledger.exportdeptefileinputledger">
+			<result>/html/ledger/exportledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewproxypaperledger" class="ledger.viewproxypaperledger">
+			<result>/html/ledger/viewproxypaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewproxycdledger" class="ledger.viewproxycdledger">
+			<result>/html/ledger/viewproxycdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewmergeentityledger" class="ledger.viewmergeentityledger">
+			<result>/html/ledger/viewmergeentityledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="mergepaperapply" class="ledger.mergepaperapply">
+			<result>/html/ledger/mergepaperapply.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 已拒绝外发文件列表 -->
+		<action name="viewrejectsendpaper" class="ledger.viewrejectsendpaper">
+			<result>/html/ledger/viewrejectsendpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 已拒绝外发光盘列表 -->
+		<action name="viewrejectsendcd" class="ledger.viewrejectsendcd">
+			<result>/html/ledger/viewrejectsendcd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+	<!-- 异步提交将提交的数据转换为json -->
+	<package name="json_ajax" extends="json-default">
+		<action name="checkorcarryout" class="ledger.checkorcarryout">
+			<result type="json">
+				<param name="root">result</param>
+			</result>
+		</action>
+	</package>
+	
+</struts>

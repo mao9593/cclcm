@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="CarrierManageMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.carriermanage.mapper.CarrierManageMapper" />
+	</bean>
+	<bean id="carriermanage.addpersonalfileevent" class="${common.package}.carriermanage.action.AddPersonalFileEventAction" scope="prototype"/>
+	<bean id="carriermanage.managepersonalfileevent" class="${common.package}.carriermanage.action.ManagePersonalFileEventAction" scope="prototype"/>
+	<bean id="carriermanage.approvepersonalfilejob" class="${common.package}.carriermanage.action.ApprovePersonalFileJobAction" scope="prototype"/>
+	<bean id="carriermanage.managepersonalfileaprvjob" class="${common.package}.carriermanage.action.ManagePersonalFileAprvJobAction" scope="prototype"/>
+	<bean id="carriermanage.viewpersonalfileaprvjob" class="${common.package}.carriermanage.action.ViewPersonalFileAprvJobAction" scope="prototype"/>
+	<bean id="carriermanage.managedeptsecfile" class="${common.package}.carriermanage.action.ManageDeptSecFileAction" scope="prototype"/>
+</beans>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="transfer" namespace="/transfer" extends="struts-default">
+		<action name="viewtransferpaperledgerinfo" class="transfer.viewtransferpaperledgerinfo">
+			<result>/html/transfer/viewpaperledgerinfo.jsp</result>
+			<result name="ok" type="redirect">/transfer/viewpersonalpaperledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewtransferpaperledger" class="transfer.viewtransferpaperledger">
+			<result>/html/transfer/viewtransferpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addpapertransferevent" class="transfer.addpapertransferevent">
+			<result>/html/transfer/addpapertransferevent.jsp</result>
+			<result name="ok" type="redirect">/transfer/submitpapertransferevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="submitpapertransferevent" class="transfer.submitpapertransferevent">
+			<result>/html/transfer/submitpapertransferevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managepapertransferevent" class="transfer.managepapertransferevent">
+			<result>/html/transfer/managepapertransferevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="canceltransferevent" class="transfer.canceltransferevent">
+			<result>/html/transfer/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewtransferingeventdetail" class="transfer.viewtransferingeventdetail">
+			<result>/html/transfer/viewtransferingeventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="submittransferevent" class="transfer.submittransferevent">
+			<result>/html/transfer/submittransferevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatepapertransferevent" class="transfer.updatepapertransferevent">
+			<result>/html/transfer/updatepapertransferevent.jsp</result>
+			<result name="ok" type="redirect">/transfer/submitpapertransferevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpapertransfereventdetail" class="transfer.viewpapertransfereventdetail">
+			<result>/html/transfer/viewpapertransfereventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="submitupdatepapertransferevent" class="transfer.submitupdatepapertransferevent">
+			<result>/html/transfer/submitpapertransferevent.jsp</result>
+			<result name="ok" type="redirect">/transfer/submitpapertransferevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delpapertransferevent" class="transfer.delpapertransferevent">
+			<result>/html/transfer/submitpapertransferevent.jsp</result>
+			<result name="ok" type="redirect">/transfer/submitpapertransferevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		
+		<action name="addcdtransferevent" class="transfer.addcdtransferevent">
+			<result>/html/transfer/addcdtransferevent.jsp</result>
+			<result name="ok" type="redirect">/transfer/submitcdtransferevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="submitcdtransferevent" class="transfer.submitcdtransferevent">
+			<result>/html/transfer/submitcdtransferevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewcdtransfereventdetail" class="transfer.viewcdtransfereventdetail">
+			<result>/html/transfer/viewcdtransfereventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatecdtransferevent" class="transfer.updatecdtransferevent">
+			<result>/html/transfer/updatecdtransferevent.jsp</result>
+			<result name="ok" type="redirect">/transfer/submitcdtransferevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delcdtransferevent" class="transfer.delcdtransferevent">
+			<result>/html/transfer/submitcdtransferevent.jsp</result>
+			<result name="ok" type="redirect">/transfer/submitcdtransferevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewtransfercdledger" class="transfer.viewtransfercdledger">
+			<result>/html/transfer/viewtransfercdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="submitupdatecdtransferevent" class="transfer.submitupdatecdtransferevent">
+			<result>/html/transfer/submitcdtransferevent.jsp</result>
+			<result name="ok" type="redirect">/transfer/submitcdtransferevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managecdtransferevent" class="transfer.managecdtransferevent">
+			<result>/html/transfer/managecdtransferevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewcdtransferingeventdetail" class="transfer.viewcdtransferingeventdetail">
+			<result>/html/transfer/viewcdtransferingeventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 流转确认处理 -->
+		<action name="viewconfirmtransfer" class="transfer.viewconfirmtransfer">
+			<result>/html/transfer/viewconfirmtransfer.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="confirmtransfer" class="transfer.confirmtransfer">
+			<result>/html/transfer/confirmtransfer.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+        <action name="rejecttransfer" class="transfer.rejecttransfer">
+            <result>/html/transfer/rejecttransfer.jsp</result>
+            <result name="exception">/html/error.jsp</result>
+            <result type="redirect" name="error">/error.action</result>
+        </action>
+		<action name="viewtransferingjobdetail" class="transfer.viewtransferingjobdetail">
+			<result>/html/transfer/viewtransferingjobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="canceltransferjob" class="transfer.canceltransferjob">
+			<result name="cd" type="redirect">/transfer/managecdtransferevent.action</result>
+			<result name="paper" type="redirect">/transfer/managepapertransferevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

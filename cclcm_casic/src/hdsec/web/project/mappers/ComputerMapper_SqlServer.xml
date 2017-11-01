@@ -1,0 +1,2363 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.computer.mapper.ComputerMapper">
+	
+	<!-- 计算机管理 -->
+	<insert id="addEntityComputer" parameterType="entitycomputer">
+		<![CDATA[
+			insert into entity_computer(
+				computer_barcode,
+				computer_code,
+				conf_code,
+				seclv_code,
+				duty_user_id,
+				duty_dept_id,
+				duty_entp_id,
+				internet_type,
+				computer_name,
+				computer_manufacture,
+				manufacture_country,
+				computer_no,
+				computer_model,
+				med_type,
+				computer_detail,
+				hdisk_no,
+				enable_time,
+				computer_status,
+				host_name,
+				computer_os,
+				install_time,
+				key_code,
+				computer_ip,
+				mark_code,
+				computer_mac,
+				computer_gateway,
+				vlan_num,
+				output_point,
+				input_point,
+				switch_num,
+				switch_point,
+				storage_area,
+				storage_location,
+				computer_application,
+				user_iidd,
+				enter_time,
+				software_type,
+				software_summ,
+				oldconf_code,
+				summ
+			)values(
+				#{computer_barcode},
+				#{computer_code},
+				#{conf_code},
+				#{seclv_code},
+				#{duty_user_id},
+				#{duty_dept_id},
+				#{duty_entp_id},
+				#{internet_type},
+				#{computer_name},
+				#{computer_manufacture},
+				#{manufacture_country},
+				#{computer_no},
+				#{computer_model},
+				#{med_type},
+				#{computer_detail},
+				#{hdisk_no},
+				#{enable_time},
+				#{computer_status},
+				#{host_name},
+				#{computer_os},
+				#{install_time},
+				#{key_code},
+				#{computer_ip},
+				#{mark_code},
+				#{computer_mac},
+				#{computer_gateway},
+				#{vlan_num},
+				#{output_point},
+				#{input_point},
+				#{switch_num},
+				#{switch_point},
+				#{storage_area},
+				#{storage_location},
+				#{computer_application},
+				#{user_iidd},
+				#{enter_time},
+				#{software_type},
+				#{software_summ},
+				#{oldconf_code},
+				#{summ}
+			)	
+		]]>
+	</insert>
+	
+	<!-- 通过计算机条码号更新计算机信息 -->
+	<update id="updateComputer" parameterType="entitycomputer">
+		<![CDATA[
+			update entity_computer 
+				set computer_name = #{computer_name},
+				computer_model = #{computer_model},
+				computer_no= #{computer_no},
+				computer_detail= #{computer_detail},
+				hdisk_no= #{hdisk_no},
+				computer_code= #{computer_code},
+				conf_code= #{conf_code},
+				seclv_code= #{seclv_code},
+				duty_user_id= #{duty_user_id},
+				duty_dept_id= #{duty_dept_id},
+				duty_entp_id= #{duty_entp_id},
+				computer_os= #{computer_os},
+				install_time= #{install_time},
+				key_code= #{key_code},
+				computer_ip= #{computer_ip},
+				computer_mac= #{computer_mac},
+				output_point= #{output_point},
+				switch_num= #{switch_num},
+				switch_point= #{switch_point},
+				internet_type= #{internet_type},
+				storage_area= #{storage_area},
+				storage_location= #{storage_location},
+				computer_status= #{computer_status},
+				computer_application= #{computer_application},
+				enable_time= #{enable_time},
+				mark_code= #{mark_code},
+				vlan_num= #{vlan_num},
+				computer_gateway= #{computer_gateway},
+				summ= #{summ},
+				user_iidd= #{user_iidd},
+				oldconf_code = #{oldconf_code},
+				input_point = #{input_point},
+				med_type = #{med_type},
+				software_type = #{software_type}
+				where computer_barcode=#{computer_barcode}	
+		]]>
+	</update>
+	
+	<!-- 计算机类型管理 -->
+	<select id="getComputerTypeList" resultType="devicetype">
+		<![CDATA[
+			select * from med_type where content='computer'
+		]]>
+	</select>
+	
+	<!-- 通过设备类型名称查询设备类型ID -->
+	<select id="getTypeIDByName" parameterType="string" resultType="int">
+		<![CDATA[
+			select id from med_type where typename=#{typename}
+		]]>
+	</select>
+	<!-- 通过设备类型名称查询设备 -->
+	<select id="getDeviceOperationDataByEventCode" parameterType="string" resultType="entitydeviceoperation">
+		<![CDATA[
+			select * from ref_device_operation where event_code=#{event_code}
+		]]>
+	</select>
+	
+	<!-- 查看计算机台账数 -->
+	<select id="getAllComputerSize" resultType="int" parameterType="map">
+		<![CDATA[
+			select count(1) from entity_computer ec
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="conf_code != null and conf_code != ''">
+				<![CDATA[
+					and ec.conf_code = #{conf_code}
+				]]>
+			</if>	
+			<if test="computer_code != null and computer_code != ''">
+				<![CDATA[
+					and ec.computer_code = #{computer_code}
+				]]>
+			</if>	
+			<if test="seclv_code != null and seclv_code != ''">
+				<![CDATA[
+					and ec.seclv_code = #{seclv_code}
+				]]>
+			</if>	
+			<if test="med_type != null and med_type != ''">
+				<![CDATA[
+					and ec.med_type = #{med_type}
+				]]>
+			</if>	
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="duty_dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>	
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and ec.duty_user_id = #{duty_user_id}
+				]]>
+			</if>	
+			<if test="computer_status != null and computer_status != ''">
+				<![CDATA[
+					and ec.computer_status = #{computer_status}
+				]]>
+			</if>
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<![CDATA[
+				and ec.is_sealed='N'
+   			]]>	
+		</trim>		
+	</select>
+	
+	
+	<!-- 查看计算机台账 -->
+	<select id="getAllComputerList" resultType="entitycomputer"	parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+			select ec.*,sd.dept_name as duty_dept_name,suu.user_name as duty_user_name,
+			mt.info_type as med_type_name,ss.seclv_name as seclv_name
+			from entity_computer ec
+				left join sec_dept sd on(ec.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(ec.duty_user_id=suu.user_iidd)
+				left join (select info_id,info_type from sys_devicetype) mt on (ec.med_type=mt.info_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="conf_code != null and conf_code != ''">
+				<![CDATA[
+					and ec.conf_code = #{conf_code}
+				]]>
+			</if>	
+			<if test="computer_code != null and computer_code != ''">
+				<![CDATA[
+					and ec.computer_code = #{computer_code}
+				]]>
+			</if>	
+			<if test="seclv_code != null and seclv_code != ''">
+				<![CDATA[
+					and ec.seclv_code = #{seclv_code}
+				]]>
+			</if>	
+			<if test="med_type != null and med_type != ''">
+				<![CDATA[
+					and ec.med_type = #{med_type}
+				]]>
+			</if>	
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="duty_dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>	
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and ec.duty_user_id = #{duty_user_id}
+				]]>
+			</if>	
+			<if test="computer_status != null and computer_status != ''">
+				<![CDATA[
+					and ec.computer_status = #{computer_status}
+				]]>
+			</if>
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<![CDATA[
+				and ec.is_sealed='N'
+   			]]>		
+		</trim>
+		<![CDATA[
+				order by ec.computer_id desc
+   			]]>
+	</select>
+	
+	<!-- 通过条件查询计算机信息 -->
+	<select id="getComputerByMap" resultType="entitycomputer"	parameterType="map">
+		<![CDATA[
+			select ec.*,sd.dept_name as duty_dept_name,suu.user_name as duty_user_name,
+			mt.info_type as med_type_name,ss.seclv_name as seclv_name
+			from entity_computer ec
+				left join sec_dept sd on(ec.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(ec.duty_user_id=suu.user_iidd)
+				left join (select info_id,info_type from sys_devicetype) mt on (ec.med_type=mt.info_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="computer_barcode != null and computer_barcode != ''">
+				<![CDATA[
+					and ec.computer_barcode = #{computer_barcode}
+				]]>
+			</if>	
+			<if test="conf_code != null and conf_code != ''">
+				<![CDATA[
+					and ec.conf_code = #{conf_code}
+				]]>
+			</if>
+			<![CDATA[
+				and ec.is_sealed='N'
+   			]]>
+		</trim>
+	</select>
+	
+	<!-- 添加computerevent -->
+	<insert id="addChangeDeviceEvent" parameterType="changedeviceevent">
+		<![CDATA[
+			insert into event_changedevice(
+				event_code, 
+				seclv_code, 
+				user_iidd, 
+				dept_id, 
+				apply_time,
+				usage_code,
+				project_code,
+				user_phone,
+				barcode,
+				event_type,
+				event_content,
+				event_reason,
+				summ
+			)values(
+				#{event_code},
+				#{seclv_code},
+				#{user_iidd},
+				#{dept_id},
+				#{apply_time},
+				#{usage_code},
+				#{project_code},
+				#{user_phone},
+				#{barcode},
+				#{event_type},
+				#{event_content},
+				#{event_reason},
+				#{summ}
+			)	
+		]]>
+	</insert>
+	
+	<!-- 更新event_computer中的job_code -->
+	<update id="updateChangeDeviceEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_changedevice
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	
+	<!-- 查看计算机类申请列表 -->
+	<select id="getComputerEventList" resultType="changedeviceevent" parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+			select ec.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name
+			 from event_changedevice ec 
+				left join job_process jp on(ec.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ec.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ec.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ec.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ec.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="event_type != null and event_type != ''" >
+			 	and ec.event_type in
+			 	<foreach item="item" index="index" collection="event_type" open="(" separator="," close=")">
+			 		#{item}
+			 	</foreach>
+   			</if>
+   			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ec.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ec.apply_time <= #{endTime}
+				]]>
+   			</if>
+		</trim>
+   		order by ec.apply_time desc
+	</select>
+	
+	
+	
+	<!-- 通过job_code获取event_code在changdeviceevent中 -->
+	<select id="getChangeDeviceEventCodeByJobCode" resultType="string" parameterType="string">
+		<![CDATA[
+			select event_code from event_changedevice where job_code = #{job_code}
+		]]>
+	</select >
+	<!-- 通过event_code获取job_code在changdeviceevent中 -->
+	<select id="getChangeDeviceEventJobCodeByEventCode" resultType="string" parameterType="string">
+		<![CDATA[
+			select job_code from event_changedevice where  event_code= #{event_code}
+		]]>
+	</select >
+	
+	<!-- 通过event_code获取event在changdeviceevent中 -->
+	<select id="getChangeDeviceEventByEventCode" resultType="changedeviceevent" parameterType="string">
+		<![CDATA[
+			select ec.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name
+			 from event_changedevice ec 
+				left join job_process jp on(ec.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ec.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ec.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+				where ec.event_code=#{event_code};
+		]]>
+	</select>
+	
+	<!-- 通过job_code获取申请列表 -->
+	<select id="getChangeDeviceEventByJobCode" resultType="changedeviceevent" parameterType="string">
+		<![CDATA[
+			select ec.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name
+			 from event_changedevice ec 
+				left join job_process jp on(ec.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ec.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ec.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+				where ec.job_code=#{job_code};
+		]]>
+	</select>
+	
+		<!-- 通过event_code获取event在changdeviceevent中 -->
+	<select id="getComputerEventListByJobCode" resultType="changedeviceevent" parameterType="string">
+		<![CDATA[
+			select ec.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name
+			 from event_changedevice ec 
+				left join job_process jp on(ec.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ec.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ec.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+				where ec.job_code=#{job_code};
+		]]>
+	</select>
+	
+	
+	<delete id="deleteChangeDeviceEvent" parameterType="string">
+	<![CDATA[
+			delete from event_changedevice where event_code=#{event_code}
+		]]>
+	</delete>
+	<!-- 向event_change_device增加barcode -->
+	<update id="addBarcodeInEvent" parameterType="map">
+		<![CDATA[
+			update event_changedevice
+				set barcode=#{barcode}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	
+	<update id="updateComputerByEvent" parameterType="map">
+		<![CDATA[
+			update entity_computer  	
+		]]>
+		<trim prefix="set" prefixOverrides=",">
+		<if test="seclv_code != null and seclv_code != ''" >
+ 			<![CDATA[
+	 			 ,seclv_code = #{seclv_code}
+			]]>
+ 		</if>
+ 		<if test="duty_user_id != null and duty_user_id != ''" >
+ 			<![CDATA[
+	 			,duty_user_id = #{duty_user_id}
+			]]>
+ 		</if>
+ 		<if test="duty_dept_id != null and duty_dept_id != ''" >
+ 			<![CDATA[
+	 			,duty_dept_id = #{duty_dept_id}
+			]]>
+ 		</if>
+ 		<if test="duty_entp_id != null and duty_entp_id != ''" >
+ 			<![CDATA[
+	 			,duty_entp_id = #{duty_entp_id}
+			]]>
+ 		</if>
+ 		<if test="conf_code != null and conf_code != ''" >
+ 			<![CDATA[
+	 			,conf_code = #{conf_code}
+			]]>
+ 		</if>
+ 		<if test="hdisk_no != null and hdisk_no != ''" >
+ 			<![CDATA[
+	 			,hdisk_no = #{hdisk_no}
+			]]>
+ 		</if>
+ 		<if test="computer_ip != null and computer_ip != ''" >
+ 			<![CDATA[
+	 			,computer_ip = #{computer_ip}
+			]]>
+ 		</if>
+ 		<if test="computer_mac != null and computer_mac != ''" >
+ 			<![CDATA[
+	 			,computer_mac = #{computer_mac}
+			]]>
+ 		</if>
+ 		<if test="storage_area != null and storage_area != ''" >
+ 			<![CDATA[
+	 			,storage_area = #{storage_area}
+			]]>
+ 		</if>
+ 		<if test="storage_location != null and storage_location != ''" >
+ 			<![CDATA[
+	 			,storage_location = #{storage_location}
+			]]>
+ 		</if>
+ 		<if test="summ != null and summ != ''" >
+ 			<![CDATA[
+	 			,summ = #{summ}
+			]]>
+ 		</if>
+ 		<if test="computer_status != null and computer_status != ''" >
+ 			<![CDATA[
+	 			,computer_status = #{computer_status}
+			]]>
+ 		</if>
+ 		<if test="internet_type != null and internet_type != ''" >
+ 			<![CDATA[
+	 			,internet_type = #{internet_type}
+			]]>
+ 		</if>
+ 		<if test="input_point != null and input_point != ''" >
+ 			<![CDATA[
+	 			,input_point = #{input_point}
+			]]>
+ 		</if>
+ 		<if test="output_point != null and output_point != ''" >
+ 			<![CDATA[
+	 			,output_point = #{output_point}
+			]]>
+ 		</if>
+ 		<if test="key_code != null and key_code != ''" >
+ 			<![CDATA[
+	 			,key_code = #{key_code}
+			]]>
+ 		</if>
+ 		<if test="software_type != null and software_type != ''" >
+ 			<![CDATA[
+	 			,software_type = #{software_type}
+			]]>
+ 		</if>
+ 		<if test="software_summ != null and software_summ != ''" >
+ 			<![CDATA[
+	 			,software_summ = #{software_summ}
+			]]>
+ 		</if>
+ 		<if test="install_time != null and install_time != ''" >
+ 			<![CDATA[
+	 			,install_time = #{install_time}
+			]]>
+ 		</if>
+ 		<if test="switch_num != null and switch_num != ''" >
+ 			<![CDATA[
+	 			,switch_num = #{switch_num}
+			]]>
+ 		</if>
+ 		<if test="switch_point != null and switch_point != ''" >
+ 			<![CDATA[
+	 			,switch_point = #{switch_point}
+			]]>
+ 		</if>
+ 		<if test="computer_gateway != null and computer_gateway != ''" >
+ 			<![CDATA[
+	 			,computer_gateway = #{computer_gateway}
+			]]>
+ 		</if>
+ 		<if test="mark_code != null and mark_code != ''" >
+ 			<![CDATA[
+	 			,mark_code = #{mark_code}
+			]]>
+ 		</if>
+ 		<if test="vlan_num != null and vlan_num != ''" >
+ 			<![CDATA[
+	 			,vlan_num = #{vlan_num}
+			]]>
+ 		</if>
+ 		</trim>
+		where computer_barcode = #{computer_barcode}
+	</update>
+
+	<!-- 信息设备模块 -->	
+	
+	<select id="getInfoTypeList" resultType="infotype" parameterType="map">
+		<![CDATA[
+			select * from sys_devicetype 
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="device_type != null">
+				<![CDATA[
+					and device_type=#{device_type}
+				]]>
+			</if>
+			<if test="statue != null">
+				<![CDATA[
+					and statue=#{statue}
+				]]>
+			</if>
+			<if test="product_type != null">
+				<![CDATA[
+					and product_type=#{product_type}
+				]]>
+			</if>
+		</trim>
+	</select>	
+<!-- 	<select id="getInfoTypeList" resultType="infotype" parameterType="map">
+		<![CDATA[
+			select * from sys_devicetype where device_type=#{device_type}
+		]]>
+	</select>	 -->	
+	<insert id="addInfoDevice" parameterType="entityinfodevice">
+		<![CDATA[
+			insert into entity_device_bm(
+				device_barcode,
+				event_code,
+				user_iidd,
+				user_name,
+				dept_id,
+				dept_name,
+				duty_user_id,
+				duty_user_name,
+				duty_dept_id,
+				duty_dept_name,
+				conf_code,
+				device_series,
+				device_version,
+				brand_type,
+				device_seclv,
+				device_usage,
+				purchase_time,
+				use_time,
+				destroy_time,
+				location,
+				serial_num,
+				cert_name,
+				cert_num,
+				memory,
+				device_type,
+				info_id,
+				device_statues,
+				detail,
+				oldconf_code,
+				company
+			)values(
+				#{device_barcode},
+				#{event_code},
+				#{user_iidd},
+				#{user_name},
+				#{dept_id},
+				#{dept_name},
+				#{duty_user_id},
+				#{duty_user_name},
+				#{duty_dept_id},
+				#{duty_dept_name},
+				#{conf_code},
+				#{device_series},
+				#{device_version},
+				#{brand_type},
+				#{device_seclv},
+				#{device_usage},
+				#{purchase_time},
+				#{use_time},
+				#{destroy_time},
+				#{location},
+				#{serial_num},
+				#{cert_name},
+				#{cert_num},
+				#{memory},
+				#{device_type},
+				#{info_id},
+				#{device_statues},
+				#{detail},
+				#{oldconf_code},
+				#{company}		
+			)	
+		]]>
+	</insert>
+	<select id="getInfoIDByName" parameterType="map" resultType="int">
+		<![CDATA[
+			select info_id from sys_devicetype where info_type=#{info_type} and device_type=#{device_type}
+		]]>
+	</select>
+	<select id="getInfoDeviceList" resultType="entityinfodevice" parameterType="map">
+		<![CDATA[
+			select ec.*,sd.dept_name as duty_dept_name, suu.user_name as duty_user_name,mt.info_type as info_type,ss.seclv_name as seclv_name
+			from entity_device_bm ec
+				left join sec_dept sd on(ec.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(ec.duty_user_id=suu.user_iidd)
+				left join (select info_id,info_type from sys_devicetype) mt on (ec.info_id=mt.info_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.device_seclv=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="device_barcode != null and device_barcode != ''">
+				<![CDATA[
+					and UPPER(ec.device_barcode) LIKE UPPER('%'+#{device_barcode}+'%')
+				]]>
+			</if>	
+			<if test="device_seclv != null and device_seclv != ''">
+				<![CDATA[
+					and ec.device_seclv = #{device_seclv}
+				]]>
+			</if>	
+			<if test="device_type != null and device_type != ''">
+				<![CDATA[
+					and ec.device_type = #{device_type}
+				]]>
+			</if>	
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and ec.duty_user_id = #{duty_user_id}
+				]]>
+			</if>
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="duty_dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>		
+			<if test="info_id != null and info_id != ''">
+				<![CDATA[
+					and ec.info_id = #{info_id}
+				]]>
+			</if>		
+			<if test="conf_code != null and conf_code != ''">
+				<![CDATA[
+					and UPPER(ec.conf_code) LIKE UPPER('%'+#{conf_code}+'%')
+				]]>
+			</if>
+			<if test="device_series != null and device_series != ''">
+				<![CDATA[
+					and UPPER(ec.device_series) LIKE UPPER('%'+#{device_series}+'%')
+				]]>
+			</if>
+			<if test="device_statues != null and device_statues != ''">
+				<![CDATA[
+					and ec.device_statues = #{device_statues}
+				]]>
+			</if>	
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>				
+			<![CDATA[
+				and ec.is_sealed='N'
+			]]>								
+		</trim>
+	</select>
+	<select id="getInfoDeviceByBarcode" resultType="entityinfodevice"	parameterType="string">
+		<![CDATA[
+			select ec.*,sd.dept_name as duty_dept_name, suu.user_name as duty_user_name,mt.info_type as info_type,ss.seclv_name as seclv_name
+			from entity_device_bm ec
+				left join sec_dept sd on(ec.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(ec.duty_user_id=suu.user_iidd)
+				left join (select info_id,info_type from sys_devicetype) mt on (ec.info_id=mt.info_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.device_seclv=ss.seclv_code)
+			where device_barcode = #{device_barcode} and ec.is_sealed='N'
+		]]>
+	</select>
+	<insert id="addInfoDeviceEvent" parameterType="infodeviceevent">
+		<![CDATA[
+			insert into event_newdevice(
+				device_barcode,
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				usage_code,
+				project_code,
+				duty_user_id,
+				duty_user_name,
+				duty_dept_id,
+				duty_dept_name,
+				device_type,
+				info_id,
+				event_type,
+				conf_code_before,
+				selv_before,
+				location_before,
+				change_dept_id,
+				change_dept_name,
+				change_user_id,
+				change_user_name,
+				change_conf_code,
+				change_selv,
+				change_location,
+				change_content,
+				change_reason,
+				contact_num,
+				summ,
+				his_job_code,
+				apply_time
+			)values(
+				#{device_barcode},
+				#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{usage_code},
+				#{project_code},
+				#{duty_user_id},
+				#{duty_user_name},
+				#{duty_dept_id},
+				#{duty_dept_name},
+				#{device_type},
+				#{info_id},
+				#{event_type},
+				#{conf_code_before},
+				#{selv_before},
+				#{location_before},
+				#{change_dept_id},
+				#{change_dept_name},
+				#{change_user_id},
+				#{change_user_name},
+				#{change_conf_code},
+				#{change_selv},
+				#{change_location},
+				#{change_content},
+				#{change_reason},
+				#{contact_num},
+				#{summ},
+				#{his_job_code},
+				#{apply_time}
+			)	
+		]]>
+	</insert>
+	<update id="updateInfoDeviceEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_newdevice set job_code=#{job_code} where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getInfoDeviceEventList" parameterType="map" resultType="infodeviceevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,
+			mt.info_type as info_type, sa.seclv_name as selv_name_before, sc.seclv_name as change_selv_name,jp.jobtype_code
+			from event_newdevice euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select info_id,info_type from sys_devicetype) mt on (euc.info_id=mt.info_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) sa on (euc.selv_before=sa.seclv_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) sc on (euc.change_selv=sc.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and euc.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and euc.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			<if test="event_type != null and event_type != ''" >
+   				<![CDATA[
+			 		and euc.event_type = #{event_type}
+				]]>
+   			</if>
+   			<if test="jobType_code != null and jobType_code != ''">
+   				<![CDATA[
+			 		and jp.jobtype_code = #{jobType_code}
+				]]>
+			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getInfoDeviceJobCodeByEventCode" resultType="string" parameterType="string">
+		<![CDATA[
+			select job_code from event_newdevice where event_code = #{event_code}
+		]]>
+	</select>
+	<delete id="delInfoDeviceEvent" parameterType="string">
+		<![CDATA[
+			delete from event_newdevice where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getInfoDeviceEventByEventCode" resultType="infodeviceevent" parameterType="string">
+		<![CDATA[
+			select ec.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,mt.info_type as info_type,
+			 sa.seclv_name as selv_name_before, sc.seclv_name as change_selv_name 
+			 from event_newdevice ec 
+				left join job_process jp on(ec.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ec.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ec.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+				left join (select info_id,info_type from sys_devicetype) mt on (ec.info_id=mt.info_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) sa on (ec.selv_before=sa.seclv_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) sc on (ec.change_selv=sc.seclv_code)
+				where ec.event_code=#{event_code};
+		]]>
+	</select>
+	<select id="getInfoDeviceEventListByJobCode" resultType="infodeviceevent" parameterType="string">
+		<![CDATA[
+			select ec.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,mt.info_type as info_type,
+			sa.seclv_name as selv_name_before, sc.seclv_name as change_selv_name 
+			 from event_newdevice ec 
+				left join job_process jp on(ec.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ec.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ec.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+				left join (select info_id,info_type from sys_devicetype) mt on (ec.info_id=mt.info_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) sa on (ec.selv_before=sa.seclv_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) sc on (ec.change_selv=sc.seclv_code)
+				where ec.job_code=#{job_code};
+		]]>
+	</select>
+
+	<insert id="addInfoDeviceByEvent" parameterType="infodeviceevent">
+		<![CDATA[
+			insert into entity_device_bm(
+				device_barcode,
+				event_code,
+				user_iidd,
+				dept_id,
+				duty_user_id,
+				duty_user_name,
+				duty_dept_id,
+				duty_dept_name,
+				device_type,
+				info_id,
+				job_code,
+				conf_code
+			)values(
+				#{device_barcode},
+				#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{duty_user_id},
+				#{duty_user_name},
+				#{duty_dept_id},
+				#{duty_dept_name},
+				#{device_type},
+				#{info_id},
+				#{job_code},
+				#{conf_code_before}
+			)	
+		]]>
+	</insert>
+	<update id="updateInfoDeviceChangeByEvent" parameterType="infodeviceevent">
+		<![CDATA[
+			update entity_device_bm 	
+		]]>
+		<trim prefix="set" prefixOverrides=",">
+		<if test="change_user_id != null and change_user_id != ''" >
+ 			<![CDATA[
+	 			 ,duty_user_id = #{change_user_id}
+			]]>
+ 		</if>
+ 		<if test="change_user_name != null and change_user_name != ''" >
+ 			<![CDATA[
+	 			,duty_user_name = #{change_user_name}
+			]]>
+ 		</if>
+ 		<if test="change_dept_id != null and change_dept_id != ''" >
+ 			<![CDATA[
+	 			,duty_dept_id = #{change_dept_id}
+			]]>
+ 		</if>
+ 		<if test="change_dept_name != null and change_dept_name != ''" >
+ 			<![CDATA[
+	 			,duty_dept_name = #{change_dept_name}
+			]]>
+ 		</if>
+ 		<if test="change_selv != null and change_selv != ''" >
+ 			<![CDATA[
+	 			,device_seclv = #{change_selv}
+			]]>
+ 		</if>
+ 		<if test="change_location != null and change_location != ''" >
+ 			<![CDATA[
+	 			,location = #{change_location}
+			]]>
+ 		</if>
+ 		</trim>
+ 		where device_barcode=#{device_barcode}
+	</update>
+	<update id="updateInfoDeviceByEntity" parameterType="entityinfodevice">
+		<![CDATA[
+			update entity_device_bm set 
+			device_series = #{device_series},
+			device_version =#{device_version},
+			brand_type = #{brand_type},
+			device_seclv = #{device_seclv},
+			device_usage = #{device_usage},
+			purchase_time =#{purchase_time},
+			use_time = #{use_time},
+			location = #{location},
+			serial_num = #{serial_num},
+			cert_name =#{cert_name},
+			cert_num =#{cert_num},
+			memory = #{memory},
+			oldconf_code=#{oldconf_code},
+			company=#{company},
+			detail=#{detail},
+			device_statues=#{device_statues} 
+			where device_barcode=#{device_barcode}
+		]]>
+	</update> 
+	<update id="updateInfoDeviceDestroyByEvent" parameterType="string">
+		<![CDATA[
+			update entity_device_bm set device_statues=6,destroy_time = getdate() where device_barcode=#{device_barcode}
+		]]>
+	</update>
+	
+	<!-- 添加设备操作 -->
+	<insert id="addDeviceOperation" parameterType="entitydeviceoperation">
+		<![CDATA[
+			insert into ref_device_operation(
+				event_code,
+				device_barcode,
+				operation_type,
+				operation_user_id,
+				operation_time,
+				old_content,
+				new_content,
+				user_id,
+				key_time,
+				start_time,
+				end_time,
+				key_code,
+				computer_ip,
+				switch_num,
+				switch_point,
+				mark_code,
+				vlan_num,
+				computer_gateway,
+				software_type,
+				software_summ
+			)values(
+				#{event_code},
+				#{device_barcode},
+				#{operation_type},
+				#{operation_user_id},
+				#{operation_time},
+				#{old_content},
+				#{new_content},
+				#{user_id},
+				#{key_time},
+				#{start_time},
+				#{end_time},
+				#{key_code},
+				#{computer_ip},
+				#{switch_num},
+				#{switch_point},
+				#{mark_code},
+				#{vlan_num},
+				#{computer_gateway},
+				#{software_type},
+				#{software_summ}
+			)	
+		]]>
+	</insert>
+
+	<!-- 添加设备操作 -->
+	<insert id="addDeviceOperationByEventCode" parameterType="map">
+		<![CDATA[
+			insert into ref_device_operation(
+				event_code,
+				key_code,
+				computer_ip,
+				switch_num,
+				switch_point,
+				vlan_num,
+				mark_code,
+				computer_gateway,
+				software_type,
+				software_summ,
+				operation_time,
+				operation_user_id,
+				operation_content,
+				start_time,
+				hdisk_no,
+				computer_mac,
+				computer_os,
+				install_time
+			)values(
+				#{event_code},
+				#{key_code},
+				#{computer_ip},
+				#{switch_num},
+				#{switch_point},
+				#{vlan_num},
+				#{mark_code},
+				#{computer_gateway},
+				#{software_type},
+				#{software_summ},
+				#{operation_time},
+				#{operation_user_id},
+				#{operation_content},
+				#{start_time},
+				#{hdisk_no},
+				#{computer_mac},
+				#{computer_os},
+				#{install_time}
+			)	
+		]]>
+	</insert>
+	<update id="updateInfoType" parameterType="infotype">
+		<![CDATA[
+			update sys_devicetype 
+		]]>
+		<trim prefix="set" prefixOverrides=",">
+			<if test="info_type != null and info_type != ''" >
+	 			<![CDATA[
+		 			 ,info_type = #{info_type}
+				]]>
+	 		</if>
+	 		<if test="summ != null and summ != ''" >
+	 			<![CDATA[
+		 			 ,summ = #{summ}
+				]]>
+	 		</if>
+	 		<if test="statue != null" >
+	 			<![CDATA[
+		 			 ,statue = #{statue}
+				]]>
+	 		</if>
+	 	</trim>
+	 		where info_id = #{info_id}
+	</update>
+	<select id="getInfoTypeByID" parameterType="map" resultType="infotype">
+		<![CDATA[
+			select * from sys_devicetype 
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="info_id != null and info_id != ''" >
+   				<![CDATA[
+			 		and info_id = #{info_id}
+				]]>
+   			</if>
+   			<if test="info_type != null and info_type != ''" >
+   				<![CDATA[
+			 		and info_type = #{info_type}
+				]]>
+   			</if>
+   		</trim>		
+	</select>
+	<delete id="deleteEntityComputer" parameterType="string">
+	<![CDATA[
+			update entity_computer set is_sealed='Y' where computer_barcode=#{computer_barcode}
+		]]>
+	</delete>
+	<insert id="addInfoDeviceTemp" parameterType="entitydevicetemp">
+		<![CDATA[
+			insert into temp_device(
+				event_code,
+				conf_code,
+				device_series,  
+				device_version, 
+				brand_type,     
+				device_seclv,   
+				device_usage,   
+				purchase_time,  
+				use_time,       
+				location,       
+				serial_num,     
+				cert_name,      
+				cert_num,       
+				memory,         
+				device_type,    
+				info_id,        
+				device_statues, 
+				detail,         
+				oldconf_code,
+				company   
+			)values(
+				#{event_code},
+				#{conf_code}, 
+				#{device_series},  
+				#{device_version}, 
+				#{brand_type},     
+				#{device_seclv},   
+				#{device_usage},   
+				#{purchase_time},  
+				#{use_time},       
+				#{location},       
+				#{serial_num},     
+				#{cert_name},      
+				#{cert_num},       
+				#{memory},         
+				#{device_type},    
+				#{info_id},        
+				#{device_statues}, 
+				#{detail},         
+				#{oldconf_code},
+				#{company}   
+			)	
+		]]>
+	</insert>
+	<select id="getDeviceTempByEventCode" parameterType="string" resultType="entitydevicetemp">
+		<![CDATA[
+			select ec.*, ss.seclv_name as seclv_name
+			from temp_device ec
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.device_seclv=ss.seclv_code)
+			where event_code = #{event_code}
+		]]>
+	</select>
+	<update id="updateDeviceEntityByTemp" parameterType="string">
+		<![CDATA[
+			update e set 
+				e.device_series=t.device_series,  
+				e.device_version=t.device_version, 
+				e.brand_type=t.brand_type,
+				e.device_seclv=t.device_seclv,   
+				e.device_usage=t.device_usage,   
+				e.purchase_time=t.purchase_time,  
+				e.use_time=t.use_time,       
+				e.location=t.location,       
+				e.serial_num=t.serial_num,     
+				e.cert_name=t.cert_name,      
+				e.cert_num=t.cert_num,       
+				e.memory=t.memory,                 
+				e.device_statues=t.device_statues, 
+				e.detail=t.detail,         
+				e.oldconf_code=t.oldconf_code,
+				e.company = t.company
+			from entity_device_bm e, temp_device t
+			where e.event_code = #{event_code} and t.event_code = #{event_code} 
+		]]>
+	</update>
+	<update id="updateDeviceTemp" parameterType="entitydevicetemp">
+		<![CDATA[
+			update temp_device set
+				device_series=#{device_series},  
+				device_version=#{device_version}, 
+				brand_type=#{brand_type},     
+				device_seclv=#{device_seclv},   
+				device_usage=#{device_usage},   
+				purchase_time=#{purchase_time},  
+				use_time=#{use_time},       
+				location=#{location},       
+				cert_name=#{cert_name},      
+				cert_num=#{cert_num},       
+				memory=#{memory},             
+				oldconf_code=#{oldconf_code},
+				company=#{company}    				
+			where event_code=#{event_code}
+		]]>
+	</update>					
+	
+	<update id="updateChangeDeviceEvent" parameterType="map">
+		<![CDATA[
+			update event_changedevice  	
+		]]>
+		<trim prefix="set" prefixOverrides=",">
+		<if test="event_content != null and event_content != ''" >
+ 			<![CDATA[
+	 			 ,event_content = #{event_content}
+			]]>
+ 		</if>
+ 		<if test="event_reason != null and event_reason != ''" >
+ 			<![CDATA[
+	 			,event_reason = #{event_reason}
+			]]>
+ 		</if>
+ 		</trim>
+		where event_code=#{event_code}
+	</update>
+	<insert id="addBorrowBookEvent" parameterType="borrowbookevent">					
+		<![CDATA[
+			insert into event_borrowbook(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				usage_code,
+				project_code,
+				summ,
+				contact_num,
+				book_selv,
+				start_time,
+				end_time,
+				place,
+				other_info,
+				judge,
+				devieinfo,
+				sign_time, 
+				signname,
+				mobilephone_num,
+				disc_num,
+				disc_file,
+				security_methord
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{contact_num},
+				#{book_selv},
+				#{start_time},
+				#{end_time},
+				#{place},
+				#{other_info},
+				#{judge},
+				#{devieinfo},
+				#{sign_time}, 
+				#{signname},
+				#{mobilephone_num},
+				#{disc_num},
+				#{disc_file},
+				#{security_methord}				
+				)
+		]]>
+	</insert>
+	<update id="updateBorrowBookEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_borrowbook
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+		<select id="getBorrowBookEventList" parameterType="map" resultType="borrowbookevent">
+		<![CDATA[
+			select euc.*,jp.job_status,ss.seclv_name as book_selv_name,syu.usage_name,sp.project_name, 
+			su.user_name,sd.dept_name from event_borrowbook euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.book_selv=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and euc.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="book_selv != null and book_selv != ''" >
+   				<![CDATA[
+			 		and euc.book_selv = #{book_selv}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getBorrowBookEventListByJobCode" parameterType="string" resultType="borrowbookevent">
+		<![CDATA[
+			select euc.*,jp.job_status,ss.seclv_name as book_selv_name,syu.usage_name,sp.project_name,
+			su.user_name,sd.dept_name from event_borrowbook euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.book_selv=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+			where euc.job_code = #{job_code}
+		]]>
+	</select>
+<!-- 声光电保密编号流水号获取和递增 -->
+	<update id="updateSerialNum" parameterType="string">
+		<![CDATA[
+			update sys_serial set serial_num = serial_num+1 where serial_code = #{device_type}
+		]]>
+	</update> 
+	<select id="getSerialNum" resultType="string" parameterType="string">
+		<![CDATA[
+			select serial_num from sys_serial where serial_code = #{device_type}
+		]]>
+	</select>
+	<select id="getInfoTypeCountByName" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from sys_devicetype where info_type=#{typename}
+		]]>
+	</select>
+	<select id="getNextDeviceTypeId" parameterType="string" resultType="string">
+		<![CDATA[
+			select Max(info_id) from sys_devicetype where device_type=#{id}
+		]]>
+	</select>
+	<insert id="addInfoDeviceType" parameterType="infotype">
+		<![CDATA[
+			insert into sys_devicetype(
+				info_id,
+				info_type,
+				device_type,
+				product_type,
+				summ
+			)values(
+				#{info_id},
+				#{info_type},
+				#{device_type},
+				#{product_type},
+				#{summ}
+			)	
+		]]>
+	</insert>	
+	<delete id="deleteNetworkDevice" parameterType="string">
+	<![CDATA[
+			update entity_device_bm set is_sealed='Y' where device_barcode=#{device_barcode}
+		]]>
+	</delete>	
+	<insert id="addEntityEventDevice" parameterType="entityeventdevice">
+		<![CDATA[
+			insert into ref_event_device(
+				event_code,
+				computer_barcode,
+				computer_name,
+				computer_model,
+				seclv_code,
+				bef_seclv_code,
+				duty_user_id,
+				bef_duty_user_id,
+				duty_dept_id,
+				bef_duty_dept_id,
+				duty_entp_id,
+				bef_duty_entp_id,
+				conf_code,
+				bef_conf_code,
+				hdisk_no,
+				bef_hdisk_no,
+				computer_ip,
+				bef_computer_ip,
+				computer_mac,
+				bef_computer_mac,
+				internet_type,
+				computer_os,
+				install_time,
+				storage_area,
+				bef_storage_area,
+				storage_location,
+				bef_storage_location,
+				output_point,
+				input_point,
+				start_time,
+				end_time,
+				apply_type,
+				power_type,
+				printer_model,
+				printer_conf_code,
+				printer_seclv_name,
+				other_s,
+				med_type,
+				summ,
+				oldconf_code,
+				computer_code
+			)values(
+				#{event_code},
+				#{computer_barcode},
+				#{computer_name},
+				#{computer_model},
+				#{seclv_code},
+				#{bef_seclv_code},
+				#{duty_user_id},
+				#{bef_duty_user_id},
+				#{duty_dept_id},
+				#{bef_duty_dept_id},
+				#{duty_entp_id},
+				#{bef_duty_entp_id},
+				#{conf_code},
+				#{bef_conf_code},
+				#{hdisk_no},
+				#{bef_hdisk_no},
+				#{computer_ip},
+				#{bef_computer_ip},
+				#{computer_mac},
+				#{bef_computer_mac},
+				#{internet_type},
+				#{computer_os},
+				#{install_time},
+				#{storage_area},
+				#{bef_storage_area},
+				#{storage_location},
+				#{bef_storage_location},
+				#{output_point},
+				#{input_point},
+				#{start_time},
+				#{end_time},
+				#{apply_type},
+				#{power_type},
+				#{printer_model},
+				#{printer_conf_code},
+				#{printer_seclv_name},
+				#{other_s},
+				#{med_type},
+				#{summ},
+				#{oldconf_code},
+				#{computer_code}
+			)	
+		]]>
+	</insert>			
+	
+<!-- 笔记本台账添加 -->
+
+	<insert id="addBookEntity" parameterType="entitybook">
+		<![CDATA[
+			insert into entity_book(
+				book_barcode,
+				book_code,
+				duty_entp, 
+				duty_dept_id,
+				duty_user_id,
+				seclv_code, 
+				book_os, 
+				hdisk_no, 
+				book_mac,
+				internet_type,
+				book_model,
+				storage_location,
+				book_status, 
+				outsideinfo, 
+				output_point,
+				storage_secinfo,
+				detail, 
+				med_type,
+				conf_code,
+				useinfo,
+				oldconf_code		
+			)values(
+				#{book_barcode},
+				#{book_code}, 
+				#{duty_entp}, 
+				#{duty_dept_id},
+				#{duty_user_id},
+				#{seclv_code}, 
+				#{book_os},
+				#{hdisk_no}, 
+				#{book_mac},
+				#{internet_type},
+				#{book_model},
+				#{storage_location},
+				#{book_status}, 
+				#{outsideinfo}, 
+				#{output_point},
+				#{storage_secinfo},
+				#{detail},
+				#{med_type},
+				#{conf_code},
+				#{useinfo},
+				#{oldconf_code}				
+			)	
+		]]>
+	</insert>	
+	<select id="getBookList" resultType="entitybook" parameterType="map" >
+		<![CDATA[
+			select ec.*,sd.dept_name as duty_dept_name,suu.user_name as duty_user_name,
+			mt.info_type as med_type_name,ss.seclv_name as seclv_name
+			from entity_book ec
+				left join sec_dept sd on(ec.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(ec.duty_user_id=suu.user_iidd)
+				left join (select info_id,info_type from sys_devicetype) mt on (ec.med_type=mt.info_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="book_barcode != null and book_barcode != ''">
+				<![CDATA[
+					and ec.book_barcode = #{book_barcode}
+				]]>
+			</if>
+			<if test="book_code != null and book_code != ''">
+				<![CDATA[
+					and ec.book_code = #{book_code}
+				]]>
+			</if>
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and ec.duty_user_id = #{duty_user_id}
+				]]>
+			</if>
+			<if test="conf_code != null and conf_code != ''">
+				<![CDATA[
+					and ec.conf_code = #{conf_code}
+				]]>
+			</if>	
+			<if test="oldconf_code != null and oldconf_code != ''">
+				<![CDATA[
+					and ec.oldconf_code = #{oldconf_code}
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != ''">
+				<![CDATA[
+					and ec.seclv_code = #{seclv_code}
+				]]>
+			</if>	
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="duty_dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>	
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and ec.duty_user_id = #{duty_user_id}
+				]]>
+			</if>	
+			<if test="book_status != null">
+				<![CDATA[
+					and ec.book_status = #{book_status}
+				]]>
+			</if>
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>	
+			<![CDATA[
+					and ec.is_sealed = 'N' 
+				]]>
+		</trim>
+		order by ec.id desc
+	</select>
+	<update id="updateEntityBook" parameterType="entitybook">
+		<![CDATA[
+			update entity_book  	
+		]]>
+		<trim prefix="set" prefixOverrides=",">
+			<if test="book_code != null and book_code != ''" >
+	 			<![CDATA[
+		 			 ,book_code = #{book_code}
+				]]>
+	 		</if>
+	 		<if test="duty_entp != null and duty_entp != ''" >
+	 			<![CDATA[
+		 			 ,duty_entp = #{duty_entp}
+				]]>
+	 		</if>
+	 		<if test="duty_dept_id != null and duty_dept_id != ''" >
+	 			<![CDATA[
+		 			 ,duty_dept_id = #{duty_dept_id}
+				]]>
+	 		</if>
+	 		<if test="duty_user_id != null and duty_user_id != ''" >
+	 			<![CDATA[
+		 			 ,duty_user_id = #{duty_user_id}
+				]]>
+	 		</if>
+	 		<if test="seclv_code != null" >
+	 			<![CDATA[
+		 			 ,seclv_code = #{seclv_code}
+				]]>
+	 		</if>
+	 		<if test="book_os != null and book_os != ''" >
+	 			<![CDATA[
+		 			 ,book_os = #{book_os}
+				]]>
+	 		</if>
+	 		<if test="book_mac != null and book_mac != ''" >
+	 			<![CDATA[
+		 			 ,book_mac = #{book_mac}
+				]]>
+	 		</if>
+	 		<if test="internet_type != null and internet_type != ''" >
+	 			<![CDATA[
+		 			 ,internet_type = #{internet_type}
+				]]>
+	 		</if>
+	 		<if test="book_model != null and book_model != ''" >
+	 			<![CDATA[
+		 			 ,book_model = #{book_model}
+				]]>
+	 		</if>
+	 		<if test="storage_location != null and storage_location != ''" >
+	 			<![CDATA[
+		 			 ,storage_location = #{storage_location}
+				]]>
+	 		</if>
+	 		<if test="book_status != null" >
+	 			<![CDATA[
+		 			 ,book_status = #{book_status}
+				]]>
+	 		</if>
+	 		<if test="outsideinfo != null and outsideinfo != ''" >
+	 			<![CDATA[
+		 			 ,outsideinfo = #{outsideinfo}
+				]]>
+	 		</if>
+	 		<if test="output_point != null and output_point != ''" >
+	 			<![CDATA[
+		 			 ,output_point = #{output_point}
+				]]>
+	 		</if>
+	 		<if test="storage_secinfo != null and storage_secinfo != ''" >
+	 			<![CDATA[
+		 			 ,storage_secinfo = #{storage_secinfo}
+				]]>
+	 		</if>
+	 		<if test="detail != null and detail != ''" >
+	 			<![CDATA[
+		 			 ,detail = #{detail}
+				]]>
+	 		</if>
+	 		<if test="hdisk_no != null and hdisk_no != ''" >
+	 			<![CDATA[
+		 			 ,hdisk_no = #{hdisk_no}
+				]]>
+	 		</if>
+	 		<if test="useinfo != null and useinfo != ''" >
+	 			<![CDATA[
+		 			 ,useinfo = #{useinfo}
+				]]>
+	 		</if>
+	 		<if test="oldconf_code != null and oldconf_code != ''" >
+	 			<![CDATA[
+		 			 ,oldconf_code = #{oldconf_code}
+				]]>
+	 		</if>
+		</trim>
+		where book_barcode = #{book_barcode}
+	</update>
+	<update id="deleteEntityBook" parameterType="string">
+		<![CDATA[
+		update entity_book set is_sealed='Y' where book_barcode = #{book_barcode} 
+		]]>
+	</update>
+	<select id="getAllBookSize" resultType="int" parameterType="map">
+		<![CDATA[
+			select count(1) from entity_book ec
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="book_barcode != null and book_barcode != ''">
+				<![CDATA[
+					and ec.book_barcode = #{book_barcode}
+				]]>
+			</if>
+			<if test="book_code != null and book_code != ''">
+				<![CDATA[
+					and ec.book_code = #{book_code}
+				]]>
+			</if>
+			<if test="conf_code != null and conf_code != ''">
+				<![CDATA[
+					and ec.conf_code = #{conf_code}
+				]]>
+			</if>	
+			<if test="seclv_code != null and seclv_code != ''">
+				<![CDATA[
+					and ec.seclv_code = #{seclv_code}
+				]]>
+			</if>	
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="duty_dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>	
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and ec.duty_user_id = #{duty_user_id}
+				]]>
+			</if>	
+			<if test="book_status != null and book_status != ''">
+				<![CDATA[
+					and ec.book_status = #{book_status}
+				]]>
+			</if>
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>	
+			<![CDATA[
+				and ec.is_sealed='N'
+   			]]>	
+		</trim>		
+	</select>
+	<select id="getAllInfoDeviceSize" resultType="int" parameterType="map">
+		<![CDATA[
+			select count(1) from entity_device_bm ec
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="device_barcode != null and device_barcode != ''">
+				<![CDATA[
+					and UPPER(ec.device_barcode) LIKE UPPER('%'+#{device_barcode}+'%')
+				]]>
+			</if>	
+			<if test="device_seclv != null and device_seclv != ''">
+				<![CDATA[
+					and ec.device_seclv = #{device_seclv}
+				]]>
+			</if>	
+			<if test="device_type != null and device_type != ''">
+				<![CDATA[
+					and ec.device_type = #{device_type}
+				]]>
+			</if>	
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and ec.duty_user_id = #{duty_user_id}
+				]]>
+			</if>
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="duty_dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>		
+			<if test="info_id != null and info_id != ''">
+				<![CDATA[
+					and ec.info_id = #{info_id}
+				]]>
+			</if>		
+			<if test="conf_code != null and conf_code != ''">
+				<![CDATA[
+					and UPPER(ec.conf_code) LIKE UPPER('%'+#{conf_code}+'%')
+				]]>
+			</if>
+			<if test="device_series != null and device_series != ''">
+				<![CDATA[
+					and UPPER(ec.device_series) LIKE UPPER('%'+#{device_series}+'%')
+				]]>
+			</if>
+			<if test="device_statues != null and device_statues != ''">
+				<![CDATA[
+					and ec.device_statues = #{device_statues}
+				]]>
+			</if>	
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>				
+			<![CDATA[
+				and ec.is_sealed='N'
+			]]>								
+		</trim>
+	</select>
+	<update id="updateBorrowBookAssociate" parameterType="map">
+		<![CDATA[
+		update event_borrowbook set associat_entity=#{associat_entity} where event_code = #{event_code} 
+		]]>
+	</update>
+	<select id="getEntityEventDeviceByEventCode" parameterType="string" resultType="entityeventdevice">
+		<![CDATA[
+			select ec.*, mt.info_type as med_type_name,su.user_name duty_user_name,suu.user_name bef_user_name,
+				sd.dept_name duty_dept_name,sdd.dept_name bef_dept_name,
+				ss.seclv_name seclv_name,sss.seclv_name bef_seclv_name 
+				from ref_event_device ec
+				left join (select info_id,info_type from sys_devicetype) mt on (ec.med_type=mt.info_id) 
+				left join (select user_iidd,user_name from sec_user) su on(ec.duty_user_id=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(sd.dept_id=ec.duty_dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) suu on(ec.bef_duty_user_id=suu.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sdd on(sdd.dept_id=ec.bef_duty_dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) sss on (ec.bef_seclv_code=sss.seclv_code)
+			where event_code=#{event_code}
+		]]>
+	</select>		
+	<!-- 通过计算机条码号更新计算机信息 -->
+	<update id="updateEntityEventDevice" parameterType="entityeventdevice">
+		<![CDATA[
+			update ref_event_device 
+				set computer_barcode=#{computer_barcode},
+				computer_name=#{computer_name},
+				computer_model=#{computer_model},
+				seclv_code=#{seclv_code},
+				bef_seclv_code=#{bef_seclv_code},
+				duty_user_id=#{duty_user_id},
+				bef_duty_user_id=#{bef_duty_user_id},
+				duty_dept_id=#{duty_dept_id},
+				bef_duty_dept_id=#{bef_duty_dept_id},
+				duty_entp_id=#{duty_entp_id},
+				bef_duty_entp_id=#{bef_duty_entp_id},
+				conf_code=#{conf_code},
+				bef_conf_code=#{bef_conf_code},
+				hdisk_no=#{hdisk_no},
+				bef_hdisk_no=#{bef_hdisk_no},
+				computer_ip=#{computer_ip},
+				bef_computer_ip=#{bef_computer_ip},
+				computer_mac=#{computer_mac},
+				bef_computer_mac=#{bef_computer_mac},
+				internet_type=#{internet_type},
+				computer_os=#{computer_os},
+				install_time=#{install_time},
+				storage_area=#{storage_area},
+				bef_storage_area=#{bef_storage_area},
+				storage_location=#{storage_location},
+				bef_storage_location=#{bef_storage_location},
+				output_point=#{output_point},
+				input_point=#{input_point},
+				start_time=#{start_time},
+				end_time=#{end_time},
+				apply_type=#{apply_type},
+				power_type=#{power_type},
+				printer_model=#{printer_model},
+				printer_conf_code=#{printer_conf_code},
+				printer_seclv_name=#{printer_seclv_name},
+				other_s=#{other_s},
+				med_type=#{med_type},
+				summ=#{summ}
+				where event_code=#{event_code}	
+		]]>
+	</update>
+	
+	<update id="deleteEntityInfoDevice" parameterType="string">
+		<![CDATA[
+			update entity_device_bm set is_sealed='Y' where device_barcode = #{device_barcode}  
+		]]>
+	</update>
+	<update id="updateInfoDeviceByBarcode" parameterType="map">
+		<![CDATA[
+			update entity_device_bm 
+		]]>
+		<trim prefix="set" prefixOverrides=",">
+			<if test="device_statues != null and device_statues != ''" >
+	 			<![CDATA[
+		 			 ,device_statues = #{device_statues}
+				]]>
+	 		</if>
+ 		</trim>
+ 		where device_barcode=#{device_barcode}
+ 	</update>			
+	<select id="getBorrowBookJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_borrowbook where event_code = #{event_code}
+		]]>
+	</select>
+	<delete id="deleteBorrowBookEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_borrowbook where event_code=#{event_code}
+		]]>
+	</delete>
+		<!-- 查看硬盘台账数 -->
+	<select id="getAllHardDiskSize" resultType="int" parameterType="map">
+		<![CDATA[
+			select count(1) from entity_harddisk ehd
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="computer_type != null and computer_type != ''">
+				<![CDATA[
+					and ehd.computer_type = #{computer_type}
+				]]>
+			</if>	
+			<if test="conf_code != null and conf_code != ''">
+				<![CDATA[
+					and ehd.conf_code = #{conf_code}
+				]]>
+			</if>	
+			<if test="computer_barcode != null and computer_barcode != ''">
+				<![CDATA[
+					and ehd.computer_barcode = #{computer_barcode}
+				]]>
+			</if>	
+			
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				<![CDATA[
+					and ehd.duty_dept_id = #{duty_dept_id}
+				]]>
+			</if>	
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and ehd.duty_user_id = #{duty_user_id}
+				]]>
+			</if>
+			<if test="duty_entp_id != null and duty_entp_id != ''">
+				<![CDATA[
+					and ehd.duty_entp_id = #{duty_entp_id}
+				]]>
+			</if>
+			<if test="hdisk_no != null and hdisk_no != ''">
+				<![CDATA[
+					and ehd.hdisk_no = #{hdisk_no}
+				]]>
+			</if>
+			<if test="retrieve_user_id != null and retrieve_user_id != ''">
+				<![CDATA[
+					and ehd.retrieve_user_id = #{retrieve_user_id}
+				]]>
+			</if>
+					<if test="retrieve_time != null and retrieve_time != ''">
+				<![CDATA[
+					and ehd.retrieve_time = #{retrieve_time}
+				]]>
+			</if>
+			<if test="approve_url != null and approve_url != ''">
+				<![CDATA[
+					and ehd.approve_url = #{approve_url}
+				]]>
+			</if>
+			<if test="hdisk_status != null and hdisk_status != ''">
+				<![CDATA[
+					and ehd.hdisk_status = #{hdisk_status}
+				]]>
+			</if>
+			<![CDATA[
+				and ehd.is_sealed='N'
+   			]]>	
+		</trim>		
+	</select>
+	<!-- 查看计算机台账 -->
+	<select id="getAllHardDiskList" resultType="entityharddisk"	parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+			select ehd.*,sd.dept_name as duty_dept_name,suu.user_name as duty_user_name,su.user_name as retrieve_user_name
+			from entity_harddisk ehd
+				left join sec_dept sd on(ehd.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(ehd.duty_user_id=suu.user_iidd)
+				left join (select user_iidd,user_name from sec_user) su on(ehd.retrieve_user_id=su.user_iidd)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="computer_type != null and computer_type != ''">
+				<![CDATA[
+					and ehd.computer_type = #{computer_type}
+				]]>
+			</if>	
+			<if test="conf_code != null and conf_code != ''">
+				<![CDATA[
+					and ehd.conf_code = #{conf_code}
+				]]>
+			</if>	
+			<if test="computer_barcode != null and computer_barcode != ''">
+				<![CDATA[
+					and ehd.computer_barcode = #{computer_barcode}
+				]]>
+			</if>	
+			
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				<![CDATA[
+					and ehd.duty_dept_id = #{duty_dept_id}
+				]]>
+			</if>	
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and ehd.duty_user_id = #{duty_user_id}
+				]]>
+			</if>
+			<if test="duty_entp_id != null and duty_entp_id != ''">
+				<![CDATA[
+					and ehd.duty_entp_id = #{duty_entp_id}
+				]]>
+			</if>
+			<if test="hdisk_no != null and hdisk_no != ''">
+				<![CDATA[
+					and ehd.hdisk_no = #{hdisk_no}
+				]]>
+			</if>
+			<if test="retrieve_user_id != null and retrieve_user_id != ''">
+				<![CDATA[
+					and ehd.retrieve_user_id = #{retrieve_user_id}
+				]]>
+			</if>
+				<if test="start_time != null and start_time != ''" >
+   				<![CDATA[
+			 		and ehd.retrieve_time >= #{start_time}
+				]]>
+   			</if>
+   			<if test="end_time != null and end_time != ''" >
+   				<![CDATA[
+			 		and ehd.retrieve_time <= #{end_time}
+				]]>
+   			</if>
+			<if test="approve_url != null and approve_url != ''">
+				<![CDATA[
+					and ehd.approve_url = #{approve_url}
+				]]>
+			</if>
+			<if test="hdisk_status != null and hdisk_status != ''">
+				<![CDATA[
+					and ehd.hdisk_status = #{hdisk_status}
+				]]>
+			</if>
+			<![CDATA[
+				and ehd.is_sealed='N'
+   			]]>	
+		</trim>		
+		<![CDATA[
+				order by ehd.id desc
+   			]]>
+	</select>
+	
+	<!-- 通过条件查询计算机信息 -->
+	<select id="getHardDiskByMap" resultType="entityharddisk"	parameterType="map">
+		<![CDATA[
+			select ehd.*,sd.dept_name as duty_dept_name,suu.user_name as duty_user_name,su.user_name as retrieve_user_name
+			from entity_harddisk ehd
+				left join sec_dept sd on(ehd.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(ehd.duty_user_id=suu.user_iidd )
+				left join (select user_iidd,user_name from sec_user) su on (ehd.retrieve_user_id=su.user_iidd)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="computer_barcode != null and computer_barcode != ''">
+				<![CDATA[
+					and ehd.computer_barcode = #{computer_barcode}
+				]]>
+			</if>	
+			<if test="hdisk_no != null and hdisk_no != ''">
+				<![CDATA[
+					and ehd.hdisk_no = #{hdisk_no}
+				]]>
+			</if>
+			<![CDATA[
+				and ehd.is_sealed='N'
+   			]]>
+		</trim>
+	</select>
+	
+	<!-- 通过计算机条码号更新计算机信息 -->
+	<update id="updateHardDisk" parameterType="entityharddisk">
+		<![CDATA[
+			update entity_harddisk 
+				set computer_type = #{computer_type},
+			    computer_barcode = #{computer_barcode},
+				conf_code= #{conf_code},
+				duty_user_id= #{duty_user_id},
+				duty_dept_id= #{duty_dept_id},
+				duty_entp_id= #{duty_entp_id},
+				retrieve_time= #{retrieve_time},
+				retrieve_user_id= #{retrieve_user_id},
+				summ= #{summ},
+				approve_url= #{approve_url},
+				hdisk_status= #{hdisk_status}
+				where hdisk_no=#{hdisk_no}	
+		]]>
+	</update>
+	<delete id="deleteEntityHDisk" parameterType="string">
+		<![CDATA[
+			update entity_harddisk set is_sealed='Y' where hdisk_no=#{hdisk_no}
+		]]>
+	</delete>
+	<insert id="addEntityHardDisk" parameterType="entityharddisk">
+		<![CDATA[
+			insert into entity_harddisk(
+				computer_type,   
+				computer_barcode,
+				conf_code,       
+				duty_user_id,    
+				duty_dept_id,    
+				duty_entp_id,    
+				hdisk_no,        
+				retrieve_user_id,
+				retrieve_time,
+				summ,       
+				approve_url,
+				hdisk_status
+			)values(
+				#{computer_type},   
+				#{computer_barcode},
+				#{conf_code},       
+				#{duty_user_id},    
+				#{duty_dept_id},    
+				#{duty_entp_id},    
+				#{hdisk_no},        
+				#{retrieve_user_id},
+				#{retrieve_time},
+				#{summ},       
+				#{approve_url},
+				#{hdisk_status}
+			)	
+		]]>
+	</insert>
+	
+	<select id="getComputerNumByMap" parameterType="map" resultType="string">
+		<![CDATA[
+			select count(1) from entity_computer   
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="duty_user_id != null and duty_user_id != ''">
+   				<![CDATA[
+			 		and duty_user_id=#{duty_user_id}
+				]]>
+			</if>
+   			<![CDATA[
+   				and computer_status=1
+   			]]>
+		</trim>
+	</select>
+	
+	<select id="getInfoDeviceNumByMap" parameterType="map" resultType="string">
+		<![CDATA[
+			select count(1) from entity_device_bm   
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="duty_user_id != null and duty_user_id != ''">
+   				<![CDATA[
+			 		and duty_user_id=#{duty_user_id}
+				]]>
+			</if>
+   			<![CDATA[
+   				and device_statues=1
+   			]]>
+   			<![CDATA[
+   				and device_type != 6 
+   			]]>
+		</trim>
+	</select>
+	
+	<select id="getMediaNumByMap" parameterType="map" resultType="string">
+		<![CDATA[
+			select count(1) from entity_device_bm   
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="duty_user_id != null and duty_user_id != ''">
+   				<![CDATA[
+			 		and duty_user_id=#{duty_user_id}
+				]]>
+			</if>
+   			<![CDATA[
+   				and device_statues=1 
+   			]]>
+   			<![CDATA[
+   				and device_type=6 
+   			]]>
+		</trim>
+	</select>
+	
+	<update id="updateEntityBookByEvent" parameterType="map">
+		<![CDATA[
+			update entity_book 
+		]]>
+		<trim prefix="set" prefixOverrides=",">
+		<if test="seclv_code != null and seclv_code != ''" >
+ 			<![CDATA[
+	 			 ,seclv_code = #{seclv_code}
+			]]>
+ 		</if>
+ 		<if test="duty_user_id != null and duty_user_id != ''" >
+ 			<![CDATA[
+	 			,duty_user_id = #{duty_user_id}
+			]]>
+ 		</if>
+ 		<if test="duty_dept_id != null and duty_dept_id != ''" >
+ 			<![CDATA[
+	 			,duty_dept_id = #{duty_dept_id}
+			]]>
+ 		</if>
+ 		<if test="hdisk_no != null and hdisk_no != ''" >
+ 			<![CDATA[
+	 			,hdisk_no = #{hdisk_no}
+			]]>
+ 		</if>
+ 		<if test="storage_location != null and storage_location != ''" >
+ 			<![CDATA[
+	 			,storage_location = #{storage_location}
+			]]>
+ 		</if>
+ 		<if test="summ != null and summ != ''" >
+ 			<![CDATA[
+	 			,summ = #{summ}
+			]]>
+ 		</if>
+ 		<if test="book_status != null and book_status != ''" >
+ 			<![CDATA[
+	 			,book_status = #{book_status}
+			]]>
+ 		</if>
+ 		<if test="software_type != null and software_type != ''" >
+ 			<![CDATA[
+	 			,software_type = #{software_type}
+			]]>
+ 		</if>
+ 		<if test="software_summ != null and software_summ != ''" >
+ 			<![CDATA[
+	 			,software_summ = #{software_summ}
+			]]>
+ 		</if>
+ 		<if test="install_time != null and install_time != ''" >
+ 			<![CDATA[
+	 			,install_time = #{install_time}
+			]]>
+ 		</if>
+ 		</trim>
+		where book_barcode = #{book_barcode}
+	</update>
+	<select id="getALLBookList" resultType="entitybook" parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+			select ec.*,sd.dept_name as duty_dept_name,suu.user_name as duty_user_name,
+			mt.info_type as med_type_name,ss.seclv_name as seclv_name
+			from entity_book ec
+				left join sec_dept sd on(ec.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(ec.duty_user_id=suu.user_iidd)
+				left join (select info_id,info_type from sys_devicetype) mt on (ec.med_type=mt.info_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="book_barcode != null and book_barcode != ''">
+				<![CDATA[
+					and ec.book_barcode = #{book_barcode}
+				]]>
+			</if>
+			<if test="book_code != null and book_code != ''">
+				<![CDATA[
+					and ec.book_code = #{book_code}
+				]]>
+			</if>
+			<if test="conf_code != null and conf_code != ''">
+				<![CDATA[
+					and ec.conf_code = #{conf_code}
+				]]>
+			</if>	
+			<if test="seclv_code != null and seclv_code != ''">
+				<![CDATA[
+					and ec.seclv_code = #{seclv_code}
+				]]>
+			</if>	
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="duty_dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>	
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and ec.duty_user_id = #{duty_user_id}
+				]]>
+			</if>	
+			<if test="book_status != null">
+				<![CDATA[
+					and ec.book_status = #{book_status}
+				]]>
+			</if>
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>	
+			<![CDATA[
+					and ec.is_sealed = 'N' 
+				]]>
+		</trim>
+		order by ec.id desc
+	</select>		
+</mapper>  

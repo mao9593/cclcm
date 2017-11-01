@@ -1,0 +1,19 @@
+<link rel="stylesheet" type="text/css" href="calendar-blue.css"/>
+<script type="text/javascript" src="calendar.js"></script>
+
+<input type="text" name="f_date_b" id="f_date_b" /><button type="reset" id="f_trigger_b">...</button>
+<input type="text" name="f_date_a" id="f_date_a" />
+
+
+<script>Calendar.setup({inputField: "f_date_b", button: "f_trigger_b", singleClick: true, showsTime: true, ifFormat: "%Y-%m-%d %H:%M", cache: true, weekNumbers:false, showOthers: true, step: 1});</script>
+<script>Calendar.setup({inputField: "f_date_a", singleClick: false, showsTime: false, ifFormat: "%Y-%m-%d", cache: false, weekNumbers:true, showOthers: false, step: 1});</script>
+
+<script>
+var now = new Date((new Date()).valueOf()+1000*60*0.5);
+</script>
+<script id="aaa" type="text/javascript" src="CookieUtil.jsp"></script>
+<script>
+document.all.aaa.src="CookieUtil2.jsp";
+//setCookie("EOMS","{'key1':123,'key2':true,'key3':'abc'}", 60*60*4);
+//showAllCookies();
+</script>

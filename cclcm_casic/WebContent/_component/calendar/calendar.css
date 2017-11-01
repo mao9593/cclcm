@@ -1,0 +1,14 @@
+.input_date_abc {
+	BORDER-RIGHT: #002d96 1px solid;
+	PADDING-RIGHT: 2px;
+	BORDER-TOP: #002d96 1px solid;
+	PADDING-LEFT: 2px;
+	FONT-SIZE: 12px;
+	FILTER: progid:DXImageTransform.Microsoft.Gradient(GradientType=0,
+		StartColorStr=#FFFFFF, EndColorStr=#E0E0E0 );
+	BORDER-LEFT: #002d96 1px solid;
+	CURSOR: hand;
+	color: #5A6CA2;
+	PADDING-TOP: 2px;
+	BORDER-BOTTOM: #002d96 1px solid;
+}

@@ -1,0 +1,58 @@
+#This is a custom properties file for displayTag
+basic.show.header=true
+basic.empty.showtable=true
+basic.msg.empty_list=没有符合条件的数据
+basic.msg.empty_list_row=<tr class="empty"><td colspan="{0}">没有符合条件的数据</td></tr>
+sort.amount=page
+export.banner=<TABLE CLASS="pager-table" CELLSPACING="1" CELLPADDING="0" BGCOLOR="#C1C1C1" BORDER="0">\
+	<TD WIDTH="121">选择一种格式导出</TD><TD WIDTH="5" style="background-color:#FFFFFF"></TD><TD>{0}</TD></TR></TABLE>
+export.banner.sepchar=</TD><TD>
+paging.banner.placement=bottom
+paging.banner.item_name=条数据
+paging.banner.items_name=条数据
+paging.banner.no_items_found=<TABLE CLASS="pager-table" CELLSPACING="1" CELLPADDING="0" BGCOLOR="#C1C1C1" BORDER="0"><TR>\
+	<TD WIDTH="121">没有任何数据</TD><TD WIDTH="5" style="background-color:#FFFFFF"></TD>
+paging.banner.one_item_found=<TABLE CLASS="pager-table" CELLSPACING="1" CELLPADDING="0" BGCOLOR="#C1C1C1" BORDER="0"><TR>\
+	<TD WIDTH="121">只有一{0}</TD><TD WIDTH="5" style="background-color:#FFFFFF"></TD>
+paging.banner.all_items_found=<TABLE CLASS="pager-table" CELLSPACING="1" CELLPADDING="0" BGCOLOR="#C1C1C1" BORDER="0"><TR>\
+	<TD WIDTH="121">共有{0}{1}</TD><TD WIDTH="5" style="background-color:#FFFFFF"></TD>
+paging.banner.some_items_found=<TABLE CLASS="pager-table" CELLSPACING="1" CELLPADDING="0" BGCOLOR="#C1C1C1" BORDER="0"><TR>\
+	<TD WIDTH="50">第<B>{4}</B>页</TD><TD WIDTH="70">共<B>{5}</B>页</TD><TD WIDTH="5" style="background-color:#FFFFFF"></TD>
+
+paging.banner.group_size=20
+
+paging.banner.full=\
+		<TD WIDTH="18"><A href="{1}"><span class="text-symbol">7</span></A></TD>\
+		<TD WIDTH="18"><A href="{2}"><span class="text-symbol">3</span></A></TD>\
+		{0}\
+		<TD WIDTH="18"><A href="{3}"><span class="text-symbol">4</span></A></TD>\
+		<TD WIDTH="18"><A href="{4}"><span class="text-symbol">8</span></A></TD>\
+	</TR></TABLE>
+
+paging.banner.first=\
+		<TD WIDTH="18"><span class="text-symbol">7</span></TD>\
+		<TD WIDTH="18"><span class="text-symbol">3</span></TD>\
+		{0}\
+		<TD WIDTH="18"><A href="{3}"><span class="text-symbol">4</span></A></TD>\
+		<TD WIDTH="18"><A href="{4}"><span class="text-symbol">8</span></A></TD>\
+	</TR></TABLE>
+
+paging.banner.last=\
+		<TD WIDTH="18"><A href="{1}"><span class="text-symbol">7</span></A></TD>\
+		<TD WIDTH="18"><A href="{2}"><span class="text-symbol">3</span></A></TD>\
+		{0}\
+		<TD WIDTH="18"><span class="text-symbol">4</span></TD>\
+		<TD WIDTH="18"><span class="text-symbol">8</span></TD>\
+	</TR></TABLE>
+
+paging.banner.onepage=\
+		<TD WIDTH="18"><span class="text-symbol">7</span></TD>\
+		<TD WIDTH="18"><span class="text-symbol">3</span></TD>\
+		{0}\
+		<TD WIDTH="18"><span class="text-symbol">4</span></TD>\
+		<TD WIDTH="18"><span class="text-symbol">8</span></TD>\
+	</TR></TABLE>
+
+paging.banner.page.selected=<TD WIDTH="18" style="background-color:#ffcc00 !important"><B>{0}<B></TD>
+paging.banner.page.link=<TD WIDTH="18"><B><a href="{1}" title="转到第{0}页">{0}</a><B></TD>
+paging.banner.page.separator=

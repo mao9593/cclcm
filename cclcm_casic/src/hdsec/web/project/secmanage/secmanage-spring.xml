@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="SecManageMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.secmanage.mapper.SecManageMapper" />
+	</bean>
+	<bean id="secmanage.addresearchfieldinevent" class="${common.package}.secmanage.action.AddResearchFieldInEventEventAction" scope="prototype"/>
+	<bean id="secmanage.manageresearchfieldinlist" class="${common.package}.secmanage.action.ManageResearchFieldInListAction" scope="prototype"/>
+	<bean id="secmanage.viewresearchfieldindetail" class="${common.package}.secmanage.action.ViewResearchFieldInDetailAction" scope="prototype"/>
+	<bean id="secmanage.delresearchfieldinevent" class="${common.package}.secmanage.action.DelResearchFieldInEventAction" scope="prototype"/>
+	<bean id="secmanage.manageresearchfieldinaprvjob" class="${common.package}.secmanage.action.ManageResearchFieldInAprvJobAction" scope="prototype"/>	
+	<bean id="secmanage.approveresearchfieldinjob" class="${common.package}.secmanage.action.ApproveResearchFieldInJobAction" scope="prototype"/>
+	<bean id="secmanage.viewresearchfieldinaprvjob" class="${common.package}.secmanage.action.ViewResearchFieldInAprvJobAction" scope="prototype"/>
+	<bean id="secmanage.addfileoutmakeevent" class="${common.package}.secmanage.action.AddFileOutMakeEventAction" scope="prototype"/>
+	<bean id="secmanage.managefileoutmakelist" class="${common.package}.secmanage.action.ManageFileOutMakeListAction" scope="prototype"/>
+	<bean id="secmanage.viewfileoutmakedetail" class="${common.package}.secmanage.action.ViewFileOutMakeDetailAction" scope="prototype"/>
+	<bean id="secmanage.managefileoutmakeaprvjob" class="${common.package}.secmanage.action.ManageFileOutMakeAprvJobAction" scope="prototype"/>	
+	<bean id="secmanage.approvefileoutmakejob" class="${common.package}.secmanage.action.ApproveFileOutMakeJobAction" scope="prototype"/>
+	<bean id="secmanage.viewfileoutmakeaprvjob" class="${common.package}.secmanage.action.ViewFileOutMakeAprvJobAction" scope="prototype"/>
+	
+	<bean id="secmanage.addpunishevent" class="${common.package}.secmanage.action.AddPunishEventAction" scope="prototype"/>
+	<bean id="secmanage.managepunishlist" class="${common.package}.secmanage.action.ManagePunishListAction" scope="prototype"/>
+ 	<bean id="secmanage.viewpunishdetail" class="${common.package}.secmanage.action.ViewPunishDetailAction" scope="prototype"/>
+	<bean id="secmanage.managepunishaprvjob" class="${common.package}.secmanage.action.ManagePunishAprvJobAction" scope="prototype"/>
+	<bean id="secmanage.approvepunishjob" class="${common.package}.secmanage.action.ApprovePunishJobAction" scope="prototype"/>
+	<bean id="secmanage.viewpunishaprvjob" class="${common.package}.secmanage.action.ViewPunishAprvJobAction" scope="prototype"/> 
+	
+	<!-- 外网电子邮件 -->
+	<bean id="secmanage.addinternetemailevent" class="${common.package}.secmanage.action.AddInternetEmailEventAction" scope="prototype"/>
+	<bean id="secmanage.manageinternetemaillist" class="${common.package}.secmanage.action.ManageInternetEmailListAction" scope="prototype"/>
+	<bean id="secmanage.viewinternetemaildetail" class="${common.package}.secmanage.action.ViewInternetEmailDetailAction" scope="prototype"/>
+	<bean id="secmanage.manageinternetemailaprvjob" class="${common.package}.secmanage.action.ManageInternetEmailAprvJobAction" scope="prototype"/>
+	<bean id="secmanage.approveinternetemailjob" class="${common.package}.secmanage.action.ApproveInternetEmailJobAction" scope="prototype"/>
+	<bean id="secmanage.viewinternetemailaprvjob" class="${common.package}.secmanage.action.ViewInternetEmailAprvJobAction" scope="prototype"/>	
+	<!-- 部门专项保密检查 -->
+	<bean id="secmanage.addseccheckevent" class="${common.package}.secmanage.action.AddSecCheckEventAction" scope="prototype"/>
+	<bean id="secmanage.managesecchecklist" class="${common.package}.secmanage.action.ManageSecCheckListAction" scope="prototype"/>
+	<bean id="secmanage.viewseccheckdetail" class="${common.package}.secmanage.action.ViewSecCheckDetailAction" scope="prototype"/>
+	<bean id="secmanage.manageseccheckaprvjob" class="${common.package}.secmanage.action.ManageSecCheckAprvJobAction" scope="prototype"/>
+	<bean id="secmanage.approveseccheckjob" class="${common.package}.secmanage.action.ApproveSecCheckJobAction" scope="prototype"/>
+	<bean id="secmanage.viewseccheckaprvjob" class="${common.package}.secmanage.action.ViewSecCheckAprvJobAction" scope="prototype"/>	
+
+	<!-- 对外交流材料 -->
+	<bean id="secmanage.addexchangematerialevent" class="${common.package}.secmanage.action.AddExchangeMaterialEventAction" scope="prototype"/>
+	<bean id="secmanage.manageexchangemateriallist" class="${common.package}.secmanage.action.ManageExchangeMaterialListAction" scope="prototype"/>
+	<bean id="secmanage.viewexchangematerialdetail" class="${common.package}.secmanage.action.ViewExchangeMaterialDetailAction" scope="prototype"/>
+	<bean id="secmanage.manageexchangematerialaprvjob" class="${common.package}.secmanage.action.ManageExchangeMaterialAprvJobAction" scope="prototype"/>
+	<bean id="secmanage.approveexchangematerialjob" class="${common.package}.secmanage.action.ApproveExchangeMaterialJobAction" scope="prototype"/>
+	<bean id="secmanage.viewexchangematerialaprvjob" class="${common.package}.secmanage.action.ViewExchangeMaterialAprvJobAction" scope="prototype"/>	
+	
+	<!--展示展览保密审查 -->
+	<bean id="secmanage.addexhibitionevent" class="${common.package}.secmanage.action.AddExhibitionEventAction" scope="prototype"/>
+	<bean id="secmanage.manageexhibitionlist" class="${common.package}.secmanage.action.ManageExhibitionListAction" scope="prototype"/>
+	<bean id="secmanage.viewexhibitiondetail" class="${common.package}.secmanage.action.ViewExhibitionDetailAction" scope="prototype"/>
+	<bean id="secmanage.manageexhibitionaprvjob" class="${common.package}.secmanage.action.ManageExhibitionAprvJobAction" scope="prototype"/>
+	<bean id="secmanage.approveexhibitionjob" class="${common.package}.secmanage.action.ApproveExhibitionJobAction" scope="prototype"/>
+	<bean id="secmanage.viewexhibitionaprvjob" class="${common.package}.secmanage.action.ViewExhibitionAprvJobAction" scope="prototype"/>	
+	
+	<bean id="secmanage.deluploadedfile" class="${common.package}.secmanage.action.DelUploadedFileAction" scope="prototype" />
+	
+	<!-- 论文发表专利申请 -->
+	<bean id="secmanage.addpaperpatentevent" class="${common.package}.secmanage.action.AddPaperPatentEventAction" scope="prototype"/>
+	<bean id="secmanage.managepaperpatentlist" class="${common.package}.secmanage.action.ManagePaperPatentListAction" scope="prototype"/>
+	<bean id="secmanage.viewpaperpatentdetail" class="${common.package}.secmanage.action.ViewPaperPatentDetailAction" scope="prototype"/>
+	<bean id="secmanage.managepaperpatentaprvjob" class="${common.package}.secmanage.action.ManagePaperPatentAprvJobAction" scope="prototype"/>
+	<bean id="secmanage.approvepaperpatentjob" class="${common.package}.secmanage.action.ApprovePaperPatentJobAction" scope="prototype"/>
+	<bean id="secmanage.viewpaperpatentaprvjob" class="${common.package}.secmanage.action.ViewPaperPatentAprvJobAction" scope="prototype"/>	
+	
+	<bean id="securityuser.delsecmanageevent" class="${common.package}.secmanage.action.DelSecManageEventAction" scope="prototype"/>
+	
+</beans>

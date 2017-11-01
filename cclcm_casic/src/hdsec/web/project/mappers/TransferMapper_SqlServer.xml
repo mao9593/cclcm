@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.transfer.mapper.TransferMapper">
+	<insert id="saveEventTranfer" parameterType="eventtransfer">
+		<![CDATA[
+			insert into event_transfer(EVENT_CODE,USER_IIDD,DEPT_ID,SECLV_CODE,ENTITY_TYPE,BARCODE,PROJECT_CODE,USAGE_CODE,SUMM,ACCEPT_USER_IIDD,ACCEPT_DEPT_ID,APPLY_TIME,TRANSFER_STATUS,JOB_CODE,HIS_JOB_CODE)
+			values(#{event_code},#{user_iidd},#{dept_id},#{seclv_code},#{entity_type},#{barcode},#{project_code},#{usage_code},#{summ},#{accept_user_iidd},#{accept_dept_id},#{apply_time},#{transfer_status},#{job_code},#{his_job_code})
+		]]>
+		<![CDATA[
+			update entity_paper 
+				set paper_state = 5
+			where paper_barcode=#{barcode}
+		]]>
+	</insert>
+	<select id="getTransferEventList" parameterType="map" resultType="eventtransfer">
+		<![CDATA[
+			select e.*,ss.seclv_name,su.user_name,sd.dept_name,syu.usage_name,sp.project_name,jp.job_status,dept.dept_name accept_dept_name,a_user.user_name accept_user_name 
+			from event_transfer e
+			left join job_process jp on(e.job_code=jp.job_code)
+			left join (select seclv_code,seclv_name from sec_user_seclv) ss on (e.seclv_code=ss.seclv_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) su on(e.user_iidd=su.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(e.dept_id=sd.dept_id)
+			left join sys_usage syu on(e.usage_code=syu.usage_code)
+			left join sys_project sp on(e.project_code=sp.project_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) a_user on(e.accept_user_iidd=a_user.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) dept on(e.accept_dept_id = dept.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		
+			<if test="user_iidd != null and user_iidd != ''">
+   				<![CDATA[
+			 		and e.user_iidd = #{user_iidd} 
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != '' and seclv_code != 0 ">
+   				<![CDATA[
+			 		and e.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="duty_user_name != null and duty_user_name != ''">
+   				<![CDATA[
+			 		and e.duty_user_name = #{duty_user_name}
+				]]>
+			</if>
+			<if test="startTime != null and startTime != ''">
+   				<![CDATA[
+			 		and e.apply_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+   				<![CDATA[
+			 		and e.apply_time <= #{endTime}
+				]]>
+			</if>
+			<if test="entity_type != null and entity_type != ''">
+   				<![CDATA[
+			 		and e.entity_type = #{entity_type}
+				]]>
+			</if>
+			<if test="job_status != null and job_status != ''" >
+				<![CDATA[
+					and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="submitable">
+   				<![CDATA[
+			 		and e.transfer_status = 0
+				]]>
+			</if>
+			<if test="!is_transfering">
+   				<![CDATA[
+			 		and e.job_code = ''
+				]]>
+			</if>
+			<if test="accept_user_iidd != null and accept_user_iidd != ''">
+   				<![CDATA[
+			 		and e.accept_user_iidd = #{accept_user_iidd} 
+				]]>
+			</if>
+			<if test="barcode != null and barcode != ''">
+   				<![CDATA[
+			 		and UPPER(e.barcode) LIKE UPPER('%'+#{barcode}+'%')
+				]]>
+			</if>
+		</trim>
+		<![CDATA[
+			 order by e.apply_time desc
+		]]>
+	</select>
+	<select id="getDeptIdByUserId" parameterType="string" resultType="string">
+		<![CDATA[
+			select dept_id from sec_user where user_iidd = #{accept_user_iidd}
+		]]>
+	</select>
+	
+	<select id="getTransferEventByTransferCode" parameterType="string" resultType="eventtransfer">
+		<![CDATA[
+		select e.*,ss.seclv_name,su.user_name,sd.dept_name,syu.usage_name,sp.project_name,jp.job_status,dept.dept_name accept_dept_name,a_user.user_name accept_user_name
+			from event_transfer e
+			left join job_process jp on(e.job_code=jp.job_code)
+			left join (select seclv_code,seclv_name from sec_user_seclv) ss on (e.seclv_code=ss.seclv_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) su on(e.user_iidd=su.user_iidd)
+			left join (select user_iidd,user_name,dept_id from sec_user) a_user on(e.accept_user_iidd=a_user.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(e.dept_id=sd.dept_id)
+			left join sys_usage syu on(e.usage_code=syu.usage_code)
+			left join sys_project sp on(e.project_code=sp.project_code)
+			left join (select dept_id,dept_name from sec_dept) dept on(e.accept_dept_id = dept.dept_id)
+			where e.event_code = #{event_code}
+		]]>
+	</select>
+	
+	<select id="getTransferEventByTransferId" parameterType="string" resultType="eventtransfer">
+		<![CDATA[
+		select e.*,ss.seclv_name,su.user_name,sd.dept_name,syu.usage_name,sp.project_name,jp.job_status,dept.dept_name accept_dept_name,a_user.user_name accept_user_name
+			from event_transfer e
+			left join job_process jp on(e.job_code=jp.job_code)
+			left join (select seclv_code,seclv_name from sec_user_seclv) ss on (e.seclv_code=ss.seclv_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) su on(e.user_iidd=su.user_iidd)
+			left join (select user_iidd,user_name,dept_id from sec_user) a_user on(e.accept_user_iidd=a_user.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(e.dept_id=sd.dept_id)
+			left join sys_usage syu on(e.usage_code=syu.usage_code)
+			left join sys_project sp on(e.project_code=sp.project_code)
+			left join (select dept_id,dept_name from sec_dept) dept on(e.accept_dept_id = dept.dept_id)
+			where e.id = #{id}
+		]]>
+	</select>
+	
+	<select id="getJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code	from event_transfer where event_code = #{event_code}
+		]]>
+	</select>
+	
+	<select id="getOneTransferEventByCode" parameterType="string" resultType="eventtransfer">
+		<![CDATA[
+			select e.*,sus.seclv_name,sp.project_name,dept.dept_name accept_dept_name,us.usage_name from event_transfer e
+			 left join sec_user_seclv sus on(e.seclv_code=sus.seclv_code)
+			 left join (select project_code,project_name from sys_project) sp on(e.project_code = sp.project_code)
+			 left join (select dept_id,dept_name from sec_dept) dept on(e.accept_dept_id = dept.dept_id)
+			 left join (select usage_code,usage_name from sys_usage) us on(us.usage_code = e.usage_code)
+			where e.event_code=#{event_code} 
+		]]>
+	</select>
+	
+	<update id="updateEventTransfer" parameterType="map">
+		<![CDATA[
+		update event_transfer set event_code=#{event_code}, summ=#{summ},accept_user_iidd=#{accept_user_iidd}
+		where event_code=#{event_code}
+		]]>
+	</update>
+
+	<select id="getOneCDLedgerById" resultType="entitycd"
+		parameterType="int">
+		<![CDATA[
+			select ed.*,ru.user_name retrieve_user_name,du.user_name destroy_user_name
+			from entity_cd ed
+			left join (select user_iidd, user_name from sec_user) ru on(ru.user_iidd = ed.retrieve_user_iidd)	
+			left join (select user_iidd, user_name from sec_user) du on(du.user_iidd = ed.destroy_user_iidd)	
+			where cd_id = #{cd_id}	
+		]]>
+	</select>
+	<update id="deleteEventTransfer" parameterType="string">
+		<![CDATA[
+			update event_transfer 
+				set job_code = null
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updatePaperTransferStatus" parameterType="string">
+		<![CDATA[
+			update entity_paper 
+				set paper_state = 0
+			where paper_barcode=#{barcode}
+		]]>
+	</update>
+	<insert id="saveCDEventTranfer" parameterType="eventtransfer">
+		<![CDATA[
+			insert into event_transfer(EVENT_CODE,USER_IIDD,DEPT_ID,SECLV_CODE,ENTITY_TYPE,BARCODE,PROJECT_CODE,USAGE_CODE,SUMM,ACCEPT_USER_IIDD,ACCEPT_DEPT_ID,APPLY_TIME,TRANSFER_STATUS,JOB_CODE,HIS_JOB_CODE)
+			values(#{event_code},#{user_iidd},#{dept_id},#{seclv_code},#{entity_type},#{barcode},#{project_code},#{usage_code},#{summ},#{accept_user_iidd},#{accept_dept_id},#{apply_time},#{transfer_status},#{job_code},#{his_job_code})
+		]]>
+		<![CDATA[
+			update entity_cd 
+				set cd_state = 5
+			where cd_barcode=#{barcode}
+		]]>
+	</insert>
+	
+		<update id="updateEventTranfer" parameterType="string">
+		<![CDATA[
+			update event_transfer 
+				set summ =#{summ},usage_code=#{usage_code},accept_user_iidd=#{accept_user_iidd},
+				accept_dept_id=#{accept_dept_id}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	
+	<select id="getTransferEventByJobCode" parameterType="string" resultType="eventtransfer">
+		<![CDATA[
+			select e.*,ss.seclv_name,su.user_name,sd.dept_name,dept.dept_name accept_dept_name,a_user.user_name accept_user_name 
+			from event_transfer e
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (e.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(e.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(e.dept_id=sd.dept_id)
+				left join (select user_iidd,user_name,dept_id from sec_user) a_user on(e.accept_user_iidd=a_user.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) dept on(e.accept_dept_id = dept.dept_id)
+			where e.job_code=#{job_code} 
+		]]>
+	</select>
+	
+		
+	<update id="cancelCDTransferEventByEventCode" parameterType="map">
+		<![CDATA[
+			update entity_cd set cd_state=0 
+			where cd_barcode=(select barcode from  event_transfer where event_code=#{event_code})
+		]]>
+		<![CDATA[
+			delete from event_transfer where event_code=#{event_code}
+		]]>
+	</update>
+	
+	<update id="cancelPaperTransferEventByEventCode" parameterType="map">
+		<![CDATA[
+			update entity_paper set paper_state=0 
+			where paper_barcode=(select barcode from  event_transfer where event_code=#{event_code})
+		]]>
+		<![CDATA[
+			delete from event_transfer where event_code=#{event_code}
+		]]>
+	</update>	
+	<update id="updateConfirmTransferEvent" parameterType="eventtransfer">
+		<![CDATA[
+			update event_transfer set
+				finish_time=#{finish_time},
+				transfer_status=#{transfer_status}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	
+	<select id="getTransferEvent" parameterType="map" resultType="eventtransfer">
+		<![CDATA[
+		select e.*,ss.seclv_name,su.user_name,sd.dept_name,syu.usage_name,sp.project_name,jp.job_status,jp.comment transfer_comment,dept.dept_name accept_dept_name,a_user.user_name accept_user_name
+			from event_transfer e
+			left join job_process jp on(e.job_code=jp.job_code)
+			left join (select seclv_code,seclv_name from sec_user_seclv) ss on (e.seclv_code=ss.seclv_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) su on(e.user_iidd=su.user_iidd)
+			left join (select user_iidd,user_name,dept_id from sec_user) a_user on(e.accept_user_iidd=a_user.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(e.dept_id=sd.dept_id)
+			left join sys_usage syu on(e.usage_code=syu.usage_code)
+			left join sys_project sp on(e.project_code=sp.project_code)
+			left join (select dept_id,dept_name from sec_dept) dept on(e.accept_dept_id = dept.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+		
+			<if test="event_code != null and event_code != ''">
+   				<![CDATA[
+			 		and e.event_code = #{event_code} 
+				]]>
+			</if>
+			<if test="id != null and id != ''">
+   				<![CDATA[
+			 		and e.id = #{id} 
+				]]>
+			</if>
+			<if test="barcode != null and barcode != ''">
+   				<![CDATA[
+			 		and e.barcode = #{barcode} 
+				]]>
+			</if>
+			
+		</trim>
+	</select>
+	<select id="getTransferEventListByJobCode" parameterType="String" resultType="eventtransfer">
+		<![CDATA[
+			select tn.*,jp.jobType_code as jobType,jp.job_status,ss.seclv_name,syu.usage_name,sp.project_name,dept.dept_name accept_dept_name,a_user.user_name accept_user_name
+			from event_transfer tn
+				left join (select user_iidd,user_name,dept_id from sec_user) a_user on(tn.accept_user_iidd=a_user.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) dept on(tn.accept_dept_id = dept.dept_id)
+				left join (select job_code,jobtype_code,job_status from job_process) jp on (tn.job_code=jp.job_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (tn.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(tn.usage_code=syu.usage_code)
+				left join sys_project sp on (tn.project_code=sp.project_code) 
+			where tn.job_code = #{job_code}
+		]]>
+	</select>
+	
+	<update id="cancelJobByJobCode" parameterType="String">
+   		<![CDATA[
+			delete from job_process where job_code= #{job_code}
+		]]>
+	</update>
+	<select id="getJobListByPaper" parameterType="map" resultType="processjob">
+		<![CDATA[
+			select distinct jp.*,ss.seclv_name,su.user_name,sd.dept_name
+			from job_process jp
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (jp.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) su on (jp.user_iidd = su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(jp.dept_id = sd.dept_id)
+				left join (select job_code,entity_type from event_transfer) event on(jp.job_code = event.job_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				event.entity_type='Paper'
+			<if test="user_iidd != null and user_iidd != ''">
+   				<![CDATA[
+			 		and jp.user_iidd = #{user_iidd}
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != ''">
+   				<![CDATA[
+			 		and jp.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="jobType_code != null and jobType_code != ''">
+   				<![CDATA[
+			 		and jp.jobtype_code = #{jobType_code}
+				]]>
+			</if>
+			<if test="job_status != null and job_status != ''">
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="startTime != null and startTime != ''">
+   				<![CDATA[
+			 		and jp.start_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+   				<![CDATA[
+			 		and jp.start_time <= #{endTime}
+				]]>
+			</if>
+		</trim>
+		order by start_time desc
+	</select>
+	<select id="getJobListByCD" parameterType="map" resultType="processjob">
+		<![CDATA[
+			select distinct jp.*,ss.seclv_name,su.user_name,sd.dept_name
+			from job_process jp
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (jp.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) su on (jp.user_iidd = su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(jp.dept_id = sd.dept_id)
+				left join (select job_code,entity_type from event_transfer) event on(jp.job_code = event.job_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				event.entity_type='CD'
+			<if test="user_iidd != null and user_iidd != ''">
+   				<![CDATA[
+			 		and jp.user_iidd = #{user_iidd}
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != ''">
+   				<![CDATA[
+			 		and jp.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="jobType_code != null and jobType_code != ''">
+   				<![CDATA[
+			 		and jp.jobtype_code = #{jobType_code}
+				]]>
+			</if>
+			<if test="job_status != null and job_status != ''">
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="startTime != null and startTime != ''">
+   				<![CDATA[
+			 		and jp.start_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+   				<![CDATA[
+			 		and jp.start_time <= #{endTime}
+				]]>
+			</if>
+		</trim>
+		order by start_time desc
+	</select>
+	<update id="updateEventTransferStatus" parameterType="map">
+		<![CDATA[
+		update event_transfer set transfer_status=#{transfer_status}
+		where event_code=#{event_code}
+		]]>
+	</update>
+</mapper>  

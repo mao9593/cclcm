@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="assetMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.asset.mapper.AssetMapper" />
+	</bean>
+	<bean id="asset.addpropertyevent" class="${common.package}.asset.action.AddPropertyEventAction" scope="prototype"/>
+	<bean id="asset.addpurchaseprocessjob" class="${common.package}.asset.action.AddPurchaseProcessJobAction" scope="prototype"/>
+	<bean id="asset.managepurchaselist" class="${common.package}.asset.action.ManagePurchaseListAction" scope="prototype"/>
+	<bean id="asset.updatepurchasestatus" class="${common.package}.asset.action.UpdatePurchaseStatusAction" scope="prototype"/>
+	<bean id="asset.manageproperty" class="${common.package}.asset.action.ManagePropertyAction" scope="prototype"/>
+	<bean id="asset.wasteeventlist" class="${common.package}.asset.action.WasteEventListAction" scope="prototype"/>
+	<bean id="asset.addstoreevent" class="${common.package}.asset.action.AddStoreEventAction" scope="prototype"/>
+	<bean id="asset.storeeventlist" class="${common.package}.asset.action.StoreEventListAction" scope="prototype"/>
+	<bean id="asset.addoutevent" class="${common.package}.asset.action.AddOutEventAction" scope="prototype"/>
+	<bean id="asset.outeventist" class="${common.package}.asset.action.OutEventListAction" scope="prototype"/>
+	<bean id="asset.managepurchaseaprvjob" class="${common.package}.asset.action.ManagePurchaseAprvJobAction" scope="prototype"/>
+	<bean id="asset.approvepurchasejob" class="${common.package}.asset.action.ApprovePurchaseJobAction" scope="prototype"/>
+	<bean id="asset.viewpurchaseaprvjob" class="${common.package}.asset.action.ViewPurchaseAprvJobAction" scope="prototype"/>
+	<bean id="asset.viewpurchaseventdetail" class="${common.package}.asset.action.ViewPurchaseEventDetailAction" scope="prototype"/>
+	<bean id="asset.delpurchaseevent" class="${common.package}.asset.action.DelPurchaseEventAction" scope="prototype"/>
+	<bean id="asset.viewpurchasejobdetail" class="${common.package}.asset.action.ViewPurchaseJobDetailAction" scope="prototype"/>
+	<bean id="asset.viewcycledetail" class="${common.package}.asset.action.ViewCycleDetailAction" scope="prototype"/>
+	<bean id="asset.handlepropertyjob" class="${common.package}.asset.action.HandlePropertyJobAction" scope="prototype"/>
+	<bean id="asset.managehandleproperty" class="${common.package}.asset.action.ManageHandlePropertyAction" scope="prototype"/>
+	<bean id="asset.viewpropertyledgerinfo" class="${common.package}.asset.action.ViewPropertyledgerInfoAction" scope="prototype"/>
+	<bean id="asset.cancelhandleproperty" class="${common.package}.asset.action.CancelHandlePropertyAction" scope="prototype"/>
+	<bean id="asset.updatepropertystatus" class="${common.package}.asset.action.UpdatePropertyStatusAction" scope="prototype"/>
+	<bean id="asset.managehandleaprvjob" class="${common.package}.asset.action.ManageHandleAprvJobAction" scope="prototype"/>
+	<bean id="asset.viewhandleaprvjob" class="${common.package}.asset.action.ViewHandleAprvJobAction" scope="prototype"/>
+	<bean id="asset.handlejob" class="${common.package}.asset.action.HandleJobAction" scope="prototype"/>
+	<bean id="asset.viewhandlejobdetail" class="${common.package}.asset.action.ViewHandleJobDetailAction" scope="prototype"/>
+	<bean id="asset.manageinaprvjob" class="${common.package}.asset.action.ManageInAprvJobAction" scope="prototype"/>
+	<bean id="asset.viewinaprvjob" class="${common.package}.asset.action.ViewInAprvJobAction" scope="prototype"/>
+	<bean id="asset.managekind" class="${common.package}.asset.action.ManageKindAction" scope="prototype"/>
+	<bean id="asset.addkind" class="${common.package}.asset.action.AddKindAction" scope="prototype"/>
+	<bean id="asset.updatekind" class="${common.package}.asset.action.UpdateKindAction" scope="prototype"/>
+	<bean id="asset.delkind" class="${common.package}.asset.action.DelKindAction" scope="prototype"/>
+	<bean id="asset.addstorageevent" class="${common.package}.asset.action.AddStorageEventAction" scope="prototype"/>
+	<bean id="asset.managestoragelist" class="${common.package}.asset.action.ManageStorageListAction" scope="prototype"/>
+	<bean id="asset.addstoragejob" class="${common.package}.asset.action.AddStorageJobAction" scope="prototype"/>
+	<bean id="asset.viewstorageeventdetail" class="${common.package}.asset.action.ViewStorageEventDetailAction" scope="prototype"/>
+	<bean id="asset.updatestoragestatus" class="${common.package}.asset.action.UpdateStorageStatusAction" scope="prototype"/>
+	<bean id="asset.managestorageaprvjob" class="${common.package}.asset.action.ManageStorageAprvJobAction" scope="prototype"/>
+	<bean id="asset.approvestoragejob" class="${common.package}.asset.action.ApproveStorageJobAction" scope="prototype"/>
+	<bean id="asset.viewstorageaprvjob" class="${common.package}.asset.action.ViewStorageAprvJobAction" scope="prototype"/>
+    <bean id="asset.addpropertywasteevent" class="${common.package}.asset.action.AddPropertyWasteEventAction" scope="prototype"/>
+    <bean id="asset.viewwasteeventdetail" class="${common.package}.asset.action.ViewWasteEventDetailAction" scope="prototype"/>
+    <bean id="asset.updatewastechangestatus" class="${common.package}.asset.action.UpdateWasteChangeStatusAction" scope="prototype"/>
+    <bean id="asset.manageselfproperty" class="${common.package}.asset.action.ManageSelfPropertyAction" scope="prototype"/>
+    <bean id="asset.managedeptproperty" class="${common.package}.asset.action.ManageDeptPropertyAction" scope="prototype"/>
+    <bean id="asset.exportselfproperty" class="${common.package}.asset.action.ExportSelfPropertyAction" scope="prototype"/>
+    <bean id="asset.exportdeptproperty" class="${common.package}.asset.action.ExportDeptPropertyAction" scope="prototype"/>
+    <bean id="asset.exportproperty" class="${common.package}.asset.action.ExportPropertyAction" scope="prototype"/>
+    <bean id="asset.updatepropertyevent" class="${common.package}.asset.action.UpdatePurchaseEventAction" scope="prototype"/>
+    <bean id="asset.importproperty" class="${common.package}.asset.action.ImportPropertyAction" scope="prototype"/>
+    <bean id="asset.addurgentpropertyjob" class="${common.package}.asset.action.AddUrgentPropertyJobAction" scope="prototype"/>
+    
+</beans>

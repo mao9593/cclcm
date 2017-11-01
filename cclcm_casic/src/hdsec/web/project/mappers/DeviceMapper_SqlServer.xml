@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.device.mapper.DeviceMapper">
+	
+	<!-- 磁介质管理 -->
+	<insert id="addEntityDevice" parameterType="entitydevice">
+		<![CDATA[
+			insert into entity_device(
+				device_code,
+				device_name,
+				user_iidd, 
+				dept_id, 
+				device_series, 
+				device_barcode,
+				enter_time, 
+				med_type, 
+				seclv_code, 
+				duty_user_iidd,
+				med_content, 
+				borrow_user_iidd, 
+				device_status, 
+				device_model,
+				device_detail
+			)values(
+				#{device_code},
+				#{device_name},
+				#{user_iidd},
+				#{dept_id},
+				#{device_series},
+				#{device_barcode},
+				#{enter_time},
+				#{med_type},
+				#{seclv_code},
+				#{duty_user_iidd},
+				#{med_content},
+				#{borrow_user_iidd},
+				#{deviceStatus.key},
+				#{device_model},
+				#{device_detail}
+			)	
+		]]>
+	</insert>
+	<update id="setDeviceSealedByCode" parameterType="string">
+		<![CDATA[
+			update entity_device set 
+				is_sealed='Y'
+			where device_code=#{device_code}	
+		]]>
+	</update>
+	<select id="getDeviceByCode" parameterType="string" resultType="entitydevice">
+		<![CDATA[
+			select ed.*,sd.dept_name,ss.seclv_name,suu.user_name,sdu.user_name as duty_user_name,sbu.user_name as borrow_user_name,jp.jobtype_code,jp.job_status,mt.typename med_type_name
+			from entity_device ed
+				left join sec_dept sd on(ed.dept_id = sd.dept_id)				
+				left join sec_user_seclv ss on(ed.seclv_code = ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) suu on(ed.user_iidd=suu.user_iidd)
+				left join (select user_iidd,user_name from sec_user) sdu on(ed.duty_user_iidd=sdu.user_iidd)
+				left join (select user_iidd,user_name from sec_user) sbu on(ed.borrow_user_iidd=sbu.user_iidd)
+				left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code)
+				left join (select id,typename from med_type) mt on (ed.med_type=mt.id)
+			where device_code=#{device_code}	
+		]]>
+	</select>
+	<update id="updateDevice" parameterType="entitydevice">
+		<![CDATA[
+			update entity_device 
+				set device_name=#{device_name},
+					dept_id=#{dept_id},
+					device_series=#{device_series},										
+					med_type=#{med_type},
+					seclv_code=#{seclv_code},
+					duty_user_iidd=#{duty_user_iidd},
+					med_content=#{med_content},					
+					device_model=#{device_model},
+					device_detail=#{device_detail}
+				where device_code=#{device_code}	
+		]]>
+	</update>
+	<update id="updateDeviceStatus" parameterType="map">
+		<![CDATA[
+			update entity_device set device_status = #{deviceStauts.key}
+			where device_code=#{device_code}
+		]]>
+	</update>
+	<update id="cancelHandleDeviceByCode" parameterType="string">
+		<![CDATA[
+			update entity_device 
+				set job_code = null
+			where device_code=#{device_code}
+		]]>
+	</update>
+	<select id="getHandleDeviceCountByJobCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from entity_device where job_code=#{job_code}
+		]]>
+	</select>
+	
+	<!-- 磁介质借入借出作业管理 -->
+	<insert id="addDeviceEvent" parameterType="deviceevent">					
+		<![CDATA[
+			insert into event_device(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				med_type,
+				job_code,
+				usage_code,
+				project_code,
+				summ
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{med_type},
+				#{job_code},
+				#{usage_code},
+				#{project_code},
+				#{summ}
+				)
+		]]>
+	</insert>
+	<select id="getDeviceEventList" parameterType="map" resultType="deviceevent">
+		<![CDATA[
+			select ed.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,mt.typename med_type_name
+			 from event_device ed 
+				left join job_process jp on(ed.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ed.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ed.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ed.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ed.usage_code=syu.usage_code)
+				left join sys_project sp on (ed.project_code=sp.project_code)
+				left join (select id,typename from med_type) mt on (ed.med_type=mt.id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="event_ids != null and event_ids != ''" >
+				and id in 
+				<foreach item="item" index="index" collection="event_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ed.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ed.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ed.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ed.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="med_type != null and med_type != ''" >
+   				<![CDATA[
+			 		and ed.med_type = #{med_type}
+				]]>
+   			</if>
+   			<choose>
+   				<when test="submitable">
+	   				<![CDATA[
+				 		and (ed.job_code is null)
+					]]>
+	   			</when>	
+	   			<otherwise>
+	   				<![CDATA[
+				 		and (ed.job_code is not null)
+					]]>
+	   				<if test="job_status != null and job_status != ''" >
+		   				<![CDATA[
+					 		and jp.job_status = #{job_status}
+						]]>
+		   			</if>
+	   			</otherwise>
+   			</choose>
+   			<if test="undistribute" >
+   				<![CDATA[
+			 		and (ed.device_barcode is null)
+				]]>
+   			</if>
+   			<if test="distributed" >
+   				<![CDATA[
+			 		and (ed.device_barcode is not null)
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and UPPER(su.user_name) LIKE UPPER('%' + #{user_name} + '%')
+				]]>
+   			</if>
+   		</trim>
+   		<![CDATA[
+				order by ed.apply_time desc
+   			]]>
+	</select>
+	<select id="getDeviceEventByDeviceCode" parameterType="string" resultType="deviceevent">
+		<![CDATA[
+			select ed.*,jp.job_status,jp.comment,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,mt.typename med_type_name
+			 from event_device ed 
+				left join job_process jp on(ed.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ed.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ed.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ed.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ed.usage_code=syu.usage_code)
+				left join sys_project sp on (ed.project_code=sp.project_code)
+				left join (select id,typename from med_type) mt on (ed.med_type=mt.id)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delDeviceEventByDeviceCode" parameterType="string">
+		<![CDATA[
+			delete from event_device where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_device where event_code=#{event_code}
+		]]>
+	</select>	
+	<update id="updateDeviceEvent" parameterType="deviceevent">
+		<![CDATA[
+			update event_device set
+				seclv_code=#{seclv_code},
+				usage_code=#{usage_code},
+				project_code=#{project_code},
+				summ=#{summ},
+				med_type=#{med_type},
+				borrow_type=#{borrow_type},
+				device_series=#{device_series},
+				device_barcode=#{device_barcode},
+				borrow_date=#{borrow_date},
+				place=#{place}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updateDeviceEventBarcode" parameterType="map">
+		<![CDATA[
+			update event_device set				
+				device_barcode=#{device_barcode}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getEventCodeByBarcode" parameterType="map" resultType="string">
+		<![CDATA[
+			select event_code from event_device 
+			where device_barcode=#{device_barcode}
+			and user_iidd=#{borrow_user_iidd}
+			and device_status=1
+		]]>
+	</select>
+	<update id="updateConfirmDeviceEvent" parameterType="deviceevent">
+		<![CDATA[
+			update event_device set
+				finish_time=#{finish_time},
+				return_time=#{return_time},				
+				device_status=#{device_status}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updateConfirmEntityDevice" parameterType="entitydevice">
+		<![CDATA[
+			update entity_device set
+				borrow_user_iidd=#{borrow_user_iidd},			
+				device_status=#{deviceStatus.key}
+			where device_code=#{device_code}
+		]]>
+	</update>
+	<update id="addDeviceEventJobRel" parameterType="map">
+		<![CDATA[
+			update event_device
+				set job_code=#{job_code},
+					usage_code=#{usage_code},
+					project_code=#{project_code},
+					summ = #{summ}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getSeclvCodeByEventId" parameterType="string" resultType="int">
+		<![CDATA[
+			select seclv_code from event_device where id=#{event_id}
+		]]>
+	</select>
+	<select id="getDeviceEventListByJobCode" parameterType="string" resultType="deviceevent">
+		<![CDATA[
+			select ed.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,mt.typename med_type_name
+			 from event_device ed 
+				left join job_process jp on(ed.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ed.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ed.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ed.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ed.usage_code=syu.usage_code)
+				left join sys_project sp on (ed.project_code=sp.project_code)
+				left join (select id,typename from med_type) mt on (ed.med_type=mt.id)
+			where ed.job_code = #{job_code}
+		]]>
+	</select>
+	<update id="cancelDeviceEventByEventCode" parameterType="string">
+		<![CDATA[
+			update event_device set
+				job_code = null
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getDeviceEventCountByJobCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from event_device where job_code=#{job_code}
+		]]>
+	</select>
+	<select id="getDeviceByBarcode" parameterType="string" resultType="entitydevice">
+		<![CDATA[
+			select ed.*,sd.dept_name,ss.seclv_name,suu.user_name,sdu.user_name as duty_user_name,sbu.user_name as borrow_user_name,jp.jobtype_code,jp.job_status,mt.typename med_type_name
+			from entity_device ed
+				left join sec_dept sd on(ed.dept_id = sd.dept_id)				
+				left join sec_user_seclv ss on(ed.seclv_code = ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) suu on(ed.user_iidd=suu.user_iidd)
+				left join (select user_iidd,user_name from sec_user) sdu on(ed.duty_user_iidd=sdu.user_iidd)
+				left join (select user_iidd,user_name from sec_user) sbu on(ed.borrow_user_iidd=sbu.user_iidd)
+				left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code)
+				left join (select id,typename from med_type) mt on (ed.med_type=mt.id)
+			where device_barcode=#{device_barcode}	
+		]]>
+	</select>
+	<!-- 磁介质类型管理 -->
+	<select id="getDeviceTypeList" resultType="devicetype">
+		<![CDATA[
+			select * from med_type
+		]]>
+	</select>
+	<insert id="addDeviceType" parameterType="devicetype">					
+		<![CDATA[
+			insert into med_type(id,typename,content)values(#{id},#{typename},#{content})
+		]]>
+	</insert>
+	<select id="getTypeCountByID" parameterType="int" resultType="int">
+		<![CDATA[
+			select count(1) from med_type where id=#{id}
+		]]>
+	</select>
+	<select id="getTypeCountByName" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from med_type where typename=#{typename}
+		]]>
+	</select>
+	<select id="getDeviceTypeByID" parameterType="int" resultType="devicetype">
+		<![CDATA[
+			select * from med_type where id=#{id}
+		]]>
+	</select>
+	<update id="updateDeviceType" parameterType="devicetype">
+		<![CDATA[
+			update med_type set
+				typename = #{typename},content = #{content}
+			where id=#{id}
+		]]>
+	</update>
+	<select id="getTypeIDByName" parameterType="string" resultType="int">
+		<![CDATA[
+			select id from med_type where typename=#{typename}
+		]]>
+	</select>
+	<select id="getUseTypeCountByDevice" parameterType="int" resultType="int">
+		<![CDATA[
+			select count(1) from entity_device where med_type=#{id}
+		]]>
+	</select>
+	<delete id="delDeviceTypeByID" parameterType="int">
+		<![CDATA[
+			delete from med_type where id=#{id}
+		]]>
+	</delete>
+	<update id="updatePersonalEntityDevice" parameterType="map">
+		<![CDATA[
+			update entity_device set 
+				SCOPE=#{type}
+			where device_barcode=#{barcode}	
+		]]>
+	</update>
+</mapper>  

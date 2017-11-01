@@ -1,0 +1,987 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.asset.mapper.AssetMapper">
+		<insert id="addPurchaseEvent" parameterType="purchaseevent">					
+		<![CDATA[
+			insert into event_purchase(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				usage_code,
+				project_code,
+				summ,				
+				apply_time,
+				purchase_title,
+				purchase_code,
+				telephone,
+				property_seclvcode,
+				property_kind,
+				property_name,
+				property_standard,
+				supplier,
+				amount,
+				unit_price,
+				total_price,
+				reason,
+				property_type,
+				details,
+				budget_year,
+				kind_id
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{apply_time},	
+				#{purchase_title},
+				#{purchase_code},
+				#{telephone},
+				#{property_seclvcode},
+				#{property_kind},
+				#{property_name},
+				#{property_standard},
+				#{supplier},
+				#{amount},
+				#{unit_price},
+				#{total_price},
+				#{reason},
+				#{property_type},
+				#{details},
+				#{budget_year},
+				#{kind_id}
+				)
+		]]>
+	</insert>
+	<select id="getPurchaseEventList" parameterType="map" resultType="purchaseevent">
+		<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,pss.seclv_name property_seclvcode_name
+			 from event_purchase ep 
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) pss on (ep.property_seclvcode=pss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ep.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ep.seclv_code = #{seclv_code}
+				]]>
+   			</if>		
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			<if test="store_status != null" >
+   				<![CDATA[
+			 		and ep.store_status = #{store_status}
+				]]>
+   			</if>
+   			<choose>
+   				<when test="submitable">
+	   				<![CDATA[
+				 		and (ep.job_code is null)
+					]]>
+	   			</when>	
+	   			<otherwise>
+	   				<![CDATA[
+				 		and (ep.job_code is not null)
+					]]>
+	   				<if test="job_status != null and job_status != ''" >
+		   				<![CDATA[
+					 		and jp.job_status = #{job_status}
+						]]>
+		   			</if>
+	   			</otherwise>
+   			</choose>
+   			<choose>
+   				<when test="storage">
+	   				<![CDATA[
+				 		and (ep.store_status =0)
+					]]>
+	   			</when>	
+   			</choose>
+   			<if test="event_ids != null and event_ids != ''" >
+				and event_code in 
+				<foreach item="item" index="index" collection="event_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+   			order by apply_time desc
+   		</trim>
+	</select>
+	<update id="addPurchaseEventJobRel" parameterType="map">
+		<![CDATA[
+			update event_purchase
+				set job_code=#{job_code},
+					usage_code=#{usage_code},
+					project_code=#{project_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getPurchaseEventByCode" parameterType="string" resultType="purchaseevent">
+		<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,pss.seclv_name property_seclvcode_name
+			 from event_purchase ep 
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) pss on (ep.property_seclvcode=pss.seclv_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<update id="updatePurchasestatus" parameterType="map">
+		<![CDATA[
+			update event_purchase set store_status = #{store_status}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<insert id="addPropertyledger" parameterType="EntityProperty">					
+		<![CDATA[
+			insert into entity_property(
+				property_barcode,
+				event_code,
+				user_iidd,
+				user_name,
+				dept_id,
+				dept_name,
+				duty_user_iidd,
+				duty_user_name,
+				duty_dept_id,
+				duty_dept_name,
+				seclv_code,
+				property_kind,
+				property_name,
+				property_standard,
+				supplier,
+				unit_price,
+				in_time,
+				identity_code,
+				property_no,
+				voucher_no,
+				property_type,
+				factory_no,
+				factory_date,
+				use_date,
+				setup_place,
+				original_value,
+				average_equity,
+				summ
+			)values(#{property_barcode},
+				#{event_code},
+				#{user_iidd},
+				#{user_name},
+				#{dept_id},
+				#{dept_name},
+				#{duty_user_iidd},
+				#{duty_user_name},	
+				#{duty_dept_id},
+				#{duty_dept_name},
+				#{seclv_code},
+				#{property_kind},
+				#{property_name},
+				#{property_standard},
+				#{supplier},
+				#{unit_price},
+				#{in_time},
+				#{identity_code},
+				#{property_no},
+				#{voucher_no},
+				#{property_type},
+				#{factory_no},
+				#{factory_date},
+				#{use_date},
+				#{setup_place},
+				#{original_value},
+				#{average_equity},
+				#{summ}
+				)
+		]]>
+	</insert>
+	<insert id="addCycleItem" parameterType="cycleitem">
+		<![CDATA[
+			insert into cycle_record(barcode,entity_type,oper_time,user_name,dept_name,oper)
+			values(#{barcode},#{entity_type},#{oper_time},#{user_name},#{dept_name},#{oper})	
+		]]>
+	</insert>
+	<select id="getPropertyList" parameterType="map" resultType="EntityProperty">
+		<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name
+			 from entity_property ep 
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ep.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="duty_user_name != null and duty_user_name != ''" >
+   				<![CDATA[
+			 		and ep.duty_user_name = #{duty_user_name}
+				]]>
+   			</if>
+   			<if test="duty_dept_name != null and duty_dept_name != ''" >
+   				<![CDATA[
+			 		and ep.duty_dept_name = #{duty_dept_name}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ep.seclv_code = #{seclv_code}
+				]]>
+   			</if>		
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ep.in_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ep.in_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="property_name != null and property_name != ''" >
+   				<![CDATA[
+			 		and ep.property_name = #{property_name}
+				]]>
+   			</if>
+   			<if test="property_barcode != null and property_barcode != ''" >
+   				<![CDATA[
+			 		and ep.property_barcode = #{property_barcode}
+				]]>
+   			</if>
+   			<if test="property_status != null and property_status != ''" >
+   				<![CDATA[
+			 		and ep.property_status = #{property_status}
+				]]>
+   			</if>
+   			<if test="duty_user_iidd != null and duty_user_iidd != ''" >
+   				<![CDATA[
+			 		and ep.duty_user_iidd = #{duty_user_iidd}
+				]]>
+   			</if>
+   			<if test="duty_dept_id != null and duty_dept_id != ''" >
+			 		and ep.duty_dept_id in
+			 		<foreach item="item" index="index" collection="duty_dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+   			</if>
+   			<if test="property_barcode != null and property_barcode != ''" >
+   				<![CDATA[
+			 		and ep.property_barcode = #{property_barcode}
+				]]>
+   			</if>
+			<if test="outwaste" >
+   				<![CDATA[
+			 		and (ep.property_status = '1' or ep.property_status = '3')
+				]]>
+   			</if>
+   			<choose>
+   				<when test="has_job_code">
+	   				<![CDATA[
+				 		and ep.job_code is not null and ep.job_code != ''
+					]]>
+	   				<if test="job_status != null and job_status != ''" >
+		   				<![CDATA[
+					 		and jp.job_status = #{job_status}
+						]]>
+		   			</if>
+	   			</when>	
+   			</choose>
+   			<!-- order by ep.in_time desc -->
+   		</trim>
+	</select>
+		<select id="getWasteEventList" parameterType="map" resultType="wasteevent">
+		<![CDATA[
+			select ew.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_waste ew 
+				left join job_process jp on(ew.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ew.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ew.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ew.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ew.usage_code=syu.usage_code)
+				left join sys_project sp on (ew.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ew.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ew.seclv_code = #{seclv_code}
+				]]>
+   			</if>		
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ew.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ew.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			<if test="waste_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and ew.waste_status = #{waste_status}
+				]]>
+   			</if>
+   			<choose>
+   				<when test="submitable">
+	   				<![CDATA[
+				 		and (ew.job_code is null)
+					]]>
+	   			</when>	
+	   			<otherwise>
+	   				<![CDATA[
+				 		and (ew.job_code is not null)
+					]]>
+	   				<if test="job_status != null and job_status != ''" >
+		   				<![CDATA[
+					 		and jp.job_status = #{job_status}
+						]]>
+		   			</if>
+	   			</otherwise>
+   			</choose>
+   			order by apply_time desc
+   		</trim>
+	</select>
+	<select id="getPurchaseEventListByJobCode" parameterType="string" resultType="purchaseevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name 
+			 from event_purchase euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+			where euc.job_code=#{job_code}
+		]]>
+	</select>
+	<select id="getJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_purchase where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delPurchaseEventByEnterCode" parameterType="string">
+		<![CDATA[
+			delete from event_purchase where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getPropertyByIDBarcode" parameterType="string" resultType="entityproperty">
+		<![CDATA[
+			select ep.*,ss.seclv_name,sdu.user_name as duty_user_name_link,sdd.dept_name duty_dept_name_link,jp.jobtype_code,jp.job_status 
+			from entity_property ep	
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) sdu on(ep.duty_user_iidd=sdu.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sdd on(ep.duty_dept_id=sdd.dept_id)
+				left join (select job_code,jobtype_code,job_status from job_process) jp on(ep.job_code = jp.job_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="property_barcode != null and property_barcode != ''" >
+   				<![CDATA[
+			 		and ep.property_barcode = #{property_barcode}
+				]]>
+   			</if>
+   			<if test="id != null and id != ''" >
+   				<![CDATA[
+			 		and ep.id = #{id}
+				]]>
+   			</if>		
+   			order by in_time desc
+   		</trim>
+	</select>
+	<select id="getCycleItemListByBarcode" parameterType="string" resultType="cycleitem">
+		<![CDATA[
+			select * from cycle_record
+			where barcode=#{barcode} order by oper_time asc
+		]]>
+	</select>
+	<update id="updateEntityPropertyStatus" parameterType="map">
+		<![CDATA[
+			update entity_property set job_code = #{job_code},property_status = #{property_status}
+			where property_barcode =#{property_barcode}
+		]]>		
+	</update>
+	<update id="cancelHandlePropertyByCode" parameterType="string">
+		<![CDATA[
+			update entity_property 
+				set job_code = null,property_status = 0
+			where property_barcode=#{property_barcode}
+		]]>
+	</update>
+	<select id="getHandlePropertyCountByJobCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from entity_property where job_code=#{job_code}
+		]]>
+	</select>
+	<update id="updatePropertyStatus" parameterType="map">
+		<![CDATA[
+			update entity_property set property_status = #{property_status}
+			where property_barcode=#{property_barcode}
+		]]>
+	</update>
+	<select id="getPropertyListByJobCode" parameterType="string" resultType="entityproperty">
+		<![CDATA[
+			select ep.*,ss.seclv_name,sdu.user_name as duty_user_name_link,sdd.dept_name duty_dept_name_link,jp.jobtype_code,jp.job_status 
+			from entity_property ep
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) sdu on(ep.duty_user_iidd=sdu.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sdd on(ep.duty_dept_id=sdd.dept_id)
+				left join (select job_code,jobtype_code,job_status from job_process) jp on(ep.job_code = jp.job_code)				 
+			where ep.job_code=#{job_code}
+		]]>
+	</select>
+	<!-- 资产类型管理 -->
+	<select id="getKindList" resultType="propertykind">
+		<![CDATA[
+			select * from property_kind
+		]]>
+	</select>
+	<insert id="addKindType" parameterType="propertykind">					
+		<![CDATA[
+			insert into property_kind(property_prefix,property_kind)values(#{property_prefix},#{property_kind})
+		]]>
+	</insert>
+	<select id="getKindTypeByID" parameterType="int" resultType="propertykind">
+		<![CDATA[
+			select * from property_kind where id=#{id}
+		]]>
+	</select>
+	<delete id="delKindTypeByID" parameterType="int">
+		<![CDATA[
+			delete from property_kind where id=#{id}
+		]]>
+	</delete>
+	<update id="updateKindType" parameterType="propertykind">
+		<![CDATA[
+			update property_kind 
+		]]>
+		<trim prefix="set" prefixOverrides=",">
+		<if test="property_prefix != null" >
+ 			<![CDATA[
+	 			 ,property_prefix = #{property_prefix}
+			]]>
+ 		</if>
+ 		<if test="property_kind != null" >
+ 			<![CDATA[
+	 			 ,property_kind = #{property_kind}
+			]]>
+ 		</if>
+ 		<if test="serial_no != null" >
+ 			<![CDATA[
+	 			 ,serial_no = #{serial_no}
+			]]>
+ 		</if>
+ 		</trim>
+ 		where id=#{id}
+	</update>
+	<insert id="addStorageEvent" parameterType="storageevent">					
+		<![CDATA[
+			insert into event_storage(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				usage_code,
+				project_code,
+				summ,				
+				apply_time,
+				event_code_purchase,
+				manage_dept_id,
+				manage_dept_name,
+				duty_user_iidd,
+				duty_user_name,
+				duty_dept_id,
+				duty_dept_name,
+				identity_code,
+				property_no,
+				voucher_no,
+				property_seclvcode,
+				kind_id,
+				property_kind,
+				property_name,
+				amount,
+				property_standard,
+				property_type,
+				supplier,
+				factory_no,
+				factory_date,
+				use_date,
+				original_value,
+				average_equity,
+				setup_place
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{apply_time},	
+				#{event_code_purchase},
+				#{manage_dept_id},
+				#{manage_dept_name},
+				#{duty_user_iidd},
+				#{duty_user_name},
+				#{duty_dept_id},
+				#{duty_dept_name},
+				#{identity_code},
+				#{property_no},
+				#{voucher_no},
+				#{property_seclvcode},
+				#{kind_id},
+				#{property_kind},
+				#{property_name},
+				#{amount},
+				#{property_standard},
+				#{property_type},
+				#{supplier},
+				#{factory_no},
+				#{factory_date},
+				#{use_date},
+				#{original_value},
+				#{average_equity},
+				#{setup_place}
+				)
+		]]>
+	</insert>
+	<update id="updateStorageEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_storage
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getStorageEventList" parameterType="map" resultType="storageevent">
+		<![CDATA[
+			select es.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,pss.seclv_name property_seclvcode_name
+			 from event_storage es 
+				left join job_process jp on(es.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(es.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(es.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (es.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(es.usage_code=syu.usage_code)
+				left join sys_project sp on (es.project_code=sp.project_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) pss on (es.property_seclvcode=pss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and es.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and es.seclv_code = #{seclv_code}
+				]]>
+   			</if>		
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and es.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and es.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			<if test="store_status != null" >
+   				<![CDATA[
+			 		and es.store_status = #{store_status}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			order by apply_time desc
+   		</trim>
+	</select>
+	<select id="getStorageJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_storage where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delStorageEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_storage where event_code=#{event_code}
+		]]>
+	</delete>
+	<delete id="delJob" parameterType="string">
+		<![CDATA[
+			delete from job_process
+			where job_code =#{job_code}
+		]]>
+	</delete>
+	<select id="getStorageEventByCode" parameterType="string" resultType="storageevent">
+		<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,pss.seclv_name property_seclvcode_name
+			 from event_storage ep 
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) pss on (ep.property_seclvcode=pss.seclv_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<update id="updateStoragestatus" parameterType="map">
+		<![CDATA[
+			update event_storage set store_status = #{store_status}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getStorageEventListByJobCode" parameterType="string" resultType="storageevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,pss.seclv_name property_seclvcode_name 
+			 from event_storage euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) pss on (euc.property_seclvcode=pss.seclv_code)
+			where euc.job_code=#{job_code}
+		]]>
+	</select>
+	<update id="updatePropertyNoByCode" parameterType="map">
+		<![CDATA[
+			update event_storage 
+		]]>
+			 <trim prefix="set" prefixOverrides=",">
+			 <if test="property_no != null" >
+ 				<![CDATA[
+	 			 ,property_no = #{property_no}
+				]]>
+ 			</if>
+ 			<if test="identity_code != null" >
+ 				<![CDATA[
+	 			 ,identity_code = #{identity_code}
+				]]>
+ 			</if>
+ 			<if test="voucher_no != null" >
+ 				<![CDATA[
+	 			 ,voucher_no = #{voucher_no}
+				]]>
+ 			</if>
+ 			</trim>
+			where event_code=#{event_code}
+		
+	</update>
+	<update id="updateVoucherNoByCode" parameterType="map">
+		<![CDATA[
+			update event_storage set voucher_no = #{voucher_no}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getWasteEventListByJobCode" parameterType="string" resultType="wasteevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,ss.seclv_name property_seclvcode_name,
+				property_kind,property_name,duty_user_name,duty_dept_name,aftersu.user_name user_name_after,aftersd.dept_name dept_name_after,property_barcode
+			 from event_waste euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select id,property_kind,property_name,duty_user_name,duty_dept_name,seclv_code,property_barcode from entity_property) epy on(euc.property_id = epy.id)
+				left join (select user_iidd,user_name from sec_user) aftersu on(euc.user_iidd_after=aftersu.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) aftersd on(euc.dept_id_after=aftersd.dept_id)
+			where euc.job_code=#{job_code}
+		]]>
+	</select>
+	<select id="getWasteJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_waste where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getWasteEventByCode" parameterType="string" resultType="wasteevent">
+		<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,pss.seclv_name property_seclvcode_name,
+				property_kind,property_name,duty_user_name,duty_dept_name,aftersu.user_name user_name_after,aftersd.dept_name dept_name_after,property_barcode
+			 from event_waste ep 
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)			
+				left join (select id,property_kind,property_name,duty_user_name,duty_dept_name,seclv_code,property_barcode from entity_property) epy on(ep.property_id = epy.id)
+                left join (select seclv_code,seclv_name from sec_user_seclv) pss on (epy.seclv_code=pss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) aftersu on(ep.user_iidd_after=aftersu.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) aftersd on(ep.dept_id_after=aftersd.dept_id)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getWasteChangeEventList" parameterType="map" resultType="wasteevent">
+		<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,pss.seclv_name property_seclvcode_name,
+				property_kind,property_name,duty_user_name,duty_dept_name,aftersu.user_name user_name_after,aftersd.dept_name dept_name_after,property_barcode
+			 from event_waste ep 
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)			
+				left join (select id,property_kind,property_name,duty_user_name,duty_dept_name,seclv_code,property_barcode from entity_property) epy on(ep.property_id = epy.id)
+                left join (select seclv_code,seclv_name from sec_user_seclv) pss on (epy.seclv_code=pss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) aftersu on(ep.user_iidd_after=aftersu.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) aftersd on(ep.dept_id_after=aftersd.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ep.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ep.seclv_code = #{seclv_code}
+				]]>
+   			</if>		
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			<if test="waste_status != null" >
+   				<![CDATA[
+			 		and ep.waste_status = #{waste_status}
+				]]>
+   			</if>
+   			<if test="dept_id != null and dept_id != ''" >
+			 		and ep.dept_id in
+			 		<foreach item="item" index="index" collection="dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+   			</if>
+   			order by apply_time desc
+   		</trim>
+	</select>
+	<delete id="delWasteChangeEventByEnterCode" parameterType="string">
+		<![CDATA[
+			delete from event_waste where event_code=#{event_code}
+		]]>
+	</delete>
+	<update id="updatePropertyStatusByID" parameterType="map">
+		<![CDATA[
+			update entity_property  	
+		]]>
+		<trim prefix="set" prefixOverrides=",">
+		<if test="property_status != null" >
+ 			<![CDATA[
+	 			 ,property_status = #{property_status}
+			]]>
+ 		</if>
+ 		<if test="duty_user_iidd != null and duty_user_iidd != ''" >
+ 			<![CDATA[
+	 			,duty_user_iidd = #{duty_user_iidd}
+			]]>
+ 		</if>
+ 		<if test="duty_user_name != null and duty_user_name != ''" >
+ 			<![CDATA[
+	 			,duty_user_name = #{duty_user_name}
+			]]>
+ 		</if>
+ 		<if test="duty_dept_id != null and duty_dept_id != ''" >
+ 			<![CDATA[
+	 			,duty_dept_id = #{duty_dept_id}
+			]]>
+ 		</if>
+ 		<if test="duty_dept_name != null and duty_dept_name != ''" >
+ 			<![CDATA[
+	 			,duty_dept_name = #{duty_dept_name}
+			]]>
+ 		</if>
+ 		<if test="waste_time != null and waste_time != ''" >
+ 			<![CDATA[
+	 			,waste_time = #{waste_time}
+			]]>
+ 		</if>
+ 		</trim>
+		where id=#{id}
+	</update>	
+	<update id="updateWasteStatus" parameterType="map">
+		<![CDATA[
+			update event_waste set waste_status = #{waste_status},waste_time=#{waste_time} 
+			where event_code=#{event_code}
+		]]>
+	</update>
+   <insert id="addWasteEvent" parameterType="WasteEvent">					
+		<![CDATA[
+			insert into event_waste(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				usage_code,
+				project_code,
+				summ,				
+				apply_time,
+				event_type,
+				property_id,
+				property_place,
+				user_iidd_after,
+				dept_id_after,
+				depre_life,
+                userd_life,  
+                reason,
+                suggestion,
+                suggestion_waste,
+                waste_status
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{usage_code},
+				#{project_code},
+				#{summ},				
+				#{apply_time},
+				#{event_type},
+				#{property_id},
+				#{property_place},
+				#{user_iidd_after},
+				#{dept_id_after},
+				#{depre_life},
+                #{userd_life},  
+                #{reason},
+                #{suggestion},
+                #{suggestion_waste},
+                #{waste_status}
+				)
+		]]>
+	</insert>
+	<update id="updateWasteEventStatus" parameterType="map">
+		<![CDATA[
+			update event_waste set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getSerialNoByKindId" parameterType="int" resultType="propertykind">
+		<![CDATA[
+			select * from property_kind where id=#{kind_id}
+		]]>
+	</select>
+	<select id="getSelfPropertyLedgerSize" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(*) from ENTITY_PROPERTY ep
+		]]>
+		   <trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ep.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="duty_user_iidd != null and duty_user_iidd != ''" >
+   				<![CDATA[
+			 		and ep.duty_user_iidd = #{duty_user_iidd}
+				]]>
+   			</if>
+   			<if test="duty_dept_id != null and duty_dept_id != ''" >
+   				<![CDATA[
+			 		and ep.duty_dept_id = #{duty_dept_id}
+				]]>
+   			</if>
+   			<if test="property_name != null and property_name != ''" >
+   				<![CDATA[
+			 		and ep.property_name = #{property_name}
+				]]>
+   			</if>
+   				
+   			<if test="seclv_name != null and seclv_name != ''" >
+   				<![CDATA[
+			 		and ep.seclv_name >= #{seclv_name}
+				]]>
+   			</if>
+   				
+   			<if test="duty_user_name != null and duty_user_name != ''" >
+   				<![CDATA[
+			 		and ep.duty_user_name <= #{duty_user_name}
+				]]>
+   			</if>
+             <if test="in_time != null and in_time != ''" >
+   				<![CDATA[
+			 		and ep.in_time = #{in_time}
+				]]>
+   			</if>
+   			<if test="property_status_str != null and property_status_str != ''" >
+   				<![CDATA[
+			 		and ep.property_status_str = #{property_status_str}
+				]]>
+   			</if>
+   			<if test="expire_status != null and expire_status != ''" >
+   				<![CDATA[
+			 		and ep.expire_status = #{expire_status}
+				]]>
+   			</if>
+   			
+   		</trim>
+		
+	</select>
+	<update id="updateKindSerialNo" parameterType="map">
+		<![CDATA[
+			update property_kind set serial_no=serial_no+1
+			where id=#{kind_id}
+		]]>
+	</update>
+</mapper>  

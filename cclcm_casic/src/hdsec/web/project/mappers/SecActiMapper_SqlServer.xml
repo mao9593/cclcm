@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.secactivity.mapper.SecActivityMapper">
+
+	<insert id="AddUserSecActiEvent" parameterType="usersecactievent">					
+		<![CDATA[
+			insert into event_activities(
+				user_iidd, 
+				dept_id, 
+				event_code, 
+				seclv_code, 
+				usage_code,
+				project_code, 
+				summ, 
+				apply_type, 
+				contact, 
+				secret_type, 
+				name, 
+				place, 
+				secret_leader,
+				secret_director, 
+				file_num,
+				file_list, 
+				his_job_code,
+				apply_time,
+				start_time,
+				end_time,
+				act_selv,
+				sponsor,
+				organizer,
+				act_dept_id,
+				act_dept_name,
+				act_user
+			)values(
+				#{user_iidd}, 
+				#{dept_id},
+				#{event_code}, 
+				#{seclv_code},
+				#{usage_code},
+				#{project_code}, 
+				#{summ},
+				#{apply_type}, 
+				#{contact},
+				#{secret_type}, 
+				#{name},
+				#{place}, 
+				#{secret_leader},
+				#{secret_director}, 
+				#{file_num},
+				#{file_list},
+				#{his_job_code},
+				#{apply_time},
+				#{start_time},
+				#{end_time},
+				#{act_selv},
+				#{sponsor},
+				#{organizer},
+				#{act_dept_id},
+				#{act_dept_name},
+				#{act_user}				
+			)
+		]]>
+	</insert>
+	<update id="updateSecActiEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_activities set job_code=#{job_code} where event_code=#{event_code}
+		]]>
+	</update>
+		<select id="getSecActiEventByEventCode" parameterType="string" resultType="usersecactievent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,
+				sp.project_name,sa.seclv_name as act_selv_name,da.dept_name as act_dept_name,
+				us.user_name as secret_director_name
+			 from event_activities euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) sa on (euc.act_selv=sa.seclv_code)
+				left join (select dept_id,dept_name from sec_dept) da on(euc.act_dept_id=da.dept_id)
+				left join (select user_iidd,user_name,dept_id from sec_user) us on(euc.secret_director=us.user_iidd)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getUSecActiEventList" parameterType="map" resultType="usersecactievent">
+<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,
+				sa.seclv_name as act_selv_name,da.dept_name as act_dept_name,us.user_name as secret_director_name 
+			from event_activities euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) sa on (euc.act_selv=sa.seclv_code)
+				left join (select dept_id,dept_name from sec_dept) da on(euc.act_dept_id=da.dept_id)
+				left join (select user_iidd,user_name,dept_id from sec_user) us on(euc.secret_director=us.user_iidd)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and euc.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and euc.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+  			<if test="name != null and name != ''" >
+   				<![CDATA[
+   				and UPPER(euc.name) LIKE UPPER('%'+#{name}+'%')
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getJCodeByECode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_activities where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getUSecActiEventListByJobCode" parameterType="string" resultType="usersecactievent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,
+				sa.seclv_name as act_selv_name,da.dept_name as act_dept_name,us.user_name as secret_director_name  
+			 from event_activities euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) sa on (euc.act_selv=sa.seclv_code)
+				left join (select dept_id,dept_name from sec_dept) da on(euc.act_dept_id=da.dept_id)
+				left join (select user_iidd,user_name,dept_id from sec_user) us on(euc.secret_director=us.user_iidd)
+			where euc.job_code = #{job_code}
+		]]>
+	</select>	
+	<delete id="delUSecActiEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_activities where event_code=#{event_code}
+		]]>
+	</delete>
+	
+	<!-- 涉外交流保密工作 -->
+	
+	<insert id="AddSecOutExchangeEvent" parameterType="secoutexchangeevent">					
+		<![CDATA[
+			insert into event_outexchange(
+				user_iidd, 
+				dept_id, 
+				event_code, 
+				seclv_code, 
+				usage_code,
+				project_code, 
+				summ, 
+				company_info,
+				reason,
+				recept_user_iidd,
+				receptionist,
+				exchange_info,
+				reception,
+				reception_sec,
+				visite_place,
+				visite_sec,
+				material,
+				material_sec,
+				sec_measure,
+				file_num,
+				file_list, 
+				his_job_code,
+				apply_time,
+				go_time,
+				back_time
+			)values(
+				#{user_iidd}, 
+				#{dept_id},
+				#{event_code}, 
+				#{seclv_code},
+				#{usage_code},
+				#{project_code}, 
+				#{summ},
+				#{company_info},
+				#{reason},
+				#{recept_user_iidd},
+				#{receptionist},
+				#{exchange_info},
+				#{reception},
+				#{reception_sec},
+				#{visite_place},
+				#{visite_sec},
+				#{material},
+				#{material_sec},
+				#{sec_measure},
+				#{file_num},
+				#{file_list},
+				#{his_job_code},
+				#{apply_time},
+				#{go_time},
+				#{back_time}
+			)
+		]]>
+	</insert>
+	<update id="updateSecOutExchangeEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_outexchange
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getSecOutExchangeEventList" parameterType="map" resultType="secoutexchangeevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name 
+			from event_outexchange euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and euc.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and euc.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getSecOutExchangeByEventCode" parameterType="string" resultType="secoutexchangeevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_outexchange euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getOutExchangeJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_outexchange where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delSecOutExchangeEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_outexchange where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getOutExchangeEventListByJobCode" parameterType="string" resultType="secoutexchangeevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_outexchange euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+			where euc.job_code = #{job_code}
+		]]>
+	</select>	
+</mapper>  

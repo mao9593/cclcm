@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="ledgerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.ledger.mapper.LedgerMapper" />
+	</bean>
+	<bean id="ledger.viewledger" class="${common.package}.ledger.action.ViewledgerAction" scope="prototype" />
+	<bean id="ledger.viewpersonalledger" class="${common.package}.ledger.action.ViewPersonalledgerAction" scope="prototype" />
+	<bean id="ledger.viewledgerinfo" class="${common.package}.ledger.action.ViewledgerInfoAction" scope="prototype" />
+	<bean id="ledger.viewcd" class="${common.package}.ledger.action.ViewCDAction" scope="prototype" />
+	<bean id="ledger.retrievecd" class="${common.package}.ledger.action.RetrieveCDAction" scope="prototype" />
+	<bean id="ledger.viewretrievedcd" class="${common.package}.ledger.action.ViewRetrievedCDAction" scope="prototype" />
+	<bean id="ledger.destroycd" class="${common.package}.ledger.action.DestroyCDAction" scope="prototype" />
+	<bean id="ledger.viewhandlecd" class="${common.package}.ledger.action.ViewHandleCDAction" scope="prototype" />
+	<bean id="ledger.handlecd" class="${common.package}.ledger.action.HandleCDAction" scope="prototype" />
+	<bean id="ledger.viewpaper" class="${common.package}.ledger.action.ViewPaperAction" scope="prototype" />
+	<bean id="ledger.retrievepaper" class="${common.package}.ledger.action.RetrievePaperAction" scope="prototype" />
+	<bean id="ledger.viewretrievedpaper" class="${common.package}.ledger.action.ViewRetrievedPaperAction" scope="prototype" />
+	<bean id="ledger.destroypaper" class="${common.package}.ledger.action.DestroyPaperAction" scope="prototype" />
+	<bean id="ledger.viewhandlepaper" class="${common.package}.ledger.action.ViewHandlePaperAction" scope="prototype" />
+	<bean id="ledger.handlepaper" class="${common.package}.ledger.action.HandlePaperAction" scope="prototype" />
+	<bean id="ledger.exportcdledger" class="${common.package}.ledger.action.ExportCDLedgerAction" scope="prototype" />
+	<bean id="ledger.exportpersonalcdledger" class="${common.package}.ledger.action.ExportPersonalCDLedgerAction" scope="prototype" />
+	<bean id="ledger.exportpaperledger" class="${common.package}.ledger.action.ExportPaperLedgerAction" scope="prototype" />
+	<bean id="ledger.exportpersonalpaperledger" class="${common.package}.ledger.action.ExportPersonalPaperLedgerAction" scope="prototype" />
+	<bean id="ledger.viewcdburnresult" class="${common.package}.ledger.action.ViewCDBurnResultAction" scope="prototype" />
+	<bean id="ledger.signburnresult" class="${common.package}.ledger.action.SignBurnResultAction" scope="prototype" />
+	<bean id="ledger.viewpaperledger" class="${common.package}.ledger.action.ViewPaperledgerAction" scope="prototype" />
+	<bean id="ledger.viewpersonalpaperledger" class="${common.package}.ledger.action.ViewPersonalPaperledgerAction" scope="prototype" />
+	<bean id="ledger.viewpaperledgerinfo" class="${common.package}.ledger.action.ViewPaperledgerInfoAction" scope="prototype" />
+	<bean id="ledger.viewselfpaperledger" class="${common.package}.ledger.action.ViewSelfPaperLedgerAction" scope="prototype" />
+	<bean id="ledger.managehandlepaper" class="${common.package}.ledger.action.ManageHandlePaperAction" scope="prototype" />
+	<bean id="ledger.cancelhandlepaper" class="${common.package}.ledger.action.CancelHandlePaperAction" scope="prototype" />
+	<bean id="ledger.viewcycledetail" class="${common.package}.ledger.action.ViewCycleDetailAction" scope="prototype" />
+	<bean id="ledger.viewpersonaldeviceledger" class="${common.package}.ledger.action.ViewPersonalDeviceledgerAction" scope="prototype" />
+	<bean id="ledger.viewselfcdledger" class="${common.package}.ledger.action.ViewSelfCDLedgerAction" scope="prototype" />
+	<bean id="ledger.managehandlecd" class="${common.package}.ledger.action.ManageHandleCDAction" scope="prototype" />
+	<bean id="ledger.cancelhandlecd" class="${common.package}.ledger.action.CancelHandleCDAction" scope="prototype" />	
+	<bean id="ledger.handlesendpaper" class="${common.package}.ledger.action.HandleSendPaperAction" scope="prototype" />	
+	<bean id="ledger.viewsendpaper" class="${common.package}.ledger.action.ViewSendPaperAction" scope="prototype" />
+	<bean id="ledger.handlesendcd" class="${common.package}.ledger.action.HandleSendCDAction" scope="prototype" />	
+	<bean id="ledger.viewsendcd" class="${common.package}.ledger.action.ViewSendCDAction" scope="prototype" />
+	<bean id="ledger.viewpaperprintresult" class="${common.package}.ledger.action.ViewPaperPrintResultAction" scope="prototype" />
+	<bean id="ledger.signprintresult" class="${common.package}.ledger.action.SignPrintResultAction" scope="prototype" />
+	<bean id="ledger.confirmsendcd" class="${common.package}.ledger.action.ConfirmSendCDAction" scope="prototype" />	
+	<bean id="ledger.confirmsendpaper" class="${common.package}.ledger.action.ConfirmSendPaperAction" scope="prototype" />	
+	<bean id="ledger.rejectsendcd" class="${common.package}.ledger.action.RejectSendCDAction" scope="prototype" />	
+	<bean id="ledger.rejectsendpaper" class="${common.package}.ledger.action.RejectSendPaperAction" scope="prototype" />	
+	<bean id="ledger.viewdestroypaper" class="${common.package}.ledger.action.ViewDestroyPaperAction" scope="prototype" />
+	<bean id="ledger.viewdestroycd" class="${common.package}.ledger.action.ViewDestroyCDAction" scope="prototype" />
+	<bean id="ledger.viewselfsecuritypaperledger" class="${common.package}.ledger.action.ViewSelfSecurityPaperLedgerAction" scope="prototype" />
+	<bean id="ledger.viewdeptsecuritypaperledger" class="${common.package}.ledger.action.ViewDeptSecurityPaperLedgerAction" scope="prototype" />
+    
+	<!-- 部门管理员（部门台账） -->
+	<bean id="ledger.viewdeptpaperledger" class="${common.package}.ledger.action.ViewDeptPaperLedgerAction" scope="prototype" />	
+	<bean id="ledger.viewdeptpaperledgerloader" class="${common.package}.ledger.action.ViewDeptPaperLedgerLoaderAction" scope="prototype" />	
+	<bean id="ledger.viewdeptcdledger" class="${common.package}.ledger.action.ViewDeptCDLedgerAction" scope="prototype" />	
+	<bean id="ledger.exportdeptpaperledger" class="${common.package}.ledger.action.ExportDeptPaperLedgerAction" scope="prototype" />
+	<bean id="ledger.exportdeptcdledger" class="${common.package}.ledger.action.ExportDeptCDLedgerAction" scope="prototype" />
+	<!-- 部门管理员（部门用户台账） -->
+	<bean id="ledger.viewdeptuserpaperledger" class="${common.package}.ledger.action.ViewDeptUserPaperLedgerAction" scope="prototype" />	
+	<bean id="ledger.viewdeptusercdledger" class="${common.package}.ledger.action.ViewDeptUserCDLedgerAction" scope="prototype" />
+	<bean id="ledger.exportdeptuserpaperledger" class="${common.package}.ledger.action.ExportDeptUserPaperLedgerAction" scope="prototype" />
+	<bean id="ledger.exportdeptusercdledger" class="${common.package}.ledger.action.ExportDeptUserCDLedgerAction" scope="prototype" />
+	<bean id="ledger.exportpersonaldeviceledger" class="${common.package}.ledger.action.ExportPersonalDeviceLedgerAction" scope="prototype" />
+	<bean id="ledger.exportpaperborrowledger" class="${common.package}.ledger.action.ExportPaperBorrowLedgerAction" scope="prototype" />
+	<bean id="ledger.exportcdborrowledger" class="${common.package}.ledger.action.ExportCDBorrowLedgerAction" scope="prototype" />
+	<bean id="ledger.exportselfstorage" class="${common.package}.ledger.action.ExportSelfStorageAction" scope="prototype" />
+	<bean id="ledger.exportretrievedpaper" class="${common.package}.ledger.action.ExportRetrievedPaperAction" scope="prototype" />
+    <bean id="ledger.exportdestroypaper" class="${common.package}.ledger.action.ExportDestroyPaperAction" scope="prototype" />
+	<bean id="ledger.exportsendpaper" class="${common.package}.ledger.action.ExportSendPaperAction" scope="prototype" />
+	<bean id="ledger.exportretrievedcd" class="${common.package}.ledger.action.ExportRetrievedCDAction" scope="prototype" />
+	<bean id="ledger.exportdestroycd" class="${common.package}.ledger.action.ExportDestroyCDAction" scope="prototype" />
+	<bean id="ledger.exportsendcd" class="${common.package}.ledger.action.ExportSendCDAction" scope="prototype" />
+	<!-- 检测该密级文件是否有权限预览 -->
+	<bean id="ledger.checkshowprintfile" class="${common.package}.ledger.action.CheckShowPrintFileAction" scope="prototype" />
+	<!-- 退回载体回收申请 -->
+	<bean id="ledger.quithandlepaper" class="${common.package}.ledger.action.QuitHandlePaperAction" scope="prototype" />
+	<bean id="ledger.quithandlecd" class="${common.package}.ledger.action.QuitHandleCDAction" scope="prototype" />	
+	<!-- 导出纸张统计 -->
+	<bean id="ledger.exportpaperstaticbyseclv" class="${common.package}.ledger.action.ExportPaperStaticBySeclvAction" scope="prototype" />
+	<bean id="ledger.exportpaperstaticbycolor" class="${common.package}.ledger.action.ExportPaperStaticByColorAction" scope="prototype" />
+	<bean id="ledger.exportpaperstaticbydouble" class="${common.package}.ledger.action.ExportPaperStaticByDoubleAction" scope="prototype" />
+	<bean id="ledger.exportpaperstaticbysize" class="${common.package}.ledger.action.ExportPaperStaticBySizeAction" scope="prototype" />
+	<bean id="ledger.exportpaperstaticbyall" class="${common.package}.ledger.action.ExportPaperStaticByAllAction" scope="prototype" />
+	<!-- 审批通过后撤销载体闭环申请 -->
+	<bean id="ledger.giveuphandlepaper" class="${common.package}.ledger.action.GiveUpHandlePaperAction" scope="prototype" />
+	<bean id="ledger.giveuphandlecd" class="${common.package}.ledger.action.GiveUpHandleCDAction" scope="prototype" />
+	<bean id="ledger.viewgraphpaper" class="${common.package}.ledger.action.ViewGraphPaperAction" scope="prototype" />
+	<bean id="ledger.managepaperledger" class="${common.package}.ledger.action.ManagePaperledgerAction" scope="prototype" />
+	<bean id="ledger.manageledger" class="${common.package}.ledger.action.ManageledgerAction" scope="prototype" />	
+	<!-- 台账同步 -->
+	<bean id="ledger.syncdata" class="${common.package}.ledger.sync.BeginSyncAction" scope="prototype">
+		<property name="sqlUrl" value="jdbc:sqlserver://127.0.0.1;databaseName=smartprint;"></property>
+		<property name="sqlUserName" value="sa"></property>
+		<property name="sqlPassword" value="ht3pki2002!!"></property>
+	</bean>
+	<bean id="ledger.destroypaperapply" class="${common.package}.ledger.action.DestroyPaperApplyAction" scope="prototype" />
+	<bean id="ledger.sendpaperapply" class="${common.package}.ledger.action.SendPaperApplyAction" scope="prototype" />
+	<bean id="ledger.filepaperapply" class="${common.package}.ledger.action.FilePaperApplyAction" scope="prototype" />
+	<bean id="ledger.delaypaperapply" class="${common.package}.ledger.action.DelayPaperApplyAction" scope="prototype" />
+	<bean id="ledger.destroycdapply" class="${common.package}.ledger.action.DestroyCDApplyAction" scope="prototype" />
+	<bean id="ledger.sendcdapply" class="${common.package}.ledger.action.SendCDApplyAction" scope="prototype" />
+	<bean id="ledger.filecdapply" class="${common.package}.ledger.action.FileCDApplyAction" scope="prototype" />
+	<bean id="ledger.delaycdapply" class="${common.package}.ledger.action.DelayCDApplyAction" scope="prototype" />
+	<!-- 已回收文件列表 -->
+	<bean id="ledger.viewrecycledpaper" class="${common.package}.ledger.action.ViewRecycledPaperAction" scope="prototype" />
+	<!-- 文件送销申请列表 -->
+	<bean id="ledger.viewsenddestroypaper" class="${common.package}.ledger.action.ViewSendDestroyPaperAction" scope="prototype" />
+	<!-- 送销任务详情 -->
+	<bean id="ledger.viewsenddestroyjobdetail" class="${common.package}.ledger.action.ViewSendDestroyJobDetailAction" scope="prototype" />
+	<!-- 取消送销任务申请 -->
+	<bean id="ledger.cancelsenddestroyjob" class="${common.package}.ledger.action.CancelSendDestroyJobAction" scope="prototype" />
+	<!-- 送销审批任务管理 -->
+	<bean id="ledger.managesenddestroycdaprvjob" class="${common.package}.ledger.action.ManageSendDestroyCDAprvJobAction" scope="prototype" />
+	<bean id="ledger.managesenddestroypaperaprvjob" class="${common.package}.ledger.action.ManageSendDestroyPaperAprvJobAction" scope="prototype" />
+	<bean id="ledger.approvesenddestroyjob" class="${common.package}.ledger.action.ApproveSendDestroyJobAction" scope="prototype" />
+	<bean id="ledger.viewsenddestroypaperaprvjob" class="${common.package}.ledger.action.ViewSendDestroyPaperAprvJobAction" scope="prototype" />
+	<bean id="ledger.viewsenddestroycdaprvjob" class="${common.package}.ledger.action.ViewSendDestroyCDAprvJobAction" scope="prototype" />
+	<!-- 已回收光盘列表 -->
+	<bean id="ledger.viewrecycledcd" class="${common.package}.ledger.action.ViewRecycledCDAction" scope="prototype" />
+	<!-- 光盘送销申请列表 -->
+	<bean id="ledger.viewsenddestroycd" class="${common.package}.ledger.action.ViewSendDestroyCDAction" scope="prototype" />
+	<!-- 补打条码-->
+	<bean id="ledger.reprintburnbarcode" class="${common.package}.ledger.action.ReprintBurnBarcodeAction" scope="prototype" />
+	<!-- 配置条码格式-->
+	<bean id="ledger.configbarcode" class="${common.package}.ledger.action.ConfigBarcodeAction" scope="prototype" />
+	<!-- 纸张折合率 -->
+	<bean id="ledger.viewpaperconversionrate" class="${common.package}.ledger.action.ViewPaperConversionRateAction" scope="prototype" />
+	<bean id="ledger.deletepaperconversionrate" class="${common.package}.ledger.action.DeletePaperConversionRateAction" scope="prototype" />
+	<bean id="ledger.updatepaperconversionrate" class="${common.package}.ledger.action.UpdatePaperConversionRateAction" scope="prototype" />
+	<bean id="ledger.addpaperconversionrate" class="${common.package}.ledger.action.AddPaperConversionRateAction" scope="prototype" />
+	<!-- 添加文件销毁的备注 -->
+	<bean id="ledger.viewfailremark" class="${common.package}.ledger.action.ViewFailRemarkAction" scope="prototype" />
+	<bean id="ledger.addorupdatefailremark" class="${common.package}.ledger.action.AddOrUpdateFailRemarkAction" scope="prototype" />
+	
+	<!-- 替换页回收 -->
+	<bean id="ledger.viewreplacepage" class="${common.package}.ledger.action.ViewReplacePageAction" scope="prototype"/>
+	<bean id="ledger.replacepageretrieve" class="${common.package}.ledger.action.ReplacePageRetrieveAction" scope="prototype"/>		
+	<!-- 上传销毁回执单 -->
+	<bean id="ledger.confirmdestroypaper" class="${common.package}.ledger.action.ConfirmDestroyPaperAction" scope="prototype"/>
+	<bean id="ledger.uploaddestroyfiles" class="${common.package}.ledger.action.UploadDestroyFilesAction" scope="prototype"/>
+	<!-- 替换页销毁 -->
+	<bean id="ledger.viewdestroyreplacepage" class="${common.package}.ledger.action.ViewDestroyReplacepageAction" scope="prototype"/>
+	<bean id="ledger.replacepagedestroy" class="${common.package}.ledger.action.ReplacePageDestroyAction" scope="prototype"/>
+	<!-- 载体变更管理-->
+	<bean id="ledger.viewmodifyledger" class="${common.package}.ledger.action.ViewModifyLedgerAction" scope="prototype"/>
+	<bean id="ledger.handlemodifyjob" class="${common.package}.ledger.action.HandleModifyJobAction" scope="prototype"/>
+	<!-- 变更审批-->
+	<bean id="ledger.managemodifyjob" class="${common.package}.ledger.action.ManageModifyJobAction" scope="prototype"/>
+	<bean id="ledger.approvemodifyjob" class="${common.package}.ledger.action.ApproveModifyJobAction" scope="prototype"/>
+	<bean id="ledger.viewmodifydetail" class="${common.package}.ledger.action.ViewModifyDetailAction" scope="prototype"/>
+	<!-- 查看审批记录 -->
+	<bean id="ledger.viewmodifyjob" class="${common.package}.ledger.action.ViewModifyJobAction" scope="prototype"/>
+	<bean id="ledger.viewmodjobdetail" class="${common.package}.ledger.action.ViewModJobDetailAction" scope="prototype"/>
+	<!-- 密级变更确认 -->
+	<bean id="ledger.viewconfirmmodify" class="${common.package}.ledger.action.ViewConfirmModifyAction" scope="prototype"/>
+	<bean id="ledger.confirmmodify" class="${common.package}.ledger.action.ConfirmModifyAction" scope="prototype"/>
+	<bean id="ledger.viewconfmodifyljob" class="${common.package}.ledger.action.ViewConfModifylJobAction" scope="prototype"/>
+	<!-- 处理载体变更申请记录 -->
+	<bean id="ledger.managemodifyledger" class="${common.package}.ledger.action.ManageModifyLedgerAction" scope="prototype"/>
+	<!--取消变更记录-->
+	<bean id="ledger.cancelhandleledger" class="${common.package}.ledger.action.CancelHandleLedgerAction" scope="prototype"/>		
+	<!-- 外带管理 -->
+    <bean id="ledger.handlepapercarryoutjob" class="${common.package}.ledger.action.HandlePaperCarryOutJobAction" scope="prototype" />
+    <bean id="ledger.handlecdcarryoutjob" class="${common.package}.ledger.action.HandleCDCarryOutJobAction" scope="prototype" />
+    <!--外带审批  -->
+	<bean id="ledger.managecarryoutaprvjob" class="${common.package}.ledger.action.ManageCarryOutAprvJobAction" scope="prototype" />
+	<bean id="ledger.approvecarryoutjob" class="${common.package}.ledger.action.ApproveCarryOutJobAction" scope="prototype" />
+	<bean id="ledger.viewcarryouthandlejob" class="${common.package}.ledger.action.ViewCarryOutHandleJobAction" scope="prototype" />
+	<!-- 外带审批记录 -->
+	<bean id="ledger.managecarryoutpaperjob" class="${common.package}.ledger.action.ManageCarryOutPaperJobAction" scope="prototype" />
+	<bean id="ledger.managecarryoutcdjob" class="${common.package}.ledger.action.ManageCarryOutCDJobAction" scope="prototype" />
+	<!-- 外带详情-->
+	<bean id="ledger.viewcarryoutjobdetail" class="${common.package}.ledger.action.ViewCarryOutJobDetailAction" scope="prototype" />
+	<!-- 外带确认 -->
+	<bean id="ledger.managecarryoutconfirmpapereventlist" class="${common.package}.ledger.action.ManageCarryOutConfirmPaperEventListAction" scope="prototype" />
+	<bean id="ledger.managecarryoutconfirmcdeventlist" class="${common.package}.ledger.action.ManageCarryOutConfirmCDEventListAction" scope="prototype" />
+	<!-- 带回确认 -->
+	<bean id="ledger.handlecarryinconfirmjob" class="${common.package}.ledger.action.HandleCarryInConfirmJobAction" scope="prototype" />
+	
+	<!-- 外带申请记录 -->
+	<bean id="ledger.viewcarryoutcdeventlist" class="${common.package}.ledger.action.ViewCarryOutCDEventListAction" scope="prototype" />
+	<bean id="ledger.viewcarryoutpapereventlist" class="${common.package}.ledger.action.ViewCarryOutPaperEventListAction" scope="prototype" />
+	<!-- 外带记录详情 -->
+	<bean id="ledger.viewcarryoutinfo" class="${common.package}.ledger.action.ViewCarryOutInfoAction" scope="prototype" />
+	<!-- 检查是否带回 -->
+	<bean id="ledger.checkorcarryout" class="${common.package}.ledger.action.CheckOrCarryOutAction" scope="prototype" />
+	
+	<!-- 查看审批流程信息 -->
+	<bean id="ledger.viewapprovalprocessdetail" class="${common.package}.ledger.action.ViewApprovalProcessDetailAction" scope="prototype" />
+	
+	<!-- 光盘可补打条码列表-->
+	<bean id="ledger.viewcdreprintbarcode" class="${common.package}.ledger.action.ViewCDReprintBarcodeAction" scope="prototype" />
+	<bean id="ledger.configcdbarcode" class="${common.package}.ledger.action.ConfigCDBarcodeAction" scope="prototype" />
+	<bean id="ledger.reprintcdbarcode" class="${common.package}.ledger.action.ReprintCDBarcodeAction" scope="prototype" />
+	
+	<!-- 文件补打条码-->
+	<bean id="ledger.reprintbarcodepaper" class="${common.package}.ledger.action.ReprintBarcodePaperAction" scope="prototype" />
+	<bean id="ledger.configpaperbarcode" class="${common.package}.ledger.action.ConfigPaperBarcodeAction" scope="prototype" />
+	<bean id="ledger.reprintpaperbarcode" class="${common.package}.ledger.action.ReprintPaperBarcodeAction" scope="prototype" />
+	<!-- 回收所有检索结果 -->
+	<bean id="ledger.retrieveall" class="${common.package}.ledger.action.RetrieveAllAction" scope="prototype" />
+	<!-- 销毁所有检索结果 -->
+	<bean id="ledger.destoryall" class="${common.package}.ledger.action.DestoryAllAction" scope="prototype" />
+	<!-- 个人纸质台账回收列表 -->
+	<bean id="ledger.viewselfpaperrecycleledger" class="${common.package}.ledger.action.ViewSelfPaperRecycleLedgerAction" scope="prototype" />
+	<bean id="ledger.exportpersonalpaperrecycleledger" class="${common.package}.ledger.action.ExportPersonalPaperRecycleLedgerAction" scope="prototype" />
+	<!-- 补打交接单 -->
+	<bean id="ledger.reprintsendconfirm" class="${common.package}.ledger.action.ReprintSendConfirmAction" scope="prototype" />
+	<bean id="ledger.reprintsendconfirmcd" class="${common.package}.ledger.action.ReprintSendConfirmCDAction" scope="prototype" />
+	<!-- 科研工作手册台账 -->
+	<bean id="ledger.viewdeptsecretpaperledger" class="${common.package}.ledger.action.ViewDeptSecretPaperLedgerAction" scope="prototype"/>
+	 <!-- 预台帐打印 -->
+    <bean id="ledger.viewexpectpaperledger" class="${common.package}.ledger.action.ViewExpectPaperLedgerAction" scope="prototype" />
+    <!-- 预台帐记录 -->
+    <bean id="ledger.viewselfexpectpaperledger" class="${common.package}.ledger.action.ViewSelfExpectPaperLedgerAction" scope="prototype" />
+	<!-- 预台帐日志查询 -->
+	<bean id="ledger.viewunlockeventlog" class="${common.package}.ledger.action.ViewUnLockEventLogAction" scope="prototype"/>
+	<bean id="ledger.exportunlockeventlog" class="${common.package}.ledger.action.ExportUnLockEventLogAction" scope="prototype"/>
+	<bean id="ledger.expectsignprintresult" class="${common.package}.ledger.action.ExpectSignPrintResultAction" scope="prototype"/>
+	<bean id="ledger.expectsignprintfail" class="${common.package}.ledger.action.ExpectSignPrintFailAction" scope="prototype"/>
+	<!-- 台账备注修改-->
+	<bean id="ledger.setremark" class="${common.package}.ledger.action.SetRemarkAction" scope="prototype"/>
+	<bean id="ledger.selfclosedprocess" class="${common.package}.ledger.action.SelfClosedProcessAction" scope="prototype"/>
+	<bean id="ledger.selfclosedsendprocess" class="${common.package}.ledger.action.SelfClosedSendProcessAction" scope="prototype"/>
+	<!-- 载体录入台账删除修改记录 -->
+	<bean id="ledger.papermodifyapply" class="${common.package}.ledger.action.PaperModifyApplyAction" scope="prototype"/>
+	<!-- 已归档载体二次处理任务模块 -->
+	<bean id="ledger.handletempjob" class="${common.package}.ledger.action.HandleTempJobAction" scope="prototype"/>
+	<bean id="ledger.managefilepaperevent" class="${common.package}.ledger.action.ManageFilePaperEventAction" scope="prototype"/>
+	<bean id="ledger.vieweventtempjobdetail" class="${common.package}.ledger.action.ViewEventTempJobDetailAction" scope="prototype"/>
+	<bean id="ledger.cancelhandletemp" class="${common.package}.ledger.action.CancelHandleTempAction" scope="prototype"/>
+	<bean id="ledger.managefilecdevent" class="${common.package}.ledger.action.ManageFileCdEventAction" scope="prototype"/>
+	<!-- 监销确认 -->
+	<bean id="ledger.supervisedestroypaper" class="${common.package}.ledger.action.SuperviseDestroyPaperAction" scope="prototype"/>
+	<bean id="ledger.confirmsupervise" class="${common.package}.ledger.action.ConfirmSuperviseAction" scope="prototype"/>
+	<bean id="ledger.manageselfdestroypaperjob" class="${common.package}.ledger.action.ManageSelfDestroyPaperJobAction" scope="prototype"/>
+	<!-- 科研工作手册监销申请记录 -->
+	<bean id="ledger.manageselfdestroysecretpaperjob" class="${common.package}.ledger.action.ManageSelfDestroySecretPaperJobAction" scope="prototype"/>
+	<!-- 科研工作手册监销确认 -->
+	<bean id="ledger.supervisedestroysecretpaper" class="${common.package}.ledger.action.SuperviseDestroySecretPaperAction" scope="prototype"/>
+	<!-- 科研工作手册监销确认记录 -->
+	<bean id="ledger.viewsupervisedestroysecretpaper" class="${common.package}.ledger.action.ViewSuperviseDestroySecretPaperAction" scope="prototype"/>
+	
+	<!-- 光盘自主销毁 -->
+	<bean id="ledger.supervisedestroycd" class="${common.package}.ledger.action.SuperviseDestroyCDAction" scope="prototype"/>
+	<bean id="ledger.manageselfdestroycdjob" class="${common.package}.ledger.action.ManageSelfDestroyCDJobAction" scope="prototype"/>
+	<!-- 文件、光盘监销确认记录 -->
+	<bean id="ledger.viewsupervisedestroypaper" class="${common.package}.ledger.action.ViewSuperviseDestroyPaperAction" scope="prototype"/>
+	<bean id="ledger.viewsupervisedestroycd" class="${common.package}.ledger.action.ViewSuperviseDestroyCDAction" scope="prototype"/>
+	<!-- 个人磁介质录入台账 -->
+	<bean id="ledger.viewpersonalledindeviceledger" class="${common.package}.ledger.action.ViewPersonalLedinDeviceledgerAction" scope="prototype" />
+	<bean id="ledger.supervisedestroydevice" class="${common.package}.ledger.action.SuperviseDestroyDeviceAction" scope="prototype"/>
+	<bean id="ledger.manageselfdestroydevicejob" class="${common.package}.ledger.action.ManageSelfDestroyDeviceJobAction" scope="prototype"/>
+	<bean id="ledger.viewsupervisedestroydevice" class="${common.package}.ledger.action.ViewSuperviseDestroyDeviceAction" scope="prototype"/>
+
+	<!-- 电子文件导入总台账 -->
+	<bean id="ledger.viewefileinputledger" class="${common.package}.ledger.action.ViewEfileInputLedgerAction" scope="prototype"/>
+	<bean id="ledger.manageefileinputledger" class="${common.package}.ledger.action.ManageEfileInputLedgerAction" scope="prototype"/>
+	<!-- 电子文件导入部门台账 -->
+	<bean id="ledger.viewdeptefileinputledger" class="${common.package}.ledger.action.ViewDeptEfileInputLedgerAction" scope="prototype"/>
+	<!-- 导出电子文件台账 -->
+	<bean id="ledger.exportdeptefileinputledger" class="${common.package}.ledger.action.ExportDeptEfileInputLedgerAction" scope="prototype"/>
+	<bean id="ledger.viewproxypaperledger" class="${common.package}.ledger.action.ViewProxyPaperLedgerAction" scope="prototype"/>
+	<bean id="ledger.viewproxycdledger" class="${common.package}.ledger.action.ViewProxyCDLedgerAction" scope="prototype"/>
+	<bean id="ledger.viewmergeentityledger" class="${common.package}.ledger.action.ViewMergeEntityLedgerAction" scope="prototype"/>
+	<bean id="ledger.mergepaperapply" class="${common.package}.ledger.action.MergePaperApplyAction" scope="prototype"/>
+	<!-- 已拒绝文件外发列表 -->
+	<bean id="ledger.viewrejectsendpaper" class="${common.package}.ledger.action.ViewRejectSendPaperAction" scope="prototype"/>
+	<!-- 已拒绝光盘外发列表 -->
+	<bean id="ledger.viewrejectsendcd" class="${common.package}.ledger.action.ViewRejectSendCDAction" scope="prototype"/>
+</beans>

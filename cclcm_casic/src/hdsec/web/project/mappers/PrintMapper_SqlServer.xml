@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.print.mapper.PrintMapper">
+	<select id="getPrinterList" parameterType="map" resultType="sysprinter">
+		<![CDATA[
+			select * from sys_printer	
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="printer_name != null and printer_name != ''" >
+   				<![CDATA[
+			 		and UPPER(printer_name) LIKE UPPER('%'+#{printer_name}+'%')
+				]]>
+   			</if>
+   		</trim>
+	</select>
+	<select id="getPrintEventList" parameterType="map" resultType="printevent">
+		<![CDATA[
+			select ep.*, ss.seclv_name,su.user_name,sd.dept_name,syu.usage_name,sp.project_name,jp.job_status
+			from event_print ep
+			left join job_process jp on(ep.job_code=jp.job_code)
+			left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+			left join sys_usage syu on(ep.usage_code=syu.usage_code)
+			left join sys_project sp on(ep.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="event_ids != null and event_ids != ''" >
+				and id in 
+				<foreach item="item" index="index" collection="event_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ep.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="print_type != null and print_type != ''" >
+   				<![CDATA[
+			 		and ep.print_type =#{print_type} 
+				]]>
+   			</if>
+			<if test="file_title != null and file_title != ''" >
+   				<![CDATA[
+			 		and UPPER(ep.file_title) LIKE  UPPER('%'+#{file_title}+'%')
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ep.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="color != null and color != ''" >
+   				<![CDATA[
+			 		and ep.color = #{color}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<choose>
+   				<when test="submitable">
+	   				<![CDATA[
+				 		and ep.job_code is null
+					]]>
+	   			</when>	
+	   			<otherwise>
+	   				<![CDATA[
+				 		and ep.job_code is not null
+					]]>
+	   			</otherwise>
+   			</choose>
+ 			<if test="job_status != null and job_status != ''" >
+  				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+  			</if>
+  			<if test="print_status != null and print_status != ''" >
+  				<![CDATA[
+		 			and ep.print_status = #{print_status}
+				]]>
+  			</if>
+  			<if test="st_filename != null and st_filename != ''" >
+  				<![CDATA[
+		 			and ep.st_filename = #{st_filename}
+				]]>
+  			</if>
+  			<if test="proxyprint_user_iidd != null and proxyprint_user_iidd != ''" >
+  				<![CDATA[
+		 			and ep.proxyprint_user_iidd = #{proxyprint_user_iidd}
+				]]>
+  			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getPrintEventByPrintId" parameterType="string" resultType="printevent">
+		<![CDATA[
+			select ep.*, ss.seclv_name,su.user_iidd,su.user_name,sd.dept_name,syu.usage_name,sp.project_name,jp.job_status
+			from event_print ep
+			left join job_process jp on(ep.job_code=jp.job_code)
+			left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+			left join sys_usage syu on(ep.usage_code=syu.usage_code)
+			left join sys_project sp on(ep.project_code=sp.project_code)
+			where id=#{id}
+		]]>
+	</select>
+	<select id="getPrintEventByPrintCode" parameterType="string" resultType="printevent">
+		<![CDATA[
+			select ep.*, ss.seclv_name,su.user_name,sd.dept_name,syu.usage_name,sp.project_name,jp.job_status
+			from event_print ep
+			left join job_process jp on(ep.job_code=jp.job_code)
+			left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+			left join sys_usage syu on(ep.usage_code=syu.usage_code)
+			left join sys_project sp on(ep.project_code=sp.project_code)
+			where event_code = #{event_code}
+		]]>
+	</select>
+	<select id="getJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code	from event_print where event_code = #{event_code}
+		]]>
+	</select>
+	<delete id="delPrintEventByPringId" parameterType="string">
+		<![CDATA[
+			delete from event_print where id=#{id}
+		]]>
+	</delete>
+	<delete id="delPrintEventByPringCode" parameterType="string">
+		<![CDATA[
+			delete from event_print where event_code=#{event_code}
+		]]>
+	</delete>
+	<update id="updatePrintEvent" parameterType="printevent">
+		<![CDATA[
+			update event_print set
+				file_title=#{file_title},
+				print_type=#{print_type},
+				part_num=#{part_num},
+				PID_barcode=#{PID_barcode},
+				PID_pagenum=#{PID_pagenum}
+			where id=#{id}
+		]]>
+	</update>
+	<update id="updatePrintEvent1" parameterType="printevent">
+		<![CDATA[
+			update event_print set
+				file_scope=#{file_scope},
+				seclv_accord=#{seclv_accord},
+				secret_time=#{secret_time}
+			where id=#{id}
+		]]>
+	</update>
+	<update id="cancelPrintEventByEventCode" parameterType="string">
+		<![CDATA[
+			update event_print set
+				job_code = null
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getPrintEventCountByJobCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from event_print where job_code=#{job_code}
+		]]>
+	</select>
+	<update id="delDeptPrinter" parameterType="string">
+		<![CDATA[
+			update ref_printer_group set
+				is_default = 'N'
+			where dept_id=#{dept_id} and is_default = 'Y'
+		]]>
+	</update>
+	<update id="addDeptPrinter" parameterType="map">
+		<![CDATA[
+			update ref_printer_group set
+				is_default = 'Y'
+			where dept_id=#{dept_id} and printer_code = #{printer_code}
+		]]>
+	</update>
+	<select id="getDeptPrinter" parameterType="string" resultType="string">
+		<![CDATA[
+			select printer_code 
+			from ref_printer_group 
+			where dept_id=#{dept_id} and is_default = 'Y'
+		]]>
+	</select>
+	<update id="addPrintEventJobRel" parameterType="map">
+		<![CDATA[
+			update event_print
+				set event_code=#{event_code},
+					seclv_code=#{seclv_code},
+					print_count=#{print_count},
+					remaintimes = #{print_count},
+					color=#{color},
+					print_double=#{print_double},
+					job_code=#{job_code},
+					cycle_type=#{cycle_type},
+					period=#{period},
+					usage_code=#{usage_code},
+					summ = #{summ},
+					project_code=#{project_code},
+					file_title=#{file_title},
+					apply_time=#{apply_time}
+			where id=#{id}
+		]]>
+	</update>
+	<select id="getPrintEventListByJobCode" parameterType="string" resultType="printevent">
+		<![CDATA[
+			select tn.file_title,tn.period,tn.st_filename,tn.page_count,tn.print_count,tn.event_code,tn.seclv_code,tn.usage_code,tn.project_code,tn.apply_time,tn.summ,tn.print_status,tn.file_scope,tn.seclv_accord,tn.secret_time,jp.jobType_code as jobType
+					,jp.job_status,ss.seclv_name,syu.usage_name,sp.project_name,tn.keyword_content,kp.policy,tn.is_cancel
+			from event_print tn
+				left join (select job_code,jobtype_code,job_status from job_process) jp on (tn.job_code=jp.job_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (tn.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(tn.usage_code=syu.usage_code)
+				left join sys_project sp on (tn.project_code=sp.project_code)
+				left join keyword_print kp on (kp.st_filename=tn.st_filename)
+			where tn.job_code = #{job_code}
+		]]>
+	</select>
+	<update id="cancelPrintEventByJobCode" parameterType="string">
+		<![CDATA[
+			update event_print set
+				job_code = null,seclv_accord=null,secret_time=null,file_scope=null,is_cancel = 0  
+			where job_code=#{job_code} and PRINT_STATUS = 0
+		]]>
+	</update>
+	<select id="getPrintEventEnterCancel" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(*) from event_print where job_code=#{job_code} and PRINT_STATUS != 0
+		]]>
+	</select>
+
+	<insert id="addOaPrintEvent" parameterType="oaprintevent">					
+		<![CDATA[
+			insert into event_specialprint(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				usage_code,
+				project_code,
+				summ,				
+				apply_time,
+				paper_name,
+				page_num, 
+				paper_num,
+				make_type,
+				file_selv, 
+				print_direct,
+				print_double,
+				paper_color ,
+				paper_kind ,
+				file_num,
+				file_list
+			)values(
+				#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{apply_time},	
+				#{paper_name},
+				#{page_num}, 
+				#{paper_num},
+				#{make_type},
+				#{file_selv}, 
+				#{print_direct},
+				#{print_double},
+				#{paper_color},
+				#{paper_kind},
+				#{file_num},
+				#{file_list}
+			)
+		]]>
+	</insert>
+	<select id="getSpecialEventList" parameterType="map" resultType="oaprintevent">
+		<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name file_sname,
+				sss.seclv_name seclv_name,syu.usage_name,sp.project_name,syua.usage_name as make_type_str
+			 from event_specialprint ep 
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.file_selv=ss.seclv_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) sss on (ep.seclv_code=sss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)
+				left join sys_usage syua on(ep.make_type=syua.usage_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="admin_dept_ids != null and admin_dept_ids != ''">
+				and ep.dept_id in
+				<foreach item="item" index="index" collection="admin_dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="event_ids != null and event_ids != ''" >
+				and id in 
+				<foreach item="item" index="index" collection="event_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ep.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+			<if test="paper_name != null and paper_name != ''" >
+   				<![CDATA[
+			 		and UPPER(ep.paper_name) LIKE  UPPER('%'+#{paper_name}+'%')
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ep.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="file_selv != null and file_selv != ''" >
+   				<![CDATA[
+			 		and ep.file_selv = #{file_selv}
+				]]>
+   			</if>
+   			<if test="paper_color != null and paper_color != ''" >
+   				<![CDATA[
+			 		and ep.paper_color = #{paper_color}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<choose>
+   				<when test="submitable">
+	   				<![CDATA[
+				 		and ep.job_code is null
+					]]>
+	   			</when>	
+	   			<otherwise>
+	   				<![CDATA[
+				 		and ep.job_code is not null
+					]]>
+	   			</otherwise>
+   			</choose>
+ 			<if test="job_status != null and job_status != ''" >
+  				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+  			</if>
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		and ep.dept_id = #{dept_id}
+				]]>
+			</if>
+  			<if test="paper_status != null" >
+  				<![CDATA[
+		 			and ep.paper_status = #{paper_status}
+				]]>
+  			</if>
+   			order by ep.apply_time desc
+   		</trim>
+	</select>
+	<update id="addOaPrintEventJobRel" parameterType="map">
+		<![CDATA[
+			update event_specialprint
+				set job_code=#{job_code},
+					usage_code=#{usage_code},
+					project_code=#{project_code},
+					seclv_code=#{seclv_code}
+			where id=#{id}
+		]]>
+	</update>
+	<select id="getSpecialPrintEventListByJobCode" parameterType="string" resultType="oaprintevent">
+		<![CDATA[
+			select tn.*,jp.job_status,ss.seclv_name,sss.seclv_name file_sname,syu.usage_name,sp.project_name,syua.usage_name as make_type_str
+			from event_specialprint tn
+				left join (select job_code,jobtype_code,job_status from job_process) jp on (tn.job_code=jp.job_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (tn.seclv_code=ss.seclv_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) sss on (tn.file_selv=sss.seclv_code)
+				left join sys_usage syu on(tn.usage_code=syu.usage_code)
+				left join sys_project sp on (tn.project_code=sp.project_code) 
+				left join sys_usage syua on(tn.make_type=syua.usage_code)
+			where tn.job_code = #{job_code}
+		]]>
+	</select>			
+	<select id="getSpecialPrintEventByEventCode" parameterType="string" resultType="oaprintevent">
+		<![CDATA[
+			select tn.*,su.user_name,sd.dept_name,jp.job_status,ss.seclv_name file_sname,syu.usage_name,sp.project_name,syua.usage_name as make_type_str
+			from event_specialprint tn
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(tn.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(tn.dept_id=sd.dept_id)
+				left join (select job_code,jobtype_code,job_status from job_process) jp on (tn.job_code=jp.job_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (tn.file_selv=ss.seclv_code)
+				left join sys_usage syu on(tn.usage_code=syu.usage_code)
+				left join sys_project sp on (tn.project_code=sp.project_code) 
+				left join sys_usage syua on (tn.make_type = syua.usage_code)
+			where tn.event_code = #{event_code}
+		]]>
+	</select>
+	<select id="getSpecialPrintEventById" parameterType="string" resultType="oaprintevent">
+		<![CDATA[
+			select tn.*,syua.usage_name as make_type_str
+			from event_specialprint tn 
+			left join sys_usage syua on (tn.make_type = syua.usage_code)
+			where tn.id = #{id}
+		]]>
+	</select>
+	<delete id="delSpecialPrintEventByPringId" parameterType="string">
+		<![CDATA[
+			delete from event_specialprint where id=#{id}
+		]]>
+	</delete>
+	<update id="updateSpecialEventState" parameterType="map">
+		<![CDATA[
+			update event_specialprint set
+				paper_status=#{paper_status},
+				manager_user_iidd=#{manager_user_iidd},
+				manager_user_name=#{manager_user_name},
+				manager_dept_iidd=#{manager_dept_iidd},
+				manager_dept_name=#{manager_dept_name} 
+			where event_code=#{event_code}	
+		]]>
+	</update>
+	<update id="updateSpecialPrintEventByEventCode" parameterType="map">
+		<![CDATA[
+			update event_specialprint set
+				page_num=#{page_num},
+				paper_num=#{paper_num}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updateEventFileReadByStFileName" parameterType="map">
+		<![CDATA[
+			update event_print set
+				file_is_read=1
+			where st_filename=#{st_filename}
+		]]>
+	</update>
+	<select id="getIsAllEventIsRead" parameterType="string" resultType="int">
+		<![CDATA[
+			select SUM(file_is_read)-count(1) from event_print where job_code=#{job_code} and PRINT_STATUS = 0
+		]]>
+	</select>
+	<update id="updateEventFileReadByJobCode" parameterType="map">
+		<![CDATA[
+			update event_print set
+				file_is_read=0
+			where job_code=#{job_code}
+		]]>
+	</update>
+	<update id="updatePrintProxyUseridByEventCode" parameterType="map">
+		<![CDATA[
+			update event_print set
+				proxyprint_user_iidd = #{proxyprint_user_iidd}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<insert id="AddKeywordPrintEvent" parameterType="map">					
+		<![CDATA[
+			insert into keyword_print(
+				ST_FILENAME,
+				USER_IIDD,
+				TID
+			)values(
+				#{st_filename},
+				#{user_iidd},
+				#{tid}
+			)
+		]]>
+	</insert>
+	<update id="updateKeywordPrintCallresultByTid" parameterType="map">
+		<![CDATA[
+			update keyword_print set
+				call_result = #{call_result}
+			where tid=#{tid}
+		]]>
+	</update>
+	<update id="updateKeywordPrintEvent" parameterType="map">
+		<![CDATA[
+			update keyword_print set
+				filelist = #{filelist},policy = #{policy},scantype = #{scantype}
+			where tid=#{tid}
+		]]>
+	</update>
+	<insert id="addRisklistPrint" parameterType="riskkeywordsprint">					
+		<![CDATA[
+			insert into risklist_print(
+				TID,
+				RISKCLASS,
+				HITCOUNT,
+				LEVELNAME,
+				SENSITVECONTENTS,
+				FILENAME,
+				FILETYPE
+			)values(
+				#{tid},
+				#{riskclass},
+				#{hitcount},
+				#{levelname},
+				#{sensitvecontents},
+				#{filename},
+				#{filetype}
+			)
+		]]>
+	</insert>
+	<select id="getRisklistPrint" parameterType="map" resultType="riskkeywordsprint">
+		<![CDATA[
+			select distinct riskclass,tid,hitcount,LEVELNAME,SENSITVECONTENTS,FILENAME,FILETYPE
+			 from RISKLIST_PRINT 
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+  				<![CDATA[
+			 		and tid = #{tid}
+				]]>
+  			order by riskclass
+   		</trim>
+	</select>
+	<select id="getPrintTransID" parameterType="map" resultType="string">
+		<![CDATA[
+			select kp.TID from EVENT_PRINT ep 
+            left join KEYWORD_PRINT kp on(ep.ST_FILENAME = kp.ST_FILENAME)
+            where ep.ST_FILENAME = #{st_filename}
+		]]>
+	</select>
+	<insert id="addRisklistPrintList" parameterType="java.util.List">					
+			insert into risklist_print(
+				TID,
+				RISKCLASS,
+				HITCOUNT,
+				LEVELNAME,
+				SENSITVECONTENTS,
+				FILENAME,
+				FILETYPE
+			)values
+			
+			<foreach collection="list" item="item" index="index" separator=","> 
+			(
+				#{item.tid},
+				#{item.riskclass},
+				#{item.hitcount},
+				#{item.levelname},
+				#{item.sensitvecontents},
+				#{item.filename},
+				#{item.filetype}
+			)
+			</foreach>
+	</insert>
+	<select id="getTransIDfromPrint" parameterType="map" resultType="string">
+		<![CDATA[
+			select TID from KEYWORD_PRINT  
+            where TID = #{tid}
+		]]>
+	</select>		
+	<update id="cancelOaPrintEventByJobCode" parameterType="string">
+		<![CDATA[
+			update event_specialprint set
+				job_code = null
+			where job_code=#{job_code} and PRINT_STATUS = 0
+		]]>
+	</update>
+	<select id="getOaPrintEventEnterCancel" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(*) from event_specialprint where job_code=#{job_code} and PRINT_STATUS != 0
+		]]>
+	</select>
+	<update id="remarkPrintEvent" parameterType="map">
+		<![CDATA[
+			update event_print set
+				is_cancel = #{is_cancel} 
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getPrintEventSize" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from event_print ep
+			left join job_process jp on(ep.job_code=jp.job_code)
+			left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+			left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+			left join sys_usage syu on(ep.usage_code=syu.usage_code)
+			left join sys_project sp on(ep.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="event_ids != null and event_ids != ''" >
+				and id in 
+				<foreach item="item" index="index" collection="event_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ep.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="print_type != null and print_type != ''" >
+   				<![CDATA[
+			 		and ep.print_type =#{print_type} 
+				]]>
+   			</if>
+			<if test="file_title != null and file_title != ''" >
+   				<![CDATA[
+			 		and UPPER(ep.file_title) LIKE  UPPER('%'+#{file_title}+'%')
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ep.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="color != null and color != ''" >
+   				<![CDATA[
+			 		and ep.color = #{color}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<choose>
+   				<when test="submitable">
+	   				<![CDATA[
+				 		and ep.job_code is null
+					]]>
+	   			</when>	
+	   			<otherwise>
+	   				<![CDATA[
+				 		and ep.job_code is not null
+					]]>
+	   			</otherwise>
+   			</choose>
+ 			<if test="job_status != null and job_status != ''" >
+  				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+  			</if>
+  			<if test="print_status != null and print_status != ''" >
+  				<![CDATA[
+		 			and ep.print_status = #{print_status}
+				]]>
+  			</if>
+  			<if test="st_filename != null and st_filename != ''" >
+  				<![CDATA[
+		 			and ep.st_filename = #{st_filename}
+				]]>
+  			</if>
+  			<if test="proxyprint_user_iidd != null and proxyprint_user_iidd != ''" >
+  				<![CDATA[
+		 			and ep.proxyprint_user_iidd = #{proxyprint_user_iidd}
+				]]>
+  			</if>
+   		</trim>
+	</select>
+	<select id="getFixAccordingByType" parameterType="map" resultType="fixaccording">
+		<![CDATA[
+			select sf.*,rfd.dept_id from sys_fixaccording sf
+			left join (select fix_id,dept_id from ref_fixaccording_dept) rfd on(sf.id=rfd.fix_id)	
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="type != null and type != ''" >
+   				<![CDATA[
+			 		and sf.type=#{type}
+				]]>
+   			</if>
+   			<if test="id != null and id != ''" >
+   				<![CDATA[
+			 		and sf.id=#{id}
+				]]>
+   			</if>
+   			<if test="dept_id != null and dept_id != ''" >
+   				<![CDATA[
+			 		and rfd.dept_id=#{dept_id}
+				]]>
+   			</if>
+   		</trim>
+	</select>
+	<update id="updateFixedContent" parameterType="map">
+		<![CDATA[
+			update sys_fixaccording set
+				content=#{content} 
+			where id=#{id}
+		]]>
+	</update>
+	<insert id="addFixedContent" parameterType="map">					
+		<![CDATA[
+			insert into sys_fixaccording(
+				type,
+				content
+			)values(
+				#{type},
+				#{content}
+			)
+		]]>
+	</insert>
+	<delete id="delFixedAccordingById" parameterType="string">
+		<![CDATA[
+			delete from sys_fixaccording where id=#{id}
+		]]>
+	</delete>
+	<update id="updateKeywordPrintCheckresultByTid" parameterType="map">
+		<![CDATA[
+			update keyword_print set
+				check_result = #{check_result}
+			where TID=#{tid}
+		]]>
+	</update>
+	<select id="getCheckresultByTid" parameterType="string" resultType="string">
+		<![CDATA[
+			select check_result
+			 from keyword_print 
+			 where tid = #{tid}
+		]]>
+	</select>
+	<select id="getFixedId" parameterType="string" resultType="int">
+		<![CDATA[
+			select id
+			 from sys_fixaccording 
+			 where content = #{content}
+		]]>
+	</select>
+	<insert id="addRefFixedAccordingDept" parameterType="refFixAccordingDept">
+		<![CDATA[
+			insert into ref_fixaccording_dept(
+				dept_id,
+				fix_id
+			)values(
+				#{dept_id},
+				#{fix_id}
+			)
+		]]>
+	</insert>
+</mapper>  

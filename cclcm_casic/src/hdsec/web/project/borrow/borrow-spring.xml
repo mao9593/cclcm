@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="borrowMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.borrow.mapper.BorrowMapper" />
+	</bean>	
+	<!-- 借阅管理 -->
+	<bean id="borrow.viewborrowpaper" class="${common.package}.borrow.action.ViewBorrowPaperAction" scope="prototype" />
+	<bean id="borrow.viewborrowcd" class="${common.package}.borrow.action.ViewBorrowCDAction" scope="prototype" />
+	<bean id="borrow.manageborrowevent" class="${common.package}.borrow.action.ManageBorrowEventAction" scope="prototype" />
+	<bean id="borrow.configopenscopet" class="${common.package}.borrow.action.ConfigOpenScopeAction" scope="prototype" />
+	<bean id="borrow.viewborroweventdetail" class="${common.package}.borrow.action.ViewBorrowEventDetailAction" scope="prototype" />
+	<bean id="borrow.viewpersonalborrowledger" class="${common.package}.borrow.action.ViewPersonalBorrowLedgerAction" scope="prototype" />
+	<bean id="borrow.updateborrowstatus" class="${common.package}.borrow.action.UpdateBorrowStatusAction" scope="prototype" />
+	<bean id="borrow.viewpaperborrowledger" class="${common.package}.borrow.action.ViewPaperBorrowLedgerAction" scope="prototype" />
+	<bean id="borrow.viewcdborrowledger" class="${common.package}.borrow.action.ViewCDBorrowLedgerAction" scope="prototype" />
+	<bean id="borrow.viewselfsecretpaperledger" class="${common.package}.borrow.action.ViewSelfSecretPaperLedgerAction" scope="prototype" />
+	<bean id="borrow.confirmpaperborrow" class="${common.package}.borrow.action.ConfirmPaperBorrowAction" scope="prototype" />
+	<bean id="borrow.confirmcdborrow" class="${common.package}.borrow.action.ConfirmCDBorrowAction" scope="prototype" />
+	<bean id="borrow.viewsecretborrowpaper" class="${common.package}.borrow.action.ViewSecretBorrowPaperAction" scope="prototype" />
+        <!-- 已归档文件借阅 -->
+	<bean id="borrow.viewborrowfilepaper" class="${common.package}.borrow.action.ViewBorrowFilePaperAction" scope="prototype" />
+	<bean id="borrow.viewborrowfilecd" class="${common.package}.borrow.action.ViewBorrowFileCDAction" scope="prototype" />
+	<bean id="borrow.confirmfilepaperborrow" class="${common.package}.borrow.action.ConfirmFilePaperBorrowAction" scope="prototype" />
+	<bean id="borrow.confirmfilecdborrow" class="${common.package}.borrow.action.ConfirmFileCDBorrowAction" scope="prototype" />
+	<bean id="borrow.confirmdeptpaperborrow" class="${common.package}.borrow.action.ConfirmDeptPaperBorrowAction" scope="prototype" />
+	<bean id="borrow.confirmdeptcdborrow" class="${common.package}.borrow.action.ConfirmDeptCdBorrowAction" scope="prototype" />
+</beans>

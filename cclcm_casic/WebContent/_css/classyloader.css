@@ -1,0 +1,58 @@
+/*loading�������ֲ�css*/
+html:before{
+content:"";
+position:fixed;height:1px;
+z-index:10000000;top:0;left:0;
+background: -moz-linear-gradient(top, rgb(255,255,250) 0%, rgb(255,255,255) 100%);
+box-shadow: -2px 4px 14px 2px rgba(63, 63, 237, 1) !important;
+-moz-animation:jindu 3s ease 0.5s 1 forwards;
+}
+@-moz-keyframes jindu{
+0% {width:0;}
+99% {width:100%;}
+100%{width:0;}
+}
+#black_overlay
+{
+position: fixed;
+z-index: 1000;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+filter: alpha(opacity=80);
+opacity: 0.6;
+overflow: hidden;
+background-color: #000;
+}
+*html
+{
+background: url(*) fixed;
+}
+*html body
+{
+margin: 0;
+height: 100%;
+}
+/*IE6*/
+*html #black_overlay
+{
+position: absolute;
+left: expression(documentElement.scrollLeft + documentElement.clientWidth - this.offsetWidth);
+top: expression(documentElement.scrollTop + documentElement.clientHeight - this.offsetHeight);
+}
+#load_content
+{
+position: absolute;
+top: 40%;
+left: 40%;
+width: 350px;
+border-bottom: none;
+background-color: rgba(0,0,0,0);
+
+
+z-index: 1002;
+overflow: auto;
+font-size: 14px;
+font-weight: bold;
+} 

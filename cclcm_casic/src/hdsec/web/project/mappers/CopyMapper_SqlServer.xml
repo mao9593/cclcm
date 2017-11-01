@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.copy.mapper.CopyMapper">
+	
+	<!-- 复印作业管理 -->
+	<insert id="addCopyEvent" parameterType="copyevent">					
+		<![CDATA[
+			insert into event_copy(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				originalid,
+				file_name,
+				page_num,
+				is_double,
+				page_type,
+				orientation,
+				color,
+				copy_status,
+				copy_num,
+				usage_code,
+				project_code,
+				job_code,
+				cycle_type,
+				summ,
+				period,
+				copy_type,
+				copy_merge
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{originalid},
+				#{file_name},
+				#{page_num},
+				#{is_double},
+				#{page_type},
+				#{orientation},
+				#{color},
+				#{copy_status},
+				#{copy_num},
+				#{usage_code},
+				#{project_code},
+				#{job_code},
+				#{cycle_type},
+				#{summ},
+				#{period},
+				#{copy_type},
+				#{copy_merge}
+				)
+		]]>
+	</insert>
+	<select id="getCopyEventList" parameterType="map" resultType="copyevent">
+		<![CDATA[
+			select ec.*,substring(originalid, 1, 50) AS ori_id,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_copy ec 
+				left join job_process jp on(ec.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ec.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ec.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ec.usage_code=syu.usage_code)
+				left join sys_project sp on (ec.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="event_ids != null and event_ids != ''" >
+				and id in 
+				<foreach item="item" index="index" collection="event_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ec.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and su.user_name = #{user_name}
+				]]>
+   			</if>
+   			<if test="dept_name != null and dept_name != ''" >
+   				<![CDATA[
+			 		and sd.dept_name = #{dept_name}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ec.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ec.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ec.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<choose>
+   				<when test="submitable">
+	   				<![CDATA[
+				 		and (ec.job_code is null)
+					]]>
+	   			</when>	
+	   			<otherwise>
+	   				<![CDATA[
+				 		and (ec.job_code is not null)
+					]]>
+	   				<if test="job_status != null and job_status != ''" >
+		   				<![CDATA[
+					 		and jp.job_status = #{job_status}
+						]]>
+		   			</if>
+		   			<if test="copy_status != null" >
+		   				<![CDATA[
+					 		and ec.copy_status = #{copy_status}
+						]]>
+	   				</if>
+	   			</otherwise>
+   			</choose>
+   			<if test="admin_dept_ids != null and admin_dept_ids != ''" >
+				and ec.dept_id in 
+				<foreach item="item" index="index" collection="admin_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="copy_type != null and copy_type != ''" >
+   				<![CDATA[
+			 		and ec.copy_type = #{copy_type}
+				]]>
+   			</if>
+   			
+   			<if test="copy_types" >
+                and copy_type in ('internal','external')
+            </if>
+   		</trim>
+   		<![CDATA[
+				order by ec.apply_time desc
+   			]]>
+	</select>
+	<select id="getCopyEventByCopyCode" parameterType="string" resultType="copyevent">
+		<![CDATA[
+			select ec.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_copy ec 
+				left join job_process jp on(ec.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ec.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ec.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ec.usage_code=syu.usage_code)
+				left join sys_project sp on (ec.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delCopyEventByCopyCode" parameterType="string">
+		<![CDATA[
+			delete from event_copy where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_copy where event_code=#{event_code}
+		]]>
+	</select>
+	
+	<update id="updateCopyEvent" parameterType="copyevent">
+		<![CDATA[
+			update event_copy set
+				seclv_code=#{seclv_code},
+				usage_code=#{usage_code},
+				project_code=#{project_code},
+				summ=#{summ},
+				originalid=#{originalid},
+				file_name=#{file_name},
+				copy_num=#{copy_num},
+				page_num=#{page_num},
+				source=#{source},
+				is_double=#{is_double},
+				page_type=#{page_type},
+				scale=#{scale},
+				orientation=#{orientation},
+				color=#{color},
+				place=#{place},
+				copy_status=#{copy_status},
+				is_barcode=#{is_barcode}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updateIsbarcode" parameterType="map">
+		<![CDATA[
+			update event_copy set is_barcode = #{is_barcode}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updateCopystatus" parameterType="map">
+		<![CDATA[
+			update event_copy set copy_status = #{copy_status}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<insert id="addPaperledger" parameterType="entitypaper">					
+		<![CDATA[
+			insert into entity_paper(
+				paper_barcode,
+				event_code,
+				user_iidd,
+				user_name,
+				dept_id,
+				dept_name,
+				duty_user_iidd,
+				duty_user_name,		
+				duty_dept_id,		
+				duty_dept_name,
+				seclv_code,
+				print_time,
+				print_result,
+				file_title,
+				project_code,				
+				page_count,
+				page_size,
+				color,
+				print_direct,
+				print_double,
+				paper_state,
+				create_type,
+				scope,
+				job_code					
+			)values(
+				#{paper_barcode},
+				#{event_code},
+				#{user_iidd},
+				#{user_name},
+				#{dept_id},
+				#{dept_name},
+				#{duty_user_iidd},
+				#{duty_user_name},
+				#{duty_dept_id},
+				#{duty_dept_name},
+				#{seclv_code},
+				#{print_time},
+				#{print_result},	
+				#{file_title},				
+				#{project_code},
+				#{page_count},
+				#{page_size},
+				#{color},
+				#{print_direct},
+				#{print_double},
+				#{paper_state},
+				#{create_type},
+				#{scope},
+				#{job_code}			
+				)
+		]]>
+	</insert>
+	<update id="updateCopyEventJobRel" parameterType="map">
+		<![CDATA[
+			update event_copy
+				set job_code=#{job_code},
+					usage_code=#{usage_code},
+					project_code=#{project_code},
+					summ = #{summ},
+					copy_num=#{copy_num}
+			where id=#{id}
+		]]>
+	</update>
+	<select id="getCopyEventListByJobCode" parameterType="string" resultType="copyevent">
+		<![CDATA[
+			select ec.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_copy ec 
+				left join job_process jp on(ec.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ec.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ec.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ec.usage_code=syu.usage_code)
+				left join sys_project sp on (ec.project_code=sp.project_code)
+			where ec.job_code = #{job_code}
+		]]>
+	</select>
+	<update id="cancelCopyEventByEventCode" parameterType="string">
+		<![CDATA[
+			update event_copy set
+				job_code = null
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getCopyEventCountByJobCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from event_copy where job_code=#{job_code}
+		]]>
+	</select>
+	<insert id="addCopyEventByEnter" parameterType="copyevent">					
+		<![CDATA[
+			insert into event_copy(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				file_name,
+				page_num,
+				is_double,
+				page_type,
+				orientation,
+				color,
+				copy_status,
+				copy_num,
+				usage_code,
+				project_code,
+				cycle_type,
+				summ,
+				period,
+				copy_type,
+				source
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{file_name},
+				#{page_num},
+				#{is_double},
+				#{page_type},
+				#{orientation},
+				#{color},
+				#{copy_status},
+				#{copy_num},
+				#{usage_code},
+				#{project_code},
+				#{cycle_type},
+				#{summ},
+				#{period},
+				#{copy_type},
+				#{source}
+				)
+		]]>
+	</insert>
+	
+    <insert id="addCopyEventByMerge" parameterType="copyevent">                 
+        <![CDATA[
+            insert into event_copy(
+                event_code,
+                user_iidd,
+                dept_id,
+                seclv_code,
+                apply_time,
+                file_name,
+                page_num,
+                is_double,
+                page_type,
+                orientation,
+                color,
+                copy_status,
+                copy_num,
+                usage_code,
+                project_code,
+                cycle_type,
+                summ,
+                period,
+                copy_type,
+                source,
+                job_code,
+                print_eventcode
+            )values(#{event_code},
+                #{user_iidd},
+                #{dept_id},
+                #{seclv_code},
+                #{apply_time},  
+                #{file_name},
+                #{page_num},
+                #{is_double},
+                #{page_type},
+                #{orientation},
+                #{color},
+                #{copy_status},
+                #{copy_num},
+                #{usage_code},
+                #{project_code},
+                #{cycle_type},
+                #{summ},
+                #{period},
+                #{copy_type},
+                #{source},
+                #{job_code},
+                #{print_eventcode}
+                )
+        ]]>
+    </insert>
+    
+	<update id="addCopyEventJobRel" parameterType="map">
+		<![CDATA[
+			update event_copy
+				set job_code=#{job_code},
+					cycle_type=#{cycle_type},
+					usage_code=#{usage_code}
+			where id=#{id}
+		]]>
+	</update>
+	<delete id="cancelCopyEventByPrintEventCode" parameterType="string">
+        <![CDATA[
+            delete from event_copy where print_eventcode=#{print_eventcode}
+        ]]>
+    </delete>
+</mapper>  

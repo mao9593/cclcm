@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="All" basedir=".">
+	<property file="build.properties"/>
+	<target name="clean">
+		<delete dir="${dest.path}"/>
+	</target>
+	<target name="All" depends="war">
+	</target>
+	<target name="init">
+		<mkdir dir="${print.path}"/>
+	</target>
+    <target name="encrypt">
+       <java classname="hdsec.web.project.listener.EncryptSqlFile" fork="true" failonerror="true">
+            <classpath refid="class.path"/>
+       </java>
+    </target>
+	<target name="war" depends="clean,init,encrypt">
+		<war destfile="${dest.path}/cclcm.war" webxml="WebContent/WEB-INF/web.xml">
+			<fileset dir="WebContent" includes="**/*.*">
+				<exclude name="**/*.svn"></exclude>
+				<exclude name="permission/*.ini"/>
+				<exclude name="permission/*.copyright"/>
+				<exclude name="permission/*.bk"/>
+				<exclude name="permission/*.old"/>
+				<exclude name="files/**/*.*"></exclude>
+				<exclude name="WEB-INF/classes/hdsec/web/project/listener/sqlmodule/*.*"></exclude>
+				<include name="files/print"/>
+				<include name="files/linux_print"/>
+				<include name="files/scan"/>
+				<include name="files/setup"/>
+			</fileset>
+		</war>
+	</target>
+	<path id="class.path">
+		<pathelement location="${basedir}/WebContent/WEB-INF/classes"/>
+		<pathelement location="${basedir}/WebContent/WEB-INF/lib/jNative.jar"/>
+	</path>
+</project>

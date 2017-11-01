@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.publicity.mapper.PublicityMapper">
+
+	<insert id="addReportEvent" parameterType="reportevent">					
+		<![CDATA[
+			insert into event_report(
+				event_code,
+				user_iidd, 
+				dept_id,  
+				seclv_code, 
+				usage_code,
+				project_code, 
+				summ,
+				user_phone,
+				apply_type,
+				apply_time,
+				report_type, 
+				report_style,
+				report_scope,
+				report_name, 
+				file_num,
+				file_list, 
+				file_seclevel,
+				report_description,
+				other_style
+			)values(
+				#{event_code}, 
+				#{user_iidd}, 
+				#{dept_id},
+				#{seclv_code},
+				#{usage_code},
+				#{project_code}, 
+				#{summ},
+				#{user_phone},
+				#{apply_type},
+				#{apply_time}, 
+				#{report_type},
+				#{report_style},
+				#{report_scope},
+				#{report_name},
+				#{file_num},
+				#{file_list},
+				#{file_seclevel},
+				#{report_description},
+				#{other_style}
+			)
+		]]>
+	</insert>
+	<update id="updateReportEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_report
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+		<select id="getReportEventByEventCode" parameterType="string" resultType="reportevent">
+		<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_report ep
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getPublReportEventList" parameterType="map" resultType="reportevent">
+<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_report ep 
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ep.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ep.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+  			<if test="report_name != null and report_name != ''" >
+   				<![CDATA[
+   				and UPPER(ep.report_name) LIKE UPPER('%'+#{report_name}+'%')
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getJCodeByECode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_report where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getPublReportEventListByJobCode" parameterType="string" resultType="reportevent">
+		<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_report ep
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)
+			where ep.job_code = #{job_code}
+		]]>
+	</select>	
+	<delete id="delUPublReportEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_report where event_code=#{event_code}
+		]]>
+	</delete>
+</mapper>  

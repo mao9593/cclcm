@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	
+	<bean id="printMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.print.mapper.PrintMapper" />
+	</bean>
+	<bean id="print.viewprinter" class="${common.package}.print.action.ViewPrinterAction" scope="prototype"/>
+	<bean id="print.manageprintevent" class="${common.package}.print.action.ManagePrintEventAction" scope="prototype"/>
+	<bean id="print.submitprintevent" class="${common.package}.print.action.SubmitPrintEventAction" scope="prototype"/>
+	<bean id="print.draftprintevent" class="${common.package}.print.action.DraftPrintEventAction" scope="prototype"/>
+	<bean id="print.viewprinteventdetail" class="${common.package}.print.action.ViewPrintEventDetailAction" scope="prototype"/>
+	<bean id="print.delprintevent" class="${common.package}.print.action.DelPrintEventAction" scope="prototype"/>
+	<bean id="print.updateprintdraft" class="${common.package}.print.action.UpdatePrintDraftAction" scope="prototype"/>
+	<bean id="print.updateprintevent" class="${common.package}.print.action.UpdatePrintEventAction" scope="prototype"/>
+	<bean id="print.cancelprintevent" class="${common.package}.print.action.CancelPrintEventAction" scope="prototype"/>	
+	<bean id="print.manageprintjob" class="${common.package}.print.action.ManagePrintJobAction" scope="prototype"/>
+	<bean id="print.showprintfile" class="${common.package}.print.action.ShowPrintFileAction" scope="prototype"/>
+	<bean id="print.configdeptprinter" class="${common.package}.print.action.ConfigDeptPrinterAction" scope="prototype"/>
+	<bean id="print.addprintprocessjob" class="${common.package}.print.action.AddPrintProcessJobAction" scope="prototype"/>
+	<bean id="print.manageprintaprvjob" class="${common.package}.print.action.ManagePrintAprvJobAction" scope="prototype"/>
+	<bean id="print.approveprintjob" class="${common.package}.print.action.ApprovePrintJobAction" scope="prototype"/>
+	<bean id="print.viewprintaprvjob" class="${common.package}.print.action.ViewPrintAprvJobAction" scope="prototype"/>
+	<bean id="print.viewprintjobdetail" class="${common.package}.print.action.ViewPrintJobDetailAction" scope="prototype"/>
+	<bean id="print.delmultiprintevent" class="${common.package}.print.action.DelMultiPrintEventAction" scope="prototype"/>
+	<bean id="print.showprintfileforconsole" class="${common.package}.print.action.ShowPrintFileForConsoleAction" scope="prototype"/>
+	<bean id="print.reprintbarcode" class="${common.package}.print.action.ReprintBarcodeAction" scope="prototype"/>
+	<bean id="print.showprintfilelinux" class="${common.package}.print.action.ShowPrintFileLinuxAction" scope="prototype"></bean>
+	<bean id="print.deletefile" class="${common.package}.print.action.DeleteFileAction" scope="prototype"></bean>
+	<bean id="print.replacepageprint" class="${common.package}.print.action.ReplacePagePrintAction" scope="prototype"></bean>
+	<bean id="print.addspecialprintevent" class="${common.package}.print.action.AddSpecialPrintEventAction" scope="prototype"></bean>
+	<bean id="print.addspecialprocessjob" class="${common.package}.print.action.AddSpecialProcessJobAction" scope="prototype"></bean>
+	<bean id="print.managespecialprintevent" class="${common.package}.print.action.ManageSpecialPrintEventAction" scope="prototype"></bean>
+	<bean id="print.viewspecialprinteventdetail" class="${common.package}.print.action.ViewSpecialPrintEventDetailAction" scope="prototype"></bean>
+	<bean id="print.approvespecialprintjob" class="${common.package}.print.action.ApproveSpecialPrintJobAction" scope="prototype"></bean>
+	<bean id="print.managespecialprintlist" class="${common.package}.print.action.ManageSpecialPrintListAction" scope="prototype"></bean>
+	<bean id="print.updatespecialstatus" class="${common.package}.print.action.UpdateSpecialStatusAction" scope="prototype"></bean>
+	<bean id="print.printbyself" class="${common.package}.print.action.printbyselfAction" scope="prototype"></bean>
+	<bean id="print.changespecialprinteventdetail" class="${common.package}.print.action.ChangeSpecialPrintEventDetailAction" scope="prototype"></bean>
+	<bean id="print.specialprintpaperhistory" class="${common.package}.print.action.SpecialPrintPaperHistoryAction" scope="prototype" />
+	<bean id="print.ensuresubevent" class="${common.package}.print.action.EnsureSubEventAction" scope="prototype" />
+	<bean id="print.returnreadstatus" class="${common.package}.print.action.ReturnReadStatusAction" scope="prototype" />
+	<bean id="print.showrisklist" class="${common.package}.print.action.ShowRisklistAction" scope="prototype"/>
+	<bean id="print.remarkprintjob" class="${common.package}.print.action.RemarkPrintJobAction" scope="prototype"/>
+	<bean id="print.managefixedaccording" class="${common.package}.print.action.ManageFixedAccordingAction" scope="prototype"/>
+	<bean id="print.addfixedaccording" class="${common.package}.print.action.AddFixedAccordingAction" scope="prototype"/>
+	<bean id="print.updatefixedaccording" class="${common.package}.print.action.UpdateFixedAccordingAction" scope="prototype"/>
+</beans>

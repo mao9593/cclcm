@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="storage" namespace="/storage" extends="struts-default">
+		<!-- 模块管理 -->
+		<action name="viewstorage" class="storage.viewstorage">
+			<result>/html/storage/viewstorage.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addstorage" class="storage.addstorage">
+			<result>/html/storage/addstorage.jsp</result>
+			<result name="ok" type="redirect">/storage/viewstorage.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewstoragedetail" class="storage.viewstoragedetail">
+			<result>/html/storage/viewstoragedetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatestorage" class="storage.updatestorage">
+			<result>/html/storage/updatestorage.jsp</result>
+			<result name="ok" type="redirect">/storage/viewstorage.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delstorage" class="storage.delstorage">
+			<result type="redirect">/storage/viewstorage.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatestoragestatus" class="storage.updatestoragestatus">
+			<result>/html/storage/updatestoragestatus.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="distributestorage" class="storage.distributestorage">
+			<result>/html/storage/distributestorage.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewselfstorage" class="storage.viewselfstorage">
+			<result>/html/storage/viewselfstorage.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 打印条码 -->
+		<action name="printbarcode" class="storage.printbarcode">
+			<result>/html/storage/barcodes.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 配置条码格式 -->
+		<action name="configbarcode" class="storage.configbarcode">
+			<result>/html/storage/configbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

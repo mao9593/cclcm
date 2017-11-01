@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"		
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<description>Spring公共配置</description>
+
+	<!-- 扫描hdsec.web.project路径下的所有包的所有类，使用annotation（注解@） 自动注册bean -->
+	<context:component-scan base-package="hdsec.web.project">
+		<context:include-filter type="regex" expression=".*Impl"/>
+		<context:include-filter type="regex" expression=".*Mapper"/>
+	</context:component-scan>
+	
+	<!-- MyBatis配置 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:Configuration.xml" />
+	</bean>
+
+	<!-- 事务管理器, Jdbc单数据源事务 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- 对每个模块的service使用事务管理，保证数据库的一致性约束，切入点的配置在具体模块spring的配置文件内--> 
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="select*" read-only="true" />
+			<tx:method name="query*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="load*" read-only="true" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 这种配置是否有效需要验证（所有模块的所有service的所有方法） 有效！-->
+	<aop:config proxy-target-class="true">
+		<aop:advisor
+			pointcut="execution(* hdsec.web.project.*.service.*Service.*(..))"
+			advice-ref="txAdvice" />
+	</aop:config> 
+	
+	<!-- 指明占位符参数配置文件 -->
+	<bean id="mainPropertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="locations">
+			<list>
+				<!-- 标准配置 -->
+				<value>classpath*:/hdsec.web.project.config.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 数据源配置,使用应用内的DBCP数据库连接池 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<!-- Connection Info -->
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="defaultAutoCommit" value="false" />
+		<property name="initialSize" value="20" />
+		<property name="maxIdle" value="20" />
+		<property name="minIdle" value="5" />
+		<property name="maxActive" value="50"/>
+		<property name="logAbandoned" value="true" />
+		<property name="removeAbandoned" value="true" />
+		<property name="removeAbandonedTimeout" value="180" />
+		<property name="maxWait" value="60000" />
+	</bean>
+	
+	<!-- 引入其他spring配置文件 -->
+	<import resource="classpath:hdsec/web/project/user/user-spring.xml" />
+	<import resource="classpath:hdsec/web/project/log/log-spring.xml" />
+	<import resource="classpath:hdsec/web/project/activiti/activiti-spring.xml" />
+	<import resource="classpath:hdsec/web/project/print/print-spring.xml" />
+	<import resource="classpath:hdsec/web/project/burn/burn-spring.xml" />
+	<import resource="classpath:hdsec/web/project/basic/basic-spring.xml" />
+	<import resource="classpath:hdsec/web/project/ledger/ledger-spring.xml" />
+	<import resource="classpath:hdsec/web/project/device/device-spring.xml" />
+	<import resource="classpath:hdsec/web/project/client/client-spring.xml" />
+	<import resource="classpath:hdsec/web/project/copy/copy-spring.xml" />
+	<import resource="classpath:hdsec/web/project/enter/enter-spring.xml" />
+	<import resource="classpath:hdsec/web/project/transfer/transfer-spring.xml" />
+	<import resource="classpath:hdsec/web/project/borrow/borrow-spring.xml" />
+	<import resource="classpath:hdsec/web/project/storage/storage-spring.xml" />
+	<import resource="classpath:hdsec/web/project/change/change-spring.xml" />
+	<import resource="classpath:hdsec/web/project/user/user-spring.xml" />
+	<import resource="classpath:hdsec/web/project/carriermanage/carriermanage-spring.xml" />
+	<import resource="classpath:hdsec/web/project/secplace/secplace-spring.xml" />
+	<import resource="classpath:hdsec/web/project/education/education-spring.xml" />
+	<!-- <import resource="classpath:hdsec/web/project/plan/plan-spring.xml" /> -->
+	<import resource="classpath:hdsec/web/project/computer/computer-spring.xml" />
+	<import resource="classpath:hdsec/web/project/infosystem/infosystem-spring.xml" />
+	<import resource="classpath:hdsec/web/project/passport/passport-spring.xml" />
+	<import resource="classpath:hdsec/web/project/publicity/publicity-spring.xml" />
+	<import resource="classpath:hdsec/web/project/secactivity/secactivity-spring.xml" />
+	<import resource="classpath:hdsec/web/project/secmanage/secmanage-spring.xml" />
+	<import resource="classpath:hdsec/web/project/securitydept/securitydept-spring.xml" />
+	<import resource="classpath:hdsec/web/project/securityuser/securityuser-spring.xml" />
+	<import resource="classpath:hdsec/web/project/input/input-spring.xml" />
+	
+	<!-- 集成使用的webservice接口，默认不开启 -->
+	<!--
+	<import resource="classpath:hdsec/web/project/webservice/webservice-spring.xml"/>
+	-->
+	<!--  
+	<import resource="classpath:hdsec/web/project/archives/archives-spring.xml" />
+	<import resource="classpath:hdsec/web/project/archiveType/archiveType-spring.xml" />
+	<import resource="classpath:hdsec/web/project/form/form-spring.xml" />
+	<import resource="classpath:hdsec/web/project/file/file-spring.xml" />
+	<import resource="classpath:hdsec/web/project/program/program-spring.xml" />
+	-->
+	<import resource="classpath:hdsec/web/project/arch/arch-spring.xml" />
+	<import resource="classpath:hdsec/web/project/disc/disc-spring.xml" />
+	<import resource="classpath:hdsec/web/project/asset/asset-spring.xml" />
+</beans>

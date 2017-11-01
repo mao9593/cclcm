@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<definitions id="definitions" 
+             targetNamespace="http://activiti.org/bpmn20" 
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xmlns:activiti="http://activiti.org/bpmn"> 
+ 
+  <process id="approvalRequest" name="Approval Request"> 
+    <startEvent id="request" activiti:initiator="proposer"> 
+      <extensionElements> 
+        <activiti:formProperty id="apply_id" name="" required="true"/> 
+      </extensionElements> 
+    </startEvent> 
+    <sequenceFlow id="flow1" sourceRef="request" targetRef="handleRequest" /> 
+ 
+    <userTask id="handleRequest" name="HandleRequest" activiti:candidateUsers="${approver}">
+    	<multiInstanceLoopCharacteristics isSequential="true">
+	    	<loopCardinality>10</loopCardinality> 
+    		<completionCondition>${approved=='false' || approver==''}</completionCondition> 
+  		</multiInstanceLoopCharacteristics>
+  		<!-- 
+      	<extensionElements> 
+        	<activiti:formProperty id="approved" name="审批结果" type="enum" required="true"> 
+          		<activiti:value id="true" name="同意" /> 
+          		<activiti:value id="false" name="不同意" /> 
+        	</activiti:formProperty> 
+        	<activiti:formProperty id="opinion" name="审批意见" type="string" /> 
+      	</extensionElements> 
+  		 -->
+    </userTask> 
+    <sequenceFlow id="flow2" sourceRef="handleRequest" targetRef="requestApprovedDecision" /> 
+ 
+    <exclusiveGateway id="requestApprovedDecision" name="Request approved?" /> 
+    <sequenceFlow id="flow3" sourceRef="requestApprovedDecision" targetRef="theEnd1"> 
+      <conditionExpression xsi:type="tFormalExpression">${approved == 'true'}</conditionExpression> 
+    </sequenceFlow> 
+    <endEvent id="theEnd1" /> 
+ 
+    <sequenceFlow id="flow5" sourceRef="requestApprovedDecision" targetRef="adjustRequestTask"> 
+      <conditionExpression xsi:type="tFormalExpression">${approved == 'false'}</conditionExpression> 
+    </sequenceFlow> 
+ 
+    <userTask id="adjustRequestTask" name="ReSubmit" activiti:assignee="${proposer}"> 
+      <extensionElements>
+        <activiti:formProperty id="apply_id" name="" required="true"/> 
+        <activiti:formProperty id="resendRequest" name="Resend request to manager?" type="enum" required="true"> 
+          <activiti:value id="true" name="重提申请" /> 
+          <activiti:value id="false" name="结束" /> 
+        </activiti:formProperty> 
+      </extensionElements> 
+    </userTask> 
+    <sequenceFlow id="flow6" sourceRef="adjustRequestTask" targetRef="resendRequestDecision" /> 
+ 
+    <exclusiveGateway id="resendRequestDecision" name="Resend request?" /> 
+    <sequenceFlow id="flow7" sourceRef="resendRequestDecision" targetRef="handleRequest"> 
+      <conditionExpression xsi:type="tFormalExpression">${resendRequest == 'true'}</conditionExpression> 
+    </sequenceFlow> 
+ 
+     <sequenceFlow id="flow8" sourceRef="resendRequestDecision" targetRef="theEnd2"> 
+      <conditionExpression xsi:type="tFormalExpression">${resendRequest == 'false'}</conditionExpression> 
+    </sequenceFlow> 
+    <endEvent id="theEnd2" /> 
+ 
+  </process> 
+ 
+</definitions> 

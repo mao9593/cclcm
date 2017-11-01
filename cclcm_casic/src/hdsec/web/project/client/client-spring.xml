@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="clientMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.client.mapper.ClientMapper" />
+	</bean>	
+	<!-- 模块管理 -->
+	<bean id="client.viewmodule" class="${common.package}.client.action.ViewModuleAction" scope="prototype" />
+	<!-- 客户端版本管理 -->
+	<bean id="client.managecvs" class="${common.package}.client.action.ManageCVSAction" scope="prototype" />
+  	<bean id="client.viewcvsdetail" class="${common.package}.client.action.ViewCVSDetailAction" scope="prototype" />
+  	<bean id="client.updatecvs" class="${common.package}.client.action.UpdateCVSAction" scope="prototype" />
+  	
+  	<!-- 客户端嵌入B/S待办页面 -->
+  	<bean id="client.viewpendingwork" class="${common.package}.client.action.ViewPendingWorkAction" scope="prototype" />
+  	<bean id="client.index" class="${common.package}.client.action.IndexAction" scope="prototype" />
+  	<bean id="client.printdraft" class="${common.package}.client.action.PrintDraftAction" scope="prototype" />
+  	<bean id="client.PreLogin" class="${common.package}.client.action.PreLoginAction" scope="prototype" />
+  	<bean id="client.integrationindex" class="${common.package}.client.action.IntegrationIndexAction" scope="prototype" />
+  	<bean id="client.ssobyidcard" class="${common.package}.client.action.SSOByIdcardAction" scope="prototype" />
+  	<bean id="client.bizcheckssobyidcard" class="${common.package}.client.action.BizCheckSSOByIdcardAction" scope="prototype" />
+  	<bean id="client.wuhanssobyidcard" class="${common.package}.client.action.WuHanSSOByIdcardAction" scope="prototype" />
+  	<bean id="client.jitlogin" class="${common.package}.client.action.JitLoginAction" scope="prototype" />
+  	<!-- 导出客户端列表 -->
+  	<bean id="client.exportcvs" class="${common.package}.client.action.ExportCVSAction" scope="prototype" />
+  	<!-- 三部代办消息集成时写入登录session -->
+  	<bean id="client.pendingworklogin" class="${common.package}.client.action.PendingWorkLoginAction" scope="prototype" />
+  	  	<!-- 控制台版本管理 -->
+	<bean id="client.consolemanage" class="${common.package}.client.action.ConsoleManageAction" scope="prototype" />
+	<bean id="client.viewconsoledetail" class="${common.package}.client.action.ViewConsoleDetailAction" scope="prototype" />
+	<bean id="client.clienttask" class="${common.package}.client.action.ClientTaskAction" scope="prototype" />
+</beans>

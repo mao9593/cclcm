@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.passport.mapper.PassportMapper">
+	
+	<!-- 增加护照信息 -->
+	<insert id="addEntityPassport" parameterType="entitypassport">
+		<![CDATA[
+			insert into entity_passport_info(
+				user_iidd,
+				dept_id,
+				passport_num,
+				passport_type,
+				borrow_time,
+				return_time,
+				passport_status,
+				summ,
+				duty_user_iidd,
+				duty_user_name,
+				duty_dept_id,
+				duty_dept_name,
+				issuing_date,
+				ending_date,
+				issuing_authority
+			)values(
+				#{user_iidd},
+				#{dept_id},
+				#{passport_num},
+				#{passport_type},
+				#{borrow_time},
+				#{return_time},
+				#{passport_status},
+				#{summ},
+				#{duty_user_iidd},
+				#{duty_user_name},
+				#{duty_dept_id},
+				#{duty_dept_name},
+				#{issuing_date},
+				#{ending_date},
+				#{issuing_authority}
+			)	
+		]]>
+	</insert>
+	<!-- 查看护照台账 -->
+	<select id="getAllPassportList" resultType="entitypassport"	parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+				select ep.*,sdn.dept_name as duty_dept_name, suui.user_name as duty_user_name
+				from ENTITY_PASSPORT_INFO ep
+				left join (select dept_id from sec_dept) sdi on(ep.duty_dept_id = sdi.dept_id)
+				left join (select user_iidd,user_name from sec_user) suui on(ep.DUTY_USER_IIDD=suui.user_iidd)
+				left join (select dept_name from sec_dept) sdn on(ep.duty_dept_name = sdn.dept_name)
+				left join (select user_iidd,user_name from sec_user) suun on(ep.DUTY_USER_NAME=suun.user_name)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="passport_num != null and passport_num != ''">
+				<![CDATA[
+					and UPPER(ep.passport_num) LIKE UPPER('%'+#{passport_num}+'%')
+				]]>
+			</if>	
+			<if test="passport_type != null">
+				<![CDATA[
+					and ep.passport_type = #{passport_type}
+				]]>
+			</if>		
+			<if test="passport_status != null">
+				<![CDATA[
+					and ep.passport_status = #{passport_status}
+				]]>
+			</if>	
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				and ep.duty_dept_id in 
+				<foreach item="item" index="index" collection="duty_dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>	
+			<if test="duty_user_iidd != null and duty_user_iidd != ''">
+				<![CDATA[
+					and ep.duty_user_iidd = #{duty_user_iidd}
+				]]>
+			</if>
+			<if test="duty_dept_name != null and duty_dept_name != ''">
+				<![CDATA[
+					and ep.duty_dept_name = #{duty_dept_name}
+				]]>
+			</if>	
+			<if test="duty_user_name != null and duty_user_name != ''">
+				<![CDATA[
+					and ep.duty_user_name = #{duty_user_name}
+				]]>
+			</if>		
+			<if test="startTime != null and startTime != ''">
+   				<![CDATA[
+			 		and ep.ending_date >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+   				<![CDATA[
+			 		and ep.ending_date <= #{endTime}
+				]]>
+			</if>		
+		</trim>
+		<![CDATA[
+				order by ep.passport_id desc
+   			]]>
+	</select>
+	<!-- 通过护照号查询护照信息 -->
+	<select id="getPassportByNum" resultType="entitypassport" parameterType="string">
+		<![CDATA[
+			select ep.*,sd.dept_name as duty_dept_name, suu.user_name as duty_user_name
+				from ENTITY_PASSPORT_INFO ep
+				left join sec_dept sd on(ep.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(ep.DUTY_USER_IIDD=suu.user_iidd)
+			where passport_num = #{passport_num}
+		]]>
+	</select>
+	<!-- 通过护照号更新护照信息 -->
+	<update id="updatePassport" parameterType="entitypassport">
+		<![CDATA[
+			update ENTITY_PASSPORT_INFO 
+				set user_iidd=#{user_iidd},
+					dept_id=#{dept_id},
+					passport_num=#{passport_num},
+					passport_type=#{passport_type},
+					borrow_time=#{borrow_time},
+					return_time=#{return_time},
+					passport_status=#{passport_status},
+					summ=#{summ},
+					duty_user_iidd=#{duty_user_iidd},
+					duty_user_name=#{duty_user_name},
+					duty_dept_id=#{duty_dept_id},
+					duty_dept_name=#{duty_dept_name},
+					issuing_date=#{issuing_date},
+					ending_date=#{ending_date},
+					issuing_authority=#{issuing_authority}
+				where passport_num=#{passport_num}	
+		]]>
+	</update>
+	<select id="getPassportByUserId" resultType="entitypassport" parameterType="string">
+		<![CDATA[
+			select * from ENTITY_PASSPORT_INFO where duty_user_iidd = #{duty_user_iidd}
+		]]>
+	</select>
+	<update id="updatePassportByUserId" parameterType="map">
+		<![CDATA[
+			update ENTITY_PASSPORT_INFO set passport_status=#{passport_status}
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="duty_user_iidd != null and duty_user_iidd != ''">
+				<![CDATA[
+					and duty_user_iidd = #{duty_user_iidd}
+				]]>
+			</if>
+			<if test="passport_type != null and passport_type != ''">
+				<![CDATA[
+					and passport_type = #{passport_type}
+				]]>
+			</if>	
+		</trim>
+	</update>	
+	<select id="getPassportById" resultType="entitypassport" parameterType="string">
+		<![CDATA[
+			select ep.*,sd.dept_name as duty_dept_name, suu.user_name as duty_user_name
+				from ENTITY_PASSPORT_INFO ep
+				left join sec_dept sd on(ep.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(ep.DUTY_USER_IIDD=suu.user_iidd)
+			where passport_id = #{passport_id}
+		]]>
+	</select>
+	<update id="updatePassportById" parameterType="entitypassport">
+		<![CDATA[
+			update ENTITY_PASSPORT_INFO 
+				set user_iidd=#{user_iidd},
+					dept_id=#{dept_id},
+					passport_num=#{passport_num},
+					passport_type=#{passport_type},
+					passport_status=#{passport_status},
+					summ=#{summ},
+					duty_user_iidd=#{duty_user_iidd},
+					duty_user_name=#{duty_user_name},
+					duty_dept_id=#{duty_dept_id},
+					duty_dept_name=#{duty_dept_name},
+					issuing_date=#{issuing_date},
+					ending_date=#{ending_date},
+					issuing_authority=#{issuing_authority}
+				where passport_id=#{passport_id}	
+		]]>
+	</update>
+</mapper>  

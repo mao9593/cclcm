@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="enterMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.enter.mapper.EnterMapper" />
+	</bean>	
+	<!-- 添加录入申请 -->
+	<bean id="enter.addpersonalpaperenterevent" class="${common.package}.enter.action.AddPersonalPaperEnterEventAction" scope="prototype" />
+	<bean id="enter.addpersonalcdenterevent" class="${common.package}.enter.action.AddPersonalCDEnterEventAction" scope="prototype" />
+	<bean id="enter.adddeptpaperenterevent" class="${common.package}.enter.action.AddDeptPaperEnterEventAction" scope="prototype" />
+	<bean id="enter.adddeptcdenterevent" class="${common.package}.enter.action.AddDeptCDEnterEventAction" scope="prototype" />
+	<!-- 录入作业管理 -->
+	<bean id="enter.addenterevent" class="${common.package}.enter.action.AddEnterEventAction" scope="prototype" />
+	<bean id="enter.manageenterevent" class="${common.package}.enter.action.ManageEnterEventAction" scope="prototype" />
+	<bean id="enter.manageenterpaperlist" class="${common.package}.enter.action.ManageEnterPaperListAction" scope="prototype" />
+	<bean id="enter.manageentercdlist" class="${common.package}.enter.action.ManageEnterCDListAction" scope="prototype" />
+	<bean id="enter.submitenterevent" class="${common.package}.enter.action.SubmitEnterEventAction" scope="prototype" />
+	<bean id="enter.manageenterjob" class="${common.package}.enter.action.ManageEnterJobAction" scope="prototype" />
+	<bean id="enter.updateenterevent" class="${common.package}.enter.action.UpdateEnterEventAction" scope="prototype" />
+	<bean id="enter.updateenterstatus" class="${common.package}.enter.action.UpdateEnterStatusAction" scope="prototype" />
+	<bean id="enter.delenterevent" class="${common.package}.enter.action.DelEnterEventAction" scope="prototype" />
+	<bean id="enter.viewentereventdetail" class="${common.package}.enter.action.ViewEnterEventDetailAction" scope="prototype" />
+	<bean id="enter.addenterprocessjob" class="${common.package}.enter.action.AddEnterProcessJobAction" scope="prototype" />
+	<bean id="enter.manageenterlistjob" class="${common.package}.enter.action.ManageEnterListJobAction" scope="prototype" /> 
+	<bean id="enter.viewenterjobdetail" class="${common.package}.enter.action.ViewEnterJobDetailAction" scope="prototype" /> 
+	<bean id="enter.cancelenterevent" class="${common.package}.enter.action.CancelEnterEventAction" scope="prototype"/>	
+	<bean id="enter.reprintbarcode" class="${common.package}.enter.action.ReprintBarcodeAction" scope="prototype"/>
+	<bean id="enter.checkbarcode" class="${common.package}.enter.action.CheckBarcodeAction" scope="prototype"/>
+	<bean id="enter.configbarcode" class="${common.package}.enter.action.ConfigBarcodeAction" scope="prototype" />
+	<!-- 审批录入任务 -->
+	<bean id="enter.manageenteraprvjob" class="${common.package}.enter.action.ManageEnterAprvJobAction" scope="prototype" />	
+	<bean id="enter.approveenterjob" class="${common.package}.enter.action.ApproveEnterJobAction" scope="prototype" />	
+	<bean id="enter.viewenteraprvjob" class="${common.package}.enter.action.ViewEnterAprvJobAction" scope="prototype" />
+	<!-- 录入文件、光盘历史记录 -->
+	<bean id="enter.enterpaperhistory" class="${common.package}.enter.action.EnterPaperHistoryAction" scope="prototype" />	
+	<bean id="enter.entercdhistory" class="${common.package}.enter.action.EnterCDHistoryAction" scope="prototype" />
+	<!-- 扫描录入申请 -->
+	<bean id="enter.addscanevent" class="${common.package}.enter.action.AddScanEventAction" scope="prototype" />
+	<!-- 扫描录入管理 -->
+	<bean id="enter.managescanlist" class="${common.package}.enter.action.ManageScanListAction" scope="prototype" />
+	<bean id="basic.uploadscanfiles" class="${common.package}.enter.action.UploadScanFilesAction" scope="prototype" />
+	<!-- 批量删除录入任务 -->
+	<bean id="enter.deleteenterjob" class="${common.package}.enter.action.DeleteEnterJobAction" scope="prototype" />
+	<!-- 预发条码 -->
+	<bean id="enter.presendbarcode" class="${common.package}.enter.action.PresendBarcodeAction" scope="prototype" />
+	<bean id="enter.manageenterscanlistjob" class="${common.package}.enter.action.ManageEnterScanListJobAction" scope="prototype" />
+	<!-- 个人磁介质录入申请 -->
+	<bean id="enter.addpersonaldeviceenterevent" class="${common.package}.enter.action.AddPersonalDeviceEnterEventAction" scope="prototype" />
+	<!-- 个人磁介质录入管理 -->
+	<bean id="enter.manageenterdevicelist" class="${common.package}.enter.action.ManageEnterDeviceListAction" scope="prototype" />
+	<!-- 个人磁介质录入记录 -->
+	<bean id="enter.enterdevicehistory" class="${common.package}.enter.action.EnterDeviceHistoryAction" scope="prototype" />
+</beans>

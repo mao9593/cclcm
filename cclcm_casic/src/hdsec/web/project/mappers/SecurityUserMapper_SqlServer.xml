@@ -1,0 +1,1723 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.securityuser.mapper.SecurityUserMapper">
+	
+	<insert id="addUserSeclvChangeEvent" parameterType="userseclvchangeevent">					
+		<![CDATA[
+			insert into event_userseclv_change(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				usage_code,
+				project_code,
+				summ,
+				change_user_iidd,
+				change_user_name,
+				change_dept_id,
+				change_dept_name,
+				seclv_code_before,
+				seclv_code_after,
+				dept_id_after,
+				post_id_before,
+				post_id_after,
+				change_type,
+				post_name_after,
+				contact_num			
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{change_user_iidd},
+				#{change_user_name},
+				#{change_dept_id},
+				#{change_dept_name},
+				#{seclv_code_before},
+				#{seclv_code_after},
+				#{dept_id_after},
+				#{post_id_before},
+				#{post_id_after},
+				#{change_type},
+				#{post_name_after},
+				#{contact_num}
+				)
+		]]>
+	</insert>
+	<select id="getUSeclvChangeEventList" parameterType="map" resultType="userseclvchangeevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,
+				ssb.security_name seclv_before_name,ssa.security_name seclv_after_name,opersu.user_name oper_user_name,
+				sdb.dept_name dept_after_name,sup.post_name post_after_name 
+			from event_userseclv_change euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select security_code,security_name from user_security) ssb on(ssb.security_code = euc.seclv_code_before)
+				left join (select security_code,security_name from user_security) ssa on(ssa.security_code = euc.seclv_code_after)
+				left join (select user_iidd,user_name,dept_id from sec_user) opersu on(euc.oper_user_iidd=opersu.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sdb on(sdb.dept_id=euc.dept_id_after)
+				left join (select post_id,post_name from sec_user_post) sup on(sup.post_id=euc.post_id_after)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and euc.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and euc.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			<if test="change_status != null" >
+   				<![CDATA[
+			 		and euc.change_status = #{change_status}
+				]]>
+   			</if>
+   			<if test="change_type != null and change_type != ''" >
+   				<![CDATA[
+			 		and euc.change_type = #{change_type}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<update id="updateUSeclvChangeEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_userseclv_change
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getUSeclvChangeEventByEventCode" parameterType="string" resultType="userseclvchangeevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sda.dept_name,sdb.dept_name dept_after_name,ss.seclv_name,
+			syu.usage_name,sp.project_name,ssb.security_name seclv_before_name,ssa.security_name seclv_after_name,
+			opersu.user_name oper_user_name,sup.post_name post_after_name,opersd.dept_name oper_dept_name
+			 from event_userseclv_change euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=euc.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select security_code,security_name from user_security) ssb on(ssb.security_code = euc.seclv_code_before)
+				left join (select security_code,security_name from user_security) ssa on(ssa.security_code = euc.seclv_code_after)
+				left join (select user_iidd,user_name,dept_id from sec_user) opersu on(euc.oper_user_iidd=opersu.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) opersd on(euc.oper_dept_id=opersd.dept_id)
+				left join (select dept_id,dept_name from sec_dept) sdb on(sdb.dept_id=euc.dept_id_after)
+				left join (select post_id,post_name from sec_user_post) sup on(sup.post_id=euc.post_id_after)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_userseclv_change where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delUSecChangeEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_userseclv_change where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getUSeclvChangeEventListByJobCode" parameterType="string" resultType="userseclvchangeevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sda.dept_name,sdb.dept_name dept_after_name,ss.seclv_name,
+			syu.usage_name,sp.project_name,ssb.security_name seclv_before_name,ssa.security_name seclv_after_name,
+			opersu.user_name oper_user_name,sup.post_name post_after_name,opersd.dept_name oper_dept_name,
+			supb.post_name post_before_name
+			 from event_userseclv_change euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=euc.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select security_code,security_name from user_security) ssb on(ssb.security_code = euc.seclv_code_before)
+				left join (select security_code,security_name from user_security) ssa on(ssa.security_code = euc.seclv_code_after)
+				left join (select user_iidd,user_name,dept_id from sec_user) opersu on(euc.oper_user_iidd=opersu.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) opersd on(euc.oper_dept_id=opersd.dept_id)
+				left join (select dept_id,dept_name from sec_dept) sdb on(sdb.dept_id=euc.dept_id_after)
+				left join (select post_id,post_name from sec_user_post) sup on(sup.post_id=euc.post_id_after)
+				left join (select post_id,post_name from sec_user_post) supb on(supb.post_id=euc.post_id_before)
+			where euc.job_code = #{job_code}
+		]]>
+	</select>
+	<update id="UpdateUSeclvByEventCode" parameterType="map">
+		<![CDATA[
+			update event_userseclv_change set oper_user_iidd = #{oper_user_iidd},oper_dept_id=#{oper_dept_id},
+			change_time=#{change_time},change_status=#{change_status}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="UpdateSecUSeclvByUserId" parameterType="map">
+		<![CDATA[
+			update sec_user  	
+		]]>
+		<trim prefix="set" prefixOverrides=",">
+		<if test="seclv_code_after != null and seclv_code_after != ''" >
+ 			<![CDATA[
+	 			 ,security_code = #{seclv_code_after}
+			]]>
+ 		</if>
+ 		<if test="dept_id_after != null and dept_id_after != ''" >
+ 			<![CDATA[
+	 			,dept_id = #{dept_id_after}
+			]]>
+ 		</if>
+ 		<if test="post_id_after != null and post_id_after != ''" >
+ 			<![CDATA[
+	 			,post_id = #{post_id_after}
+			]]>
+ 		</if>
+ 		</trim>
+		where user_iidd=#{change_user_iidd}
+	</update>
+
+		
+<!-- 涉密人员因私出国模块 -->
+
+	<insert id="addUserAbroadEvent" parameterType="userabroadevent">					
+		<![CDATA[
+			insert into event_abroad_personal(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				usage_code,
+				project_code,
+				termini,
+				journey,
+				go_time,
+				back_time,
+				reason,
+				summ,
+				signname,
+				sign_time,
+				apply_time,
+				leave_name
+			)values(
+				#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},	
+				#{usage_code},
+				#{project_code},
+				#{termini},
+				#{journey},
+				#{go_time},
+				#{back_time},
+				#{reason},
+				#{summ},
+				#{signname},
+				#{sign_time},
+				#{apply_time},
+				#{leave_name}
+				)
+		]]>
+	</insert>	
+	<update id="updateUAbroadEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_abroad_personal set job_code=#{job_code} where event_code=#{event_code}
+		]]>
+	</update>
+		<select id="getUAbroadEventList" parameterType="map" resultType="userabroadevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_abroad_personal euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and euc.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and euc.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getUAbroadEventByEventCode" parameterType="string" resultType="userabroadevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_abroad_personal euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>	
+	<select id="getUAbroadJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_abroad_personal where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delUAbroadEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_abroad_personal where event_code=#{event_code}
+		]]>
+	</delete>	
+		<select id="getUAbroadEventListByJobCode" parameterType="string" resultType="userabroadevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_abroad_personal euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+			where euc.job_code = #{job_code}
+		]]>
+	</select>
+	<update id="updateUAbroadStatusByJobCode" parameterType="String">
+		<![CDATA[
+			update event_abroad_personal set abroad_status = 1 where job_code=#{job_code}
+		]]>
+	</update>	
+	
+	<!-- 涉密人员委托保密管理 -->
+	
+	<insert id="addUserEntrustEvent" parameterType="userentrustevent">					
+		<![CDATA[
+			insert into event_entrust(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				usage_code,
+				project_code,
+				go_time,
+				back_time,
+				summ,
+				apply_time,
+				entrust_user_iidd,
+				entrust_user_name,
+				entrust_dept_id,
+				entrust_dept_name,
+				duty_name,
+				passport_info,
+				be_dept_id,
+				be_dept_name,
+				confirm_info				
+			)values(
+				#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},	
+				#{usage_code},
+				#{project_code},
+				#{go_time},
+				#{back_time},
+				#{summ},
+				#{apply_time},
+				#{entrust_user_iidd},
+				#{entrust_user_name},
+				#{entrust_dept_id},
+				#{entrust_dept_name},
+				#{duty_name},
+				#{passport_info},
+				#{be_dept_id},
+				#{be_dept_name},
+				#{confirm_info}				
+				)
+		]]>
+	</insert>	
+	<update id="updateUserEntrustEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_entrust set job_code=#{job_code} where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getUserEntrustEventList" parameterType="map" resultType="userentrustevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name 
+			from event_entrust euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and euc.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and euc.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			<if test="entrust_status != null" >
+   				<![CDATA[
+			 		and euc.entrust_status = #{entrust_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getUserEntrustEventByEventCode" parameterType="string" resultType="userentrustevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_entrust euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getUserEntrustJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_entrust where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delUserEntrustEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_entrust where event_code=#{event_code}
+		]]>
+	</delete>		
+	<select id="getUserEntrustEventListByJobCode" parameterType="string" resultType="userentrustevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_entrust euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+			where euc.job_code = #{job_code}
+		]]>
+	</select>	
+	<update id="updateUEntrustStatusByJobCode" parameterType="String">
+		<![CDATA[
+			update event_entrust set entrust_status = 1 where job_code=#{job_code}
+		]]>
+	</update>	
+	<!-- 离职申请 -->
+	<insert id="addResignEvent" parameterType="resignevent">					
+		<![CDATA[
+			insert into event_resign
+           (event_code,
+            user_iidd,
+            dept_id,
+            resign_user_iidd,
+            resign_user_name,
+            resign_dept_id,
+            resign_dept_name,
+            dept_id_after,
+            dept_name_after,
+            post_id_after,
+            post_name_after,
+            start_time,
+            end_time,
+            seclv_code,
+            usage_code,
+            project_code,
+            apply_time,
+            resign_status,
+            resign_others,
+            signname,
+            sign_time,
+            reason,
+            summ,
+            post_id_before
+            )
+    values(#{event_code},
+           #{user_iidd},
+           #{dept_id},
+           #{resign_user_iidd},
+           #{resign_user_name},
+           #{resign_dept_id},
+           #{resign_dept_name},
+           #{dept_id_after},
+           #{dept_name_after},
+           #{post_id_after},
+           #{post_name_after},
+           #{start_time},
+           #{end_time},
+           #{seclv_code},
+           #{usage_code},
+           #{project_code},
+           #{apply_time},
+           #{resign_status},
+           #{resign_others},
+           #{signname},
+           #{sign_time},
+           #{reason},
+           #{summ},
+           #{post_id_before}           
+           )
+		]]>
+	</insert>
+	<select id="getUResignEventList" parameterType="map" resultType="resignevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,
+				sp.project_name,sdb.dept_name dept_name_after,sup.post_name post_name_after,
+				rp.post_name post_name_before
+			from event_resign euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select dept_id,dept_name from sec_dept) sdb on(sdb.dept_id=euc.dept_id_after)
+				left join (select post_id,post_name from sec_user_post) sup on(sup.post_id=euc.post_id_after)
+				left join (select post_id,post_name from sec_user_post) rp on(rp.post_id=euc.post_id_before)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and euc.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and euc.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			<if test="reason != null and reason != ''" >
+   				<![CDATA[
+			 		and euc.reason = #{reason}
+				]]>
+   			</if>
+   			<if test="resign_user_iidd != null and resign_user_iidd != ''" >
+   				<![CDATA[
+			 		and euc.resign_user_iidd = #{resign_user_iidd}
+				]]>
+   			</if>
+   		</trim> 
+   		order by apply_time desc  
+	</select>
+	<update id="updateUResignEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_resign
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updateResignEventByJobCode" parameterType="string">
+	      <![CDATA[
+	          UPDATE event_resign
+	              set start_time=#{start_time}, end_time=#{end_time}
+	              where job_code=#{job_code}
+		 ]]>
+	</update>	
+	<select id="getUResignEventByEventCode" parameterType="string" resultType="resignevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,
+				sdb.dept_name dept_name_after,sup.post_name post_name_after,rp.post_name post_name_before
+			 from event_resign euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select dept_id,dept_name from sec_dept) sdb on(sdb.dept_id=euc.dept_id_after)
+				left join (select post_id,post_name from sec_user_post) sup on(sup.post_id=euc.post_id_after)
+				left join (select post_id,post_name from sec_user_post) rp on(rp.post_id=euc.post_id_before)
+			where event_code=#{event_code} order by apply_time desc
+		]]>
+	</select>
+	<select id="getResignJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_resign where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delUResignEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_resign where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getUResignEventListByJobCode" parameterType="string" resultType="resignevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,
+				sdb.dept_name dept_name_after,sup.post_name post_name_after,rp.post_name post_name_before
+			 from event_resign euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+				left join (select dept_id,dept_name from sec_dept) sdb on(sdb.dept_id=euc.dept_id_after)
+				left join (select post_id,post_name from sec_user_post) sup on(sup.post_id=euc.post_id_after)
+				left join (select post_id,post_name from sec_user_post) rp on(rp.post_id=euc.post_id_before)
+			where euc.job_code = #{job_code}
+		]]>
+	</select>
+	<update id="UpdateUResignByJobCode" parameterType="string">
+		<![CDATA[
+			UPDATE event_resign
+  			set resign_status = '1',resign_time = getdate()
+ 			where job_code=#{job_code}
+		]]>
+	</update>
+	
+	<update id="DeadUResignByJobCode" parameterType="string">
+		<![CDATA[
+			UPDATE event_resign
+  			set resign_status = '2'
+ 			where job_code=#{job_code}
+		]]>
+	</update>
+
+	<!-- 用户个人信息完善模块 -->
+	
+	<insert id="addUserInfoToTemp" parameterType="bmrealuser">					
+		<![CDATA[
+			insert into user_personal(
+				event_code,
+				real_user_id,
+				base_username,
+				base_sex,
+				idcard,
+				base_nation,
+				base_birthday,
+				base_nativeplace,
+				base_country,
+				base_politics,
+				edu_education,
+				job_insectime,
+				job_techpost,
+				job_techtitle,
+				com_residency,
+				com_address,
+				com_telephone,
+				com_email,
+				job_resume,
+				marital_status, 
+				passport_id, 
+				passport_info,
+				resident_card, 
+				sec_category, 
+				abroad_twice, 
+				family_info,
+				user_promises,
+				is_abroad,
+				info_type,
+				bmpost_id,
+				bmpost_name,
+				oversea,
+				famliy_oversea
+			)values(
+				#{event_code},
+				#{real_user_id},
+				#{base_username},
+				#{base_sex},
+				#{idcard},
+				#{base_nation},
+				#{base_birthday},
+				#{base_nativeplace},
+				#{base_country},
+				#{base_politics},
+				#{edu_education},
+				#{job_insectime},
+				#{job_techpost},
+				#{job_techtitle},
+				#{com_residency},
+				#{com_address},
+				#{com_telephone},
+				#{com_email},
+				#{job_resume},
+				#{marital_status}, 
+				#{passport_id},
+				#{passport_info},
+				#{resident_card}, 
+				#{sec_category}, 
+				#{abroad_twice}, 
+				#{family_info},
+				#{user_promises},
+				#{is_abroad},
+				#{info_type},
+				#{bmpost_id},
+				#{bmpost_name},
+				#{oversea},
+				#{famliy_oversea}				
+				)
+		]]>
+	</insert>	
+	<insert id="addUserInfoEvent" parameterType="bmuserinfoevent">					
+		<![CDATA[
+			insert into event_userinfo(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				usage_code,
+				project_code,
+				summ,
+				apply_time,
+				confirm_user_iidd,
+				confirm_user_name,
+				file_num,
+				file_list
+			)values(
+				#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},	
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{apply_time},
+				#{confirm_user_iidd},
+				#{confirm_user_name},
+				#{file_num},
+				#{file_list}				
+				)
+		]]>
+	</insert>	
+	<update id="updateUserInfoEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_userinfo set job_code=#{job_code} where event_code=#{event_code}
+		]]>
+	</update>	
+	<select id="getUserInfoEventList" parameterType="map" resultType="bmuserinfoevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name 
+			from event_userinfo euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and euc.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and euc.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and euc.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getUserInfoEventByEventCode" parameterType="string" resultType="bmuserinfoevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_userinfo euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>		
+	<select id="getUserInfoByEventCode" parameterType="map" resultType="bmrealuser">
+		<![CDATA[
+			select euc.*,sup.post_name bmpost_name 
+			from user_personal euc 
+				left join (select post_id,post_name from sec_user_post) sup on(sup.post_id=euc.bmpost_id)  
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="event_code != null and event_code != ''" >
+   				<![CDATA[
+			 		and event_code=#{event_code}
+				]]>
+   			</if>
+   			<if test="real_user_id != null and real_user_id != ''" >
+   				<![CDATA[
+			 		and real_user_id = #{real_user_id}
+				]]>
+   			</if>
+   			<if test="info_type != null and info_type != ''" >
+   				<![CDATA[
+			 		and info_type = #{info_type}
+				]]>
+   			</if>
+   		</trim>
+	</select>
+	<select id="getUserInfoJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_userinfo where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delUserInfoEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_userinfo where event_code=#{event_code}
+		]]>
+	</delete>
+	<delete id="delUserInfoByEventCode" parameterType="string">
+		<![CDATA[
+			delete from user_personal where event_code=#{event_code}
+		]]>
+	</delete>
+	<delete id="delUserInfoByUserIdAndInfoType" parameterType="map">
+		<![CDATA[
+			delete from user_personal where real_user_id=#{real_user_id} and info_type=#{info_type}
+		]]>
+	</delete>
+	<select id="getUserInfoEventListByJobCode" parameterType="string" resultType="bmuserinfoevent">
+		<![CDATA[
+			select euc.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_userinfo euc 
+				left join job_process jp on(euc.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(euc.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(euc.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (euc.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(euc.usage_code=syu.usage_code)
+				left join sys_project sp on (euc.project_code=sp.project_code)
+			where euc.job_code = #{job_code}
+		]]>
+	</select>
+	<update id="updateUserRealInfoByUserInfo" parameterType="string">
+		<![CDATA[
+			update b set b.marital_status = a.marital_status, b.passport_id = a.passport_id, 
+				b.passport_info = a.passport_info, b.resident_card = a.resident_card, b.sec_category = a.sec_category, 
+				b.abroad_twice = a.abroad_twice, b.family_info = a.family_info, b.base_username = a.base_username, 
+				b.base_sex = a.base_sex, b.base_nation = a.base_nation, b.base_birthday = a.base_birthday, 
+				b.base_nativeplace = a.base_nativeplace, b.base_country = a.base_country, 
+				b.base_politics = a.base_politics, b.edu_education = a.edu_education, b.job_insectime = a.job_insectime,
+				b.job_techpost = a.job_techpost, b.job_techtitle = a.job_techtitle, b.com_residency = a.com_residency, 
+				b.com_address = a.com_address, b.com_telephone = a.com_telephone, b.com_email = a.com_email, 
+				b.job_resume = a.job_resume from real_user b, user_personal a 
+				where b.real_user_id = a.real_user_id and a.event_code = #{event_code}			
+		]]>
+	</update>
+	<update id="updateUserIdCardByUserInfo" parameterType="string">
+		<![CDATA[
+			update b set b.idcard = a.idcard from sec_user b, user_personal a 
+				where a.event_code=#{event_code} and b.real_user_id = a.real_user_id 
+		]]>
+	</update>		
+	<select id="getUserInfoEventCodeByJobCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select event_code from event_userinfo where job_code=#{job_code}
+		]]>
+	</select>			
+	<select id="getBmRealInfoByUserId" parameterType="string" resultType="bmrealuser">
+		<![CDATA[
+			select * from real_user where real_user_id=#{user_id}
+		]]>
+	</select>	
+	<update id="updateUserInfoConfirmTime" parameterType="string">
+		<![CDATA[
+			update event_userinfo set confirm_time = #{confirm_time} where event_code=#{event_code} 
+		]]>
+	</update>			
+
+	<update id="updateBMSysConfigItem" parameterType="bmsysconfigitem">
+   		<![CDATA[			  
+		   	update sec_config set 
+		   		item_name = #{item_name},
+		   		item_value = #{item_value},
+		   		item_type = #{item_type},
+		   		startuse =#{startuse}
+		   		where item_key=#{item_key}
+   		]]>
+   	</update>
+   	<select id="getBMSysConfigItemValue" parameterType="string" resultType="bmsysconfigitem">
+   		<![CDATA[			  
+		   	select item_key,item_name,item_value,item_type,startuse FROM sec_config where item_key=#{item_key}
+   		]]>
+   	</select>
+
+	<!--   yangjl 2015-7-1 岗位管理 -->
+	<select id="getPostList" resultType="sysuserpost">
+		<![CDATA[
+			select * from sec_user_post
+		]]>
+	</select>
+	
+	<!--   yangjl 2015-8-21 岗位对应部门列表 -->
+	<select id="getDeptList" resultType="sysuserpost">
+		<![CDATA[
+			select * from sec_user_post
+		]]>
+	</select>
+	
+	
+	<select id="getSysUserPostList" resultType="sysuserpost"
+		parameterType="map">
+		<![CDATA[
+			select sup.* , sd.dept_name from sec_user_post sup
+			left join (select post_id, dept_id from sec_dept_post) sdp on(sup.post_id=sdp.post_id)
+			left join (select dept_id, dept_name from sec_dept) sd on(sdp.dept_id=sd.dept_id)
+		]]>
+		<if test="is_sealed != null and is_sealed != ''">
+  			<![CDATA[
+		 		where is_sealed = #{is_sealed}
+			]]>
+		</if>
+		order by post_level
+	</select>
+	<insert id="addSysUserPost" parameterType="sysuserpost">
+		<![CDATA[
+			insert into sec_user_post(post_id,post_name,post_desc,post_level,post_class)
+			values(#{post_id},#{post_name},#{post_desc},#{post_level},#{post_class})	
+		]]>
+	</insert>
+	<update id="setUserPostSealedByCode" parameterType="string">
+		<![CDATA[
+			update sec_user_post set is_sealed='Y' where post_id=#{post_id}	
+		]]>
+	</update>
+	<select id="getUserPostByCode" parameterType="string" resultType="sysuserpost">
+		<![CDATA[
+			select * from sec_user_post sup
+			where sup.post_id=#{post_id} 
+		]]>
+	</select>
+	<select id="getUserPostNameByCodes" parameterType="String" resultType="String">
+		<![CDATA[
+			select post_name from sec_user_post where post_id in
+		]]>
+		<foreach item="item" collection="codes" open="(" separator=","
+			close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="getUserPostCount" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from sec_user_post where post_id=#{post_id} or post_name=#{post_name}
+		]]>
+	</select>
+	<select id="getUserPostListByPostName" resultType="sysuserpost" parameterType="string">
+		<![CDATA[
+			select * from sec_user_post	where post_name=#{post_name} and is_sealed='N'
+		]]>
+	</select>
+	<update id="recoverUserPostByCode" parameterType="string">
+		<![CDATA[
+			update sec_user_post set is_sealed='N' where post_id=#{post_id}	
+		]]>
+	</update>
+		<update id="updateUserPost" parameterType="sysuserpost">
+		<![CDATA[
+			update sec_user_post 
+				set post_name=#{post_name},
+					post_level=#{post_level},
+					post_desc=#{post_desc},
+					post_class=#{post_class}
+				where post_id=#{post_id}		
+		]]>
+	</update>
+		<select id="getTask" parameterType="Map" resultType="clienttask">
+   	    <![CDATA[
+   	       select * from client_msg
+   	    ]]>
+   	    <trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="accept_user_iidd != null and accept_user_iidd != ''" >
+   				<![CDATA[
+			 		and accept_user_iidd = #{accept_user_iidd}
+				]]>
+   			</if>
+   			<if test="message_type != null and message_type != ''" >
+   				<![CDATA[
+			 		and message_type = #{message_type}
+				]]>
+   			</if>
+   			<if test="message_note_type != null and message_note_type != ''" >
+   				<![CDATA[
+			 		and (message_type <> 1) and (is_read = 0)
+				]]>
+   			</if>
+   		</trim>
+   			<![CDATA[
+			 		order by insert_time desc
+			]]>
+   	</select>
+   	<insert id="addPostDept" parameterType="map">
+		<![CDATA[
+			insert into SEC_DEPT_POST(post_id,dept_id)
+			values(#{post_id},#{dept_id})
+		]]>
+	</insert>
+	<select id="getPostDeptList" parameterType="map" resultType="postdeptconfig">
+		<![CDATA[
+			select sdp.*,sd.dept_name from sec_dept_post sdp
+				inner join sec_dept sd on(sdp.dept_id = sd.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="post_id != null and post_id != ''">
+   				<![CDATA[
+			 		and sdp.post_id = #{post_id}
+				]]>
+			</if>
+		</trim>
+	</select>
+	<delete id="delPostDeptByPostid" parameterType="string">
+	    <![CDATA[
+	    	delete from sec_dept_post where post_id = #{post_id}
+		]]>
+	</delete>
+	<insert id="addCycleItem" parameterType="bmcycleitem">
+		<![CDATA[
+			insert into cycle_record(barcode,entity_type,oper_time,user_name,dept_name,oper, job_code)
+			values(#{barcode},#{entity_type},#{oper_time},#{user_name},#{dept_name},#{oper}, #{job_code})	
+		]]>
+	</insert>
+	<select id="getCycleItemListByBarcode" parameterType="string" resultType="bmcycleitem">
+		<![CDATA[
+			select * from cycle_record
+			where barcode=#{barcode} order by oper_time asc
+		]]>
+	</select>
+		<insert id="addCompanyContact" parameterType="CompanyContact">
+		<![CDATA[
+			insert into sec_contact(name, post, telephone, mobile, address, reark, rank)
+			values(#{name},#{post},#{telephone},#{mobile},#{address},#{reark}, #{rank})
+		]]>
+	</insert>
+	
+	<update id="updateCompanyContact" parameterType="CompanyContact">
+		<![CDATA[
+			update sec_contact 
+				set name=#{name},
+					post=#{post},
+					telephone=#{telephone},
+					mobile=#{mobile},
+					address=#{address},
+					reark=#{reark},
+					rank=#{rank}
+			where id=#{id}		
+		]]>
+	</update>
+	
+	<delete id="delCompanyContact" parameterType="map">
+	    <![CDATA[
+	    	delete from sec_contact where id = #{id}
+		]]>
+	</delete>
+<select id="getCompanyContact" parameterType="map" resultType="CompanyContact">
+	<![CDATA[
+			select * from  sec_contact
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id!= null and id != ''">
+   				<![CDATA[
+			 		and id = #{id}
+				]]>
+			</if>
+			<if test="name != null and name != ''">
+   				<![CDATA[
+			 		and name = #{name}
+				]]>
+			</if>
+			<if test="post != null and post != ''">
+   				<![CDATA[
+			 		and post = #{post}
+				]]>
+			</if>
+			<if test="telephone != null and telephone != ''">
+   				<![CDATA[
+			 		and telephone = #{telephone}
+				]]>
+			</if>
+			<if test="mobile != null and mobile != ''">
+   				<![CDATA[
+			 		and mobile = #{mobile}
+				]]>
+			</if>
+			<if test="reark != null and reark != ''">
+   				<![CDATA[
+			 		and reark = #{reark}
+				]]>
+			</if>
+			<if test="rank != null and rank != ''">
+   				<![CDATA[
+			 		and rank = #{rank}
+				]]>
+			</if>
+		</trim>
+		<![CDATA[
+			 		order by rank
+				]]>
+	</select>
+	
+	<select id="getAllUserInfoList" parameterType="map" resultType="bmrealuser">
+		<![CDATA[
+			select sp.* , sd.dept_name from user_personal sp 
+			left join (select user_iidd,user_name,dept_id from sec_user) su on(sp.real_user_id=su.user_iidd)
+			left join (select dept_id, dept_name from sec_dept) sd on(su.dept_id=sd.dept_id)  
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_id != null and user_id != ''" >
+   				<![CDATA[
+			 		real_user_id=#{user_id}
+				]]>
+   			</if>
+   			<if test="dept_id != null and dept_id != ''" >
+   				<![CDATA[
+			 		and sd.dept_id = #{dept_id}
+				]]>
+   			</if>
+   			<if test="info_type != null and info_type != ''" >
+   			<![CDATA[
+			 		and sp.info_type=#{info_type}
+				]]>
+			</if>
+			<if test="user_statue != null and user_statue != ''" >
+   			<![CDATA[
+			 		and sp.user_statue=#{user_statue}
+				]]>
+			</if>
+			<if test="area != null and area != ''" >
+   			<![CDATA[
+			 		and sp.info_type != 2
+				]]>
+			</if>
+   		</trim>
+	</select>	
+	<select id="getBmUserById" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from user_personal where real_user_id=#{user_id}
+		]]>
+	</select>		
+	<select id="getUserInfoByUserIdAndInfoType" parameterType="map" resultType="bmrealuser">
+		<![CDATA[
+			select * from user_personal
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="real_user_id != null and real_user_id != ''">
+   				<![CDATA[
+			 		and real_user_id = #{real_user_id}
+				]]>
+			</if>
+			<if test="info_type != null and info_type != ''">
+   				<![CDATA[
+			 		and info_type = #{info_type}
+				]]>
+			</if>
+		</trim>
+	</select>
+	<select id="getUserHistoryAbroadInfo" parameterType="map" resultType="string">
+		<![CDATA[
+			select count(1) from event_abroad_personal   
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_id != null and user_id != ''">
+   				<![CDATA[
+			 		and user_iidd=#{user_id}
+				]]>
+			</if>
+			<if test="year != null and year != ''">
+   				<![CDATA[
+			 		and year(go_time)=year(getdate())
+				]]>
+			</if>
+			<![CDATA[
+			 		and abroad_status = 1
+				]]>
+		</trim>
+	</select>
+		<update id="addApproveAboradFile" parameterType="map">
+		<![CDATA[
+			update event_abroad_personal
+				set approve_file_list=#{file_list},approve_file_num=#{file_num}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getJobList" parameterType="map" resultType="processjob">
+		<![CDATA[
+			select top 1000 jp.*,ss.seclv_name,su.user_name,sd.dept_name
+			from job_process jp
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (jp.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) su on (jp.user_iidd = su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(jp.dept_id = sd.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''">
+   				<![CDATA[
+			 		and jp.user_iidd = #{user_iidd}
+				]]>
+			</if>
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		and jp.dept_id = #{dept_id}
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != ''">
+   				<![CDATA[
+			 		and jp.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="jobType_code != null and jobType_code != ''">
+   				<![CDATA[
+			 		and jp.jobtype_code = #{jobType_code}
+				]]>
+			</if>
+			<if test="job_status != null and job_status != ''">
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="startTime != null and startTime != ''">
+   				<![CDATA[
+			 		and jp.start_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+   				<![CDATA[
+			 		and jp.start_time <= #{endTime}
+				]]>
+			</if>
+			<if test="missing_next_approver">
+				<![CDATA[
+					and (jp.next_approver is null or jp.next_approver = '')
+				]]>
+			</if>
+			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		and UPPER(su.user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+			</if>
+			<if test="module != null and module == 'secuser'">
+   				<![CDATA[
+			 		and (jp.jobtype_code = 'USERSECLV_ADD' or jp.jobtype_code = 'USERSECLV_CHANGE' or jp.jobtype_code = 'RESIGN' or jp.jobtype_code = 'SECUSER_ABROAD' or jp.jobtype_code = 'SECUSER_ENTRUST')
+				]]>
+			</if>
+			<if test="module != null and module == 'secmanageBMC'">
+   				<![CDATA[
+			 		and (jp.jobtype_code = 'SEC_CHECK' or jp.jobtype_code = 'PUNISH_DEPT' or jp.jobtype_code = 'PUNISH_SECCHECK' or jp.jobtype_code = 'PUNISH_RECTIFY')
+				]]>
+			</if>
+			<if test="module != null and module == 'secmanage'">
+   				<![CDATA[
+			 		and (jp.jobtype_code = 'FIELDIN' or jp.jobtype_code = 'FILEOUTMAKE' or jp.jobtype_code = 'USERSEC_ACTIVITY' or jp.jobtype_code = 'ENTER_SECPLACE' or jp.jobtype_code = 'OUT_EXCHANGE')
+				]]>
+			</if>
+			<if test="module != null and module == 'publicity'">
+   				<![CDATA[
+			 		and (jp.jobtype_code = 'EVENT_REPORT' or jp.jobtype_code = 'EVENT_REPORT2' or jp.jobtype_code = 'EVENT_REPORT3' or jp.jobtype_code = 'EVENT_DEPTREPORT' or jp.jobtype_code = 'EVENT_INTRAPUBL' or jp.jobtype_code = 'EVENT_INTERPUBL' or jp.jobtype_code = 'INTER_EMAIL' or jp.jobtype_code = 'MATERIAL' or jp.jobtype_code = 'EXHIBITION'
+			 		 or jp.jobtype_code = 'PAPERPATENT'  or jp.jobtype_code = 'PAPER_RESEARCH' or jp.jobtype_code = 'PAPER_OTHERS')
+				]]>
+			</if>
+		</trim>
+		order by start_time desc
+	</select>
+   	<select id="getBmSecUserList" resultType="secuser" parameterType="map" resultSetType="SCROLL_SENSITIVE">
+   		<![CDATA[			  
+		   	select  u.user_iidd, u.real_user_id, user_name, status,u.post_id,user_type,
+		   			u.security_code,u.idcard,u.pass_num,u.print_method,u.print_permission,r.*, ss.security_name,
+			   		p.post_name,u.dept_id, dp.dept_name,st.terr_code, st.terr_name 
+			FROM    sec_user u 
+			left join user_personal r on(u.real_user_id=r.real_user_id and info_type=2) 
+		    left join sec_user_post p  ON (u.post_id = p.post_id)
+			left join sec_dept dp       ON (u.dept_id = dp.dept_id)
+			left join sec_territory st  ON (dp.terr_code = st.terr_code)
+			left join user_security ss on(ss.security_code = u.security_code)
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		u.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		AND UPPER(u.user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+			<if test="com_telephone !=null and com_telephone != ''">
+   				<![CDATA[
+			 		AND UPPER(r.com_telephone) LIKE UPPER('%'+#{com_telephone}+'%')
+				]]>
+   			</if>
+			<if test="base_sex != null and base_sex != ''">
+   				<![CDATA[
+			 		AND UPPER(r.base_sex) = UPPER (#{base_sex})
+				]]>
+   			</if>
+			<if test="pass_num != null and pass_num != ''">
+   				<![CDATA[
+			 		AND UPPER(u.pass_num) LIKE UPPER ('%'+#{pass_num}+'%')
+				]]>
+   			</if>
+			<if test="dept_id != null and dept_id != ''">
+   				and u.dept_id in 
+				<foreach item="item" index="index" collection="dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+   			</if>
+   			<if test="scope_dept_ids != null and scope_dept_ids != ''" >					
+				and u.dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+   			<if test="security_code != null and security_code != ''">
+   				<![CDATA[
+			 		AND u.security_code = #{security_code}
+				]]>
+   			</if>
+   			<if test="user_statue != null">
+   				<![CDATA[
+			 		AND r.user_statue = #{user_statue}
+				]]>
+   			</if>  
+   			<if test="post_id != null and post_id != ''">
+   				<![CDATA[
+			 		AND u.post_id = #{post_id}
+				]]>
+   			</if>    			
+   			<![CDATA[
+   				and u.is_sealed='N' and user_type != 0 and u.user_iidd != 'admin' and u.user_iidd != 'sysadmin1' and u.user_iidd != 'sysadmin2' 
+   				and u.user_iidd != 'secadmin1' and u.user_iidd != 'secadmin2' and u.user_iidd != 'audadmin1' and u.user_iidd != 'audadmin2'
+   			]]>
+   		</trim>
+   	</select>
+   		<select id="getBmSecUserSize" resultType="int"	parameterType="map">
+		<![CDATA[
+			select  count(1) FROM  sec_user u 
+			left join user_personal r on(u.real_user_id=r.real_user_id and info_type=2) 
+		    left join sec_user_post p  ON (u.post_id = p.post_id)
+			left join sec_dept dp       ON (u.dept_id = dp.dept_id)
+			left join sec_territory st  ON (dp.terr_code = st.terr_code)
+			left join user_security ss on(ss.security_code = u.security_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		UPPER(u.user_iidd) LIKE UPPER('%'+#{user_iidd}+'%')
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		AND UPPER(r.base_username) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+			<if test="com_telephone !=null and com_telephone != ''">
+   				<![CDATA[
+			 		AND UPPER(r.com_telephone) LIKE UPPER('%'+#{com_telephone}+'%')
+				]]>
+   			</if>
+			<if test="base_sex != null and base_sex != ''">
+   				<![CDATA[
+			 		AND UPPER(r.base_sex) = UPPER (#{base_sex})
+				]]>
+   			</if>
+			<if test="pass_num != null and pass_num != ''">
+   				<![CDATA[
+			 		AND UPPER(u.pass_num) LIKE UPPER ('%'+#{pass_num}+'%')
+				]]>
+   			</if>
+			<if test="dept_id != null and dept_id != ''">
+		 		and u.dept_id in 
+				<foreach item="item" index="index" collection="dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+   			</if>
+   			<if test="scope_dept_ids != null and scope_dept_ids != ''" >					
+				and u.dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+   			<if test="security_code != null and security_code != ''">
+   				<![CDATA[
+			 		AND u.security_code = #{security_code}
+				]]>
+   			</if>
+   			<if test="user_statue != null">
+   				<![CDATA[
+			 		AND r.user_statue = #{user_statue}
+				]]>
+   			</if>    		
+   			<if test="post_id != null and post_id != ''">
+   				<![CDATA[
+			 		AND u.post_id = #{post_id}
+				]]>
+   			</if> 	
+   			<![CDATA[
+   				and u.is_sealed='N' and user_type != 0 and u.user_iidd != 'admin' and u.user_iidd != 'sysadmin1' and u.user_iidd != 'sysadmin2' 
+   				and u.user_iidd != 'secadmin1' and u.user_iidd != 'secadmin2' and u.user_iidd != 'audadmin1' and u.user_iidd != 'audadmin2'
+   			]]>
+
+		</trim>
+	</select>
+   	
+<!-- 基于声光电需求，针对用户个人“机密”、“秘密”涉密载体总数统计 -->
+	<select id="getUserEntityPaperTotal" parameterType="map" resultType="string">
+		<![CDATA[
+			select count(1) from entity_paper   
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_id != null and user_id != ''">
+   				<![CDATA[
+			 		and duty_user_iidd=#{user_id}
+				]]>
+			</if>
+   			<![CDATA[
+   				and paper_state in (0,5,7,8,9,10)
+   			]]>
+   			<![CDATA[
+   				and seclv_code in (1,2)
+   			]]>							
+		</trim>
+	</select>   	
+	<select id="getUserEntityCdTotal" parameterType="map" resultType="string">
+		<![CDATA[
+			select count(1) from entity_cd   
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_id != null and user_id != ''">
+   				<![CDATA[
+			 		and duty_user_iidd=#{user_id}
+				]]>
+			</if>
+			<![CDATA[
+   				and cd_state in (0,5,7,8,9,10)
+   			]]>
+   			<![CDATA[
+   				and seclv_code in (1,2)
+   			]]>				
+		</trim>
+	</select>
+<!-- 基于声光电需求    end --> 	
+	<update id="updateUserAbroadConfirmInfo" parameterType="map">
+		<![CDATA[
+			update event_abroad_personal
+				set abroad_time=#{abroad_time}, abroad_back=#{abroad_back}, 
+					out_customs=#{out_customs}, in_customs=#{in_customs}
+			where event_code=#{event_code}
+		]]>
+	</update>
+		<update id="updateUserStatueByResignUserId" parameterType="map">
+		<![CDATA[
+			update user_personal set user_statue = #{user_statue}  
+				where real_user_id = #{real_user_id}  
+		]]>
+	</update>
+	
+	<!-- 人员信息简历、家庭、出国情况增加关联表 -->	
+	<insert id="addUserExperiences" parameterType="experienceinfo" >					
+		<![CDATA[
+			insert into user_experiences(
+				event_code,
+				experience_time,
+				end_time,
+				experience_content,
+				row_num
+			)values(
+				#{event_code},
+				#{experience_time},
+				#{end_time},
+				#{experience_content},
+				#{row_num}
+				)
+		]]>
+	</insert>
+	<insert id="addUserAbroad" parameterType="abroadinfo">					
+		<![CDATA[
+			insert into user_abroad(
+				event_code,
+				abroad_time,
+				back_time,
+				abroad_place,
+				abroad_reason,
+				out_customs,
+				in_customs,
+				abroad_content,
+				abroad_file,
+				row_num
+			)values(
+				#{event_code},
+				#{abroad_time},
+				#{back_time},
+				#{abroad_place},
+				#{abroad_reason},
+				#{out_customs},
+				#{in_customs},
+				#{abroad_content},
+				#{abroad_file},
+				#{row_num}
+				)
+		]]>
+	</insert>
+	<insert id="addUserFamily" parameterType="familyinfo">					
+		<![CDATA[
+			insert into user_family(
+				event_code,
+				family_relationship,
+				family_name,
+				family_nationality,
+				family_borndate,
+				family_politicalstatus,
+				family_workplace,
+				family_lifeplace,
+				family_greencard,
+				row_num
+			)values(
+				#{event_code},
+				#{family_relationship},
+				#{family_name},
+				#{family_nationality},
+				#{family_borndate},
+				#{family_politicalstatus},
+				#{family_workplace},
+				#{family_lifeplace},
+				#{family_greencard},
+				#{row_num}
+				)
+		]]>
+	</insert>
+	<select id="getUserExperience" parameterType="map" resultType="experienceinfo">
+		<![CDATA[
+			select * from user_experiences where event_code = #{event_code}
+		]]>
+	</select>	
+	<select id="getUserAbroad" parameterType="map" resultType="abroadinfo">
+		<![CDATA[
+			select * from user_abroad where event_code = #{event_code}
+		]]>
+	</select>	
+	<select id="getUserFamily" parameterType="map" resultType="familyinfo">
+		<![CDATA[
+			select * from user_family where event_code = #{event_code}
+		]]>
+	</select>
+	<delete id="delUserExperience" parameterType="string">
+		<![CDATA[
+			delete from user_experiences where event_code=#{event_code}
+		]]>
+	</delete>
+	<delete id="delUserAbroad" parameterType="string">
+		<![CDATA[
+			delete from user_abroad where event_code=#{event_code}
+		]]>
+	</delete>
+	<delete id="delUserFamily" parameterType="string">
+		<![CDATA[
+			delete from user_family where event_code=#{event_code}
+		]]>
+	</delete>	
+	<select id="getApprovedJobByInstanceIds" parameterType="map"
+		resultType="processjob">
+		<![CDATA[
+			select jp.*,ss.seclv_name,su.user_name,sd.dept_name
+			from job_process jp
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (jp.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) su on (jp.user_iidd = su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(jp.dept_id = sd.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="seclv_code != null and seclv_code != ''">
+   				<![CDATA[
+			 		and jp.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="user_iidd != null and user_iidd != ''">
+   				<![CDATA[
+			 		and jp.user_iidd = #{user_iidd}
+				]]>
+			</if>
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		and jp.dept_id = #{dept_id}
+				]]>
+			</if>
+			<if test="jobType_code != null and jobType_code != ''">
+   				<![CDATA[
+			 		and jp.jobtype_code = #{jobType_code}
+				]]>
+			</if>
+			<if test="job_status != null and job_status != ''">
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="startTime != null and startTime != ''">
+   				<![CDATA[
+			 		and jp.start_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+   				<![CDATA[
+			 		and jp.start_time <= #{endTime}
+				]]>
+			</if>
+			<if test="instanceIds != null and instanceIds != ''">
+				and instance_id in
+				<foreach item="item" index="index" collection="instanceIds"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</trim>
+	</select>
+	
+   	<select id="getAllBmSecUserList" resultType="secuser" parameterType="map">
+   		<![CDATA[			  
+		   	select  u.user_iidd, u.real_user_id, user_name, status,u.post_id,user_type,
+		   			u.security_code,u.idcard,u.pass_num,u.print_method,u.print_permission,r.*, ss.security_name,
+			   		p.post_name,u.dept_id, dp.dept_name,st.terr_code, st.terr_name 
+			FROM    sec_user u 
+			left join user_personal r on(u.real_user_id=r.real_user_id and info_type=2) 
+		    left join sec_user_post p  ON (u.post_id = p.post_id)
+			left join sec_dept dp       ON (u.dept_id = dp.dept_id)
+			left join sec_territory st  ON (dp.terr_code = st.terr_code)
+			left join user_security ss on(ss.security_code = u.security_code)
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		u.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		AND UPPER(u.user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+			<if test="com_telephone !=null and com_telephone != ''">
+   				<![CDATA[
+			 		AND UPPER(r.com_telephone) LIKE UPPER('%'+#{com_telephone}+'%')
+				]]>
+   			</if>
+			<if test="base_sex != null and base_sex != ''">
+   				<![CDATA[
+			 		AND UPPER(r.base_sex) = UPPER (#{base_sex})
+				]]>
+   			</if>
+			<if test="pass_num != null and pass_num != ''">
+   				<![CDATA[
+			 		AND UPPER(u.pass_num) LIKE UPPER ('%'+#{pass_num}+'%')
+				]]>
+   			</if>
+			<if test="dept_id != null and dept_id != ''">
+   				and u.dept_id in 
+				<foreach item="item" index="index" collection="dept_id" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+   			</if>
+   			<if test="scope_dept_ids != null and scope_dept_ids != ''" >					
+				and u.dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+   			<if test="security_code != null and security_code != ''">
+   				<![CDATA[
+			 		AND u.security_code = #{security_code}
+				]]>
+   			</if>
+   			<if test="user_statue != null">
+   				<![CDATA[
+			 		AND r.user_statue = #{user_statue}
+				]]>
+   			</if>  
+   			<if test="post_id != null and post_id != ''">
+   				<![CDATA[
+			 		AND u.post_id = #{post_id}
+				]]>
+   			</if>    			
+   			<![CDATA[
+   				and u.is_sealed='N' and user_type != 0 and u.user_iidd != 'admin' and u.user_iidd != 'sysadmin1' and u.user_iidd != 'sysadmin2' 
+   				and u.user_iidd != 'secadmin1' and u.user_iidd != 'secadmin2' and u.user_iidd != 'audadmin1' and u.user_iidd != 'audadmin2'
+   			]]>
+   		</trim>
+   	</select>							
+</mapper>  

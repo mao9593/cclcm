@@ -1,0 +1,4 @@
+---
+--- Table: SYS_MODULE 系统模块配置
+---
+INSERT INTO SYS_MODULE(MODULE_CODE,MODULE_NAME) VALUES ('DELAY','留用延期模块');

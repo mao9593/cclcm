@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="borrow" namespace="/borrow" extends="struts-default">
+		<!-- 借阅管理 -->
+		<action name="viewborrowpaper" class="borrow.viewborrowpaper">
+			<result>/html/borrow/viewborrowpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewborrowcd" class="borrow.viewborrowcd">
+			<result>/html/borrow/viewborrowcd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageborrowevent" class="borrow.manageborrowevent">
+			<result>/html/borrow/manageborrowevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configopenscope" class="borrow.configopenscopet">
+			<result>/html/borrow/configopenscope.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewborroweventdetail" class="borrow.viewborroweventdetail">
+			<result>/html/borrow/viewborroweventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateborrowstatus" class="borrow.updateborrowstatus">
+			<result type="redirect">/borrow/viewpersonalborrowledger.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpersonalborrowledger" class="borrow.viewpersonalborrowledger">
+			<result>/html/borrow/viewpersonalborrowledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 个人借用台帐管理 -->
+		<action name="viewpaperborrowledger" class="borrow.viewpaperborrowledger">
+			<result>/html/borrow/viewpaperborrowledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="viewcdborrowledger" class="borrow.viewcdborrowledger">
+			<result>/html/borrow/viewcdborrowledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewselfsecretpaperledger" class="borrow.viewselfsecretpaperledger">
+			<result>/html/borrow/viewselfsecretpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<!-- 部门管理员交接确认管理 -->
+		<action name="confirmpaperborrow" class="borrow.confirmpaperborrow">
+			<result>/html/borrow/confirmpaperborrow.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="confirmcdborrow" class="borrow.confirmcdborrow">
+			<result>/html/borrow/confirmcdborrow.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecretborrowpaper" class="borrow.viewsecretborrowpaper">
+			<result>/html/borrow/viewsecretborrowpaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 已归档文件借阅 -->
+		<action name="viewborrowfilepaper" class="borrow.viewborrowfilepaper">
+			<result>/html/borrow/viewborrowfilepaper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewborrowfilecd" class="borrow.viewborrowfilecd">
+			<result>/html/borrow/viewborrowfilecd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="confirmfilepaperborrow" class="borrow.confirmfilepaperborrow">
+			<result>/html/borrow/confirmfilepaperborrow.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="confirmfilecdborrow" class="borrow.confirmfilecdborrow">
+			<result>/html/borrow/confirmfilecdborrow.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="confirmdeptpaperborrow" class="borrow.confirmdeptpaperborrow">
+			<result>/html/borrow/confirmdeptpaperborrow.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="confirmdeptcdborrow" class="borrow.confirmdeptcdborrow">
+			<result>/html/borrow/confirmdeptcdborrow.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="activiti" namespace="/activiti" extends="struts-default">
+		<!-- 批量流程管理 -->
+		<action name="manageprocess" class="activiti.manageprocess">
+			<result>/html/activiti/manageprocess.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addprocess" class="activiti.addprocess">
+			<result>/html/activiti/addprocess.jsp</result>
+			<result name="ok" type="redirect">/activiti/manageprocess.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delprocess" class="activiti.delprocess">
+			<result type="redirect">/activiti/manageprocess.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateprocess" class="activiti.updateprocess">
+			<result>/html/activiti/updateprocess.jsp</result>
+			<result name="ok" type="redirect">/activiti/manageprocess.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 操作标记管理 -->
+		<action name="managejobtype" class="activiti.managejobtype">
+			<result>/html/activiti/managejobtype.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="switchjobtype" class="activiti.switchjobtype">
+			<result type="redirect">/activiti/managejobtype.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

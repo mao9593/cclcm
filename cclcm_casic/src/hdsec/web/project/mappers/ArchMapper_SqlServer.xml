@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.arch.mapper.ArchMapper">
+		<insert id="addArchKey" parameterType="map">
+		<![CDATA[
+			insert into AT_TEMPLATE (SYSTEM_CODE,RECORD_COUNT,BARCODE,DOS_NUM,ARCH_NUM,TYPE_CODE,FILE_TITLE,FILE_NUM,PAGE_NUM,COUNT,TOTAL_PAGE,SECLV_CODE,FILE_DATE,FILE_CARR,KEEP_LIMIT,SUMM,
+			T01,T02,T03,T04,T05,T06,T07,T08,T09,T10,
+			T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,
+			T21,T22,T23,T24,T25) 
+			values(#{SYSTEM_CODE},#{RECORD_COUNT},#{BARCODE},#{DOS_NUM},#{ARCH_NUM},#{TYPE_CODE},#{FILE_TITLE},#{FILE_NUM},#{PAGE_NUM},#{COUNT},#{TOTAL_PAGE},#{SECLV_CODE},#{FILE_DATE},#{FILE_CARR},#{KEEP_LIMIT},#{SUMM},
+			#{T01},#{T02},#{T03},#{T04},#{T05},#{T06},#{T07},#{T08},#{T09},#{T10},
+			#{T11},#{T12},#{T13},#{T14},#{T15},#{T16},#{T17},#{T18},#{T19},#{T20},
+			#{T21},#{T22},#{T23},#{T24},#{T25})
+		]]>
+		</insert>
+		
+		<select id="getTypeList" parameterType="map" resultType="archtypename">
+		<![CDATA[
+			select * from T_ARCHTYPE_NAME 
+			]]>
+			<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="type_name != null and type_name != ''" >
+   				<![CDATA[
+			 		type_name=#{type_name}
+				]]>
+   			</if>
+   		</trim>
+		</select>
+		<insert id="addType" parameterType="map">
+		<![CDATA[
+			insert into T_ARCHTYPE_NAME (TYPE_NUM,TYPE_NAME,TEMPLATE_ID)
+							values(#{TYPE_NUM},#{TYPE_NAME},#{TEMPLATE_ID})
+		]]>
+		</insert>
+		<update id="updateArchType" parameterType="map">
+		<![CDATA[
+			update T_ARCHTYPE_NAME 
+				set TEMPLATE_ID=#{TEMPLATE_ID}
+			where ID=#{ID}	
+		]]>
+	</update>
+	<select id="getAllArchDictList" parameterType="string" resultType="archdict">
+		<![CDATA[
+			select * from t_dict  where is_used =1
+		]]>
+	</select>
+	<select id="getDictCountByName" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from t_dict where dict_name=#{dict_name}  
+		]]>
+	</select>
+	<insert id="addDict" parameterType="archdict">
+		<![CDATA[
+			insert into t_dict(dict_name,dict_value) 
+			values(#{dict_name},#{dict_value})
+		]]>
+	</insert>
+	<update id="updateDict" parameterType="archdict">
+		<![CDATA[
+			update t_dict set dict_name=#{dict_name},dict_value=#{dict_value} where id=#{id}
+		]]>
+	</update>
+	<select id="getDictById" parameterType="int" resultType="archdict">
+		<![CDATA[
+			select * from t_dict where id=#{id}
+		]]>
+	</select>
+	<update id="setDictUsed" parameterType="archdict">
+		<![CDATA[
+			update t_dict set is_used=#{is_used} where id=#{id}
+		]]>
+	</update>
+	<select id="getUsedSeclvList" resultType="borrowlen">
+		<![CDATA[
+			select sus.seclv_code,sus.seclv_name,tb.length from sec_user_seclv sus left join t_borrowlen tb on (sus.seclv_code=tb.seclv_code) where sus.is_sealed='N'
+		]]>
+	</select>
+	<select id="getBorrowLenCount" parameterType="int" resultType="int">
+		<![CDATA[
+			select count(1) from t_borrowlen where seclv_code=#{seclv_code}  
+		]]>
+	</select>
+	<insert id="insertBorrowLen" parameterType="borrowlen">
+		<![CDATA[
+			insert into t_borrowlen(seclv_code,length) 
+			values(#{seclv_code},#{length})
+		]]>
+	</insert>
+	<update id="updateBorrowLen" parameterType="borrowlen">
+		<![CDATA[
+			update t_borrowlen set length=#{length} where seclv_code=#{seclv_code}
+		]]>
+	</update>
+	<select id="getTemplateBySystemCode" parameterType="string" resultType="archkey">
+		<![CDATA[
+			select * from AT_TEMPLATE where system_code=#{template_id}  
+		]]>
+	</select>
+	<update id="updateArchPropertyValue" parameterType="map">
+		<![CDATA[
+			update AT_TEMPLATE set ${property_name}=#{propertyValue} where system_code=#{template_id}
+		]]>
+	</update>
+	<!-- 第一次同步20150726 -->
+	<select id="getArchListSize" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from AT_RECORD ar 
+			left join T_ARCHTYPE_NAME an on(ar.template_id=an.template_id)
+			left join t_dossier as td on (ar.dos_id = td.id) 
+			left join t_item as ti on (td.item_id = ti.id)
+			left join t_archtype_name as tn on (ti.type_id = tn.id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<![CDATA[
+			ar.status != 4
+			]]>
+			<if test="file_title != null and file_title != ''">
+				<![CDATA[
+					and UPPER(ar.file_title) like UPPER('%'+#{file_title}+'%')
+				]]>
+			</if>
+			<if test="template_id != null and template_id != ''">
+				<![CDATA[
+					and ar.template_id = #{template_id}
+				]]>
+			</if>
+			<if test="dos_id != null and dos_id != ''">
+				<![CDATA[
+					and ar.dos_id = #{dos_id}
+				]]>
+			</if>
+			<if test="item_id != null and item_id != ''">
+				<![CDATA[
+					and td.item_id = #{item_id}
+				]]>
+			</if>
+			<if test="type_id != null and type_id != ''">
+				<![CDATA[
+					and ti.type_id = #{type_id}
+				]]>
+			</if>
+			<if test="barcode != null and barcode != ''">
+				<![CDATA[
+				and UPPER(ar.barcode) like UPPER('%'+#{barcode}+'%')
+				]]>
+			</if>
+		</trim>
+	</select>
+	<select id="getArchList" parameterType="map" resultType="archvalue" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+			select ar.*,an.type_name from AT_RECORD ar 
+			left join T_ARCHTYPE_NAME an on(ar.template_id=an.template_id)
+			left join t_dossier as td on (ar.dos_id = td.id) 
+			left join t_item as ti on (td.item_id = ti.id)
+			left join t_archtype_name as tn on (ti.type_id = tn.id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<![CDATA[
+			ar.status != 4
+			]]>
+			<if test="file_title != null and file_title != ''">
+				<![CDATA[
+					and UPPER(ar.file_title) like UPPER('%'+#{file_title}+'%')
+				]]>
+			</if>
+			<if test="template_id != null and template_id != ''">
+				<![CDATA[
+					and ar.template_id = #{template_id}
+				]]>
+			</if>
+			<if test="dos_id != null and dos_id != ''">
+				<![CDATA[
+					and ar.dos_id = #{dos_id}
+				]]>
+			</if>
+			<if test="item_id != null and item_id != ''">
+				<![CDATA[
+					and td.item_id = #{item_id}
+				]]>
+			</if>
+			<if test="type_id != null and type_id != ''">
+				<![CDATA[
+					and ti.type_id = #{type_id}
+				]]>
+			</if>
+			<if test="barcode != null and barcode != ''">
+				<![CDATA[
+					and UPPER(ar.barcode) like UPPER('%'+#{barcode}+'%')
+				]]>
+			</if>
+		</trim>
+	</select>
+	<select id="getArchValueById" parameterType="int" resultType="archvalue">
+		<![CDATA[
+			select ar.*,an.type_name from AT_RECORD ar left join T_ARCHTYPE_NAME an on(ar.template_id=an.template_id) where ar.id=#{id}
+		]]>
+	</select>
+	<select id="getDosListByItemId" parameterType="int" resultType="dossier">
+		<![CDATA[
+			select * from t_dossier where item_id=#{itemId}
+		]]>
+	</select>
+	<select id="getItemListByTypeId" parameterType="int" resultType="item">
+		<![CDATA[
+			select * from t_item where type_id=#{typeId}
+		]]>
+	</select>
+	<select id="getArchTypeNameById" parameterType="int" resultType="archtypename">
+		<![CDATA[
+			select * from t_archtype_name where id=#{id}
+		]]>
+	</select>
+	<select id="getItemCountByCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from t_item where item_code=#{item_code}  
+		]]>
+	</select>
+	<insert id="addItem" parameterType="item">
+		<![CDATA[
+			insert into t_item(item_code,summ,type_id) 
+			values(#{item_code},#{summ},#{type_id})
+		]]>
+	</insert>
+	<select id="getItemById" parameterType="int" resultType="item">
+		<![CDATA[
+			select * from t_item where id=#{id}
+		]]>
+	</select>
+	<select id="getDosCountByCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from t_dossier where dos_code=#{dos_code}  
+		]]>
+	</select>
+	<insert id="addDossier" parameterType="dossier">
+		<![CDATA[
+			insert into t_dossier(
+				sub_prog_code,
+				prog_code,
+	 			dos_code,
+	 			type_code,
+	 			dos_subject,
+				dir_code,
+				unit,
+				seclv_code,
+				arch_num,
+				total_page,
+	 			arch_type,
+	 			create_user,
+	 			dos_num,
+	 			summ,
+	 			dutyman,
+	 			item_id)
+			values(
+				#{sub_prog_code},
+				#{prog_code},
+	 			#{dos_code},
+	 			#{type_code},
+	 			#{dos_subject},
+				#{dir_code},
+				#{unit},
+				#{seclv_code},
+				#{arch_num},
+				#{total_page},
+	 			#{arch_type},
+	 			#{create_user},
+	 			#{dos_num},
+	 			#{summ},
+	 			#{dutyman},
+	 			#{item_id})
+		]]>
+	</insert>
+	<select id="getDosById" parameterType="int" resultType="dossier">
+		<![CDATA[
+			select * from t_dossier where id=#{id}
+		]]>
+	</select>
+	<select id="getTemplateIdByDosId" parameterType="int" resultType="string">
+		<![CDATA[
+			select tatn.template_id from t_archtype_name as tatn, t_dossier as dos ,t_item as it 
+            where it.type_id = tatn.id 
+            and it.id = dos.item_id
+            and dos.id =#{dos_id}
+		]]>
+	</select>
+	<insert id="saveArchProperty" parameterType="map">
+		<![CDATA[
+			insert into AT_RECORD (template_id,BARCODE,DOS_NUM,ARCH_NUM,TYPE_CODE,
+								   FILE_TITLE,FILE_NUM,PAGE_NUM,COUNT,TOTAL_PAGE,
+								   SECLV_CODE,FILE_DATE,FILE_CARR,KEEP_LIMIT,SUMM,
+								   DOS_ID,STATUS,
+								   T01,T02,T03,T04,T05,T06,T07,T08,T09,T10,
+								   T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,
+								   T21,T22,T23,T24,T25) 
+			            values(#{template_id},#{BARCODE},#{DOS_NUM},#{ARCH_NUM},#{TYPE_CODE},
+			            	   #{FILE_TITLE},#{FILE_NUM},#{PAGE_NUM},#{COUNT},#{TOTAL_PAGE},
+			            	   #{SECLV_CODE},#{FILE_DATE},#{FILE_CARR},#{KEEP_LIMIT},#{SUMM},
+			            	   #{DOS_ID},#{STATUS},
+							   #{T01},#{T02},#{T03},#{T04},#{T05},#{T06},#{T07},#{T08},#{T09},#{T10},
+			  				   #{T11},#{T12},#{T13},#{T14},#{T15},#{T16},#{T17},#{T18},#{T19},#{T20},
+							   #{T21},#{T22},#{T23},#{T24},#{T25})
+		]]>
+	</insert>
+	<update id="updateDossier" parameterType="dossier">
+		<![CDATA[
+			update t_dossier set 
+				sub_prog_code = #{sub_prog_code},
+				prog_code = #{prog_code},
+	 			dos_code = #{dos_code},
+	 			type_code = #{type_code},
+	 			dos_subject = #{dos_subject},
+				dir_code = #{dir_code},
+				unit = #{unit},
+				seclv_code = #{seclv_code},
+				arch_num = #{arch_num},
+				total_page = #{total_page},
+	 			arch_type = #{arch_type},
+	 			create_user = #{create_user},
+	 			dos_num = #{dos_num},
+	 			summ = #{summ},
+	 			dutyman = #{dutyman}
+			 where id=#{id}
+		]]>
+	</update>
+	<select id="getArchNumByDos" parameterType="int" resultType="int">
+		<![CDATA[
+			select count(1) from at_record where dos_id=#{id}
+		]]>
+	</select>
+	<delete id="deleteDosById" parameterType="int">
+		<![CDATA[
+			delete from t_dossier where id=#{id}
+		]]>
+	</delete>
+	<select id="getValidTypeList" resultType="archtypename">
+		<![CDATA[
+			select * from T_ARCHTYPE_NAME where is_used=1 and template_id is not null
+		]]>
+	</select>
+	<select id="getTemplateIdByBarcode" parameterType="string" resultType="string">
+		<![CDATA[
+			select template_id from AT_RECORD where barcode = #{barcode}
+		]]>
+	</select>
+	<select id="getRecordIdByBarcode" parameterType="string" resultType="int">
+		<![CDATA[
+			select id from AT_RECORD where barcode = #{barcode}
+		]]>
+	</select>
+	<select id="trgetTypeNameIdByTemplateId" parameterType="string" resultType="int">
+		<![CDATA[
+			select id from T_ARCHTYPE_NAME where template_id = #{templateId}
+		]]>
+	</select>
+	<select id="getItemIdByTypeId" parameterType="int" resultType="int">
+		<![CDATA[
+			select id from T_ITEM where TYPE_ID = #{typeId}
+		]]>
+	</select>
+	
+	<select id="getDosIdByItemId" parameterType="int" resultType="int">
+		<![CDATA[
+			select id from T_DOSSIER where item_id = #{itemId}
+		]]>
+	</select>
+		<insert id="addEnventArch" parameterType="map">
+		<![CDATA[
+			insert into event_archbrw (
+				event_code,
+				user_iidd,
+				dept_id,
+				barcode,
+				file_title,
+				apply_time,
+				seclv_code,
+				usage_code,
+				borrow_status,
+				job_code,
+				arch_type_id,
+				at_record_id,
+				item_id,
+				dos_id,
+				arche_type
+			) values (
+				#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{barcode},
+				#{file_title},
+				#{apply_time},
+				#{seclv_code},
+				#{usage_code},
+				#{borrow_status},
+				#{job_code},
+				#{arch_type_id},
+				#{arch_record_id},
+				#{item_id},
+				#{dos_id},
+				#{arche_type}
+			)
+		]]>
+	</insert>
+		<update id="updateArchValuePropertyValue" parameterType="map">
+		<![CDATA[
+			update AT_RECORD set ${property_name}=#{propertyValue} where barcode=#{barcode}
+		]]>
+	</update>
+		<select id="getEventArchListByJobCode" parameterType="string" resultType="eventarchbrw">
+		<![CDATA[
+			select * from EVENT_ARCHBRW where job_code=#{job_code} 
+		]]>
+	</select>
+	<select id="getArchBrwEventList" parameterType="map" resultType="eventarchbrw">
+		<![CDATA[
+			select ea.*,ar.file_title,ar.dos_id,ar.barcode,ta.type_name arch_type_name,ti.item_code,jp.job_status,
+				td.dos_code,su.user_name,usa.usage_name,sul.user_name lend_user_name,sus.seclv_name,sd.dept_name
+			from event_archbrw ea 
+			left join (select id,dos_id,file_title,barcode,template_id,status from at_record) ar on (ea.at_record_id=ar.id)
+			left join t_archtype_name ta on (ea.arch_type_id=ta.id)
+			left join t_item ti on(ea.item_id=ti.id)
+			left join t_dossier td on(ar.dos_id = td.id)
+			left join (select user_iidd,user_name from sec_user) su on(ea.user_iidd=su.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(ea.dept_id=sd.dept_id)
+			left join (select usage_code,usage_name from sys_usage) usa on (ea.usage_code=usa.usage_code)
+			left join (select user_iidd,user_name from sec_user) sul on(ea.lend_user_iidd=sul.user_iidd)
+			left join (select seclv_code,seclv_name from sec_user_seclv) sus on(ea.seclv_code=sus.seclv_code)
+			left join (select job_status,job_code from job_process) jp on(jp.job_code=ea.job_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="status != null and status != ''">
+				<![CDATA[
+					and ar.status = #{status}
+				]]>
+			</if>
+			<if test="borrow_status != null and borrow_status != ''">
+				<![CDATA[
+					and ea.borrow_status = #{borrow_status}
+				]]>
+			</if>
+			<if test="file_title != null and file_title != ''">
+				<![CDATA[
+					and UPPER(ar.file_title) like UPPER('%'+#{file_title}+'%')
+				]]>
+			</if>
+			<if test="template_id != null and template_id != ''">
+				<![CDATA[
+					and ar.template_id = #{template_id}
+				]]>
+			</if>
+			<if test="user_iidd != null and user_iidd != ''">
+				<![CDATA[
+					and UPPER(ea.user_iidd) like UPPER('%'+#{user_iidd}+'%')
+				]]>
+			</if>
+			<if test="user_name != null and user_name != ''">
+				<![CDATA[
+					and UPPER(su.user_name) like UPPER('%'+#{user_name}+'%')
+				]]>
+			</if>
+			<if test="job_status != null and job_status != ''">
+				<![CDATA[
+					and jp.job_status = #{job_status}
+				]]>
+			</if>
+		</trim>
+		order by apply_time desc
+	</select>
+	<update id="setEventStatusLent" parameterType="map">
+		<![CDATA[
+			update event_archbrw set borrow_status=1,lend_time=getdate(),limit_time=getdate()+#{days},lend_user_iidd=#{lend_user_iidd} where id=#{id}
+		]]>
+	</update>
+
+	<select id="getArchBrwEventById" parameterType="int" resultType="eventarchbrw">
+		<![CDATA[
+			select ea.*,ar.file_title,ar.dos_id,ar.barcode,ta.type_name arch_type_name,ti.item_code,sd.dept_name,
+				td.dos_code,su.user_name,usa.usage_name,sul.user_name lend_user_name,sus.seclv_name
+			from event_archbrw ea 
+			left join (select id,dos_id,file_title,barcode,template_id from at_record) ar on (ea.at_record_id=ar.id)
+			left join t_archtype_name ta on (ea.arch_type_id=ta.id)
+			left join t_item ti on(ea.item_id=ti.id)
+			left join t_dossier td on(ar.dos_id = td.id)
+			left join (select user_iidd,user_name from sec_user) su on(ea.user_iidd=su.user_iidd)
+			left join (select dept_id,dept_name from sec_dept) sd on(ea.dept_id=sd.dept_id)
+			left join (select usage_code,usage_name from sys_usage) usa on (ea.usage_code=usa.usage_code)
+			left join (select user_iidd,user_name from sec_user) sul on(ea.lend_user_iidd=sul.user_iidd)
+			left join (select seclv_code,seclv_name from sec_user_seclv) sus on(ea.seclv_code=sus.seclv_code)
+			where ea.id=#{id}
+		]]>
+	</select>
+	<update id="setArchStatusLent" parameterType="eventarchbrw">
+		<![CDATA[
+			update at_record set status=3,user_iidd=#{user_iidd},dept_id=#{dept_id} where id=#{at_record_id}
+		]]>
+	</update>
+	<insert id="addArchBrwRecord" parameterType="eventarchbrw">
+		<![CDATA[
+			insert into T_BORROW_RECORD (ARCH_ID,USER_IIDD,OPER_TIME,USER_NAME,DEPT_NAME,OPER)
+				values(#{at_record_id},#{user_iidd},getDate(),#{user_name},#{dept_name},'借入')
+		]]>
+	</insert>
+	<update id="setEventStatusReturn" parameterType="int">
+		<![CDATA[
+			update event_archbrw set borrow_status=2,return_time=getdate() where id=#{id}
+		]]>
+	</update>
+	<update id="setArchStatusReturn" parameterType="eventarchbrw">
+		<![CDATA[
+			update at_record set status=0,user_iidd=null,dept_id=null where id=#{at_record_id}
+		]]>
+	</update>
+	<insert id="addArchReturnRecord" parameterType="eventarchbrw">
+		<![CDATA[
+			insert into T_BORROW_RECORD (ARCH_ID,USER_IIDD,OPER_TIME,USER_NAME,DEPT_NAME,OPER)
+				values(#{at_record_id},#{user_iidd},getDate(),#{user_name},#{dept_name},'归还')
+		]]>
+	</insert>
+	<select id="getBorrowLenBySeclvName" parameterType="string" resultType="int">
+		<![CDATA[
+			select length from t_borrowlen where seclv_code=(select seclv_code from sec_user_seclv where seclv_name=#{seclv_name})
+		]]>
+	</select>
+	<select id="getDosIdByCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select id from t_dossier where dos_code=#{dos_code}
+		]]>
+	</select>
+	<select id="getBarcodeByJobCodeFromEventArchBrw" parameterType="string" resultType="string">
+		<![CDATA[
+			select barcode from event_archbrw where job_code=#{job_code}
+		]]>
+	</select>
+		<select id="getItemIdByDosId" parameterType="int" resultType="int">
+		<![CDATA[
+			select item_id from T_DOSSIER where id=#{id}
+		]]>
+	</select>
+	<select id="getDosIdByBarcode" parameterType="string" resultType="int">
+		<![CDATA[
+			select dos_id from at_record where barcode=#{barcode}
+		]]>
+	</select>
+	<select id="getLastInsertArchByTemplate" parameterType="string" resultType="archvalue">
+		<![CDATA[
+			select ar.*,an.type_name from AT_RECORD ar left join T_ARCHTYPE_NAME an on(ar.template_id=an.template_id) 
+			where ar.id=(select max(id) from at_record) and ar.template_id=#{template_id}
+		]]>
+	</select>
+	<select id="getCountArchBarcodeByArchbarcode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(*) from at_record where barcode=#{arch_barcode}
+		]]>
+	</select>
+	<select id="getArchEventByEnterCode" parameterType="string" resultType="eventarchbrw">
+		<![CDATA[
+			select * from event_archbrw where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getArchEventByjobCode" parameterType="string" resultType="eventarchbrw">
+		<![CDATA[
+			select * from event_archbrw where job_code=#{job_code}
+		]]>
+	</select>
+	<update id="cancelArchEventByEventCode" parameterType="string">
+		<![CDATA[
+			update event_archbrw set
+				job_code = null
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getArchEventCountByJobCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from event_archbrw where job_code=#{job_code}
+		]]>
+	</select>
+	<update id="resetArchStatus" parameterType="int">
+		<![CDATA[
+			update at_record set
+				status = 0
+			where id=#{at_record_id}
+		]]>
+	</update>
+	<delete id="delArchEventByJobCode" parameterType="string">
+		<![CDATA[
+			delete from event_archbrw where job_code=#{job_code}
+		]]>
+	</delete>
+	<update id="setEventStatusRenew" parameterType="map">
+	<![CDATA[
+			update event_archbrw set borrow_status = 4 ,lend_time=getdate(),limit_time=getdate()+#{days},lend_user_iidd=#{lend_user_iidd} where id=#{id}
+		]]>
+	</update>
+	<insert id="addArchBrwRecordRenew" parameterType="eventarchbrw">
+		<![CDATA[
+			insert into T_BORROW_RECORD (ARCH_ID,USER_IIDD,OPER_TIME,USER_NAME,DEPT_NAME,OPER)
+				values(#{at_record_id},#{user_iidd},getDate(),#{user_name},#{dept_name},'续借')
+		]]>
+	</insert>
+	<update id="setEventDateRenew" parameterType="map">
+	<![CDATA[
+			update event_archbrw set limit_time = (limit_time+#{days})
+			where at_record_id  in (select at_record_id from event_archbrw where id=#{id}) 
+			and borrow_status = 1 
+		]]>
+	</update>
+	<update id="deleteArchById" parameterType="int">
+		<![CDATA[
+			update at_record set status = 4 where id = #{id}		
+		]]>
+	</update>
+	<select id="getArchDeleteListSize" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from AT_RECORD ar left join T_ARCHTYPE_NAME an on(ar.template_id=an.template_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+				<![CDATA[
+				ar.status = 4
+				]]>
+			<if test="file_title != null and file_title != ''">
+				<![CDATA[
+					and UPPER(ar.file_title) like UPPER('%'+#{file_title}+'%')
+				]]>
+			</if>
+			<if test="template_id != null and template_id != ''">
+				<![CDATA[
+					and ar.template_id = #{template_id}
+				]]>
+			</if>
+		</trim>
+	</select>
+	<select id="getArchDeleteList" parameterType="map" resultType="archvalue" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+			select ar.*,an.type_name from AT_RECORD ar left join T_ARCHTYPE_NAME an on(ar.template_id=an.template_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<![CDATA[
+			ar.status = 4
+			]]>
+			<if test="file_title != null and file_title != ''">
+				<![CDATA[
+					and UPPER(ar.file_title) like UPPER('%'+#{file_title}+'%')
+				]]>
+			</if>
+			<if test="template_id != null and template_id != ''">
+				<![CDATA[
+					and ar.template_id = #{template_id}
+				]]>
+			</if>
+		</trim>
+	</select>
+	<delete id="deleteThoroughArchById" parameterType="int">
+		<![CDATA[
+			delete from  at_record  where id = #{id}		
+		]]>
+	</delete>
+	<update id="updateArchProperty" parameterType="map">
+		<![CDATA[
+			update at_record set    DOS_NUM= #{DOS_NUM},
+									ARCH_NUM = #{ARCH_NUM},
+									TYPE_CODE = #{TYPE_CODE},
+									FILE_TITLE = #{FILE_TITLE},
+									FILE_NUM = #{FILE_NUM},
+									PAGE_NUM = #{PAGE_NUM},
+									COUNT = #{COUNT},
+									TOTAL_PAGE = #{TOTAL_PAGE},
+									SECLV_CODE = #{SECLV_CODE},
+									FILE_DATE = #{FILE_DATE},
+									FILE_CARR = #{FILE_CARR},
+									KEEP_LIMIT = #{KEEP_LIMIT},
+									SUMM = #{SUMM},
+									T01 = #{T01},
+									T02 = #{T02},
+									T03 = #{T03},
+									T04 = #{T04},
+									T05 = #{T05},
+									T06 = #{T06},
+									T07 = #{T07},
+									T08 = #{T08},
+									T09 = #{T09},
+									T10 = #{T10},
+									T11 = #{T11},
+									T12 = #{T12},
+									T13 = #{T13},
+									T14 = #{T14},
+									T15 = #{T15},
+									T16 = #{T16},
+									T17 = #{T17},
+									T18 = #{T18},
+									T19 = #{T19},
+									T20 = #{T20},
+									T21 = #{T21},
+									T22 = #{T22},
+									T23 = #{T23},
+									T24 = #{T24},
+									T25 = #{T25}
+									where id = #{id}	
+		]]>
+	</update>
+   	<insert id="addArcAskingToReturnClientMsg" parameterType="map">
+		<![CDATA[
+			insert into client_msg
+			 (accept_user_iidd,
+			  accept_user_name,
+			  oper_type,
+			  message_type,
+			  job_code,
+			  message,
+			  insert_time,
+			  is_read
+			  )
+			  values(
+			  #{accept_user_iidd},
+			  #{accept_user_name},
+			  #{oper_type},
+			  #{message_type},
+			  #{job_code},
+			  #{message},
+			  #{insert_time},
+			  #{is_read}
+			  )
+		]]>
+	</insert>
+	<delete id="delAskToReturnArchClientMsg" parameterType="map">
+		<![CDATA[
+			delete from  client_msg  
+			where accept_user_iidd =#{accept_user_iidd} 
+			and job_code = #{job_code} 
+			and oper_type = 'ASKRETURN'		
+		]]>
+	</delete>
+</mapper> 

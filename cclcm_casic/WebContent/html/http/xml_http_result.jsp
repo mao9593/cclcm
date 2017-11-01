@@ -1,0 +1,1 @@
+<%=request.getAttribute(hdsec.web.project.common.util.Constants.XML_HTTP_RESULT_KEY)%>

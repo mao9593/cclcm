@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="deviceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.device.mapper.DeviceMapper" />
+	</bean>
+
+	<!-- 磁介质管理 -->
+  	<bean id="device.managedevice" class="${common.package}.device.action.ManageDeviceAction" scope="prototype" />
+	<bean id="device.adddevice" class="${common.package}.device.action.AddDeviceAction" scope="prototype" />
+  	<bean id="device.updatedevice" class="${common.package}.device.action.UpdateDeviceAction" scope="prototype" />
+  	<bean id="device.updatedevicestatus" class="${common.package}.device.action.UpdateDeviceStatusAction" scope="prototype" />
+  	<bean id="device.returndevice" class="${common.package}.device.action.ReturnDeviceAction" scope="prototype" />
+  	
+  	<!-- 磁介质借入作业管理 -->
+	<bean id="device.adddeviceevent" class="${common.package}.device.action.AddDeviceEventAction" scope="prototype" />	
+	<bean id="device.managedeviceevent" class="${common.package}.device.action.ManageDeviceEventAction" scope="prototype" />
+	<bean id="device.submitdeviceevent" class="${common.package}.device.action.SubmitDeviceEventAction" scope="prototype" />
+	<bean id="device.viewdeviceeventdetail" class="${common.package}.device.action.ViewDeviceEventDetailAction" scope="prototype" />
+	<bean id="device.updatedeviceevent" class="${common.package}.device.action.UpdateDeviceEventAction" scope="prototype" />
+	<bean id="device.deldeviceevent" class="${common.package}.device.action.DelDeviceEventAction" scope="prototype" />
+	<bean id="device.viewdeviceeventlist" class="${common.package}.device.action.ViewDeviceEventListAction" scope="prototype" />
+	<bean id="device.distributedevice" class="${common.package}.device.action.DistributeDeviceAction" scope="prototype" />
+	
+	<bean id="device.adddeviceprocessjob" class="${common.package}.device.action.AddDeviceProcessJobAction" scope="prototype" />	
+	<bean id="device.managedevicejob" class="${common.package}.device.action.ManageDeviceJobAction" scope="prototype"/>
+	<bean id="device.viewdevicejobdetail" class="${common.package}.device.action.ViewDeviceJobDetailAction" scope="prototype" />	
+	<bean id="device.canceldeviceevent" class="${common.package}.device.action.CancelDeviceEventAction" scope="prototype" />	
+	
+	<!-- 审批 磁介质借入任务 -->
+	<bean id="device.managedeviceaprvjob" class="${common.package}.device.action.ManageDeviceAprvJobAction" scope="prototype" />	
+	<bean id="device.approvedevicejob" class="${common.package}.device.action.ApproveDeviceJobAction" scope="prototype" />	
+	<bean id="device.viewdeviceaprvjob" class="${common.package}.device.action.ViewDeviceAprvJobAction" scope="prototype" />
+
+
+	<!-- 磁介质销毁 -->
+	<bean id="device.handledevicejob" class="${common.package}.device.action.HandleDeviceJobAction" scope="prototype" />
+	<bean id="device.managehandledevice" class="${common.package}.device.action.ManageHandleDeviceAction" scope="prototype" />
+	<bean id="device.cancelhandledevice" class="${common.package}.device.action.CancelHandleDeviceAction" scope="prototype" />
+	<bean id="device.viewdeviceledgerinfo" class="${common.package}.device.action.ViewDeviceledgerInfoAction" scope="prototype" />
+	
+	<!-- 打印条码 -->
+	<bean id="device.printbarcode" class="${common.package}.device.action.PrintBarcodeAction" scope="prototype"/>
+	<bean id="device.configbarcode" class="${common.package}.device.action.ConfigBarcodeAction" scope="prototype" />
+	
+	<!-- 磁介质类型管理 -->
+	<bean id="device.managedevicetype" class="${common.package}.device.action.ManageDeviceTypeAction" scope="prototype" />	
+	<!-- 添加磁介质类型 -->
+	<bean id="device.adddevicetype" class="${common.package}.device.action.AddDeviceTypeAction" scope="prototype" />	
+	<!-- 修改磁介质类型 -->
+	<bean id="device.updatedevicetype" class="${common.package}.device.action.UpdateDeviceTypeAction" scope="prototype" />	
+	<!-- 删除磁介质类型 -->
+	<bean id="device.deldevicetype" class="${common.package}.device.action.DelDeviceTypeAction" scope="prototype" />	
+	<!-- 磁介质批量录入-->
+	<bean id="device.importdevice" class="${common.package}.device.action.ImportDeviceAction" scope="prototype" />
+	<!-- 磁介质批量导出 -->
+	<bean id="device.exportmanagedevice" class="${common.package}.device.action.ExportManageDeviceAction" scope="prototype" />
+	
+</beans>

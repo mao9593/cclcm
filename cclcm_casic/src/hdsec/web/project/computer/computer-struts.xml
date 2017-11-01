@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="computer" namespace="/computer" extends="struts-default">
+		<!-- 计算机批添加-->
+		<action name="addcomputer" class="computer.addcomputer">
+			<result>/html/computer/addcomputer.jsp</result>
+			<result name="ok" type="redirect">/computer/managecomputer.action</result>
+		    <result name="input">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 计算机批量录入 -->
+		<action name="importcomputer" class="computer.importcomputer">
+			<result>/html/computer/importcomputer.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看计算机台账 -->
+		<action name="managecomputer" class="computer.managecomputer">
+			<result>/html/computer/managecomputer.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 通过条码查看计算机信息 -->
+		<action name="viewcomputerdetail" class="computer.viewcomputerdetail">
+			<result>/html/computer/viewcomputerdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 修改计算机信息 -->
+		<action name="updatecomputer" class="computer.updatecomputer">
+			<result>/html/computer/updatecomputer.jsp</result>
+			<result name="ok" type="redirect">/computer/managecomputer.action?type=DEPT</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 导出计算机信息 -->
+		<action name="exportcomputer" class="computer.exportcomputer">
+			<result>/html/computer/successful.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 新增计算机（网络机） -->
+		<action name="addinternetcomputerevent" class="computer.addinternetcomputerevent">
+			<result>/html/computer/addinternetcomputerevent.jsp</result>
+			<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 新增计算机（单机）-->
+		<action name="addsinglecomputerevent" class="computer.addsinglecomputerevent">
+			<result>/html/computer/addsinglecomputerevent.jsp</result>
+			<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 计算机变更-->
+		<action name="addchangecomputerevent" class="computer.addchangecomputerevent">
+			<result>/html/computer/addchangecomputerevent.jsp</result>
+			<result name="ok_success">/html/computer/addcomputerchangeevent.jsp</result>
+			<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 计算机报废-->
+		<action name="adddestroycomputerevent" class="computer.adddestroycomputerevent">
+			<result>/html/computer/adddestroycomputerevent.jsp</result>
+			<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看申请记录-->
+		<action name="viewcomputerevent" class="computer.viewcomputerevent">
+			<result>/html/computer/viewcomputerevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 待审批列表-->
+		<action name="managecomputeraprvjob" class="computer.managecomputeraprvjob">
+			<result>/html/computer/managecomputeraprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看审批记录-->
+		<action name="viewcomputeraprvjob" class="computer.viewcomputeraprvjob">
+			<result>/html/computer/viewcomputeraprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看申请详细信息-->
+		<action name="viewcomputereventdetail" class="computer.viewcomputereventdetail">
+			<result>/html/computer/viewcomputereventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 删除申请-->
+		<action name="deleteevent" class="computer.deleteevent">
+			<result type="redirect">/computer/viewcomputerevent.action</result>
+			<result name="ok" type="redirect">/computer/managecomputer.action?type=DEPT</result>
+			<result name="book" type="redirect">/computer/managebook.action</result>
+			<result name="ok_book" type="redirect">/computer/managebookevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 审批-->
+		<action name="approvecomputerjob" class="computer.approvecomputerjob">
+			<result>/html/computer/approvecomputerjob.jsp</result>
+			<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查询计算机信息-->
+		<action name="getcomputerinfo" class="computer.getcomputerinfo">
+			<result>/html/computer/getcomputerinfo.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	
+		<!-- 信息设备管理模块guojiao -->
+		<action name="addinfodevice" class="computer.addinfodevice">
+				<result>/html/computer/addinfodevice.jsp</result>
+				<result name="ok" type="redirect">/computer/addinfodevice.action</result>
+				<result name="exception">/html/error.jsp</result>
+			    <result name="input">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="importinfodevice" class="computer.importinfodevice">
+			<result>/html/computer/importinfodevice.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewinfodevicedetail" class="computer.viewinfodevicedetail">
+			<result>/html/computer/viewinfodevicedetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateinfodevice" class="computer.updateinfodevice">
+			<result>/html/computer/updateinfodevice.jsp</result>
+			<result name="okupdate" type="redirect">/computer/manageinfodevice.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>		
+		<action name="manageinfodevice" class="computer.manageinfodevice">
+			<result>/html/computer/manageinfodevice.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportinfodevice" class="computer.exportinfodevice">
+			<result>/html/computer/successful.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addinfodeviceevent" class="computer.addinfodeviceevent">
+			<result>/html/computer/addinfodeviceevent.jsp</result>
+			<result name="ok" type="redirect">/computer/manageinfodevicelist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageinfodeviceevent" class="computer.manageinfodeviceevent">
+			<result>/html/computer/manageinfodeviceevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delinfodeviceevent" class="computer.delinfodeviceevent">
+			<result type="redirect">/computer/delinfodeviceevent.action</result>
+			<result name="ok_device" type="redirect">/computer/manageinfodevice.action</result>
+			<result name="NETWORK" type="redirect">/computer/manageinfodevice.action?type=NETWORK&amp;device_type=2</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewinfodeviceeventdetail" class="computer.viewinfodeviceeventdetail">
+			<result>/html/computer/viewinfodeviceeventdetail.jsp</result>
+			<result name="okc">/html/computer/viewchangeinfodeviceeventdetail.jsp</result>
+			<result name="okd">/html/computer/viewdestroyinfodeviceeventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageinfodeviceaprvjob" class="computer.manageinfodeviceaprvjob">
+			<result>/html/computer/manageinfodeviceaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewinfodeviceaprvjob" class="computer.viewinfodeviceaprvjob">
+			<result>/html/computer/viewinfodeviceaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="approveinfodevicejob" class="computer.approveinfodevicejob">
+			<result>/html/computer/approveinfodevicejob.jsp</result>
+			<result name="change">/html/computer/approvechangeinfodevicejob.jsp</result>
+			<result name="des">/html/computer/approvedesinfodevicejob.jsp</result>
+			<result type="redirect" name="ok">/computer/manageinfodeviceaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="changeinfodevice" class="computer.changeinfodevice">
+			<result>/html/computer/changeinfodevice.jsp</result>
+			<result name="ok" type="redirect">/computer/manageinfodevicelist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managechangeinfodeviceevent" class="computer.managechangeinfodeviceevent">
+			<result>/html/computer/managechangeinfodeviceevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="destroyinfodevice" class="computer.destroyinfodevice">
+			<result>/html/computer/destroyinfodevice.jsp</result>
+			<result name="ok" type="redirect">/computer/manageinfodevicelist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managedestroyinfodeviceevent" class="computer.managedestroyinfodeviceevent">
+			<result>/html/computer/managedestroyinfodeviceevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getinfotype" class="computer.getinfotype">
+			<result>/html/computer/getinfotype.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 添加信息设备类型 -->
+		<action name="addinfotype" class="computer.addinfotype">
+			<result>/html/computer/addinfotype.jsp</result>
+			<result name="insert" type="redirect">/computer/manageinfodevicetype.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 修改信息设备类型 -->
+ 		<action name="updateinfotype" class="computer.updateinfotype">
+			<result>/html/computer/updateinfotype.jsp</result>
+			<result name="update" type="redirect">/computer/manageinfodevicetype.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageinfodevicetype" class="computer.manageinfodevicetype">
+			<result>/html/computer/manageinfodevicetype.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="addinfosdevice" class="computer.addinfodevice">
+			<result>/html/computer/addinfodevices.jsp</result>
+			<result name="ok" type="redirect">/computer/manageinfodevice.action?type=NETWORK&amp;device_type=2</result>
+			<result name="exception">/html/error.jsp</result>
+		    <result name="input">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 笔记本借用 -->
+		<action name="addborrowbookevent" class="computer.addborrowbookevent">
+			<result>/html/computer/addborrowbookevent.jsp</result>
+			<result name="ok" type="redirect">/computer/manageborrowbookevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addqiyuanborrowbookevent" class="computer.addqiyuanborrowbookevent">
+			<result>/html/computer/addqiyuanborrowbookevent.jsp</result>
+			<result name="ok" type="redirect">/computer/manageqiyuanborrowbookevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageborrowbookevent" class="computer.manageborrowbookevent">
+			<result>/html/computer/manageborrowbookevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageqiyuanborrowbookevent" class="computer.manageqiyuanborrowbookevent">
+			<result>/html/computer/manageqiyuanborrowbookevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveborrowbookjob" class="computer.approveborrowbookjob">
+			<result>/html/computer/approveborrowbookjob.jsp</result>
+			<result type="redirect" name="ok">/computer/managecomputeraprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveqiyuanborrowbookjob" class="computer.approveqiyuanborrowbookjob">
+			<result>/html/computer/approveqiyuanborrowbookjob.jsp</result>
+			<result type="redirect" name="ok">/computer/managecomputeraprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addbook" class="computer.addbook">
+			<result>/html/computer/addbook.jsp</result>
+			<result name="ok" type="redirect">/computer/managebook.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managebook" class="computer.managebook">
+			<result>/html/computer/managebook.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewbookdetail" class="computer.viewbookdetail">
+			<result>/html/computer/viewbookdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+ 		<action name="updatebook" class="computer.updatebook">
+			<result>/html/computer/updatebook.jsp</result>
+			<result name="ok" type="redirect">/computer/managebook.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="importbook" class="computer.importbook">
+			<result>/html/computer/importbook.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportbook" class="computer.exportbook">
+			<result>/html/computer/successful.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="choicebook" class="computer.choicebook">
+			<result>/html/computer/choicebook.jsp</result>
+			<!-- <result name="ok" type="redirect">/infosystem/manageinfosystemaprvjob.action</result> -->
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageinfodevicelist" class="computer.manageinfodevicelist">
+			<result>/html/computer/manageinfodevicelist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageharddisk" class="computer.manageharddisk">
+			<result>/html/computer/manageharddisk.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageharddisk" class="computer.manageharddisk">
+			<result>/html/computer/manageharddisk.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewharddiskdetail" class="computer.viewharddiskdetail">
+			<result>/html/computer/viewharddiskdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateharddisk" class="computer.updateharddisk">
+			<result>/html/computer/updateharddisk.jsp</result>
+			<result name="ok" type="redirect">/computer/manageharddisk.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 删除硬盘-->
+		<action name="deleteharddisk" class="computer.deleteharddisk">
+			<result type="redirect">/computer/manageharddisk.action</result>
+			<result name="ok" type="redirect">/computer/manageharddisk.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 导出硬盘信息 -->
+		<action name="exportharddisk" class="computer.exportharddisk">
+			<result>/html/computer/successful.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 笔记本变更、维修、报废、重装 -->	
+		<action name="addchangebookevent" class="computer.addchangebookevent">
+			<result>/html/computer/addchangebookevent.jsp</result>
+			<result name="ok" type="redirect">/computer/managebookevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addrepairbookevent" class="computer.addrepairbookevent">
+			<result>/html/computer/addrepairbookevent.jsp</result>
+			<result name="ok" type="redirect">/computer/managebookevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="adddestorybookevent" class="computer.adddestorybookevent">
+			<result>/html/computer/adddestorybookevent.jsp</result>
+			<result name="ok" type="redirect">/computer/managebookevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managebookevent" class="computer.managebookevent">
+			<result>/html/computer/managebookevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvebookjob" class="computer.approvebookjob">
+			<result>/html/computer/approvebookjob.jsp</result>
+			<result name="ok_change">/html/computer/approvebookchangejob.jsp</result>
+			<result name="ok_repair">/html/computer/approvebookrepairjob.jsp</result>
+			<result name="ok_des">/html/computer/approvebookdesjob.jsp</result>
+			<result name="ok_install">/html/computer/approvebookreinstalljob.jsp</result>
+			<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addreinstallbookevent" class="computer.addreinstallbookevent">
+			<result>/html/computer/addreinstallbookevent.jsp</result>
+			<result name="ok" type="redirect">/computer/managebookevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvesinglecomputerjob" class="computer.approvesinglecomputerjob">
+			<result>/html/computer/approvesinglecomputerjob.jsp</result>
+			<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvechangecomputerjob" class="computer.approvechangecomputerjob">
+			<result>/html/computer/approvechangecomputerjob.jsp</result>
+			<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvedestorycomputerjob" class="computer.approvedestorycomputerjob">
+			<result>/html/computer/approvedestorycomputerjob.jsp</result>
+			<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveinternetcomputerjob" class="computer.approveinternetcomputerjob">
+			<result>/html/computer/approveinternetcomputerjob.jsp</result>
+			<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

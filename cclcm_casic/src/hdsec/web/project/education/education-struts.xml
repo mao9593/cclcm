@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="education" namespace="/education" extends="struts-default">
+		<action name="uploadlearningfile" class="education.uploadlearningfile">
+			<result>/html/education/uploadlearningfile.jsp</result>
+			<result name="ok" type="redirect">/education/uploadlearningfile.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="downloadlearningfile" class="education.downloadlearningfile">
+			<result>/html/education/downloadlearningfile.jsp</result>
+			<result name="ok" type="redirect">/education/uploadlearningfile.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="downloadlearningfile" class="education.downloadlearningfile">
+			<result>/html/education/downloadlearningfile.jsp</result>
+			<result name="ok" type="redirect">/education/uploadlearningfile.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managetrainrecord" class="education.managetrainrecord">
+			<result>/html/education/managetrainrecord.jsp</result>
+			<result name="ok" type="redirect">/education/managetrainrecord.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addcentrainrecord" class="education.addcentrainrecord">
+			<result>/html/education/addcentrainrecord.jsp</result>
+			<result name="ok" type="redirect">/education/managetrainrecord.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addouttrainrecord" class="education.addouttrainrecord">
+			<result>/html/education/addouttrainrecord.jsp</result>
+			<result name="ok" type="redirect">/education/managetrainrecord.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewrecorddetail" class="education.viewrecorddetail">
+			<result>/html/education/viewrecorddetail.jsp</result>
+			<result name="ok" type="redirect">/education/viewrecorddetail.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 删除记录-->
+		<action name="deletetrainingrecord" class="education.deletetrainingrecord">
+			<result type="redirect">/education//managetrainrecord.action</result>
+			<result name="ok" type="redirect">/managetrainrecord.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<!-- 更新记录-->
+		<action name="updatetrainingrecord" class="education.updatetrainingrecord">
+			<result>/html/education/updatetrainingrecord.jsp</result>
+			<result name="ok" type="redirect">/education/managetrainrecord.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<!-- 学时管理统计-->
+		<action name="manageclasshour" class="education.manageclasshour">
+			<result>/html/education/manageclasshour.jsp</result>
+			<result name="ok" type="redirect">/education/manageclasshour.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 学时管理统计-->
+		<action name="manageclasshour" class="education.manageclasshour">
+			<result>/html/education/manageclasshour.jsp</result>
+			<result name="ok" type="redirect">/education/manageclasshour.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 将在线学时时间计入总学时统计-->
+		<action name="updateclasshour" class="education.updateclasshour">
+			<result type="redirect">/education/downloadlearningfile.action</result>
+			<!-- <result>/html/education/manageclasshour.jsp</result> -->
+			<result name="ok" type="redirect">/education/updateclasshour.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>		
+	</package>
+</struts>

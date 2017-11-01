@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="infosystem" namespace="/infosystem" extends="struts-default">
+		<!-- 计算机维修-->
+		<action name="addcomputerrepairevent" class="infosystem.addcomputerrepairevent">
+				<result>/html/infosystem/addcomputerrepairevent.jsp</result>
+				<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 计算机操作系统-->
+		<action name="addreinstallsystemevent" class="infosystem.addreinstallsystemevent">
+				<result>/html/infosystem/addreinstallsystemevent.jsp</result>
+				<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 计算机退网-->
+		<action name="addquitinternetevent" class="infosystem.addquitinternetevent">
+				<result>/html/infosystem/addquitinternetevent.jsp</result>
+				<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- USB-KEY申请-->
+		<action name="addusbkeyevent" class="infosystem.addusbkeyevent">
+				<result>/html/infosystem/addusbkeyevent.jsp</result>
+				<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 开通端口申请-->
+		<action name="addopenportevent" class="infosystem.addopenportevent">
+				<result>/html/infosystem/addopenportevent.jsp</result>
+				<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 保留本地打印机申请-->
+		<action name="addlocalprinterevent" class="infosystem.addlocalprinterevent">
+				<result>/html/infosystem/addlocalprinterevent.jsp</result>
+				<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看申请-->
+		<action name="viewinfosystemevent" class="infosystem.viewinfosystemevent">
+				<result>/html/infosystem/viewinfosystemevent.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看申请详细-->
+		<action name="viewinfosystemeventdetail" class="infosystem.viewinfosystemeventdetail">
+				<result>/html/infosystem/viewinfosystemeventdetail.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看审批列表-->
+		<action name="manageinfosystemaprvjob" class="infosystem.manageinfosystemaprvjob">
+				<result>/html/infosystem/manageinfosystemaprvjob.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 审批-->
+		<action name="approveinfosystemjob" class="infosystem.approveinfosystemjob">
+				<result>/html/infosystem/approveinfosystemjob.jsp</result>
+				<result name="ok_usbkey">/html/infosystem/approveusbkeyjob.jsp</result>
+				<result name="ok_openport">/html/infosystem/approveopenportjob.jsp</result>
+				<result name="ok_computerrepair">/html/infosystem/approvecomputerrepairjob.jsp</result>
+				<result name="ok_localprinter">/html/infosystem/approvelocalprinterjob.jsp</result>
+				<result name="ok_reinstallsystem">/html/infosystem/approvereinstallsystemjob.jsp</result>
+				<result name="ok_quitinternet">/html/infosystem/approvequitinternetjob.jsp</result>
+				<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看已审批-->
+		<action name="viewinfosystemaprvjob" class="infosystem.viewinfosystemaprvjob">
+				<result>/html/infosystem/viewinfosystemaprvjob.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看USBKEY申请详细-->
+		<action name="viewusbkeyeventdetail" class="infosystem.viewusbkeyeventdetail">
+				<result>/html/infosystem/viewusbkeyeventdetail.jsp</result>
+				<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看开通端口申请详细-->
+		<action name="viewopenporteventdetail" class="infosystem.viewopenporteventdetail">
+				<result>/html/infosystem/viewopenporteventdetail.jsp</result>
+				<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看本地打印机申请详细-->
+		<action name="viewlocalprintereventdetail" class="infosystem.viewlocalprintereventdetail">
+				<result>/html/infosystem/viewlocalprintereventdetail.jsp</result>
+				<result name="ok" type="redirect">/computer/viewcomputerevent.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvelocalprinterjob" class="infosystem.approvelocalprinterjob">
+				<result>/html/infosystem/approvelocalprinterjob.jsp</result>
+				<result name="ok_localprinter">/html/infosystem/approvelocalprinterjob.jsp</result>
+				<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveopenportjob" class="infosystem.approveopenportjob">
+				<result>/html/infosystem/approveopenportjob.jsp</result>
+				<result name="ok_openport">/html/infosystem/approveopenportjob.jsp</result>
+				<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvequitinternetjob" class="infosystem.approvequitinternetjob">
+				<result>/html/infosystem/approvequitinternetjob.jsp</result>
+				<result name="ok_quitinternet">/html/infosystem/approvequitinternetjob.jsp</result>
+				<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvereinstallsystemjob" class="infosystem.approvereinstallsystemjob">
+				<result>/html/infosystem/approvereinstallsystemjob.jsp</result>
+				<result name="ok_reinstallsystem">/html/infosystem/approvereinstallsystemjob.jsp</result>
+				<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveusbkeyjob" class="infosystem.approveusbkeyjob">
+				<result>/html/infosystem/approveusbkeyjob.jsp</result>
+				<result name="ok_usbkey">/html/infosystem/approveusbkeyjob.jsp</result>
+				<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvecomputerrepairjob" class="infosystem.approvecomputerrepairjob">
+				<result>/html/infosystem/approvecomputerrepairjob.jsp</result>			
+				<result name="ok_computerrepair">/html/infosystem/approvecomputerrepairjob.jsp</result>
+				<result name="ok" type="redirect">/computer/managecomputeraprvjob.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+
+</struts>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="log" namespace="/log" extends="struts-default">
+		<action name="filldatatest" class="log.filldatatest">
+			<result>/html/log/filldatatest.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsystemlog" class="log.viewsystemlog">
+			<result>/html/log/viewsystemlog.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewoperlogadmin" class="log.viewoperlogadmin">
+			<result>/html/log/viewoperlogadmin.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewoperlogcommon" class="log.viewoperlogcommon">
+			<result>/html/log/viewoperlogcommon.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewuserloginlog" class="log.viewuserloginlog">
+			<result>/html/log/viewuserloginlog.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 导出日志 -->
+		<action name="exportoperlogcommon" class="log.exportoperlogcommon">
+			<result>/html/log/exportoperlogcommon.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportoperlogadmin" class="log.exportoperlogadmin">
+			<result>/html/log/exportoperlogcommon.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportuserloginlog" class="log.exportuserloginlog">
+			<result>/html/log/exportoperlogcommon.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

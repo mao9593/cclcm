@@ -1,0 +1,181 @@
+.displaytable a			{ color:#000099; text-decoration:none; font-size:9pt;}
+.displaytable a:visited { color:#777777; text-decoration:none; font-size:9pt;}
+.displaytable a:hover   { color:#FF0000; text-decoration:underline; font-size:9pt; }
+
+.displaytable {
+	border: 1px solid #89c3eb;
+	width: 100%;
+	margin: 0px 0 0px 0 !important;
+}
+
+.displaytable-outter {
+	border: #89c3eb 1px solid;
+	BORDER-COLLAPSE: collapse;
+	background-color:#eaf4fc;
+	width:100%;
+}
+
+
+
+.displaytable thead tr {
+  background-color: #89c3eb;
+}
+
+.displaytable th{
+	padding: 2px 4px 2px 4px;
+	color:#333333;
+	border-color: #ffffff;
+    font-size:9pt;
+    font-weight:normal;
+    text-align:center;
+    nowrap:true;
+}
+
+.displaytable td {
+    font-size:9pt!important;
+	padding: 2px 4px 2px 4px;
+	border-color: #89c3eb;
+	font-size:9pt;
+    font-weight:normal;
+    text-align:center;
+    nowrap:true;
+}
+
+.displaytable th a:link, .displaytable th a:visited { color:#333333; text-decoration: none }
+.displaytable th a:hover { color:#715c1f; text-decoration:underline }
+
+.displaytable th.sortable a,th.sorted a {
+	background-position: right;
+	background-repeat:no-repeat;
+	display: block;
+	width: 100%;
+}
+.displaytable th.sortable a {
+	background-image: url(../images/_component/displaytag/arrow_off.png);
+}
+.displaytable th.order1 a {
+	background-image: url(../images/_component/displaytag/arrow_down.png);
+}
+.displaytable th.order2 a {
+	background-image: url(../images/_component/displaytag/arrow_up.png);
+}
+
+.displaytable tr.odd {
+  background-color: #FFFFFF
+}
+.displaytable tr.even,tr.tableRowEven {
+  background-color:#F7FBFF
+}
+
+.displaytable tr.empty {
+  background-color: #e7eef7
+}
+
+div.exportlinks {
+	background-color: #eaf4fc;
+	border: 1px dotted #999;
+	padding: 2px 4px 2px 4px;
+	margin: 2px 0 10px 0;
+	width: 79%;
+}
+
+span.export {
+	padding: 0 4px 1px 20px;
+	margin-left:3px;
+	display:block;
+	cursor: pointer;
+	color:#336699;
+}
+span.excel {
+	background: transparent url(../images/_component/displaytag/ico_file_excel.png) no-repeat scroll left;
+}
+span.csv {
+	background: transparent url(../images/_component/displaytag/ico_file_csv.png) no-repeat scroll left;
+}
+span.xml {
+	background: transparent url(../images/_component/displaytag/ico_file_xml.png) no-repeat scroll left;
+}
+span.pdf {
+	background: transparent url(../images/_component/displaytag/ico_file_pdf.png) no-repeat scroll left;
+}
+
+span.pagebanner {
+	background-color: #eee;
+	border: 1px dotted #999;
+	padding: 2px 4px 2px 4px;
+	width: 79%;
+	margin-top: 10px;
+	display: block;
+	border-bottom: none;
+}
+
+span.pagelinks {
+	background-color: #eee;
+	border: 1px dotted #999;
+	padding: 2px 4px 2px 4px;
+	width: 79%;
+	display: block;
+	border-top: none;
+	margin-bottom: -5px;
+}
+
+.pager-table TD {
+	FONT-SIZE: 12px; FONT-FAMILY: Arial, 宋体; LINE-HEIGHT: 19px;
+	BACKGROUND-COLOR: #e4e4e4;
+	text-align: center;
+	color: #336699;
+}
+.commonFont
+{
+font-size:9pt;
+font-family:"宋体";
+color:#FFFFFF;}
+
+.commonFontBlue
+{
+font-size:9pt;
+font-family:"宋体";
+color:#006699;
+}
+
+.pager-table TD A { COLOR: #808080; TEXT-DECORATION: none }
+.pager-table TD A:visited { COLOR: #C0C0C0; }
+.pager-table { margin:2px }
+
+.text-symbol { text-decoration: none; color: #336699 !important; font-size:14px !important; font-family:webdings }
+
+.minThWith{
+width:60;
+}
+
+.group-1 {
+    font-weight:bold;
+    padding-bottom:10px;
+    border-top:1px solid black;
+}
+.group-2 {
+    font-style:italic;
+    border-top: 1px solid black;
+
+}
+.subtotal-sum, .grandtotal-sum {
+    font-weight:bold;
+    text-align:right;
+}
+.subtotal-header {
+    padding-bottom: 0px;
+    border-top: 1px solid white;
+}
+.subtotal-label, .grandtotal-label {
+    border-top: 1px solid white;
+    font-weight: bold;
+}
+.grouped-table tr.even {
+    background-color: #fff;
+}
+.grouped-table tr.odd {
+    background-color: #fff;
+}
+.grandtotal-row {
+    border-top: 2px solid black;
+}

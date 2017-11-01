@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="secmanage" namespace="/secmanage" extends="struts-default">
+		<!-- 进入重要科研场地 -->
+		<action name="addresearchfieldinevent" class="secmanage.addresearchfieldinevent">
+			<result>/html/secmanage/addresearchfieldinevent.jsp</result>
+			<!-- <result name="ok" type="redirect">/secmanage/manageresearchfieldinlist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action?module=secmanage</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageresearchfieldinlist" class="secmanage.manageresearchfieldinlist">
+			<result>/html/secmanage/manageresearchfieldinlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewresearchfieldindetail" class="secmanage.viewresearchfieldindetail">
+			<result>/html/secmanage/viewresearchfieldindetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delresearchfieldinevent" class="secmanage.delresearchfieldinevent">
+			<result type="redirect">/secmanage/manageresearchfieldinlist.action</result>
+			<result name="researchfield" type="redirect">/secmanage/manageresearchfieldinlist.action</result>
+			<result name="ok_email" type="redirect">/secmanage/manageinternetemaillist.action</result>
+			<result name="fileoutmake" type="redirect">/secmanage/managefileoutmakelist.action</result>
+			<result name="ok_check" type="redirect">/secmanage/managesecchecklist.action</result>
+			<result name="ok_material" type="redirect">/secmanage/manageexchangemateriallist.action</result>
+			<result name="ok_exhibition" type="redirect">/secmanage/manageexhibitionlist.action</result>
+			<result name="punish" type="redirect">/secmanage/managepunishlist.action</result>
+			<result name="paperpatent" type="redirect">/secmanage/managepaperpatentlist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageresearchfieldinaprvjob" class="secmanage.manageresearchfieldinaprvjob">
+			<result>/html/secmanage/manageresearchfieldinaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveresearchfieldinjob" class="secmanage.approveresearchfieldinjob">
+			<result>/html/secmanage/approveresearchfieldinjob.jsp</result>
+			<!-- <result type="redirect" name="ok">/secmanage/manageresearchfieldinaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action?module=secmanage</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewresearchfieldinaprvjob" class="secmanage.viewresearchfieldinaprvjob">
+			<result>/html/secmanage/viewresearchfieldinaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deluploadedfile" class="secmanage.deluploadedfile">
+			<result>/html/burn/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+
+		<!-- 文件资料外出制作 -->
+		<action name="addfileoutmakeevent" class="secmanage.addfileoutmakeevent">
+			<result>/html/secmanage/addfileoutmakeevent.jsp</result>
+			<!-- <result name="ok" type="redirect">/secmanage/managefileoutmakelist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action?module=secmanage</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managefileoutmakelist" class="secmanage.managefileoutmakelist">
+			<result>/html/secmanage/managefileoutmakelist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewfileoutmakedetail" class="secmanage.viewfileoutmakedetail">
+			<result>/html/secmanage/viewfileoutmakedetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managefileoutmakeaprvjob" class="secmanage.managefileoutmakeaprvjob">
+			<result>/html/secmanage/managefileoutmakeaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvefileoutmakejob" class="secmanage.approvefileoutmakejob">
+			<result>/html/secmanage/approvefileoutmakejob.jsp</result>
+			<!-- <result type="redirect" name="ok">/secmanage/managefileoutmakeaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action?module=secmanage</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewfileoutmakeaprvjob" class="secmanage.viewfileoutmakeaprvjob">
+			<result>/html/secmanage/viewfileoutmakeaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 外网电子邮件 -->		
+
+		<action name="addinternetemailevent" class="secmanage.addinternetemailevent">
+			<result>/html/secmanage/addinternetemailevent.jsp</result>
+			<!-- <result name="ok" type="redirect">/secmanage/manageinternetemaillist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action?module=publicity</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageinternetemaillist" class="secmanage.manageinternetemaillist">
+			<result>/html/secmanage/manageinternetemaillist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewinternetemaildetail" class="secmanage.viewinternetemaildetail">
+			<result>/html/secmanage/viewinternetemaildetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageinternetemailaprvjob" class="secmanage.manageinternetemailaprvjob">
+			<result>/html/secmanage/manageinternetemailaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveinternetemailjob" class="secmanage.approveinternetemailjob">
+			<result>/html/secmanage/approveinternetemailjob.jsp</result>
+			<!-- <result type="redirect" name="ok">/secmanage/manageinternetemailaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action?module=publicity</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewinternetemailaprvjob" class="secmanage.viewinternetemailaprvjob">
+			<result>/html/secmanage/viewinternetemailaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 部门专项保密检查 -->
+		
+		<action name="addseccheckevent" class="secmanage.addseccheckevent">
+			<result>/html/secmanage/addseccheckevent.jsp</result>
+			<!-- <result name="ok" type="redirect">/secmanage/managesecchecklist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action?module=secmanageBMC</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managesecchecklist" class="secmanage.managesecchecklist">
+			<result>/html/secmanage/managesecchecklist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewseccheckdetail" class="secmanage.viewseccheckdetail">
+			<result>/html/secmanage/viewseccheckdetail.jsp</result>
+			<result type="redirect" name="ok">/secmanage/managesecchecklist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageseccheckaprvjob" class="secmanage.manageseccheckaprvjob">
+			<result>/html/secmanage/manageseccheckaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveseccheckjob" class="secmanage.approveseccheckjob">
+			<result>/html/secmanage/approveseccheckjob.jsp</result>
+			<!-- <result type="redirect" name="ok">/secmanage/manageseccheckaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action?module=secmanageBMC</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewseccheckaprvjob" class="secmanage.viewseccheckaprvjob">
+			<result>/html/secmanage/viewseccheckaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 对外交流材料 -->
+		
+		<action name="addexchangematerialevent" class="secmanage.addexchangematerialevent">
+			<result>/html/secmanage/addexchangematerialevent.jsp</result>
+			<!-- <result name="ok" type="redirect">/secmanage/manageexchangemateriallist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action?module=publicity</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageexchangemateriallist" class="secmanage.manageexchangemateriallist">
+			<result>/html/secmanage/manageexchangemateriallist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewexchangematerialdetail" class="secmanage.viewexchangematerialdetail">
+			<result>/html/secmanage/viewexchangematerialdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageexchangematerialaprvjob" class="secmanage.manageexchangematerialaprvjob">
+			<result>/html/secmanage/manageexchangematerialaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveexchangematerialjob" class="secmanage.approveexchangematerialjob">
+			<result>/html/secmanage/approveexchangematerialjob.jsp</result>
+			<!-- <result type="redirect" name="ok">/secmanage/manageexchangematerialaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action?module=publicity</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewexchangematerialaprvjob" class="secmanage.viewexchangematerialaprvjob">
+			<result>/html/secmanage/viewexchangematerialaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 展示展览保密审查 -->
+		
+		<action name="addexhibitionevent" class="secmanage.addexhibitionevent">
+			<result>/html/secmanage/addexhibitionevent.jsp</result>
+			<!-- <result name="ok" type="redirect">/secmanage/manageexhibitionlist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action?module=publicity</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageexhibitionlist" class="secmanage.manageexhibitionlist">
+			<result>/html/secmanage/manageexhibitionlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewexhibitiondetail" class="secmanage.viewexhibitiondetail">
+			<result>/html/secmanage/viewexhibitiondetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageexhibitionaprvjob" class="secmanage.manageexhibitionaprvjob">
+			<result>/html/secmanage/manageexhibitionaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveexhibitionjob" class="secmanage.approveexhibitionjob">
+			<result>/html/secmanage/approveexhibitionjob.jsp</result>
+			<!-- <result type="redirect" name="ok">/secmanage/manageexhibitionaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action?module=publicity</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewexhibitionaprvjob" class="secmanage.viewexhibitionaprvjob">
+			<result>/html/secmanage/viewexhibitionaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 保密违规检查整改 -->
+		<action name="addpunishevent" class="secmanage.addpunishevent">
+			<result>/html/secmanage/addpunishevent.jsp</result>
+			<result name="choice">/html/secmanage/addpunishevent.jsp</result>
+			<!-- <result name="ok" type="redirect">/secmanage/managepunishlist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action?module=secmanageBMC</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managepunishlist" class="secmanage.managepunishlist">
+			<result>/html/secmanage/managepunishlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+ 		<action name="viewpunishdetail" class="secmanage.viewpunishdetail">
+			<result>/html/secmanage/viewpunishdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managepunishaprvjob" class="secmanage.managepunishaprvjob">
+			<result>/html/secmanage/managepunishaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvepunishjob" class="secmanage.approvepunishjob">
+			<result>/html/secmanage/approvepunishjob.jsp</result>
+			<!-- <result type="redirect" name="ok">/secmanage/managepunishaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action?module=secmanageBMC</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpunishaprvjob" class="secmanage.viewpunishaprvjob">
+			<result>/html/secmanage/viewpunishaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> 		
+		<!-- 论文发表专利申请 -->	
+		<action name="addpaperpatentevent" class="secmanage.addpaperpatentevent">
+			<result>/html/secmanage/addpaperpatentevent.jsp</result>
+			<!-- <result name="ok" type="redirect">/secmanage/managepaperpatentlist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action?module=publicity</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managepaperpatentlist" class="secmanage.managepaperpatentlist">
+			<result>/html/secmanage/managepaperpatentlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpaperpatentdetail" class="secmanage.viewpaperpatentdetail">
+			<result>/html/secmanage/viewpaperpatentdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managepaperpatentaprvjob" class="secmanage.managepaperpatentaprvjob">
+			<result>/html/secmanage/managepaperpatentaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvepaperpatentjob" class="secmanage.approvepaperpatentjob">
+			<result>/html/secmanage/approvepaperpatentjob.jsp</result>
+			<!-- <result type="redirect" name="ok">/secmanage/managepaperpatentaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action?module=publicity</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpaperpatentaprvjob" class="secmanage.viewpaperpatentaprvjob">
+			<result>/html/secmanage/viewpaperpatentaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delsecmanageevent" class="securityuser.delsecmanageevent">
+			<result type="redirect">/securityuser/managesecusereventlist.jsp</result>	
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

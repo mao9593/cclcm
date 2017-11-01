@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="basicMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.basic.mapper.BasicMapper" />
+	</bean>
+  	<bean id="basicPrcManage" class="${common.package}.basic.service.BasicPrcManage"/>
+	
+	<!-- 用途管理 -->
+	<bean id="basic.manageusage" class="${common.package}.basic.action.ManageUsageAction" scope="prototype" />
+	<bean id="basic.addusage" class="${common.package}.basic.action.AddUsageAction" scope="prototype" />
+  	<bean id="basic.delusage" class="${common.package}.basic.action.DelUsageAction" scope="prototype" />
+  	<bean id="basic.updateusage" class="${common.package}.basic.action.UpdateUsageAction" scope="prototype" />
+  	<bean id="basic.recoverusage" class="${common.package}.basic.action.RecoverUsageAction" scope="prototype" />
+  	
+  	<!-- 特殊打印类型管理 -->
+	<bean id="basic.managespecialpapertype" class="${common.package}.basic.action.ManageSpecialPaperTypeAction" scope="prototype" />
+	<bean id="basic.addspecialpapertype" class="${common.package}.basic.action.AddSpecialPaperTypeAction" scope="prototype" />
+  	<bean id="basic.updatespecialpapertype" class="${common.package}.basic.action.UpdateSpecialPaperTypeAction" scope="prototype" />
+  	
+  	<!-- 项目管理 -->
+  	<bean id="basic.manageproject" class="${common.package}.basic.action.ManageProjectAction" scope="prototype" />
+	<bean id="basic.addproject" class="${common.package}.basic.action.AddProjectAction" scope="prototype" />
+  	<bean id="basic.delproject" class="${common.package}.basic.action.DelProjectAction" scope="prototype" />
+  	<bean id="basic.updateproject" class="${common.package}.basic.action.UpdateProjectAction" scope="prototype" />
+  	
+  	<!-- 一体机管理 -->
+  	<bean id="basic.managemfp" class="${common.package}.basic.action.ManageMfpAction" scope="prototype" />
+	<bean id="basic.addmfp" class="${common.package}.basic.action.AddMfpAction" scope="prototype" />
+  	<bean id="basic.delmfp" class="${common.package}.basic.action.DelMfpAction" scope="prototype" />
+  	<bean id="basic.updatemfp" class="${common.package}.basic.action.UpdateMfpAction" scope="prototype" />	
+  	
+  	<!-- 刻录机管理 -->
+  	<bean id="basic.manageburner" class="${common.package}.basic.action.ManageBurnerAction" scope="prototype" />
+	<bean id="basic.addburner" class="${common.package}.basic.action.AddBurnerAction" scope="prototype" />
+  	<bean id="basic.delburner" class="${common.package}.basic.action.DelBurnerAction" scope="prototype" />
+  	<bean id="basic.updateburner" class="${common.package}.basic.action.UpdateBurnerAction" scope="prototype" />	
+  	
+  	<!-- 打印机管理 -->
+  	<bean id="basic.manageprinter" class="${common.package}.basic.action.ManagePrinterAction" scope="prototype" />
+	<bean id="basic.addprinter" class="${common.package}.basic.action.AddPrinterAction" scope="prototype" />
+  	<bean id="basic.delprinter" class="${common.package}.basic.action.DelPrinterAction" scope="prototype" />
+  	<bean id="basic.updateprinter" class="${common.package}.basic.action.UpdatePrinterAction" scope="prototype" />
+ 	<bean id="basic.configprinter" class="${common.package}.basic.action.ConfigPrinterAction" scope="prototype" />
+  	
+  	<!-- 控制台管理 -->
+  	<bean id="basic.manageconsole" class="${common.package}.basic.action.ManageConsoleAction" scope="prototype" />
+  	<bean id="basic.updateconsole" class="${common.package}.basic.action.UpdateConsoleAction" scope="prototype" />
+  	<bean id="basic.delconsole" class="${common.package}.basic.action.DelConsoleAction" scope="prototype" />
+  	<bean id="basic.addconsole" class="${common.package}.basic.action.AddConsoleAction" scope="prototype" />
+  	<bean id="basic.recoverconsole" class="${common.package}.basic.action.RecoverConsoleAction" scope="prototype" />
+  	
+  	<!-- 流程任务管理 -->
+  	<bean id="basic.addmultiprocessjob" class="${common.package}.basic.action.AddMultiProcessJobAction" scope="prototype" />
+	<bean id="basic.addprocessjob" class="${common.package}.basic.action.AddProcessJobAction" scope="prototype" />  	
+  	<bean id="basic.getnextapprover" class="${common.package}.basic.action.GetNextApproverAction" scope="prototype" />
+  	<bean id="basic.canceljob" class="${common.package}.basic.action.CancelJobAction" scope="prototype" />
+  	<bean id="basic.closejob" class="${common.package}.basic.action.CloseJobAction" scope="prototype" />
+  	<bean id="basic.viewjobdetail" class="${common.package}.basic.action.ViewJobDetailAction" scope="prototype" />
+  	<bean id="basic.vieweventdetail" class="${common.package}.basic.action.ViewEventDetailAction" scope="prototype" />
+  	<bean id="basic.addtransferprocessjob" class="${common.package}.basic.action.AddTransferProcessJobAction" scope="prototype" />
+  	
+  	<!-- 审批任务管理 -->
+  	<bean id="basic.manageaprvjob" class="${common.package}.basic.action.ManageAprvJobAction" scope="prototype" />
+  	<bean id="basic.approvejob" class="${common.package}.basic.action.ApproveJobAction" scope="prototype" />
+  	<bean id="basic.viewaprvjob" class="${common.package}.basic.action.ViewAprvJobAction" scope="prototype" />
+  	<bean id="basic.managehandlejob" class="${common.package}.basic.action.ManageHandleJobAction" scope="prototype" />
+  	<bean id="basic.handlejob" class="${common.package}.basic.action.HandleJobAction" scope="prototype" />
+  	<bean id="basic.viewhandlejob" class="${common.package}.basic.action.ViewHandleJobAction" scope="prototype" />
+  	<bean id="basic.viewhandlejobdetail" class="${common.package}.basic.action.ViewHandleJobDetailAction" scope="prototype" />
+  	
+  	<!-- 配置密级 -->
+  	<bean id="basic.configseclv" class="${common.package}.basic.action.ConfigSeclvAction" scope="prototype" />
+  	
+  	<bean id="basic.getfuzzyuser" class="${common.package}.basic.action.GetFuzzyUserAction" scope="prototype" />
+  	<bean id="basic.getproxyfuzzyuser" class="${common.package}.basic.action.GetProxyFuzzyUserAction" scope="prototype" />
+  	<bean id="basic.viewuserproxy" class="${common.package}.basic.action.ViewUserProxyAction" scope="prototype" />
+  	<bean id="basic.adduserproxy" class="${common.package}.basic.action.AddUserProxyAction" scope="prototype" />
+  	<bean id="basic.addproxy" class="${common.package}.basic.action.AddProxyAction" scope="prototype" />
+  	<bean id="basic.deleteuserproxy" class="${common.package}.basic.action.DelUserProxyAction" scope="prototype" />
+  	
+  	<!-- 台帐处理申请 -->
+  	<bean id="basic.handlepaperjob" class="${common.package}.basic.action.HandlePaperJobAction" scope="prototype" />
+  	<bean id="basic.handlecdjob" class="${common.package}.basic.action.HandleCDJobAction" scope="prototype" />
+  	
+  	<!-- 智能回收柜管理 -->
+  	<bean id="basic.managerecyclebox" class="${common.package}.basic.action.ManageRecycleBoxAction" scope="prototype" />
+	<bean id="basic.addrecyclebox" class="${common.package}.basic.action.AddRecycleBoxAction" scope="prototype" />
+  	<bean id="basic.delrecyclebox" class="${common.package}.basic.action.DelRecycleBoxAction" scope="prototype" />
+  	<bean id="basic.updaterecyclebox" class="${common.package}.basic.action.UpdateRecycleBoxAction" scope="prototype" />
+ 	
+  	<!-- 打印管理设置 -->
+  	<bean id="basic.configprint" class="${common.package}.basic.action.ConfigPrintAction" scope="prototype" />
+  	<bean id="basic.delprinteruser" class="${common.package}.basic.action.DelPrinterUserAction" scope="prototype" />
+  	
+    <!-- 智能交换柜管理 -->
+  	<bean id="basic.manageexchangebox" class="${common.package}.basic.action.ManageExchangeBoxAction" scope="prototype" />
+	<bean id="basic.addexchangebox" class="${common.package}.basic.action.AddExchangeBoxAction" scope="prototype" />
+  	<bean id="basic.delexchangebox" class="${common.package}.basic.action.DelExchangeBoxAction" scope="prototype" />
+  	<bean id="basic.updateexchangebox" class="${common.package}.basic.action.UpdateExchangeBoxAction" scope="prototype" />
+  	<bean id="basic.viewuseraprvproxy" class="${common.package}.basic.action.ViewUserAprvProxyAction" scope="prototype" />
+  	<bean id="basic.adduseraprvproxy" class="${common.package}.basic.action.AddUserAprvProxyAction" scope="prototype" />
+  	<bean id="basic.addaprvproxy" class="${common.package}.basic.action.AddAprvProxyAction" scope="prototype" />
+  	<bean id="basic.deleteuseraprvproxy" class="${common.package}.basic.action.DelUserAprvProxyAction" scope="prototype" />
+  	 
+  	 <!-- 地点管理 -->
+  	<bean id="basic.addplace" class="${common.package}.basic.action.AddPlaceAction" scope="prototype" />
+  	<bean id="basic.viewplace" class="${common.package}.basic.action.ViewPlaceAction" scope="prototype" />
+  	<bean id="basic.delplace" class="${common.package}.basic.action.DelPlaceAction" scope="prototype" />
+  	<bean id="basic.updateplace" class="${common.package}.basic.action.UpdatePlaceAction" scope="prototype" />
+  	
+  	<!-- 接收归档管理 -->
+  	<bean id="basic.viewapplycdfile" class="${common.package}.basic.action.ViewApplyCDFileAction" scope="prototype" />
+  	<bean id="basic.viewapplypaperfile" class="${common.package}.basic.action.ViewApplyPaperFileAction" scope="prototype" />
+  	<bean id="basic.getapplyfile" class="${common.package}.basic.action.GetApplyFileAction" scope="prototype" />
+  	<bean id="basic.filetouse" class="${common.package}.basic.action.FileToUseAction" scope="prototype" />
+  	<bean id="basic.viewfilecd" class="${common.package}.basic.action.ViewFileCDAction" scope="prototype" />
+  	<bean id="basic.viewfilepaper" class="${common.package}.basic.action.ViewFilePaperAction" scope="prototype" />
+  	<bean id="basic.exportfilepaper" class="${common.package}.basic.action.ExportFilePaperAction" scope="prototype" />
+  	<bean id="basic.exportfilecd" class="${common.package}.basic.action.ExportFileCDAction" scope="prototype" />
+  	
+  	<!-- 条码设置-->
+  	<bean id="basic.managebarcode" class="${common.package}.basic.action.ManageBarcodeAction" scope="prototype" />
+  	<bean id="basic.addbarcode" class="${common.package}.basic.action.AddBarcodeAction" scope="prototype" />
+  	<bean id="basic.delbarcode" class="${common.package}.basic.action.DelBarcodeAction" scope="prototype" />
+  	<bean id="basic.updatebarcode" class="${common.package}.basic.action.UpdateBarcodeAction" scope="prototype" />
+  	
+  	<!-- 纸张统计-->
+  	<bean id="basic.viewpaperstatic" class="${common.package}.basic.action.ViewPaperStaticAction" scope="prototype" />
+  	<bean id="basic.viewpaperstaticbyseclv" class="${common.package}.basic.action.ViewPaperStaticBySeclvAction" scope="prototype" />
+  	<bean id="basic.viewpaperstaticbycolor" class="${common.package}.basic.action.ViewPaperStaticByColorAction" scope="prototype" />
+  	<bean id="basic.viewpaperstaticbydouble" class="${common.package}.basic.action.ViewPaperStaticByDoubleAction" scope="prototype" />
+  	<bean id="basic.viewpaperstaticbysize" class="${common.package}.basic.action.ViewPaperStaticBySizeAction" scope="prototype" />
+  	<bean id="basic.viewpaperstaticbyall" class="${common.package}.basic.action.ViewPaperStaticByAllAction" scope="prototype" />
+  	
+  	<!-- 版本管理-->
+  	<bean id="basic.uploadnewversion" class="${common.package}.basic.action.UploadNewVersionAction" scope="prototype" />
+  	<bean id="basic.deluploadedfile" class="${common.package}.basic.upload.DelUploadedFileAction" scope="prototype" />
+  	<bean id="basic.viewversionfile" class="${common.package}.basic.action.ViewVersionFileAction" scope="prototype" />
+  	<bean id="basic.viewconsoleversionfile" class="${common.package}.basic.action.ViewConsoleVersionFileAction" scope="prototype" />
+  	<bean id="basic.updateconsoleversion" class="${common.package}.basic.action.UpdateConsoleVersionAction" scope="prototype" />
+  	<!-- bean id="basic.manageconsoleversion" class="${common.package}.basic.action.ManageConsoleVersionAction" scope="prototype" /-->
+  	
+  	<!-- 空间使用告警设置 -->
+  	<bean id="basic.spaceusedalarm" class="${common.package}.basic.action.SpaceUsedAlarmAction" scope="prototype" />
+  	
+  	<!-- 光盘统计-->
+  	<bean id="basic.viewcdstatic" class="${common.package}.basic.action.ViewCDStaticAction" scope="prototype" />
+  	
+  	<!-- 安装包管理-->
+  	<bean id="basic.uploadsetupfiles" class="${common.package}.basic.action.UploadSetupFilesAction" scope="prototype" />
+  	
+  	<!-- 交接确认模块配置 -->
+  	<bean id="basic.configconfirm" class="${common.package}.basic.action.ConfigConfirmAction" scope="prototype" />
+  	
+  	<!-- 常用文档下载 -->
+  	<bean id="basic.downloadfile" class="${common.package}.basic.action.DownloadFileAction" scope="prototype" />
+  	
+  	<!-- 查看通用信息-->
+  	<bean id="basic.viewinfo" class="${common.package}.basic.action.ViewInfoAction" scope="prototype" />
+
+  	<!-- 强制关闭错误流程任务-->
+  	<bean id="basic.viewclosejob" class="${common.package}.basic.action.ViewCloseJobAction" scope="prototype" />
+  	<bean id="basic.viewclosejobdetail" class="${common.package}.basic.action.ViewCloseJobDetailAction" scope="prototype" />
+  	<bean id="basic.closewrongjob" class="${common.package}.basic.action.CloseWrongJobAction" scope="prototype" />
+  	
+  	<!-- 设置是否开启自审批 -->
+  	<bean id="basic.configselfapprove" class="${common.package}.basic.action.ConfigSelfApproveAction" scope="prototype" />
+  	
+  	<!-- 给用户角色配置部门 -->
+  	<bean id="basic.configdeptforuser" class="${common.package}.basic.action.ConfigDeptForUserAction" scope="prototype" />
+  	<bean id="basic.configdeptbyrole" class="${common.package}.basic.action.ConfigDeptByRoleAction" scope="prototype" />
+  	
+  	<!-- 关键字管理 -->
+  	<bean id="basic.managekeyword" class="${common.package}.basic.action.ManageKeywordAction" scope="prototype" />
+  	<bean id="basic.addkeyword" class="${common.package}.basic.action.AddKeywordAction" scope="prototype" />
+  	<bean id="basic.delkeyword" class="${common.package}.basic.action.DelKeywordAction" scope="prototype" />
+  	<bean id="basic.updatekeyword" class="${common.package}.basic.action.UpdateKeywordAction" scope="prototype" />
+  	
+  	<!-- 添加打印机时，检测控制台个数 -->
+  	<bean id="basic.checkprinternum" class="${common.package}.basic.action.CheckPrinterNumAction" scope="prototype" />
+  	
+  	<!-- 消息提醒设置-->
+  	<bean id="basic.configremindmsg" class="${common.package}.basic.action.ConfigRemindMsgAction" scope="prototype" />
+  	
+  	<!-- 文件光盘拒绝归档 -->
+	<bean id="basic.rejectfilepaper" class="${common.package}.basic.action.RejectFilePaperAction" scope="prototype" />
+	<bean id="basic.rejectfilecd" class="${common.package}.basic.action.RejectFileCDAction" scope="prototype" />
+  	
+  	<!-- 配置载体拒收后状态  -->
+  	<bean id="basic.configsendrejectstatus" class="${common.package}.basic.action.ConfigSendRejectStatusAction" scope="prototype" />
+  	<!-- 上传常用文档 -->
+  	<bean id="basic.uploadfile" class="${common.package}.basic.action.UploadFileAction" scope="prototype" />
+  	<!-- 默认密码设置 -->
+    <bean id="basic.defaultpassword" class="${common.package}.basic.action.DefaultPasswordAction" scope="prototype" />
+  	<!-- 处理光盘送销 -->
+  	<bean id="basic.handlecdsenddestroy" class="${common.package}.basic.action.HandleCDSendDestroyAction" scope="prototype" />
+   	<!-- 处理 文件送销 -->
+    <bean id="basic.handlepapersenddestroy" class="${common.package}.basic.action.HandlePaperSendDestroyAction" scope="prototype" />
+   	<!-- 设置三员登录IP -->
+    <bean id="basic.threeadminloginip" class="${common.package}.basic.action.ThreeAdminLoginIpAction" scope="prototype" />
+    <!--系统管理员设置重置密码-->
+    <bean id="basic.sysresetuserpwd" class="${common.package}.basic.action.SysresetUserpwdAction" scope="prototype" />
+    <!--审计管理员设置重置密码-->
+    <bean id="basic.audresetuserpwd" class="${common.package}.basic.action.AudresetUserpwdAction" scope="prototype" />
+    <!--配置系统全局参数，对所有模块生效-->
+    <bean id="basic.configsystem" class="${common.package}.basic.action.ConfigSystemAction" scope="prototype" />
+    
+    <!-- 台帐处理 “全部提交”申请 -->
+  	<bean id="basic.handlesubmitall" class="${common.package}.basic.action.HandleSubmitAllAction" scope="prototype" />
+  	<!-- 归档处理 “全部提交”申请 -->
+  	<bean id="basic.applyall" class="${common.package}.basic.action.ApplyAllAction" scope="prototype" />
+  	<!--代理审批人配置-->
+    <bean id="basic.adduserapproveproxy" class="${common.package}.basic.action.AddUserApproveProxyAction" scope="prototype" />
+    <!--导出excel模板配置-->
+    <bean id="basic.configexceltemplet" class="${common.package}.basic.action.ConfigExcelTempletAction" scope="prototype" />
+    <bean id="basic.updateexceltemplet" class="${common.package}.basic.action.UpdateExcelTempletAction" scope="prototype" />
+    <bean id="basic.configuserforrole" class="${common.package}.basic.action.ConfigUserForRoleAction" scope="prototype" />
+    <!--回收送销开关配置-->
+    <bean id="basic.configrecoverdestroy" class="${common.package}.basic.action.ConfigRecoverDestroyAction" scope="prototype" />    
+    
+    <bean id="basic.configparttimedept" class="${common.package}.basic.action.ConfigPartTimeDeptAction" scope="prototype" />
+  	<!--消息提醒开关配置-->
+    <bean id="basic.configremind" class="${common.package}.basic.action.ConfigRemindAction" scope="prototype" />
+    <!-- 可输出交接单密级配置-->
+    <bean id="basic.configreceiptvsseclv" class="${common.package}.basic.action.ConfigReceiptVsSeclvAction" scope="prototype" />
+    <!--控制台退出密码配置-->
+    <bean id="basic.configconsoleexitpassword" class="${common.package}.basic.action.ConfigConsoleExitPasswordAction" scope="prototype" />
+    
+    <!-- 刻录管理设置 -->
+  	<bean id="basic.configburn" class="${common.package}.basic.action.ConfigBurnAction" scope="prototype" />
+  	<bean id="basic.configdepttopersonmode" class="${common.package}.basic.action.ConfigDeptToPersonModeAction" scope="prototype" />
+</beans>

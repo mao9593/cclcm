@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="client" namespace="/client" extends="struts-default">
+		<!-- 模块管理 -->
+		<action name="viewmodule" class="client.viewmodule">
+			<result>/html/client/viewmodule.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 客户端版本管理 -->
+		<action name="managecvs" class="client.managecvs">
+			<result>/html/client/managecvs.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewcvsdetail" class="client.viewcvsdetail">
+			<result>/html/client/viewcvsdetail.jsp</result>
+			<result name="ok" type="redirect">/client/managecvs.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatecvs" class="client.updatecvs">
+		    <result>/html/client/updatecvs.jsp</result>
+			<result name="ok" type="redirect">/client/managecvs.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- B/S待办页面 -->
+		<action name="viewpendingwork" class="client.viewpendingwork">
+		    <result>/html/client/viewpendingwork.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 登录与网关集成 -->
+		<action name="jitlogin" class="client.jitlogin">
+			<result type="redirect">/main.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		<!-- 导出客户端列表 -->
+		<action name="exportcvs" class="client.exportcvs">
+			<result>/html/client/managecvs.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+				<!-- 控制台版本管理 -->
+		<action name="consolemanage" class="client.consolemanage">
+			<result>/html/client/consolemanage.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewconsoledetail" class="client.viewconsoledetail">
+			<result>/html/client/viewconsoledetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="clienttask" class="client.clienttask">
+			<result>/html/client/viewtasklist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="clientindex" class="client.index">
+		    <result type="redirect">/main.jsp</result>
+			<result name="noOper">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+	</package>
+	<package name="client1" namespace="/" extends="struts-default">
+		<action name="clientindex" class="client.index">
+		    <result type="redirect">/main.jsp</result>
+			<result name="noOper">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		<action name="printdraft" class="client.printdraft">
+		    <result type="redirect">/draft.jsp</result>
+			<result name="noOper">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		<action name="prelogin" class="client.PreLogin">
+			<result type="redirect">/main.jsp</result>
+		    <result name="print" type="redirect">printdraft.action?user_iidd=${user_iidd}</result>
+		    <!--<result name="print">/clientaddprintprocess.jsp</result>-->
+		    <result name="RetFile" type="redirect">clientviewselfpaper.action?user_iidd=${user_iidd}</result>
+		    <result name="RetBurd" type="redirect">clientviewselfcd.action?user_iidd=${user_iidd}</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		<action name="integrationindex" class="client.integrationindex">
+		    <result type="redirect">${url}</result>
+			<result name="noOper">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		<action name="ssobyidcard" class="client.ssobyidcard">
+		    <result type="redirect">/main.jsp</result>
+			<result name="noOper">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		<!-- 31单点登入 -->
+		<action name="bizcheckssobyidcard" class="client.bizcheckssobyidcard">
+		    <result type="redirect">/main.jsp</result>
+			<result name="noOper">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		<action name="wuhanssobyidcard" class="client.wuhanssobyidcard">
+		    <result type="redirect">/main.jsp</result>
+			<result name="noOper">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		<action name="clientviewselfpaper" class="client.printdraft">
+		    <result type="redirect">/clientviewselfpaper.jsp</result>
+			<result name="noOper">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		<action name="clientviewselfcd" class="client.printdraft">
+		    <result type="redirect">/clientviewselfcd.jsp</result>
+			<result name="noOper">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		<!-- 三部代办消息集成时写入登录session -->
+		<action name="pendingworklogin" class="client.pendingworklogin">
+			<result type="redirect">${actionContext}</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		
+	</package>
+</struts>

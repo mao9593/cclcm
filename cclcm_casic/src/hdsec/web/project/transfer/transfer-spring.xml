@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	
+	<bean id="transferMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.transfer.mapper.TransferMapper" />
+	</bean>
+	
+	<bean id="transfer.canceltransferevent" class="${common.package}.transfer.action.CanceltransferEventAction" scope="prototype" />
+	<bean id="transfer.viewtransferpaperledger" class="${common.package}.transfer.action.ViewTransferPaperledgerAction" scope="prototype" />
+	<bean id="transfer.viewtransfercdledger" class="${common.package}.transfer.action.ViewTransferCDledgerAction" scope="prototype" />
+	<bean id="transfer.viewtransferpaperledgerinfo" class="${common.package}.transfer.action.ViewTransferPaperledgerInfoAction" scope="prototype" />
+	<bean id="transfer.managepapertransferevent" class="${common.package}.transfer.action.ManagePaperTransferEventAction" scope="prototype" />
+	<bean id="transfer.managecdtransferevent" class="${common.package}.transfer.action.ManageCDTransferEventAction" scope="prototype" />
+	<bean id="transfer.submitpapertransferevent" class="${common.package}.transfer.action.SubmitPaperTransferEventAction" scope="prototype" />
+	<bean id="transfer.submitcdtransferevent" class="${common.package}.transfer.action.SubmitCDTransferEventAction" scope="prototype" />
+	<bean id="transfer.addpapertransferevent" class="${common.package}.transfer.action.AddPaperTransferEventAction" scope="prototype" />
+	<bean id="transfer.addcdtransferevent" class="${common.package}.transfer.action.AddCDTransferEventAction" scope="prototype" />
+	<bean id="transfer.viewtransferingeventdetail" class="${common.package}.transfer.action.ViewTransferingEventDetailAction" scope="prototype" />
+	<bean id="transfer.viewcdtransferingeventdetail" class="${common.package}.transfer.action.ViewCDTransferingEventDetailAction" scope="prototype" />
+	<bean id="transfer.submittransferevent" class="${common.package}.transfer.action.SubmitTransferEventAction" scope="prototype" />
+	<bean id="transfer.addtransferevent" class="${common.package}.transfer.action.AddTransferEventAction" scope="prototype"/>
+	<bean id="transfer.updatepapertransferevent" class="${common.package}.transfer.action.UpdatePaperTransferEventAction" scope="prototype"/>
+	<bean id="transfer.updatecdtransferevent" class="${common.package}.transfer.action.UpdateCDTransferEventAction" scope="prototype"/>
+	<bean id="transfer.viewpapertransfereventdetail" class="${common.package}.transfer.action.ViewPaperTransferEventDetailAction" scope="prototype" />
+	<bean id="transfer.viewcdtransfereventdetail" class="${common.package}.transfer.action.ViewCDTransferEventDetailAction" scope="prototype" />
+	<bean id="transfer.submitupdatepapertransferevent" class="${common.package}.transfer.action.SubmitUpdatePaperTransferEventAction" scope="prototype" />
+	<bean id="transfer.submitupdatecdtransferevent" class="${common.package}.transfer.action.SubmitUpdateCDTransferEventAction" scope="prototype" />
+	<bean id="transfer.delpapertransferevent" class="${common.package}.transfer.action.DelPaperTransferEventAction" scope="prototype" />
+	<bean id="transfer.delcdtransferevent" class="${common.package}.transfer.action.DelCDTransferEventAction" scope="prototype" />
+	
+	<bean id="transfer.viewconfirmtransfer" class="${common.package}.transfer.action.ViewConfirmTransferAction" scope="prototype" />
+	<bean id="transfer.confirmtransfer" class="${common.package}.transfer.action.ConfirmTransferAction" scope="prototype" />
+	<bean id="transfer.viewtransferingjobdetail" class="${common.package}.transfer.action.ViewTransferingJobDetailAction" scope="prototype" />
+	<bean id="transfer.canceltransferjob" class="${common.package}.transfer.action.CanceltransferJobAction" scope="prototype" />
+	<bean id="transfer.rejecttransfer" class="${common.package}.transfer.action.RejectTransferAction" scope="prototype" />
+    
+</beans>

@@ -1,0 +1,1374 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.basic.mapper.BasicMapper">
+	<select id="getSysUsageList" resultType="sysusage"
+		parameterType="map">
+		<![CDATA[
+			select * from sys_usage	
+		]]>
+		<if test="not is_all">
+			<![CDATA[
+				where is_sealed='N'
+			]]>
+		</if>
+		order by is_sealed
+	</select>
+	<insert id="addSysUsage" parameterType="sysusage">
+		<![CDATA[
+			insert into sys_usage(usage_code,usage_name,usage_content,is_printbc)
+			values(#{usage_code},#{usage_name},#{usage_content},#{is_printbc})	
+		]]>
+	</insert>
+	<update id="setUsageSealedByCode" parameterType="string">
+		<![CDATA[
+			update sys_usage set is_sealed='Y' where usage_code=#{usage_code}	
+		]]>
+	</update>
+	<select id="getUsageByCode" parameterType="string" resultType="sysusage">
+		<![CDATA[
+			select * from sys_usage where usage_code=#{usage_code}	
+		]]>
+	</select>
+	<update id="updateUsage" parameterType="sysusage">
+		<![CDATA[
+			update sys_usage 
+				set usage_name=#{usage_name},
+					is_printbc=#{is_printbc},
+					usage_content=#{usage_content}
+				where usage_code=#{usage_code}	
+		]]>
+	</update>
+	<select id="getSysProjectList" resultType="sysproject"
+		parameterType="map">
+		<![CDATA[
+			select * from sys_project	
+		]]>
+		<if test="not is_all">
+			<![CDATA[
+				where is_sealed='N'
+			]]>
+		</if>
+		order by is_sealed
+	</select>
+	<insert id="addSysProject" parameterType="sysproject">
+		<![CDATA[
+			insert into sys_project(project_code,project_name,project_content,start_time,end_time)
+			values(#{project_code},#{project_name},#{project_content},#{start_time},#{end_time})	
+		]]>
+	</insert>
+	<update id="setProjectSealedByCode" parameterType="string">
+		<![CDATA[
+			update sys_project set is_sealed='Y' where project_code=#{project_code}	
+		]]>
+	</update>
+	<select id="getProjectByCode" parameterType="string" resultType="sysproject">
+		<![CDATA[
+			select * from sys_project where project_code=#{project_code}	
+		]]>
+	</select>
+	<update id="updateProject" parameterType="sysproject">
+		<![CDATA[
+			update sys_project 
+				set project_name=#{project_name},
+					project_content=#{project_content},
+					start_time=#{start_time},
+					end_time=#{end_time}
+				where project_code=#{project_code}	
+		]]>
+	</update>
+	<select id="getSysMfpList" resultType="sysmfp" parameterType="map">
+		<![CDATA[
+			select sm.*,sd.dept_name, sc.console_name,ss.seclv_name from sys_mfp sm
+				left join sec_dept sd on(sm.dept_id = sd.dept_id)
+				left join sys_console sc on(sm.console_code = sc.console_code)
+				left join sec_user_seclv ss on(sm.seclv_code = ss.seclv_code)
+		]]>
+		<if test="not is_all">
+			<![CDATA[
+				where sm.is_sealed='N'
+			]]>
+		</if>
+		order by is_sealed
+	</select>
+	<insert id="addSysMfp" parameterType="sysmfp">
+		<![CDATA[
+			insert into sys_mfp(
+				mfp_code,
+				mfp_name,
+				mfp_brand,
+				mfp_model,
+				mfp_location,
+				create_time,
+				dept_id,
+				console_code,
+				seclv_code
+			)values(
+				#{mfp_code},
+				#{mfp_name},
+				#{mfp_brand},
+				#{mfp_model},
+				#{mfp_location},
+				#{create_time},
+				#{dept_id},
+				#{console_code},
+				#{seclv_code}
+			)	
+		]]>
+	</insert>
+	<update id="setMfpSealedByCode" parameterType="string">
+		<![CDATA[
+			update sys_mfp set 
+				is_sealed='Y',
+				delete_time=getdate()
+			where mfp_code=#{mfp_code}	
+		]]>
+	</update>
+	<select id="getMfpByCode" parameterType="string" resultType="sysmfp">
+		<![CDATA[
+			select sm.*,sd.dept_name, sc.console_name,ss.seclv_name from sys_mfp sm
+				left join sec_dept sd on(sm.dept_id = sd.dept_id)
+				left join sys_console sc on(sm.console_code = sc.console_code)
+				left join sec_user_seclv ss on(sm.seclv_code = ss.seclv_code) where mfp_code=#{mfp_code}	
+		]]>
+	</select>
+	<update id="updateMfp" parameterType="sysmfp">
+		<![CDATA[
+			update sys_mfp 
+				set mfp_name=#{mfp_name},
+					mfp_brand=#{mfp_brand},
+					mfp_model=#{mfp_model},
+					mfp_location=#{mfp_location},
+					dept_id=#{dept_id},
+					console_code=#{console_code},
+					seclv_code=#{seclv_code}
+				where mfp_code=#{mfp_code}	
+		]]>
+	</update>
+	<select id="getSysBurnerList" resultType="sysburner"
+		parameterType="map">
+		<![CDATA[
+			select sb.*,sd.dept_name, sc.console_name,ss.seclv_name,sm.mfp_name from sys_burner sb
+				left join sec_dept sd on(sb.dept_id = sd.dept_id)
+				left join sys_console sc on(sb.console_code = sc.console_code)
+				left join sec_user_seclv ss on(sb.seclv_code = ss.seclv_code)
+				left join sys_mfp sm on(sb.mfp_code =sm.mfp_code)
+		]]>
+		<if test="not is_all">
+			<![CDATA[
+				where sb.is_sealed='N'
+			]]>
+		</if>
+		order by is_sealed
+	</select>
+	<insert id="addSysBurner" parameterType="sysburner">
+		<![CDATA[
+			insert into sys_burner(
+				burner_code,
+				burner_name,
+				burner_path,
+				burner_type,
+				burner_brand,
+				burner_model,
+				burner_location,
+				create_time,
+				dept_id,
+				console_code,
+				seclv_code,
+				burner_usefor,
+				mfp_code
+			)values(
+				#{burner_code},
+				#{burner_name},
+				#{burner_path},
+				#{burner_type},
+				#{burner_brand},
+				#{burner_model},
+				#{burner_location},
+				#{create_time},
+				#{dept_id},
+				#{console_code},
+				#{seclv_code},
+				#{burner_usefor},
+				#{mfp_code}
+			)	
+		]]>
+	</insert>
+	<update id="setBurnerSealedByCode" parameterType="string">
+		<![CDATA[
+			update sys_burner set 
+				is_sealed='Y',
+				delete_time=getdate()
+			where burner_code=#{burner_code}	
+		]]>
+	</update>
+	<select id="getBurnerByCode" parameterType="string" resultType="sysburner">
+		<![CDATA[
+			select sb.*,sd.dept_name, sc.console_name,ss.seclv_name,sm.mfp_name from sys_burner sb
+				left join sec_dept sd on(sb.dept_id = sd.dept_id)
+				left join sys_console sc on(sb.console_code = sc.console_code)
+				left join sec_user_seclv ss on(sb.seclv_code = ss.seclv_code) 
+				left join sys_mfp sm on(sb.mfp_code =sm.mfp_code)
+			where burner_code=#{burner_code}	
+		]]>
+	</select>
+	<update id="updateBurner" parameterType="sysburner">
+		<![CDATA[
+			update sys_burner 
+				set burner_name=#{burner_name},
+					burner_path=#{burner_path},
+					burner_type=#{burner_type},
+					burner_brand=#{burner_brand},
+					burner_model=#{burner_model},
+					burner_location=#{burner_location},
+					dept_id=#{dept_id},
+					console_code=#{console_code},
+					seclv_code=#{seclv_code},
+					burner_usefor=#{burner_usefor},
+					mfp_code=#{mfp_code}
+				where burner_code=#{burner_code}	
+		]]>
+	</update>
+	<select id="getSysPrinterList" resultType="sysprinter"
+		parameterType="map">
+		<![CDATA[
+			select sp.*,sd.dept_name, sc.console_name,ss.seclv_name from sys_printer sp
+				left join sec_dept sd on(sp.dept_id = sd.dept_id)
+				left join sys_console sc on(sp.console_code = sc.console_code)
+				left join sec_user_seclv ss on(sp.seclv_code = ss.seclv_code)
+		]]>
+		<if test="not is_all">
+			<![CDATA[
+				where sp.is_sealed='N'
+			]]>
+		</if>
+		order by is_sealed
+	</select>
+	<insert id="addSysPrinter" parameterType="sysprinter">
+		<![CDATA[
+			insert into sys_printer(
+				printer_code,
+				printer_name,
+				printer_path,
+				printer_type,
+				printer_brand,
+				printer_model,
+				printer_color,
+				dept_id,
+				printer_ipaddr,
+				printer_location,
+				create_time,
+				is_double,
+				console_code,
+				seclv_code
+			)values(
+				#{printer_code},
+				#{printer_name},
+				#{printer_path},
+				#{printer_type},
+				#{printer_brand},
+				#{printer_model},
+				#{printer_color},
+				#{dept_id},
+				#{printer_ipaddr},
+				#{printer_location},
+				#{create_time},
+				#{is_double},
+				#{console_code},
+				#{seclv_code}
+			)	
+		]]>
+	</insert>
+	<update id="setPrinterSealedByCode" parameterType="string">
+		<![CDATA[
+			update sys_printer set 
+				is_sealed='Y',
+				delete_time=getdate()
+			where printer_code=#{printer_code}	
+		]]>
+	</update>
+	<select id="getPrinterByCode" parameterType="string" resultType="sysprinter">
+		<![CDATA[
+			select sp.*,sd.dept_name, sc.console_name,ss.seclv_name from sys_printer sp
+				left join sec_dept sd on(sp.dept_id = sd.dept_id)
+				left join sys_console sc on(sp.console_code = sc.console_code)
+				left join sec_user_seclv ss on(sp.seclv_code = ss.seclv_code) 
+			where printer_code=#{printer_code}	
+		]]>
+	</select>
+	<update id="updatePrinter" parameterType="sysprinter">
+		<![CDATA[
+			update sys_printer 
+				set printer_name=#{printer_name},
+					printer_path=#{printer_path},
+					printer_type=#{printer_type},
+					printer_brand=#{printer_brand},
+					printer_model=#{printer_model},
+					printer_color=#{printer_color},
+					dept_id=#{dept_id},
+					printer_ipaddr=#{printer_ipaddr},
+					printer_location=#{printer_location},
+					is_double=#{is_double},
+					console_code=#{console_code},
+					seclv_code=#{seclv_code}
+				where printer_code=#{printer_code}	
+		]]>
+	</update>
+	<select id="getPrinterGroupList" parameterType="map" resultType="sysprintergroup">
+		<![CDATA[
+			select rpg.*,sp.printer_name,sd.dept_name from ref_printer_group rpg
+				left join sys_printer sp on(rpg.printer_code = sp.printer_code)
+				left join sec_dept sd on(rpg.dept_id = sd.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="printer_code != null and printer_code != ''">
+   				<![CDATA[
+			 		and rpg.printer_code = #{printer_code}
+				]]>
+			</if>
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		and rpg.dept_id = #{dept_id}
+			 	]]>
+			</if>
+			<if test="instanceIds != null and instanceIds != ''">
+				and instance_id in
+				<foreach item="item" index="index" collection="instanceIds"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			and sp.is_sealed = 'N'
+		</trim>
+	</select>
+	<insert id="addPrinterGroup" parameterType="sysprintergroup">
+		<![CDATA[
+			insert into ref_printer_group(
+				dept_id,
+				printer_code
+			)values(
+				#{dept_id},
+				#{printer_code}
+			)	
+		]]>
+	</insert>
+	<delete id="delPrinterGroupByPrinterCode" parameterType="string">
+	    <![CDATA[
+	    	delete from ref_printer_group where printer_code = #{printer_code}
+		]]>
+	</delete>
+	<select id="getAllSysConsoleList" resultType="sysconsole"
+		parameterType="map">
+		<![CDATA[
+			select * from sys_console	
+		]]>
+		<if test="not is_all">
+			<![CDATA[
+				where is_sealed='N'
+			]]>
+		</if>
+		order by is_sealed
+	</select>
+
+	<select id="getConsoleByCode" parameterType="string" resultType="sysconsole">
+		<![CDATA[
+			select * from sys_console where console_code=#{console_code}	
+		]]>
+	</select>
+
+	<update id="updateConsole" parameterType="sysconsole">
+		<![CDATA[
+			update sys_console 
+				 set console_name=#{console_name},
+					 hardware_type=#{hardware_type},
+					 console_type=#{console_type},
+					 seclv_code=#{seclv_code},
+					 console_location=#{console_location},
+					 set_version=#{set_version},
+					 is_barcode_print=#{is_barcode_print},
+					 allowSecLevel = #{allowSecLevel}
+				where console_code=#{console_code}	
+		]]>
+	</update>
+	<update id="setConsoleSealedByCode" parameterType="String">
+		<![CDATA[
+			update sys_console set is_sealed='Y' where console_code=#{console_code}
+		]]>
+	</update>
+	<insert id="addConsole" parameterType="sysconsole">
+		<![CDATA[
+			insert into sys_console (console_code, console_name,
+						hardware_type, console_type, seclv_code, console_location,
+						curr_version, set_version, console_mac, console_ipaddr,
+						install_time, console_status, uninstall_time, is_online,
+						last_connect_time, is_barcode_print, is_sealed,allowSecLevel)
+			values(#{console_code}, #{console_name},
+						#{hardware_type}, #{console_type}, #{seclv_code}, #{console_location},
+						#{curr_version}, #{set_version}, #{console_mac}, #{console_ipaddr},
+						#{install_time}, #{console_status}, #{uninstall_time}, #{is_online},
+						#{last_connect_time}, #{is_barcode_print},'N',#{allowSecLevel})			
+		]]>
+	</insert>
+	<select id="getEventListByEventCodes" parameterType="map"
+		resultType="baseevent">
+		<![CDATA[
+			select tn.event_code,tn.seclv_code,tn.usage_code,tn.project_code,tn.apply_time,tn.summ,'${jobType_code}' as jobType
+					,ss.seclv_name,syu.usage_name,sp.project_name
+			from ${table_name} tn
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (tn.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(tn.usage_code=syu.usage_code)
+				left join sys_project sp on (tn.project_code=sp.project_code) 
+			where tn.event_code in
+		]]>
+		<foreach item="item" index="index" collection="event_codes"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="getJobList" parameterType="map" resultType="processjob">
+		<![CDATA[
+			select jp.*,ss.seclv_name,su.user_name,sd.dept_name
+			from job_process jp
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (jp.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) su on (jp.user_iidd = su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(jp.dept_id = sd.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''">
+   				<![CDATA[
+			 		and jp.user_iidd = #{user_iidd}
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != ''">
+   				<![CDATA[
+			 		and jp.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="jobType_code != null and jobType_code != ''">
+   				<![CDATA[
+			 		and jp.jobtype_code = #{jobType_code}
+				]]>
+			</if>
+			<if test="job_status != null and job_status != ''">
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="startTime != null and startTime != ''">
+   				<![CDATA[
+			 		and jp.start_time >= #{startTime}
+				]]>
+			</if>
+			<if test="endTime != null and endTime != ''">
+   				<![CDATA[
+			 		and jp.start_time <= #{endTime}
+				]]>
+			</if>
+			<if test="isPrintJob">
+   				<![CDATA[
+			 		and (jp.jobtype_code = 'PRINT_REMAIN' or jp.jobtype_code ='PRINT_SEND' or jp.jobtype_code ='PRINT_FILE')
+				]]>
+			</if>
+		</trim>
+		order by start_time desc
+	</select>
+	<select id="getProcessJobByCode" parameterType="string"
+		resultType="processjob">
+		<![CDATA[
+			select jp.*,ss.seclv_name,su.user_name,sd.dept_name
+			from job_process jp
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (jp.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) su on (jp.user_iidd = su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(jp.dept_id = sd.dept_id)
+			where jp.job_code = #{job_code}
+		]]>
+	</select>
+	<insert id="addProcessJob" parameterType="processjob">
+		insert into
+		job_process(
+		job_code,
+		jobtype_code,
+		seclv_code,
+		user_iidd,
+		dept_id,
+		job_status,
+		start_time,
+		instance_id,
+		process_id,
+		next_approver,
+		next_approver_name,
+		comment,
+		accept_user_iidd,
+		output_dept_name,
+		output_user_name,
+		input_source,
+		source_unit,
+		transfer_type,
+		unit_code,
+		box_code,
+		pic_name
+		)values(
+		#{job_code},
+		#{jobType.jobTypeCode},
+		#{seclv_code},
+		#{user_iidd},
+		#{dept_id},
+		#{job_status},
+		#{start_time},
+		#{instance_id},
+		#{process_id},
+		#{next_approver},
+		#{next_approver_name},
+		#{comment},
+		#{accept_user_iidd},
+		#{output_dept_name},
+		#{output_user_name},
+		#{input_source},
+		#{source_unit},
+		#{transfer_type},
+		#{unit_code},
+		#{box_code},
+		#{pic_name}
+		)
+	</insert>
+	<update id="updateEventStatus" parameterType="map">
+		<![CDATA[
+			update ${table_name} 
+				 set job_code=#{job_code},
+				 	 usage_code=#{usage_code},
+				 	 project_code=#{project_code}
+			where event_code in
+		]]>
+		<foreach item="item" index="index" collection="event_codes"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<delete id="delEventJobRelByJobCode" parameterType="string">
+		<![CDATA[
+			update ${table_name}
+				 set job_code=null
+			where job_code =#{job_code}
+		]]>
+	</delete>
+	<delete id="delJob" parameterType="string">
+		<![CDATA[
+			delete from job_process
+			where job_code =#{job_code}
+		]]>
+	</delete>
+	<select id="getJobTypeCodeByJobCode" parameterType="string"
+		resultType="string">
+		<![CDATA[
+			select jobtype_code from job_process where job_code=#{job_code}
+		]]>
+	</select>
+	<select id="getEventListByJobCode" parameterType="map"
+		resultType="baseevent">
+		<![CDATA[
+			select tn.event_code,tn.seclv_code,tn.usage_code,tn.project_code,tn.apply_time,tn.summ,'${jobType_code}' as jobType
+					,ss.seclv_name,syu.usage_name,sp.project_name
+			from ${table_name} tn
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (tn.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(tn.usage_code=syu.usage_code)
+				left join sys_project sp on (tn.project_code=sp.project_code) 
+			where tn.job_code = #{job_code}
+		]]>
+	</select>
+	<select id="getProcessJobListByInstanceId" resultType="processjob">
+		<![CDATA[
+			select jp.*,ss.seclv_name,su.user_name,sd.dept_name
+			from job_process jp
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (jp.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) su on (jp.user_iidd = su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(jp.dept_id = sd.dept_id)
+			where jp.instance_id in
+		]]>
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<update id="claimJobTask" parameterType="processjob">
+		<![CDATA[
+			UPDATE JOB_PROCESS SET 
+				JOB_STATUS=#{job_status},
+				NEXT_APPROVER=#{next_approver},
+				NEXT_APPROVER_NAME=#{next_approver_name}
+			WHERE JOB_CODE=#{job_code}
+		]]>
+	</update>
+	<update id="approveJobTask" parameterType="processjob">
+		<![CDATA[
+			UPDATE JOB_PROCESS SET 
+				JOB_STATUS=#{job_status},
+				NEXT_APPROVER=#{next_approver},
+				NEXT_APPROVER_NAME=#{next_approver_name}
+			WHERE JOB_CODE=#{job_code}
+		]]>
+	</update>
+	<update id="closeJobTask" parameterType="processjob">
+		<![CDATA[
+			UPDATE JOB_PROCESS SET 
+				JOB_STATUS=#{job_status},
+				NEXT_APPROVER=null,
+				NEXT_APPROVER_NAME=null
+			WHERE JOB_CODE=#{job_code}
+		]]>
+	</update>
+	<select id="getApprovedJobByInstanceIds" parameterType="map"
+		resultType="processjob">
+		<![CDATA[
+			select jp.*,ss.seclv_name,su.user_name,sd.dept_name
+			from job_process jp
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (jp.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) su on (jp.user_iidd = su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(jp.dept_id = sd.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="seclv_code != null and seclv_code != ''">
+   				<![CDATA[
+			 		and jp.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		and UPPER(su.user_name) like UPPER('%'+#{user_name}+'%')
+				]]>
+			</if>
+			<if test="instanceIds != null and instanceIds != ''">
+				and instance_id in
+				<foreach item="item" index="index" collection="instanceIds"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</trim>
+	</select>
+	<select id="getSysSecLevelByCode" parameterType="int"
+		resultType="sysseclevel">
+		<![CDATA[
+			select * from sec_user_seclv sus 
+				left join sys_seclevel ssl on(ssl.seclv_code = sus.seclv_code)
+			where sus.seclv_code = #{seclv_code} 
+		]]>
+	</select>
+	<delete id="delSysSeclevelByCode" parameterType="int">
+		<![CDATA[
+			delete from sys_seclevel where seclv_code=#{seclv_code}
+		]]>
+	</delete>
+	<insert id="addSysSeclevel" parameterType="sysseclevel">
+		<![CDATA[
+			insert into sys_seclevel(seclv_code,leak_time,archive_time,allow_reprint,is_paper_audit,is_cd_audit)
+				values(#{seclv_code},#{leak_time},#{archive_time},#{allow_reprint},#{is_paper_audit},#{is_cd_audit})
+		]]>
+	</insert>
+	<select id="getPaperListByBarcodes" parameterType="map" resultType="entitypaper">
+		<![CDATA[
+			select paper_id,paper_barcode,seclv_code from entity_paper
+			where paper_barcode in 
+		]]>
+		<foreach item="item" index="index" collection="barcodes" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<update id="updateEntityStatus" parameterType="map">
+		<![CDATA[
+			update entity_paper set job_code = #{job_code},paper_state = #{paper_state}
+			where paper_barcode in
+		]]>
+		<foreach item="item" index="index" collection="barcodes" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<select id="getHandleJobListByEntityInstanceId" parameterType="map" resultType="processjob">
+		<![CDATA[
+			select jp.*,ss.seclv_name,su.user_name,sd.dept_name
+			from job_process jp
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (jp.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) su on (jp.user_iidd = su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(jp.dept_id = sd.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			jp.instance_id in
+	   		<foreach item="item" index="index" collection="instanceIdList" open="(" separator="," close=")">
+				#{item} 
+			</foreach>
+			<![CDATA[
+				and (select count(job_code) from entity_${type} where job_code = jp.job_code)>0  
+			]]>
+			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and jp.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and UPPER(su.user_name) like UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+		</trim>
+	</select>
+	<select id="getUserProxys" parameterType="String" resultType="sysproxy">
+		<![CDATA[
+			select * from sys_proxy_oper where user_iidd = #{user_iidd};
+		]]>
+	</select>
+
+	<insert id="addUserProxy" parameterType="map">
+		<![CDATA[
+			insert into sys_proxy_oper(PROXY_USER_IIDD,USER_IIDD,PROXY_TYPE,USEFUL_LIFE_TIME)
+			values(#{proxy_user_iidd},#{user_iidd},#{proxy_type},#{useful_life_time})
+		]]>
+	</insert>
+	<delete id="deleteUserProxy" parameterType="map">
+		<![CDATA[
+			delete from sys_proxy_oper where USER_IIDD = #{user_iidd} and PROXY_USER_IIDD=#{proxy_user_iidd}
+		]]>
+	</delete>
+	<select id="getSysRecycleBoxList" resultType="sysrecyclebox"
+		parameterType="map">
+		<![CDATA[
+			select srb.*,ss.seclv_name from sys_recyclebox srb
+				left join sec_user_seclv ss on(srb.seclv_code = ss.seclv_code)
+		]]>
+		<if test="not is_all">
+			<![CDATA[
+				where srb.is_sealed='N'
+			]]>
+		</if>
+		order by is_sealed
+	</select>
+	<insert id="addSysRecycleBox" parameterType="sysrecyclebox">
+		<![CDATA[
+			insert into sys_recyclebox(
+				box_code,
+				box_name,
+				box_location,
+				seclv_code,
+				box_type,
+				current_num,
+				box_status
+			)values(
+				#{box_code},
+				#{box_name},
+				#{box_location},
+				#{seclv_code},
+				#{box_type},
+				#{current_num},
+				#{box_status}
+			)	
+		]]>
+	</insert>
+	<update id="setRecycleBoxSealedByCode" parameterType="string">
+		<![CDATA[
+			update sys_recyclebox set 
+				is_sealed='Y'
+			where box_code=#{box_code}	
+		]]>
+	</update>
+	<select id="getRecycleBoxByCode" parameterType="string"
+		resultType="sysrecyclebox">
+		<![CDATA[
+			select srb.*,ss.seclv_name from sys_recyclebox srb
+				left join sec_user_seclv ss on(srb.seclv_code = ss.seclv_code)
+			where box_code=#{box_code}	
+		]]>
+	</select>
+	<update id="updateRecycleBox" parameterType="sysrecyclebox">
+		<![CDATA[
+			update sys_recyclebox 
+				set box_name=#{box_name},
+					box_location=#{box_location},
+					seclv_code=#{seclv_code},
+					box_type=#{box_type},
+					box_status=#{box_status}
+				where box_code=#{box_code}	
+		]]>
+	</update>
+	<select id="getSysExchangeBoxList" resultType="SysExchangeBox" parameterType="map">
+		<![CDATA[
+			select seb.*,ss.seclv_name from sys_exchangebox seb
+				left join sec_user_seclv ss on(seb.seclv_code = ss.seclv_code)
+		]]>
+		<if test="not is_all">
+			<![CDATA[
+				where seb.is_sealed='N'
+			]]>
+ 		</if>
+ 		order by is_sealed
+	</select>
+	<insert id="addSysExchangeBox" parameterType="SysExchangeBox">
+		<![CDATA[
+			insert into sys_exchangebox(
+				box_code,
+				box_name,
+				box_location,
+				seclv_code,
+				box_status
+			)values(
+				#{box_code},
+				#{box_name},
+				#{box_location},
+				#{seclv_code},
+				#{box_status}
+			)	
+		]]>
+	</insert>
+	<update id="setExchangeBoxSealedByCode" parameterType="string">
+		<![CDATA[
+			update sys_exchangebox set 
+				is_sealed='Y'
+			where box_code=#{box_code}	
+		]]>
+	</update>
+	<select id="getExchangeBoxByCode" parameterType="string" resultType="sysexchangeBox">
+		<![CDATA[
+			select seb.*,ss.seclv_name from sys_exchangebox seb
+				left join sec_user_seclv ss on(seb.seclv_code = ss.seclv_code)
+			where box_code=#{box_code}	
+		]]>
+	</select>
+	<update id="updateExchangeBox" parameterType="sysexchangeBox">
+		<![CDATA[
+			update sys_exchangebox 
+				set box_name=#{box_name},
+					box_location=#{box_location},
+					seclv_code=#{seclv_code},
+					box_status=#{box_status}
+				where box_code=#{box_code}	
+		]]>
+	</update>
+
+	<select id="getPrintUserList" parameterType="map" resultType="sysprinteruser">
+		<![CDATA[
+			select pu.*,sp.printer_name,su.user_name from ref_printer_user pu,sys_printer sp, sec_user su
+			where pu.printer_code = sp.printer_code and pu.user_iidd = su.user_iidd
+		]]>
+		<if test="printer_code != null and printer_code != ''">
+   				<![CDATA[
+			 		and pu.printer_code = #{printer_code}
+				]]>
+		</if>
+		<if test="user_iidd != null and user_iidd != ''">
+   				<![CDATA[
+			 		and pu.user_iidd = #{user_iidd}
+			 	]]>
+		</if>
+	</select>
+	<insert id="addPrinterUser" parameterType="map">
+		<![CDATA[
+			insert into ref_printer_user(user_iidd,printer_code) values(#{user_iidd},#{printer_code})
+		]]>
+	</insert>
+	<delete id="delPrinterUser" parameterType="map">
+		<![CDATA[
+			delete from ref_printer_user where user_iidd = #{user_iidd} and printer_code = #{printer_code};
+		]]>
+	</delete>
+	
+	<select id="getSysConfigItemValue" parameterType="string" resultType="sysconfigitem">
+   		<![CDATA[			  
+		   	select item_key,item_name,item_value,item_type,startuse FROM sec_config where item_key=#{item_key}
+   		]]>
+   	</select>
+   	
+   	<update id="updateSysConfigItem" parameterType="sysconfigitem">
+   		<![CDATA[			  
+		   	update sec_config set 
+		   		item_name = #{item_name},
+		   		item_value = #{item_value},
+		   		item_type = #{item_type},
+		   		startuse =#{startuse}
+		   		where item_key=#{item_key}
+   		]]>
+   	</update>
+   	
+   	<insert id="addSysConfigItem" parameterType="sysconfigitem">
+   		<![CDATA[			  	   	
+		   	insert into sec_config(item_key,item_name,item_value,item_type,startuse)
+				values(#{item_key},#{item_name},#{item_value},#{item_type},#{startuse})
+   		]]>
+   	</insert>
+   	
+   	<select id="getUserAprvProxys" parameterType="String" resultType="sysproxy">
+		<![CDATA[
+			select * from sys_proxy_aprv where user_iidd = #{user_iidd};
+		]]>
+	</select>
+	<insert id="addUserAprvProxy" parameterType="map">
+		<![CDATA[
+			insert into sys_proxy_aprv(PROXY_USER_IIDD,USER_IIDD,PROXY_TYPE,USEFUL_LIFE_TIME)
+			values(#{proxy_user_iidd},#{user_iidd},#{proxy_type},#{useful_life_time})
+		]]>
+	</insert>
+	<delete id="deleteUserAprvProxy" parameterType="map">
+		<![CDATA[
+			delete from sys_proxy_aprv where USER_IIDD = #{user_iidd} and PROXY_USER_IIDD=#{proxy_user_iidd}
+		]]>
+	</delete>
+	<select id="getParentDeptIdByCurrentId" parameterType="String" resultType="String">
+		<![CDATA[
+			select dept_parent_id from sec_dept d where d.dept_id = #{dept_id}
+		]]>
+	 </select>
+	 <select id="getAllPlaces"  resultType="sysplace">
+		<![CDATA[
+			select * from sys_place
+		]]>
+	 </select>
+	 <select id="getPlaceByCode"  resultType="sysplace" parameterType="String">
+		<![CDATA[
+			select * from sys_place where place_code=#{place_code}
+		]]>
+	 </select>
+	 <insert id="addPlace" parameterType="map">
+		<![CDATA[
+			insert into sys_place(place_code,place_name,place_desc,is_sealed)
+			values(#{place_code},#{place_name},#{place_desc},'N')
+		]]>
+	</insert>
+	<update id="delPlace" parameterType="String">
+   		<![CDATA[			  
+		   	update sys_place set is_sealed='Y'	
+		   		where place_code=#{place_code}
+   		]]>
+   	</update>
+   	<update id="updatePlace" parameterType="map">
+   		<![CDATA[			  
+		   	update sys_place set place_name = #{place_name},place_desc=#{place_desc}	
+		   		where place_code=#{place_code}
+   		]]>
+   	</update>
+   	<select id="getCDListByBarcodes" parameterType="map" resultType="entitycd">
+		<![CDATA[
+			select cd_id,cd_barcode,seclv_code from entity_cd
+			where cd_barcode in 
+		]]>
+		<foreach item="item" index="index" collection="barcodes" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	<update id="updateEntityCDStatus" parameterType="map">
+		<![CDATA[
+			update entity_cd set job_code = #{job_code},cd_state = #{cd_state}
+			where cd_barcode in
+		]]>
+		<foreach item="item" index="index" collection="barcodes" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="updateEntityDeviceStatus" parameterType="map">
+		<![CDATA[
+			update entity_device set job_code = #{job_code}
+			where device_code =#{device_code}
+		]]>		
+	</update>
+	<insert id="saveConfirmRecord" parameterType="confirmrecord">
+		<![CDATA[
+			insert into confirm_record(
+			apply_user_iidd, apply_user_name, apply_dept_id,apply_dept_name, confirm_user_iidd,
+			confirm_user_name, confirm_dept_id,confirm_dept_name, entity_type, entity_barcode, 
+			entity_name, seclv_name, confirm_type, event_code, 
+			create_time,confirm_time, confirm_status)
+			values(#{apply_user_iidd},#{apply_user_name},#{apply_dept_id},#{apply_dept_name},#{confirm_user_iidd},
+					#{confirm_user_name},#{confirm_dept_id},#{confirm_dept_name},#{entity_type},#{entity_barcode},
+					#{entity_name},#{seclv_name},#{confirm_type},#{event_code},
+					#{create_time},#{confirm_time},#{confirm_status})
+		]]>
+	</insert>
+	<select id="getAdminGroupList" resultType="subsecdeptadmin" parameterType="String">
+		<![CDATA[
+			select sda.* ,sd.dept_name dept_name
+			from sec_dept_admin sda left join (select dept_id,dept_name from sec_dept) sd on(sd.dept_id = sda.dept_id) 
+			where user_iidd =#{user_iidd}
+		]]>
+	</select>
+
+	<select id="getAllSysBarcodes"  resultType="sysbarcode">
+		<![CDATA[
+			select * from sys_barcode s
+		]]>
+	</select>
+	<select id="getOneBarcodeByCode"  resultType="sysbarcode">
+		<![CDATA[
+			select * from sys_barcode where barcode_code=#{barcode_code}
+		]]>
+	</select>
+	<insert id="saveOneBarcode" parameterType="sysbarcode">
+		<![CDATA[
+			insert into sys_barcode(barcode_name,seclv_code,usage_code,console_code,
+			project_code,content,textcontent,bypage,
+			form,position,pageno,perpage,
+			cord_x,cord_y,size_x,size_y,is_default
+			)
+			values(#{barcode_name},#{seclv_code},#{usage_code},#{console_code},
+			#{project_code},#{content},#{textcontent},#{bypage},
+			#{form},#{position},#{pageno},#{perpage},
+			#{cord_x},#{cord_y},#{size_x},#{size_y},#{is_default}
+			)
+		]]>
+	</insert>
+	
+	
+	<select id="getSeclvNameByCodes"  parameterType="String" resultType="String">
+		<![CDATA[
+			select seclv_name from sec_user_seclv where seclv_code in
+		]]>
+		<foreach item="item" collection="codes" open="(" separator=","
+			close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="getConsoleNameByCodes" parameterType="String" resultType="String">
+		<![CDATA[
+			select console_name from sys_console where console_code in 
+		]]>
+		<foreach item="item" collection="codes" open="(" separator=","
+			close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="getProjectNameByCodes" parameterType="String" resultType="String">
+		<![CDATA[
+			select project_name from sys_project where project_code in 
+		]]>
+		<foreach item="item" collection="codes" open="(" separator=","
+			close=")">
+			#{item}
+		</foreach>
+	</select>
+	<select id="getUsageNameByCodes" parameterType="String" resultType="String">
+		<![CDATA[
+			select usage_name from sys_usage where usage_code in
+		]]>
+		<foreach item="item" collection="codes" open="(" separator=","
+			close=")">
+			#{item}
+		</foreach>
+	</select>
+	<delete id="delBarcodeByCode" parameterType="String">
+		<![CDATA[
+			delete from sys_barcode where barcode_code=#{barcode_code}
+		]]>
+	</delete>
+	<update id="updateBarcode" parameterType="sysbarcode">
+		<![CDATA[
+			update sys_barcode set barcode_name=#{barcode_name},
+			seclv_code=#{seclv_code},
+			usage_code=#{usage_code},
+			console_code=#{console_code},
+			project_code=#{project_code},
+			content=#{content},
+			textcontent=#{textcontent},
+			bypage=#{bypage},
+			form=#{form},
+			position=#{position},
+			pageno=#{pageno},
+			perpage=#{perpage},
+			cord_x=#{cord_x},
+			cord_y=#{cord_y},
+			size_x=#{size_x},
+			size_y=#{size_y},
+			is_default=#{is_default}
+			where barcode_code=#{barcode_code}
+		]]>
+	</update>
+	<select id="getBarcodeByCode" parameterType="String" resultType="sysbarcode">
+		<![CDATA[
+			select * from sys_barcode where barcode_code =#{barcode_code}
+		]]>
+		
+	</select>
+	
+	<select id="getCreateBarcode" statementType="CALLABLE" parameterType="map">
+		<![CDATA[
+		{call CREATEBARCODE(#{outValue,mode=OUT,jdbcType=INTEGER})}
+		]]>
+	</select>
+	
+	<select id="getPaperStaticList" parameterType="map" resultType="paperstatic">
+		<![CDATA[
+			select ep.dept_id,ep.dept_name,ep.printer_code,ep.printer_name,ep.seclv_code,ss.seclv_name,sum(ep.page_count) as page_count from entity_paper ep				
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">			
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		and ep.dept_id =#{dept_id}		 		
+			 	]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != '' and seclv_code != 0 ">
+   				<![CDATA[
+			 		and ep.seclv_code = #{seclv_code}
+				]]>
+			</if>	
+			<if test="printer_code != null and printer_code != ''">
+   				<![CDATA[
+			 		and ep.printer_code = #{printer_code}
+				]]>
+			</if>	
+			<if test="start_time != null and start_time != ''">
+   				<![CDATA[
+			 		and ep.print_time >= #{start_time}
+				]]>
+			</if>
+			<if test="end_time != null and end_time != ''">
+   				<![CDATA[
+			 		and ep.print_time <= #{end_time}
+				]]>
+			</if>	
+			<if test="create_type != null and create_type != ''">
+   				<![CDATA[
+			 		and ep.create_type = #{create_type}
+				]]>
+			</if>		
+		</trim>
+		group by ep.dept_id, ep.dept_name, ep.seclv_code, ss.seclv_name, ep.printer_code, ep.printer_name
+		order by ep.dept_id, ep.seclv_code
+	</select>
+	<select id="getFirstChildList" parameterType="string" resultType="string">
+		<![CDATA[
+			select dept_id from sec_dept 
+			where dept_parent_id=#{dept_id}		and is_sealed = 'N'
+		]]>
+	</select>
+	<select id="getAllChildPaperStaticList" parameterType="map" resultType="paperstatic">
+		<![CDATA[
+			select ep.printer_code,ep.printer_name,ep.seclv_code,ss.seclv_name,sum(ep.page_count) as page_count from entity_paper ep				
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">			
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		and ep.dept_id in(select dept_id from sec_dept sd 
+			 		where sd.dept_cs like (select dept_cs from sec_dept where dept_id=#{dept_id})+'%' and is_sealed = 'N')			 		
+			 	]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != '' and seclv_code != 0 ">
+   				<![CDATA[
+			 		and ep.seclv_code = #{seclv_code}
+				]]>
+			</if>	
+			<if test="printer_code != null and printer_code != ''">
+   				<![CDATA[
+			 		and ep.printer_code = #{printer_code}
+				]]>
+			</if>	
+			<if test="start_time != null and start_time != ''">
+   				<![CDATA[
+			 		and ep.print_time >= #{start_time}
+				]]>
+			</if>
+			<if test="end_time != null and end_time != ''">
+   				<![CDATA[
+			 		and ep.print_time <= #{end_time}
+				]]>
+			</if>	
+			<if test="create_type != null and create_type != ''">
+   				<![CDATA[
+			 		and ep.create_type = #{create_type}
+				]]>
+			</if>		
+		</trim>
+		group by ep.seclv_code, ss.seclv_name, ep.printer_code, ep.printer_name
+	</select>
+	
+	<insert id="addClientMsg" parameterType="ClientMsg">
+		<![CDATA[
+			insert into client_msg(accept_user_iidd,accept_user_name,oper_type,message_type,job_code,message,insert_time,is_read)
+			values(#{accept_user_iidd},#{accept_user_name},#{oper_type},#{message_type},#{job_code},#{message},#{insert_time},#{is_read})	
+		]]>
+	</insert>
+	<update id="updateClientMsg" parameterType="map">
+		<![CDATA[
+			update client_msg set is_read=#{is_read},read_time=#{read_time}
+			where is_read != 1
+		]]>		
+		<if test="accept_user_iidd != null and accept_user_iidd != ''">
+   			<![CDATA[
+			 	and accept_user_iidd =#{accept_user_iidd}			 		
+			 ]]>
+		</if>
+		<if test="job_code != null and job_code != ''">
+   			<![CDATA[
+			 	and job_code = #{job_code}
+			]]>
+		</if>			
+	</update>
+	<insert id="saveFileInfo" parameterType="fileinfo">
+		<![CDATA[
+			insert into file_info(file_name,prod_num,version,store_location,create_time,create_user_iidd,comment,type)
+			values(#{file_name},#{prod_num},#{version},#{store_location},#{create_time},#{create_user_iidd},#{comment},#{type})	
+		]]>
+	</insert>
+	<select id="getOneFileInfoByName" resultType="fileinfo" parameterType="String">
+		<![CDATA[
+		select * from file_info where file_name = #{file_name}
+		]]>
+	</select>
+	<update id="updateFileInfo" parameterType="fileinfo">
+		<![CDATA[
+			update file_info set update_user_iidd=#{update_user_iidd},
+			update_time=#{update_time},comment=#{comment},type=#{type}
+			where file_name = #{file_name}
+		]]>
+	</update>
+	<select id="getUsageCount" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(1) from sys_usage where usage_code=#{usage_code} or usage_name=#{usage_name}
+		]]>
+	</select>
+	<select id="checkProject" resultType="int" parameterType="map">
+		<![CDATA[
+		select count(1) from sys_project where project_code = #{project_code}
+		 or project_name = #{project_name}
+		]]>
+	</select>
+	<select id="checkConsole" resultType="int" parameterType="map">
+		<![CDATA[
+		select count(1) from sys_console where console_code = #{console_code}
+		 or console_name = #{console_name}
+		]]>
+	</select>
+	<select id="getFileInfosByType" resultType="fileinfo" parameterType="String">
+		<![CDATA[
+		select info.*,ru.user_name create_user_name,du.user_name update_user_name from file_info info
+		 left join (select user_iidd, user_name from sec_user) ru on(ru.user_iidd = info.create_user_iidd)	
+		 left join (select user_iidd, user_name from sec_user) du on(du.user_iidd = info.update_user_iidd)	
+		 where info.type = #{type}
+		]]>
+	</select>
+	<update id="updateConsoleVersion" parameterType="map">
+		<![CDATA[
+			update sys_console 
+				set set_version=#{set_version}
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="console_code != null and console_code != ''">
+   				<![CDATA[
+   					AND console_code=#{console_code}
+				 ]]>
+			</if>
+   		</trim>
+	</update>
+	<update id="setClientMsgRead" parameterType="map">
+		<![CDATA[
+			update client_msg 
+				set is_read=1,
+					read_time = #{read_time}
+			where is_read != 1 and accept_user_iidd=#{accept_user_iidd}
+				and upper(oper_type) like upper('%'+#{oper_type}) and message_type=#{message_type}
+		]]>
+	</update>
+	<select id="getSysBarcodeList" resultType="sysbarcode">
+		<![CDATA[
+			select * from sys_barcode	where is_sealed='N' and is_default='N'
+		]]>
+	</select>
+	<select id="getDefaultSysBarcode" resultType="sysbarcode">
+		<![CDATA[
+			select * from sys_barcode	where is_sealed='N' and is_default='Y'
+		]]>
+	</select>
+	<select id="getCDStaticList" parameterType="map" resultType="cdstatic">
+		<![CDATA[
+			select ec.dept_id,ec.dept_name,ec.seclv_code,ss.seclv_name,count(ec.cd_id) as disc_count from entity_cd ec				
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">			
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		and ec.dept_id =#{dept_id}		 		
+			 	]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != '' and seclv_code != 0 ">
+   				<![CDATA[
+			 		and ec.seclv_code = #{seclv_code}
+				]]>
+			</if>		
+			<if test="start_time != null and start_time != ''">
+   				<![CDATA[
+			 		and ec.burn_time >= #{start_time}
+				]]>
+			</if>
+			<if test="end_time != null and end_time != ''">
+   				<![CDATA[
+			 		and ec.burn_time <= #{end_time}
+				]]>
+			</if>	
+			<if test="create_type != null and create_type != ''">
+   				<![CDATA[
+			 		and ec.create_type = #{create_type}
+				]]>
+			</if>		
+		</trim>
+		group by ec.dept_id, ec.dept_name, ec.seclv_code, ss.seclv_name
+		order by ec.dept_id, ec.seclv_code
+	</select>
+	<select id="getAllChildCDStaticList" parameterType="map" resultType="cdstatic">
+		<![CDATA[
+			select ec.seclv_code,ss.seclv_name,count(ec.cd_id) as disc_count from entity_cd ec				
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.seclv_code=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">			
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		and ec.dept_id in(select dept_id from sec_dept sd 
+			 		where sd.dept_cs like (select dept_cs from sec_dept where dept_id=#{dept_id})+'%' and is_sealed = 'N')			 		
+			 	]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != '' and seclv_code != 0 ">
+   				<![CDATA[
+			 		and ec.seclv_code = #{seclv_code}
+				]]>
+			</if>	
+			<if test="start_time != null and start_time != ''">
+   				<![CDATA[
+			 		and ec.burn_time >= #{start_time}
+				]]>
+			</if>
+			<if test="end_time != null and end_time != ''">
+   				<![CDATA[
+			 		and ec.burn_time <= #{end_time}
+				]]>
+			</if>	
+			<if test="create_type != null and create_type != ''">
+   				<![CDATA[
+			 		and ec.create_type = #{create_type}
+				]]>
+			</if>		
+		</trim>
+		group by ec.seclv_code, ss.seclv_name
+	</select>
+	<update id="resetEntityPaperStatus" parameterType="map">
+		<![CDATA[
+			update entity_paper set paper_state = 0
+			where paper_barcode = #{barcode}
+		]]>
+	</update>
+	<update id="resetEntityCDStatus" parameterType="map">
+		<![CDATA[
+			update entity_cd set cd_state = 0
+			where cd_barcode = #{barcode}
+		]]>
+	</update>
+	<update id="resetEntityDeviceStatus" parameterType="map">
+		<![CDATA[
+			update entity_device set device_status = 0
+			where device_barcode = #{barcode}
+		]]>		
+	</update>
+	<select id="getUsageListByUsageName" resultType="sysusage" parameterType="string">
+		<![CDATA[
+			select * from sys_usage	where usage_name=#{usage_name} and is_sealed='N'
+		]]>
+	</select>
+	<select id="getConfirmStartUse" resultType="int" parameterType="string">
+   		<![CDATA[			  
+		   	select startuse from sec_config where item_key=#{item_key}
+   		]]>
+   	</select>
+</mapper>  

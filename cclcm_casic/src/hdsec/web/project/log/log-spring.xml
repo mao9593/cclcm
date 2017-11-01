@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	
+	<bean id="logMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.log.mapper.LogMapper" />
+	</bean>
+	
+	<!-- action 的bean id命名为{moduleName.actionName}-->
+	<bean id="log.viewsystemlog" class="${common.package}.log.action.ViewSystemLogAction" scope="prototype" />
+	<bean id="log.viewoperlogadmin" class="${common.package}.log.action.ViewOperLogAdminAction" scope="prototype" />
+	<bean id="log.viewoperlogcommon" class="${common.package}.log.action.ViewOperLogCommonAction" scope="prototype" />
+	<bean id="log.viewuserloginlog" class="${common.package}.log.action.ViewUserLoginLogAction" scope="prototype" />
+	<bean id="log.filldatatest" class="${common.package}.log.action.FillDataTestAction" scope="prototype" />
+	
+	<!-- 导出日志 -->
+	<bean id="log.exportoperlogcommon" class="${common.package}.log.action.ExportOperlogCommonAction" scope="prototype" />
+	<bean id="log.exportoperlogadmin" class="${common.package}.log.action.ExportOperlogAdminAction" scope="prototype" />
+	<bean id="log.exportuserloginlog" class="${common.package}.log.action.ExportUserLoginLogAction" scope="prototype" />
+	
+</beans>

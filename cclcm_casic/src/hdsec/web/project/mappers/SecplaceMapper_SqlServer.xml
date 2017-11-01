@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.secplace.mapper.SecplaceMapper">
+
+	<!-- 计算机管理 -->
+	<insert id="addEntitySecplace" parameterType="entitysecplace">
+		<![CDATA[
+			insert into entity_secplace(
+				secplace_barcode, 
+				secplace_name, 
+				secplace_code, 
+				secplace_type,
+				conf_code, 
+				seclv_code, 
+				secplace_location, 
+				leader_id, 
+				secplace_status, 
+				secplace_application,
+				found_time, 
+				duty_user_id, 
+				user_number, 
+				people_protect, 
+				physical_protect, 
+				technology_protect,
+				enter_time, 
+				summ, 
+				user_iidd,
+				duty_dept_id
+			)values(
+				#{secplace_barcode},
+				#{secplace_name},
+				#{secplace_code},
+				#{secplace_type},
+				#{conf_code},
+				#{seclv_code},
+				#{secplace_location},
+				#{leader_id},
+				#{secplace_status},
+				#{secplace_application},
+				#{found_time},
+				#{duty_user_id},
+				#{user_number},
+				#{people_protect},
+				#{physical_protect},
+				#{technology_protect},
+				#{enter_time},
+				#{summ},
+				#{user_iidd},
+				#{duty_dept_id}
+			)	
+		]]>
+	</insert>
+	
+	<!-- 查看涉密场所台账 -->
+	<select id="getAllSecplaceList" resultType="entitysecplace"	parameterType="map">
+		<![CDATA[
+			select es.*,sd.dept_name as duty_dept_name, suu.user_name as duty_user_name,su.user_name as user_name,ssu.user_name as leader_name,ss.seclv_name as seclv_name
+			from entity_secplace es
+				left join sec_dept sd on(es.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(es.duty_user_id=suu.user_iidd)
+				left join (select user_iidd,user_name from sec_user) su on(es.user_iidd=su.user_iidd)
+				left join (select user_iidd,user_name from sec_user) ssu on(es.user_iidd=ssu.user_iidd)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (es.seclv_code=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="secplace_barcode != null and secplace_barcode != ''">
+				<![CDATA[
+					and es.secplace_barcode = #{secplace_barcode}
+				]]>
+			</if>	
+			<if test="secplace_name != null and secplace_name != ''">
+				<![CDATA[
+					and es.secplace_name like '%'+#{secplace_name}+'%'
+				]]>
+			</if>	
+			<if test="secplace_code != null and secplace_code != ''">
+				<![CDATA[
+					and es.secplace_code like '%'+#{secplace_code}+'%'
+				]]>
+			</if>	
+			<if test="seclv_code != null and seclv_code != ''">
+				<![CDATA[
+					and es.seclv_code = #{seclv_code}
+				]]>
+			</if>	
+			<if test="secplace_type != null and secplace_type != ''">
+				<![CDATA[
+					and es.secplace_type = #{secplace_type}
+				]]>
+			</if>	
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				<![CDATA[
+					and es.duty_dept_id = #{duty_dept_id}
+				]]>
+			</if>	
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and es.duty_user_id = #{duty_user_id}
+				]]>
+			</if>	
+			<if test="secplace_status != null and secplace_status != ''">
+				<![CDATA[
+					and es.secplace_status = #{secplace_status}
+				]]>
+			</if>			
+		</trim>
+		<![CDATA[
+				order by es.secplace_id desc
+   			]]>
+	</select>
+	
+	<!-- 通过条码号查询涉密场所信息 -->
+	<select id="getSecplaceByBarcode" resultType="entitysecplace"	parameterType="string">
+		<![CDATA[
+			select es.*,sd.dept_name as duty_dept_name, suu.user_name as duty_user_name,su.user_name as user_name,ssu.user_name as leader_name,ss.seclv_name as seclv_name
+			from entity_secplace es
+				left join sec_dept sd on(es.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(es.duty_user_id=suu.user_iidd)
+				left join (select user_iidd,user_name from sec_user) su on(es.user_iidd=su.user_iidd)
+				left join (select user_iidd,user_name from sec_user) ssu on(es.user_iidd=ssu.user_iidd)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (es.seclv_code=ss.seclv_code)
+			where secplace_barcode=#{secplace_barcode}
+		]]>
+	</select>
+	
+	<!-- 通过涉密场所条码号更新涉密场所信息 -->
+	<update id="updateSecplace" parameterType="entitysecplace">
+		<![CDATA[
+			update entity_secplace set 
+				secplace_name = #{secplace_name},
+				secplace_code = #{secplace_code},
+				secplace_type = #{secplace_type},
+				conf_code = #{conf_code},
+				seclv_code = #{seclv_code},
+				secplace_location = #{secplace_location},
+				leader_id = #{leader_id},
+				secplace_status = #{secplace_status},
+				secplace_application = #{secplace_application},
+				found_time = #{found_time},
+				duty_user_id = #{duty_user_id},
+				user_number = #{user_number},
+				people_protect = #{people_protect},
+				physical_protect = #{physical_protect},
+				technology_protect = #{technology_protect},
+				enter_time = #{enter_time},
+				summ = #{summ},
+				user_iidd = #{user_iidd},
+				duty_dept_id = #{duty_dept_id}
+				where secplace_barcode = #{secplace_barcode}	
+		]]>
+	</update>
+	
+	
+	<!-- 通过名称匹配涉密场所 -->
+	<select id="getFuzzySecplaceList" resultType="entitysecplace"	parameterType="string">
+		<![CDATA[
+			select es.*,sd.dept_name as duty_dept_name, suu.user_name as duty_user_name,su.user_name as user_name,ssu.user_name as leader_name,ss.seclv_name as seclv_name
+			from entity_secplace es
+				left join sec_dept sd on(es.duty_dept_id = sd.dept_id)
+				left join (select user_iidd,user_name from sec_user) suu on(es.duty_user_id=suu.user_iidd)
+				left join (select user_iidd,user_name from sec_user) su on(es.user_iidd=su.user_iidd)
+				left join (select user_iidd,user_name from sec_user) ssu on(es.user_iidd=ssu.user_iidd)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (es.seclv_code=ss.seclv_code)
+			where es.secplace_name like '%'+#{fuzzy}+'%'
+		]]>		
+	</select>
+	
+	<!-- 添加外来人员进入涉密场所event -->
+	<insert id="addEnterSecplaceEvent" parameterType="entersecplaceevent">
+		<![CDATA[
+			insert into event_io_secplace(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				secplace_code,
+				visit_reason,
+				accompany_id,
+				enter_time,
+				leave_time,
+				file_num,
+				file_list				
+			)values(
+				#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},
+				#{secplace_code},
+				#{visit_reason},
+				#{accompany_id},
+				#{enter_time},
+				#{leave_time},
+				#{file_num},
+				#{file_list}
+			)	
+		]]>
+	</insert>
+	
+	<!-- 通过涉密场所条码号更新涉密场所信息 -->
+	<update id="updateEnterSecplaceEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_io_secplace
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<!-- 添加外来人员进入涉密场所visitor信息 -->
+	<insert id="addEntityVisitor" parameterType="entityvisitor">
+		<![CDATA[
+			insert into ref_secplace_visitor(
+				event_code,
+				visitor_name,
+				visitor_company,
+				certificate_type,
+				certificate_code,
+				visitor_belongings,
+				security_arrangement,
+				visitor_sex,
+				nationality,
+				post_info	
+			)values(
+				#{event_code},
+				#{visitor_name},
+				#{visitor_company},
+				#{certificate_type},
+				#{certificate_code},
+				#{visitor_belongings},
+				#{security_arrangement},
+				#{visitor_sex},
+				#{nationality},
+				#{post_info}
+			)	
+		]]>
+	</insert>
+	
+	<select id="getEnterSecplaceEventList" parameterType="map" resultType="entersecplaceevent">
+		<![CDATA[
+			select es.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,seu.user_name as accompany_name,ens.secplace_name as secplace_name
+			 from event_io_secplace es 
+				left join job_process jp on(es.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(es.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(es.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (es.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) seu on(es.accompany_id = seu.user_iidd)
+				left join (select secplace_name,secplace_code from entity_secplace) ens on(es.secplace_code = ens.secplace_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and es.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and es.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="enter_time != null and enter_time != ''" >
+   				<![CDATA[
+			 		and es.enter_time >= #{enter_time}
+				]]>
+   			</if>
+   			<if test="secplace_code != null and secplace_code != ''" >
+   				<![CDATA[
+			 		and es.secplace_code = #{secplace_code}
+				]]>
+   			</if>
+   			<if test="accompany_id != null and accompany_id != ''" >
+   				<![CDATA[
+			 		and es.accompany_id = #{accompany_id}
+				]]>
+   			</if>
+   			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by es.apply_time desc
+	</select>
+	
+	<!-- 通过eventcode查询外来人员进入涉密场所申请信息 -->
+	<select id="getEnterSecplaceEventByEventCode" resultType="entersecplaceevent"	parameterType="string">
+		<![CDATA[
+			select es.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,seu.user_name as accompany_name,ens.secplace_name as secplace_name
+			 from event_io_secplace es 
+				left join job_process jp on(es.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(es.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(es.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (es.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) seu on(es.accompany_id = seu.user_iidd)
+				left join (select secplace_name,secplace_code from entity_secplace) ens on(es.secplace_code = ens.secplace_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	
+	<select id="getEnterSecplaceEventJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_io_secplace where event_code=#{event_code}
+		]]>
+	</select>
+	
+	<select id="getSecplaceEventJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_secplace where event_code=#{event_code}
+		]]>
+	</select>
+	<!-- 通过eventcode查询外来人员列表 -->
+	<select id="getVisitorListByEventCode" parameterType="string" resultType="entityvisitor">
+		<![CDATA[
+			select * from ref_secplace_visitor where event_code=#{event_code}
+		]]>
+	</select>
+	<!-- 通过job_code查询外来人员进入涉密场所申请 -->
+	<select id="getEnterSecplaceEventListByJobCode" parameterType="string" resultType="entersecplaceevent">
+		<![CDATA[
+			select es.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,seu.user_name as accompany_name,ens.secplace_name as secplace_name
+			 from event_io_secplace es 
+				left join job_process jp on(es.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(es.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(es.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (es.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) seu on(es.accompany_id = seu.user_iidd)
+				left join (select secplace_name,secplace_code from entity_secplace) ens on(es.secplace_code = ens.secplace_code)
+			where es.job_code=#{job_code}
+		]]>
+	</select>
+
+	<!-- 通过job_code查询event_code -->
+	<select id="getEnterSecplaceEventCodeByJobCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select event_code from event_io_secplace where job_code=#{job_code}
+		]]>
+	</select>
+	
+	<!-- event_code修改文件数和文件列表 -->
+	<update id="updateEnterSecplaceEventFileInfo" parameterType="map">
+		<![CDATA[
+			update event_io_secplace
+				set file_num=#{file_num},file_list=#{file_list}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	
+	<!-- 添加涉密场所申请 -->
+	<insert id="addSecplaceEvent" parameterType="secplaceevent">
+		<![CDATA[
+			insert into event_secplace(
+				event_code, 
+				seclv_code, 
+				user_iidd, 
+				dept_id, 
+				apply_time,
+				secplace_name, 
+				secplace_code, 
+				secplace_location, 
+				duty_user_id, 
+				duty_dept_id,
+				secplace_type, 
+				conf_code, 
+				user_number, 
+				found_time, 
+				secplace_application,
+				people_protect, 
+				physical_protect, 
+				technology_protect, 
+				leader_id, 
+				file_num, 
+				file_list, 
+				summ		
+			)values(
+				#{event_code},
+				#{seclv_code},
+				#{user_iidd},
+				#{dept_id},
+				#{apply_time},
+				#{secplace_name}, 
+				#{secplace_code},
+				#{secplace_location}, 
+				#{duty_user_id},
+				#{duty_dept_id},
+				#{secplace_type}, 
+				#{conf_code},
+				#{user_number}, 
+				#{found_time}, 
+				#{secplace_application},
+				#{people_protect}, 
+				#{physical_protect}, 
+				#{technology_protect}, 
+				#{leader_id},
+				#{file_num},
+				#{file_list}, 
+				#{summ}
+			)	
+		]]>
+	</insert>
+	
+	<!-- 通过涉密场所条码号更新event_secplace中job_code -->
+	<update id="updateSecplaceEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_secplace
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	
+	<!-- 通过条件查询涉密场所申请列表 -->
+	<select id="getSecplaceEventList" parameterType="map" resultType="secplaceevent">
+		<![CDATA[
+			select es.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,seu.user_name as duty_user_name,sed.dept_name as duty_dept_name
+			 from event_secplace es 
+				left join job_process jp on(es.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(es.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(es.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (es.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) seu on(es.duty_user_id=seu.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sed on(es.duty_dept_id=sed.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and es.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and es.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and es.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="secplace_code != null and secplace_code != ''" >
+   				<![CDATA[
+			 		and es.secplace_code = #{secplace_code}
+				]]>
+   			</if>
+   			<if test="secplace_name != null and secplace_name != ''" >
+   				<![CDATA[
+			 		and es.secplace_name like '%'+#{secplace_name}+'%'
+				]]>
+   			</if>
+   			<if test="secplace_type != null and secplace_type != ''" >
+   				<![CDATA[
+			 		and es.secplace_type = #{secplace_type}
+				]]>
+   			</if>
+   			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by es.apply_time desc
+	</select>
+	
+	<!-- 通过event_code查询涉密场所申请 -->
+	<select id="getSecplaceEventByEventCode" parameterType="map" resultType="secplaceevent">
+		<![CDATA[
+			select es.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,seu.user_name as duty_user_name,sed.dept_name as duty_dept_name
+			 from event_secplace es 
+				left join job_process jp on(es.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(es.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(es.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (es.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) seu on(es.duty_user_id=seu.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sed on(es.duty_dept_id=sed.dept_id)
+				where es.event_code=#{event_code};
+		]]>
+	</select>
+	
+	<!-- 通过event_code查询涉密场所申请 -->
+	<select id="getSecplaceEventByJobCode" parameterType="string" resultType="secplaceevent">
+		<![CDATA[
+			select es.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,seu.user_name as duty_user_name,sed.dept_name as duty_dept_name
+			 from event_secplace es 
+				left join job_process jp on(es.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(es.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(es.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (es.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) seu on(es.duty_user_id=seu.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sed on(es.duty_dept_id=sed.dept_id)
+				where es.job_code=#{job_code};
+		]]>
+	</select>
+	
+	<!-- 通过job_code查询event_code -->
+	<select id="getSecplaceEventCodeByJobCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select event_code from event_secplace where job_code=#{job_code}
+		]]>
+	</select>
+	
+	<delete id="deleteEnterSecplaceEvent" parameterType="string">
+	<![CDATA[
+			delete from event_io_secplace where event_code=#{event_code}
+		]]>
+	</delete>
+	
+	<delete id="deleteSecplaceEvent" parameterType="string">
+	<![CDATA[
+			delete from event_secplace where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getSecplaceCountBySecplaceCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from event_secplace where secplace_code=#{secplace_code};
+		]]>
+	</select>
+	
+</mapper>

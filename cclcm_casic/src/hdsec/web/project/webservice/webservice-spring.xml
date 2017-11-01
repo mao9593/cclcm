@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	 
+	 <!-- <bean id="proxyService" class="org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter">  
+    	<property name="baseAddress" value="http://10.21.164.19:8011/service/"></property>  
+	</bean>  -->
+	<!--
+	<bean id="webservice.oapaper" class="${common.package}.webservice.action.OApaperAction" scope="prototype" />-->
+	<!-- 
+	<bean id="webservice.postsuccburn" class="${common.package}.webservice.action.PostSuccBurnAction" scope="prototype">	 -->
+		<!-- 58所刻录集成  -->
+		<!--
+		<property name="urlStr" value="http://10.87.131.3:8080/ezweb/services/ProxyBurnStateService?wsdl"></property>
+		<property name="sysName" value="fiveEight"></property>
+		 -->
+		 <!-- 院机关宣传报道刻录集成 -->
+		<!-- 
+		<property name="urlStr" value="http://10.21.163.40:8080/axis/services/BizService"></property>
+		<property name="sysName" value="yuanjiguan"></property>
+	</bean>
+	
+	<bean id="webservice.singlepointlogin" class="${common.package}.webservice.action.SinglePointLoginAction" scope="prototype" />
+	 -->
+	<bean id="webservice.waittodo" class="${common.package}.webservice.action.WaitTodoAction" scope="prototype">
+		<property name="htp" value="http://localhost:8080/cclcm/"></property>
+	</bean>
+	<!-- 
+	<bean id="webservice.checkurl" class="${common.package}.webservice.action.CheckUrlAction" scope="prototype"/>
+	 -->
+	<bean id="webservice.caepkeywordspostinfo" class="${common.package}.webservice.action.CAEPKeywordsPostInfoAction" scope="prototype">
+	    <property name="htp" value="http://127.0.0.1:8080/unified-api/trans/commit.do"></property>
+	    <property name="returnurl" value="http://127.0.0.1:8080/cclcm/files/printbmp/"></property>
+	</bean>
+</beans>

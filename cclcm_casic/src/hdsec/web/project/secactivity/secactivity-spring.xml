@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="SecActivityMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.secactivity.mapper.SecActivityMapper" />
+	</bean>
+	<bean id="secactivity.addusersecactievent" class="${common.package}.secactivity.action.AddUserSecActiEventAction" scope="prototype"/>
+	<bean id="secactivity.viewsecactivitydetail" class="${common.package}.secactivity.action.ViewSecActiDetailAction" scope="prototype"/>
+	<bean id="secactivity.manageusersecactilist" class="${common.package}.secactivity.action.ManageUserSecActiListAction" scope="prototype"/>
+	<bean id="secactivity.managesecactiaprvjob" class="${common.package}.secactivity.action.ManageSecActiAprvJobAction" scope="prototype"/>
+	<bean id="secactivity.viewsecactiaprvjob" class="${common.package}.secactivity.action.ViewSecActiAprvJobAction" scope="prototype"/>
+	<bean id="secactivity.approveusecactijob" class="${common.package}.secactivity.action.ApproveUSecActiJobAction" scope="prototype"/>
+	<bean id="secactivity.delusecactievent" class="${common.package}.secactivity.action.DelUSecActiEventAction" scope="prototype"/>
+	<bean id="secactivity.deluploadedfile" class="${common.package}.secactivity.action.DelUploadedFileAction" scope="prototype" />
+	
+	<!-- 涉外交流保密工作 -->	
+	<bean id="secactivity.addsecoutexchangeevent" class="${common.package}.secactivity.action.AddSecOutExchangeEventAction" scope="prototype"/>
+	<bean id="secactivity.viewsecoutexchangedetail" class="${common.package}.secactivity.action.ViewSecOutExchangeDetailAction" scope="prototype"/>
+	<bean id="secactivity.managesecoutexchangelist" class="${common.package}.secactivity.action.ManageSecOutExchangeListAction" scope="prototype"/>
+	<bean id="secactivity.managesecoutexchangeaprvjob" class="${common.package}.secactivity.action.ManageSecOutExchangeAprvJobAction" scope="prototype"/>
+	<bean id="secactivity.viewsecoutexchangeaprvjob" class="${common.package}.secactivity.action.ViewSecOutExchangeAprvJobAction" scope="prototype"/>
+	<bean id="secactivity.approvesecoutexchangejob" class="${common.package}.secactivity.action.ApproveSecOutExchangeJobAction" scope="prototype"/>
+	<bean id="secactivity.delsecoutexchangeevent" class="${common.package}.secactivity.action.DelSecOutExchangeEventAction" scope="prototype"/>
+	
+</beans>

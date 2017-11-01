@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.log.mapper.LogMapper">
+
+	<select id="getSystemLog" resultType="systemlog" parameterType="map">
+		<![CDATA[			  
+		   select * from log_system
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="subsys_name != null and subsys_name != ''" >
+   				<![CDATA[
+			 		UPPER(subsys_name) LIKE UPPER('%'+#{subsys_name}+'%')
+				]]>
+   			</if>
+   			<if test="log_type != null and log_type != ''" >
+   				<![CDATA[
+			 		AND UPPER(log_type) = #{log_type}
+				]]>
+   			</if>
+   			<![CDATA[
+   				order by log_time desc
+   			]]>
+   		</trim>
+	</select>
+	<select id="getAdminOperLogSize" resultType="int" parameterType="map">
+		<![CDATA[			  
+		   select count(1) from log_operation_admin
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="startTime != null" >
+   				<![CDATA[
+			 		and log_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null" >
+   				<![CDATA[
+			 		and log_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and UPPER(user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+   			<if test="dept_name != null and dept_name != ''" >
+   				<![CDATA[
+			 		and UPPER(dept_name) LIKE UPPER('%'+#{dept_name}+'%')
+				]]>
+   			</if>
+   			<if test="result != null and result != ''" >
+   				<![CDATA[
+			 		AND UPPER(result) = #{result}
+				]]>
+   			</if>
+   			<if test="login_ip != null and login_ip != ''" >
+   				<![CDATA[
+			 		AND UPPER(login_ip) = #{login_ip}
+				]]>
+   			</if>
+   		</trim>
+	</select>
+	<select id="getAdminOperLog" resultType="adminoperlog" parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[			  
+		   select * from log_operation_admin
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="startTime != null" >
+   				<![CDATA[
+			 		and log_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null" >
+   				<![CDATA[
+			 		and log_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and UPPER(user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+   			<if test="dept_name != null and dept_name != ''" >
+   				<![CDATA[
+			 		and UPPER(dept_name) LIKE UPPER('%'+#{dept_name}+'%')
+				]]>
+   			</if>
+   			<if test="result != null and result != ''" >
+   				<![CDATA[
+			 		AND UPPER(result) = #{result}
+				]]>
+   			</if>
+   			<if test="login_ip != null and login_ip != ''" >
+   				<![CDATA[
+			 		AND UPPER(login_ip) = #{login_ip}
+				]]>
+   			</if>
+   		</trim>
+   		<![CDATA[
+   			order by log_time desc
+   		]]>
+	</select>
+	<select id="getCommonOperLogSize" resultType="int" parameterType="map">
+		<![CDATA[			  
+		   select count(1) from log_operation_common
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="startTime != null" >
+   				<![CDATA[
+			 		and log_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null" >
+   				<![CDATA[
+			 		and log_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and UPPER(user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+   			<if test="dept_name != null and dept_name != ''" >
+   				<![CDATA[
+			 		and UPPER(dept_name) LIKE UPPER('%'+#{dept_name}+'%')
+				]]>
+   			</if>
+   			<if test="result != null and result != ''" >
+   				<![CDATA[
+			 		AND UPPER(result) = #{result}
+				]]>
+   			</if>
+   			<if test="login_ip != null and login_ip != ''" >
+   				<![CDATA[
+			 		AND UPPER(login_ip) = #{login_ip}
+				]]>
+   			</if>
+   		</trim>
+	</select>
+	<select id="getCommonOperLog" resultType="commonoperlog" parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[			  
+		   select * from log_operation_common
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="startTime != null" >
+   				<![CDATA[
+			 		and log_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null" >
+   				<![CDATA[
+			 		and log_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and UPPER(user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+   			<if test="dept_name != null and dept_name != ''" >
+   				<![CDATA[
+			 		and UPPER(dept_name) LIKE UPPER('%'+#{dept_name}+'%')
+				]]>
+   			</if>
+   			<if test="result != null and result != ''" >
+   				<![CDATA[
+			 		AND UPPER(result) = #{result}
+				]]>
+   			</if>
+   			<if test="login_ip != null and login_ip != ''" >
+   				<![CDATA[
+			 		AND UPPER(login_ip) = #{login_ip}
+				]]>
+   			</if>
+   		</trim>
+   		<![CDATA[
+   			order by log_time desc 
+   		]]>
+	</select>
+	<insert id="addCommonOperLog" parameterType="commonoperlog">
+		<![CDATA[			  
+		   insert into log_operation_common(user_id,user_name,dept_name,log_detail,result,log_time,log_type,login_ip,login_hostname,subsys_code)
+		   values(#{user_id},#{user_name},#{dept_name},#{log_detail},#{result},#{log_time},#{log_type},#{login_ip},#{login_hostname},#{subsys_code})
+   		]]>
+	</insert>
+	<insert id="addAdminOperLog" parameterType="adminoperlog">
+		<![CDATA[			  
+		   insert into log_operation_admin(user_id,user_name,dept_name,log_detail,result,log_time,log_type,login_ip,login_hostname,subsys_code)
+		   values(#{user_id},#{user_name},#{dept_name},#{log_detail},#{result},#{log_time},#{log_type},#{login_ip},#{login_hostname},#{subsys_code})
+   		]]>
+	</insert>
+	<insert id="addUserLoginLog" parameterType="userloginlog">
+		<![CDATA[			  
+		   insert into log_user_login(user_id,user_name,dept_name,log_detail,result,log_time,login_ip,login_hostname)
+		   values(#{user_id},#{user_name},#{dept_name},#{log_detail},#{result},#{log_time},#{login_ip},#{login_hostname})
+   		]]>
+	</insert>
+	<select id="getUserLoginLogSize" resultType="int" parameterType="map">
+		<![CDATA[			  
+		   select count(1) from log_user_login
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="startTime != null" >
+   				<![CDATA[
+			 		and log_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null" >
+   				<![CDATA[
+			 		and log_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and UPPER(user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+   			<if test="dept_name != null and dept_name != ''" >
+   				<![CDATA[
+			 		and UPPER(dept_name) LIKE UPPER('%'+#{dept_name}+'%')
+				]]>
+   			</if>
+   			<if test="result != null and result != ''" >
+   				<![CDATA[
+			 		AND UPPER(result) = #{result}
+				]]>
+   			</if>
+   			<if test="login_ip != null and login_ip != ''" >
+   				<![CDATA[
+			 		AND UPPER(login_ip) = #{login_ip}
+				]]>
+   			</if>
+   		</trim>
+	</select>
+	<select id="getUserLoginLog" resultType="userloginlog" parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[			  
+		   select * from log_user_login
+   		]]>
+   		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="startTime != null" >
+   				<![CDATA[
+			 		and log_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null" >
+   				<![CDATA[
+			 		and log_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and UPPER(user_name) LIKE UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+   			<if test="dept_name != null and dept_name != ''" >
+   				<![CDATA[
+			 		and UPPER(dept_name) LIKE UPPER('%'+#{dept_name}+'%')
+				]]>
+   			</if>
+   			<if test="result != null and result != ''" >
+   				<![CDATA[
+			 		AND UPPER(result) = #{result}
+				]]>
+   			</if>
+   			<if test="login_ip != null and login_ip != ''" >
+   				<![CDATA[
+			 		AND UPPER(login_ip) = #{login_ip}
+				]]>
+   			</if>
+   		</trim>
+   		<![CDATA[
+   			order by log_time desc 
+   		]]>
+	</select>
+</mapper> 

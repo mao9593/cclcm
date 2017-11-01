@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="computerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.computer.mapper.ComputerMapper" />
+	</bean>
+	<!-- 计算机添加-->
+	<bean id="computer.addcomputer" class="${common.package}.computer.action.AddComputerAction" scope="prototype" />
+	<!-- 计算机批量录入-->
+	<bean id="computer.importcomputer" class="${common.package}.computer.action.ImportComputerAction" scope="prototype" />
+	<!-- 查看计算机台账-->
+	<bean id="computer.managecomputer" class="${common.package}.computer.action.ManageComputerAction" scope="prototype" />
+	<!-- 通过条码查看计算机信息-->
+	<bean id="computer.viewcomputerdetail" class="${common.package}.computer.action.ViewComputerDetailAction" scope="prototype" />
+	<!-- 修改计算机信息-->
+	<bean id="computer.updatecomputer" class="${common.package}.computer.action.UpdateComputerAction" scope="prototype" />
+	<!-- 导出计算机信息-->
+	<bean id="computer.exportcomputer" class="${common.package}.computer.action.ExportComputerAction" scope="prototype" />
+	<!-- 新增计算机（网络机） -->
+	<bean id="computer.addinternetcomputerevent" class="${common.package}.computer.action.AddInternetComputerEventAction" scope="prototype" />
+	<!-- 新增计算机（单机）-->
+	<bean id="computer.addsinglecomputerevent" class="${common.package}.computer.action.AddSingleComputerEventAction" scope="prototype" />
+	<!-- 计算机变更-->
+	<bean id="computer.addchangecomputerevent" class="${common.package}.computer.action.AddChangeComputerEventAction" scope="prototype" />
+	<!-- 计算机报废-->
+	<bean id="computer.adddestroycomputerevent" class="${common.package}.computer.action.AddDestroyComputerEventAction" scope="prototype" />
+	<!-- 查看申请列表-->
+	<bean id="computer.viewcomputerevent" class="${common.package}.computer.action.ViewComputerEventAction" scope="prototype" />
+	<!-- 待审批列表-->
+	<bean id="computer.managecomputeraprvjob" class="${common.package}.computer.action.ManageComputerAprvJobAction" scope="prototype" />
+	<!-- 已审批列表-->
+	<bean id="computer.viewcomputeraprvjob" class="${common.package}.computer.action.ViewComputerAprvJobAction" scope="prototype" />
+	<!-- 查看申请详细信息-->
+	<bean id="computer.viewcomputereventdetail" class="${common.package}.computer.action.ViewComputerEventDetailAction" scope="prototype" />
+	<!-- 删除申请-->
+	<bean id="computer.deleteevent" class="${common.package}.computer.action.DeleteEventAction" scope="prototype" />
+	<!-- 审批-->
+	<bean id="computer.approvecomputerjob" class="${common.package}.computer.action.ApproveComputerJobAction" scope="prototype" />
+	<!-- 查询计算机信息-->
+	<bean id="computer.getcomputerinfo" class="${common.package}.computer.action.GetComputerInfoAction" scope="prototype" />
+	
+	<!-- 信息设备模块 -->
+	
+	<!-- 信息设备台账 -->
+	<bean id="computer.addinfodevice" class="${common.package}.computer.action.AddInfoDeviceAction" scope="prototype" />
+	<bean id="computer.importinfodevice" class="${common.package}.computer.action.ImportInfoDeviceAction" scope="prototype" />
+	<bean id="computer.manageinfodevice" class="${common.package}.computer.action.ManageInfoDeviceAction" scope="prototype" />
+	<bean id="computer.exportinfodevice" class="${common.package}.computer.action.ExportInfoDeviceAction" scope="prototype" />
+	<bean id="computer.viewinfodevicedetail" class="${common.package}.computer.action.ViewInfoDeviceDetailAction" scope="prototype" />
+	<bean id="computer.updateinfodevice" class="${common.package}.computer.action.UpdateInfoDeviceAction" scope="prototype" />
+	
+	<!-- 信息设备申请 -->
+	<bean id="computer.addinfodeviceevent" class="${common.package}.computer.action.AddInfoDeviceEventAction" scope="prototype" />
+	<bean id="computer.manageinfodeviceevent" class="${common.package}.computer.action.ManageInfoDeviceEventAction" scope="prototype" />
+	<bean id="computer.delinfodeviceevent" class="${common.package}.computer.action.DelInfoDeviceEventAction" scope="prototype" />
+	<bean id="computer.viewinfodeviceeventdetail" class="${common.package}.computer.action.ViewInfoDeviceEventDetailAction" scope="prototype" />
+	<bean id="computer.manageinfodeviceaprvjob" class="${common.package}.computer.action.ManageInfoDeviceAprvJobAction" scope="prototype" />	
+	<bean id="computer.viewinfodeviceaprvjob" class="${common.package}.computer.action.ViewInfoDeviceAprvJobAction" scope="prototype" />
+	<bean id="computer.approveinfodevicejob" class="${common.package}.computer.action.ApproveInfoDeviceJobAction" scope="prototype" />
+	<bean id="computer.changeinfodevice" class="${common.package}.computer.action.ChangeInfoDeviceAction" scope="prototype" />
+	<bean id="computer.managechangeinfodeviceevent" class="${common.package}.computer.action.ManageChangeInfoDeviceEventAction" scope="prototype" />
+	<bean id="computer.destroyinfodevice" class="${common.package}.computer.action.DestroyInfoDeviceAction" scope="prototype" />
+	<bean id="computer.managedestroyinfodeviceevent" class="${common.package}.computer.action.ManageDestroyInfoDeviceEventAction" scope="prototype" />
+	<bean id="computer.getinfotype" class="${common.package}.computer.action.GetInfoTypeAction" scope="prototype" />
+	<bean id="computer.addinfotype" class="${common.package}.computer.action.AddInfoTypeAction" scope="prototype" />
+	<bean id="computer.updateinfotype" class="${common.package}.computer.action.UpdateInfoTypeAction" scope="prototype" />
+	<bean id="computer.manageinfodevicetype" class="${common.package}.computer.action.ManageInfoDeviceTypeAction" scope="prototype" />
+	<bean id="computer.addborrowbookevent" class="${common.package}.computer.action.AddBorrowBookEventAction" scope="prototype" />
+	<bean id="computer.manageborrowbookevent" class="${common.package}.computer.action.ManageBorrowBookEventAction" scope="prototype" />
+	<bean id="computer.approveborrowbookjob" class="${common.package}.computer.action.ApproveBorrowBookJobAction" scope="prototype" />
+	<bean id="computer.addqiyuanborrowbookevent" class="${common.package}.computer.action.AddQiYuanBorrowBookEventAction" scope="prototype" />
+	<bean id="computer.approveqiyuanborrowbookjob" class="${common.package}.computer.action.ApproveQiYuanBorrowBookJobAction" scope="prototype" />
+	<bean id="computer.manageqiyuanborrowbookevent" class="${common.package}.computer.action.ManageQiYuanBorrowBookEventAction" scope="prototype" />
+	 
+	 <!-- 笔记本台账添加 -->
+	<bean id="computer.addbook" class="${common.package}.computer.action.AddBookAction" scope="prototype" />
+	<bean id="computer.managebook" class="${common.package}.computer.action.ManageBookAction" scope="prototype" />
+	<bean id="computer.viewbookdetail" class="${common.package}.computer.action.ViewBookDetailAction" scope="prototype" />
+	<bean id="computer.updatebook" class="${common.package}.computer.action.UpdateBookAction" scope="prototype" />
+	<bean id="computer.importbook" class="${common.package}.computer.action.ImportBookAction" scope="prototype" />
+	<bean id="computer.exportbook" class="${common.package}.computer.action.ExportBookAction" scope="prototype" />
+	<bean id="computer.choicebook" class="${common.package}.computer.action.ChoiceBookAction" scope="prototype" />
+	
+	<bean id="computer.manageinfodevicelist" class="${common.package}.computer.action.ManageInfoDeviceListAction" scope="prototype" />
+	 <!-- 硬盘台账添加 -->
+	<bean id="computer.manageharddisk" class="${common.package}.computer.action.ManageHardDiskAction" scope="prototype" />
+	<bean id="computer.viewharddiskdetail" class="${common.package}.computer.action.ViewHardDiskDetailAction" scope="prototype" />
+	<bean id="computer.updateharddisk" class="${common.package}.computer.action.UpdateHardDiskAction" scope="prototype" />
+	<!-- 删除硬盘-->
+	<bean id="computer.deleteharddisk" class="${common.package}.computer.action.DeleteHardDiskAction" scope="prototype" />
+	<!-- 导出硬盘台帐-->
+	<bean id="computer.exportharddisk" class="${common.package}.computer.action.ExportHardDiskAction" scope="prototype" />
+	<!-- 笔记本变更、维修、报废、重装 -->
+	<bean id="computer.addchangebookevent" class="${common.package}.computer.action.AddChangeBookEventAction" scope="prototype" />
+	<bean id="computer.addrepairbookevent" class="${common.package}.computer.action.AddRepairBookEventAction" scope="prototype" />
+	<bean id="computer.adddestorybookevent" class="${common.package}.computer.action.AddDestoryBookEventAction" scope="prototype" />
+	<bean id="computer.managebookevent" class="${common.package}.computer.action.ManageBookEventAction" scope="prototype" />
+	<bean id="computer.approvebookjob" class="${common.package}.computer.action.ApproveBookJobAction" scope="prototype" />
+	<bean id="computer.addreinstallbookevent" class="${common.package}.computer.action.AddReinstallBookEventAction" scope="prototype" />
+
+	<bean id="computer.approvesinglecomputerjob" class="${common.package}.computer.action.ApproveSingleComputerJobAction" scope="prototype" />
+	<bean id="computer.approvechangecomputerjob" class="${common.package}.computer.action.ApproveChangeComputerJobAction" scope="prototype" />
+	<bean id="computer.approvedestorycomputerjob" class="${common.package}.computer.action.ApproveDestoryComputerJobAction" scope="prototype" />
+	<bean id="computer.approveinternetcomputerjob" class="${common.package}.computer.action.ApproveInternetComputerJobAction" scope="prototype" />
+</beans>

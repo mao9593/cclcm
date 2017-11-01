@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="inputMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.input.mapper.InputMapper" />
+	</bean>	
+	
+	<!-- 添加电子文件导入申请 -->
+	<bean id="input.addinputevent" class="${common.package}.input.action.AddInputEventAction" scope="prototype" />
+	<bean id="input.deluploadedfile" class="${common.package}.input.action.DelUploadedFileAction" scope="prototype" />
+	<!-- 查看电子文件导入申请 -->
+	<bean id="input.viewinputlistjob" class="${common.package}.input.action.ViewInputListJobAction" scope="prototype" />
+	<!-- 待审批列表 -->
+	<bean id="input.manageinputaprvjob" class="${common.package}.input.action.ManageInputAprvJobAction" scope="prototype" />
+	<bean id="input.approveinputjob" class="${common.package}.input.action.ApproveInputJobAction" scope="prototype" />
+	<bean id="input.viewinputeventdetail" class="${common.package}.input.action.ViewInputEventDetailAction" scope="prototype" />
+	<bean id="input.viewinputjobdetail" class="${common.package}.input.action.ViewInputJobDetailAction" scope="prototype" />
+	<!-- 查看审批记录 -->
+	<bean id="input.viewinputaprvjob" class="${common.package}.input.action.ViewInputAprvJobAction" scope="prototype" />
+	<bean id="input.viewinputaprvdetail" class="${common.package}.input.action.ViewInputAprvDetailAction" scope="prototype" />
+	<!-- 撤销电子文件导入申请 -->
+	<bean id="input.cancelinputevent" class="${common.package}.input.action.CancelInputEventAction" scope="prototype" />
+	<!-- 查看已导入电子文件信息 -->
+	<bean id="input.viewmanageinput" class="${common.package}.input.action.ViewManageInputAction" scope="prototype" />
+	<bean id="input.downloadinput" class="${common.package}.input.action.DownloadInputAction" scope="prototype" />
+	
+</beans>

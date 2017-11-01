@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="secactivity" namespace="/secactivity" extends="struts-default">
+		<action name="addusersecactievent" class="secactivity.addusersecactievent">
+			<result>/html/secactivity/addusersecactievent.jsp</result>
+			<!-- <result name="ok" type="redirect">/secactivity/manageusersecactilist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action?module=secmanage</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecactivitydetail" class="secactivity.viewsecactivitydetail">
+			<result>/html/secactivity/viewsecactivitydetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageusersecactilist" class="secactivity.manageusersecactilist">
+			<result>/html/secactivity/manageusersecactilist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managesecactiaprvjob" class="secactivity.managesecactiaprvjob">
+			<result>/html/secactivity/managesecactiaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecactiaprvjob" class="secactivity.viewsecactiaprvjob">
+			<result>/html/secactivity/viewsecactiaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="approveusecactijob" class="secactivity.approveusecactijob">
+			<result>/html/secactivity/approveusecactijob.jsp</result>
+			<!-- <result type="redirect" name="ok">/secactivity/managesecactiaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action?module=secmanage</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delusecactievent" class="secactivity.delusecactievent">
+			<result type="redirect">/secactivity/delusecactievent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deluploadedfile" class="secactivity.deluploadedfile">
+			<result>/html/burn/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 涉外交流保密工作 -->
+		<action name="addsecoutexchangeevent" class="secactivity.addsecoutexchangeevent">
+			<result>/html/secactivity/addsecoutexchangeevent.jsp</result>
+			<!-- <result name="ok" type="redirect">/secactivity/managesecoutexchangelist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action?module=secmanage</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecoutexchangedetail" class="secactivity.viewsecoutexchangedetail">
+			<result>/html/secactivity/viewsecoutexchangedetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managesecoutexchangelist" class="secactivity.managesecoutexchangelist">
+			<result>/html/secactivity/managesecoutexchangelist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managesecoutexchangeaprvjob" class="secactivity.managesecoutexchangeaprvjob">
+			<result>/html/secactivity/managesecoutexchangeaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecoutexchangeaprvjob" class="secactivity.viewsecoutexchangeaprvjob">
+			<result>/html/secactivity/viewsecoutexchangeaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvesecoutexchangejob" class="secactivity.approvesecoutexchangejob">
+			<result>/html/secactivity/approvesecoutexchangejob.jsp</result>
+			<!-- <result type="redirect" name="ok">/secactivity/managesecoutexchangeaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action?module=secmanage</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delsecoutexchangeevent" class="secactivity.delsecoutexchangeevent">
+			<result type="redirect">/secactivity/delsecoutexchangeevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>		
+	</package>
+</struts>

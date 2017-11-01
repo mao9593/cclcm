@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<definitions id="definitions" targetNamespace="http://activiti.org/bpmn20" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn"> 
+<process id="approvalRequest" name="Approval Request">
+
+	<!-- 空开始事件 -->   
+    <startEvent id="blankStart"/>
+    
+    <sequenceFlow id="toUserApply" sourceRef="blankStart" targetRef="userApply" />
+    
+    <!-- 用户提交申请 -->
+    <userTask id="userApply" name="userApply" activiti:assignee="${proposer}"/>
+    
+    <sequenceFlow id="toIfInnerApproval" sourceRef="userApply" targetRef="ifInnerApproval" />
+    
+    <!-- 判断是否需要部门内审批 -->
+    <exclusiveGateway id="ifInnerApproval" name="if inner approval needed" />
+    
+    <!-- 不需要部门内审批，直接跳到<是否需要特殊部门审批> -->
+    <sequenceFlow id="noInnerApproval" sourceRef="ifInnerApproval" targetRef="ifSpecialApproval">
+		<conditionExpression xsi:type="tFormalExpression">${innerApprover == null || innerApprover.length()==0}</conditionExpression> 
+    </sequenceFlow> 
+
+	<!-- 需要部门内审批 -->
+    <sequenceFlow id="hasInnerApproval" sourceRef="ifInnerApproval" targetRef="innerApprove">
+    	<conditionExpression xsi:type="tFormalExpression">${innerApprover.length()>0}</conditionExpression> 
+    </sequenceFlow>
+     
+    <!-- 部门内审批，多级审批，<驳回或者没有下级审批人>跳出 -->
+    <userTask id="innerApprove" name="innerApprove" activiti:candidateUsers="${innerApprover}">
+    	<multiInstanceLoopCharacteristics isSequential="true">
+	    	<loopCardinality>10</loopCardinality> 
+    		<completionCondition>${innerApproved=='false' || innerApprover==''}</completionCondition> 
+  		</multiInstanceLoopCharacteristics>
+    </userTask> 
+ 
+    <sequenceFlow id="toIfInnerApprovalPass" sourceRef="innerApprove" targetRef="ifInnerApprovalPass" /> 
+	
+	<!-- 判断部门内部审批是否通过 --> 	
+ 	<exclusiveGateway id="ifInnerApprovalPass" name="if inner approve passed" />
+ 	
+ 	<!-- 部门内审批通过，跳到<是否需要特殊部门审批> -->
+    <sequenceFlow id="innerApprovalPassed" sourceRef="ifInnerApprovalPass" targetRef="ifSpecialApproval"> 
+      	<conditionExpression xsi:type="tFormalExpression">${innerApproved == 'true'}</conditionExpression> 
+    </sequenceFlow> 
+ 
+ 	<!-- 部门内审批驳回，跳到<是否需要重提申请> -->
+    <sequenceFlow id="innerApprovalRejected" sourceRef="ifInnerApprovalPass" targetRef="decideUserReApply"> 
+      	<conditionExpression xsi:type="tFormalExpression">${innerApproved == 'false'}</conditionExpression> 
+    </sequenceFlow> 
+ 	
+ 	<!-- 判断是否需要特殊部门审批 -->
+ 	<exclusiveGateway id="ifSpecialApproval" name="if special approval needed" />
+ 	
+ 	<!-- 不需要特殊部门审批，流程结束 -->
+ 	<sequenceFlow id="noSpecialApproval" sourceRef="ifSpecialApproval" targetRef="theEnd1"> 
+      	<conditionExpression xsi:type="tFormalExpression">${specialApprover == null || specialApprover.length() == 0}</conditionExpression> 
+    </sequenceFlow> 
+ 	<endEvent id="theEnd1" /> 
+ 	
+ 	<!-- 需要特殊部门审批 -->
+    <sequenceFlow id="hasSpecialApproval" sourceRef="ifSpecialApproval" targetRef="specialApprove"> 
+      	<conditionExpression xsi:type="tFormalExpression">${specialApprover.length() > 0}</conditionExpression> 
+    </sequenceFlow>
+	
+	<!-- 特殊部门审批，多级审批 -->
+	<userTask id="specialApprove" name="specialApprove" activiti:candidateUsers="${specialApprover}">
+    	<multiInstanceLoopCharacteristics isSequential="true">
+	    	<loopCardinality>10</loopCardinality> 
+    		<completionCondition>${specialApproved == 'false' || specialApprover == ''}</completionCondition> 
+  		</multiInstanceLoopCharacteristics>
+    </userTask> 
+    
+    <sequenceFlow id="toIfSpecialApprovalPass" sourceRef="specialApprove" targetRef="ifSpecialApprovalPass"/> 
+    
+    <!-- 判断特殊部门审批是否通过 -->
+    <exclusiveGateway id="ifSpecialApprovalPass" name="if special approve passed" />
+    
+    <!-- 特殊部门审批通过，流程结束 -->
+    <sequenceFlow id="specialApprovalPassed" sourceRef="ifSpecialApprovalPass" targetRef="theEnd2"> 
+      	<conditionExpression xsi:type="tFormalExpression">${specialApproved == 'true'}</conditionExpression> 
+    </sequenceFlow> 
+ 	<endEvent id="theEnd2" /> 
+ 	
+ 	<!-- 特殊部门审批未通过，跳到<是否需要重提申请> -->
+ 	<sequenceFlow id="specialApprovalRejected" sourceRef="ifSpecialApprovalPass" targetRef="decideUserReApply"> 
+      	<conditionExpression xsi:type="tFormalExpression">${specialApproved == 'false'}</conditionExpression> 
+    </sequenceFlow>
+	
+	<!-- 流程流回申请人，决定是否需要重提申请 -->
+    <userTask id="decideUserReApply" name="decideUserReApply" activiti:assignee="${proposer}"/>
+     
+    <sequenceFlow id="toIfReApply" sourceRef="decideUserReApply" targetRef="ifReApply" /> 
+ 	
+ 	<!-- 判断是否需要重提申请 -->
+    <exclusiveGateway id="ifReApply" name="if apply resend" />
+    
+    <!-- 需要重提申请，跳回用户申请 -->
+    <sequenceFlow id="toUserReApply" sourceRef="ifReApply" targetRef="userApply"> 
+      	<conditionExpression xsi:type="tFormalExpression">${userReApply == 'true'}</conditionExpression> 
+    </sequenceFlow> 
+ 
+ 	<!-- 不需要重提申请，流程结束 -->
+    <sequenceFlow id="toCloseProcess" sourceRef="ifReApply" targetRef="theEnd3"> 
+      	<conditionExpression xsi:type="tFormalExpression">${userReApply == 'false'}</conditionExpression> 
+    </sequenceFlow> 
+    <endEvent id="theEnd3" /> 
+</process> 
+</definitions> 

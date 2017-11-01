@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="storageMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.storage.mapper.StorageMapper" />
+	</bean>	
+	<!-- 存储管理 -->
+	<bean id="storage.viewstorage" class="${common.package}.storage.action.ViewStorageAction" scope="prototype" />
+	<bean id="storage.addstorage" class="${common.package}.storage.action.AddStorageAction" scope="prototype" />
+	<bean id="storage.viewstoragedetail" class="${common.package}.storage.action.ViewStorageDetailAction" scope="prototype" />
+	<bean id="storage.updatestorage" class="${common.package}.storage.action.UpdateStorageAction" scope="prototype" />
+	<bean id="storage.delstorage" class="${common.package}.storage.action.DelStorageAction" scope="prototype" />
+	<bean id="storage.updatestoragestatus" class="${common.package}.storage.action.UpdateStorageStatusAction" scope="prototype" />
+	<bean id="storage.distributestorage" class="${common.package}.storage.action.DistributeStorageAction" scope="prototype" />
+	<bean id="storage.viewselfstorage" class="${common.package}.storage.action.ViewSelfStorageAction" scope="prototype" />
+	<!-- 打印条码 -->
+	<bean id="storage.printbarcode" class="${common.package}.storage.action.PrintBarcodeAction" scope="prototype"/>
+	<bean id="storage.configbarcode" class="${common.package}.storage.action.ConfigBarcodeAction" scope="prototype" />
+</beans>

@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+validator.Checked=src/application-context.xml,src/hdsec/web/project,WebContent,inttest/ws/applicationContext.xml
+validator.Unchecked=

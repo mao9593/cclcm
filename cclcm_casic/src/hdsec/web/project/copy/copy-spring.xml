@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="copyMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.copy.mapper.CopyMapper" />
+	</bean>
+ 	
+  	<!--复印作业管理 -->
+	<bean id="copy.addcopyevent" class="${common.package}.copy.action.AddCopyEventAction" scope="prototype" />	
+	<bean id="copy.managecopyevent" class="${common.package}.copy.action.ManageCopyEventAction" scope="prototype" />
+	<bean id="copy.submitcopyevent" class="${common.package}.copy.action.SubmitCopyEventAction" scope="prototype" />
+	<bean id="copy.viewcopyeventdetail" class="${common.package}.copy.action.ViewCopyEventDetailAction" scope="prototype" />
+	<bean id="copy.updatecopyevent" class="${common.package}.copy.action.UpdateCopyEventAction" scope="prototype" />
+	<bean id="copy.delcopyevent" class="${common.package}.copy.action.DelCopyEventAction" scope="prototype" />
+	<bean id="copy.managecopyjob" class="${common.package}.copy.action.ManageCopyJobAction" scope="prototype"/>
+	<bean id="copy.viewpersonalpaperledger" class="${common.package}.copy.action.ViewPersonalPaperledgerAction" scope="prototype"/>
+	<bean id="copy.managecopyeventlist" class="${common.package}.copy.action.ManageCopyEventListAction" scope="prototype" />
+	<bean id="copy.updateisbarcode" class="${common.package}.copy.action.UpdateIsbarcodeAction" scope="prototype" />
+	<bean id="copy.updatecopystatus" class="${common.package}.copy.action.UpdateCopyStatusAction" scope="prototype" />
+	<bean id="copy.viewcopypaperledger" class="${common.package}.copy.action.ViewCopyPaperLedgerAction" scope="prototype"/>
+	<bean id="copy.reprintbarcode" class="${common.package}.copy.action.ReprintBarcodeAction" scope="prototype"/>
+	<bean id="copy.submitcopyeventbyledger" class="${common.package}.copy.action.SubmitCopyEventByLedgerAction" scope="prototype" />
+	<bean id="copy.addcopyprocessjob" class="${common.package}.copy.action.AddCopyProcessJobAction" scope="prototype" />	
+	<bean id="copy.cancelcopyevent" class="${common.package}.copy.action.CancelCopyEventAction" scope="prototype" />	
+	<bean id="copy.viewcopyjobdetail" class="${common.package}.copy.action.ViewCopyJobDetailAction" scope="prototype" />
+	<bean id="copy.configbarcode" class="${common.package}.copy.action.ConfigBarcodeAction" scope="prototype" />
+	<!-- 审批复印任务 -->
+	<bean id="copy.managecopyaprvjob" class="${common.package}.copy.action.ManageCopyAprvJobAction" scope="prototype" />	
+	<bean id="copy.approvecopyjob" class="${common.package}.copy.action.ApproveCopyJobAction" scope="prototype" />	
+	<bean id="copy.viewcopyaprvjob" class="${common.package}.copy.action.ViewCopyAprvJobAction" scope="prototype" />
+	<!-- 外来文件复印申请 -->
+	<bean id="copy.addcopyeventbyenter" class="${common.package}.copy.action.AddCopyEventByEnterAction" scope="prototype" />
+	<bean id="copy.addcopyprocessjobbyenter" class="${common.package}.copy.action.AddCopyProcessJobByEnterAction" scope="prototype" />	
+	<bean id="copy.managecopyjobbyenter" class="${common.package}.copy.action.ManageCopyJobByEnterAction" scope="prototype"/>
+	<bean id="copy.managecopyaprvjobbyenter" class="${common.package}.copy.action.ManageCopyAprvJobByEnterAction" scope="prototype" />	
+	<bean id="copy.viewcopyaprvjobbyenter" class="${common.package}.copy.action.ViewCopyAprvJobByEnterAction" scope="prototype" />
+	<bean id="copy.managecopyeventlistbyenter" class="${common.package}.copy.action.ManageCopyEventListByEnterAction" scope="prototype" />
+	<bean id="copy.viewcopypaperledgerbyenter" class="${common.package}.copy.action.ViewCopyPaperLedgerByEnterAction" scope="prototype"/>
+	<bean id="copy.cancelcopyeventbyenter" class="${common.package}.copy.action.CancelCopyEventByEnterAction" scope="prototype" />	
+	
+	<!-- 合并复印申请 -->
+	<bean id="copy.managecopyeventlistbymerge" class="${common.package}.copy.action.ManageCopyEventListByMergeAction" scope="prototype" />
+	<bean id="copy.viewcopypaperledgerbymerge" class="${common.package}.copy.action.ViewCopyPaperLedgerByMergeAction" scope="prototype"/>
+</beans>

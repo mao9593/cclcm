@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	
+	<bean id="securityUserMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.securityuser.mapper.SecurityUserMapper" />
+	</bean>
+	<bean id="securityuser.adduserseclvchangeevent" class="${common.package}.securityuser.action.AddUserSeclvChangeEventAction" scope="prototype"/>
+	<bean id="securityuser.manageuserseclvchangelist" class="${common.package}.securityuser.action.ManageUserSeclvChangeListAction" scope="prototype"/>
+	<bean id="securityuser.viewuseclvchangedetail" class="${common.package}.securityuser.action.ViewUSeclvChangeDetailAction" scope="prototype"/>
+	<bean id="securityuser.deluseclvchangeevent" class="${common.package}.securityuser.action.DelUSeclvChangeEventAction" scope="prototype"/>
+	<bean id="securityuser.manageuseclvchangeaprvjob" class="${common.package}.securityuser.action.ManageUSeclvChangeAprvJobAction" scope="prototype"/>	
+	<bean id="securityuser.approveuseclvchangejob" class="${common.package}.securityuser.action.ApproveUSeclvChangeJobAction" scope="prototype"/>
+	<bean id="securityuser.viewuseclvchangeaprvjob" class="${common.package}.securityuser.action.ViewUSeclvChangeAprvJobAction" scope="prototype"/>
+	<bean id="securityuser.updateuseclv" class="${common.package}.securityuser.action.UpdateUSeclvAction" scope="prototype"/>
+
+	<!-- 离职申请 -->
+	<bean id="securityuser.addresignevent" class="${common.package}.securityuser.action.AddResignEventAction" scope="prototype"/>
+	<bean id="securityuser.manageresignlist" class="${common.package}.securityuser.action.ManageResignListAction" scope="prototype"/>
+	<bean id="securityuser.viewuresigndetail" class="${common.package}.securityuser.action.ViewUResignDetailAction" scope="prototype"/>
+	<bean id="securityuser.deluresignevent" class="${common.package}.securityuser.action.DelUResignEventAction" scope="prototype"/>
+	<bean id="securityuser.manageuresignaprvjob" class="${common.package}.securityuser.action.ManageUResignAprvJobAction" scope="prototype"/>	
+	<bean id="securityuser.viewuresignaprvjob" class="${common.package}.securityuser.action.ViewUResignAprvJobAction" scope="prototype"/>
+	<bean id="securityuser.approveuresignjob" class="${common.package}.securityuser.action.ApproveUResignJobAction" scope="prototype"/>
+
+	<bean id="securityuser.adduserabroadevent" class="${common.package}.securityuser.action.AddUserAbroadEventAction" scope="prototype"/>
+	<bean id="securityuser.manageuserabroadlist" class="${common.package}.securityuser.action.ManageUserAbroadListAction" scope="prototype"/>
+	<bean id="securityuser.viewuserabroaddetail" class="${common.package}.securityuser.action.ViewUserAbroadDetailAction" scope="prototype"/>
+	<bean id="securityuser.deluserabroadevent" class="${common.package}.securityuser.action.DelUserAbroadEventAction" scope="prototype"/>
+	<bean id="securityuser.manageuserabroadaprvjob" class="${common.package}.securityuser.action.ManageUserAbroadAprvJobAction" scope="prototype"/>
+	<bean id="securityuser.viewuserabroadaprvjob" class="${common.package}.securityuser.action.ViewUserAbroadAprvJobAction" scope="prototype"/>
+	<bean id="securityuser.approveuabroadjob" class="${common.package}.securityuser.action.ApproveUAbroadJobAction" scope="prototype"/>
+	<bean id="securityuser.adduserentrustevent" class="${common.package}.securityuser.action.AddUserEntrustEventAction" scope="prototype"/>
+	<bean id="securityuser.manageuserentrustlist" class="${common.package}.securityuser.action.ManageUserEntrustListAction" scope="prototype"/>
+	<bean id="securityuser.viewuserentrustdetail" class="${common.package}.securityuser.action.ViewUserEntrustDetailAction" scope="prototype"/>
+	<bean id="securityuser.deluserentrustevent" class="${common.package}.securityuser.action.DelUserEntrustEventAction" scope="prototype"/>
+	<bean id="securityuser.manageuserentrustaprvjob" class="${common.package}.securityuser.action.ManageUserEntrustAprvJobAction" scope="prototype"/>
+	<bean id="securityuser.viewuserentrustaprvjob" class="${common.package}.securityuser.action.ViewUserEntrustAprvJobAction" scope="prototype"/>
+	<bean id="securityuser.approveuserentrustjob" class="${common.package}.securityuser.action.ApproveUserEntrustJobAction" scope="prototype"/>
+  	<bean id="securityuser.logoset" class="${common.package}.securityuser.action.LogoSetAction" scope="prototype" />
+	
+	<!-- 用户人员信息完善 --> 
+	<bean id="securityuser.adduserinfoevent" class="${common.package}.securityuser.action.AddUserInfoEventAction" scope="prototype"/>
+	<bean id="securityuser.manageuserinfolist" class="${common.package}.securityuser.action.ManageUserInfoListAction" scope="prototype"/>
+	<bean id="securityuser.viewuserinfodetail" class="${common.package}.securityuser.action.ViewUserInfoDetailAction" scope="prototype"/>
+	<bean id="securityuser.deluserinfoevent" class="${common.package}.securityuser.action.DelUserInfoEventAction" scope="prototype"/>
+	<bean id="securityuser.manageuserinfoaprvjob" class="${common.package}.securityuser.action.ManageUserInfoAprvJobAction" scope="prototype"/>
+	<bean id="securityuser.viewuserinfoaprvjob" class="${common.package}.securityuser.action.ViewUserInfoAprvJobAction" scope="prototype"/>
+	<bean id="securityuser.approveuserinfojob" class="${common.package}.securityuser.action.ApproveUserInfoJobAction" scope="prototype"/>
+
+	 <!-- 岗位管理yangjl -->
+	<bean id="securityuser.manageuserpost" class="${common.package}.securityuser.action.ManageUserPostAction" scope="prototype" />
+	<bean id="securityuser.adduserpost" class="${common.package}.securityuser.action.AddUserPostAction" scope="prototype" />
+  	<bean id="securityuser.deluserpost" class="${common.package}.securityuser.action.DelUserPostAction" scope="prototype" />
+  	<bean id="securityuser.updateuserpost" class="${common.package}.securityuser.action.UpdateUserPostAction" scope="prototype" />
+  	<bean id="securityuser.recoveruserpost" class="${common.package}.securityuser.action.RecoverUserPostAction" scope="prototype" />
+  	
+  	<bean id="securityuser.clienttask" class="${common.package}.securityuser.action.ClientTaskAction" scope="prototype" />
+  	<bean id="securityuser.contanct" class="${common.package}.securityuser.action.ContanctAction" scope="prototype" />
+  	<bean id="securityuser.addcompanycontanct" class="${common.package}.securityuser.action.AddCompanycontactAction" scope="prototype" />
+  	<bean id="securityuser.updatecompanycontanct" class="${common.package}.securityuser.action.UpdateCompanycontactAction" scope="prototype" />
+  	<bean id="securityuser.deletecompanycontanct" class="${common.package}.securityuser.action.DeleteCompanycontanctAction" scope="prototype" />
+  	<bean id="securityuser.managealluserinfolist" class="${common.package}.securityuser.action.ManageAllUserInfoListAction" scope="prototype" />
+  	<bean id="securityuser.getuserinfo" class="${common.package}.securityuser.action.GetUserInfoAction" scope="prototype" />
+
+  	<bean id="securityuser.managejoblist" class="${common.package}.securityuser.action.ManageJobListAction" scope="prototype" />
+  	<!-- <bean id="securityuser.viewalljobdetail" class="${common.package}.securityuser.action.ViewAllJobDetailAction" scope="prototype" /> -->
+  	
+	<bean id="securityuser.fileupload" class="${common.package}.securityuser.action.FileUploadAction" scope="prototype" />
+  	<bean id="securityuser.deluploadedfile" class="${common.package}.securityuser.action.DelUploadedFileAction" scope="prototype" />
+  	
+  	<bean id="securityuser.getresignuserinfo" class="${common.package}.securityuser.action.GetResignUserInfoAction" scope="prototype" />
+  	
+  	<bean id="securityuser.managebmsecuserlist" class="${common.package}.securityuser.action.ManageBmSecUserListAction" scope="prototype" />
+  	<bean id="securityuser.viewbmuserinfodetail" class="${common.package}.securityuser.action.ViewBmUserInfoDetailAction" scope="prototype" />
+  	<bean id="securityuser.backupuserpartinfo" class="${common.package}.securityuser.action.BackUpUserPartInfoAction" scope="prototype" />
+  	<bean id="securityuser.manageapprovelist" class="${common.package}.securityuser.action.ManageApproveListAction" scope="prototype" />
+  	<bean id="securityuser.managesecusereventlist" class="${common.package}.securityuser.action.ManageSecUserEventListAction" scope="prototype" />
+  	<bean id="securityuser.delsecuserevent" class="${common.package}.securityuser.action.DelSecUserEventAction" scope="prototype" />
+  	<bean id="securityuser.manageaprvjob" class="${common.package}.securityuser.action.ManageAprvJobAction" scope="prototype" />
+  	<bean id="securityuser.viewaprvjob" class="${common.package}.securityuser.action.ViewAprvJobAction" scope="prototype" />
+  	<bean id="securityuser.exportbmsecuser" class="${common.package}.securityuser.action.ExportBmSecUserAction" scope="prototype" />
+</beans>

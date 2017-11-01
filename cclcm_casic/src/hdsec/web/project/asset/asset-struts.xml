@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="asset" namespace="/asset" extends="struts-default">
+		<action name="addpropertyevent" class="asset.addpropertyevent">
+			<result>/html/asset/addpropertyevent.jsp</result>
+			<result name="ok" type="redirect">/asset/submitassetevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addpurchaseprocessjob" class="asset.addpurchaseprocessjob">
+			<result>/html/asset/addpurchaseprocessjob.jsp</result>
+			<result name="ok" type="redirect">/asset/managepurchaselist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managepurchaselist" class="asset.managepurchaselist">
+			<result>/html/asset/managepurchaselist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatepurchasestatus" class="asset.updatepurchasestatus">
+			<result type="redirect">/asset/managepurchaselist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageproperty" class="asset.manageproperty">
+			<result>/html/asset/manageproperty.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="wasteeventlist" class="asset.wasteeventlist">
+			<result>/html/asset/wasteeventlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addstoreevent" class="asset.addstoreevent">
+			<result>/html/asset/addstoreevent.jsp</result>
+			<result name="ok" type="redirect">/asset/storeeventlist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="storeeventlist" class="asset.storeeventlist">
+			<result>/html/asset/storeeventlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="addoutevent" class="asset.addoutevent">
+			<result>/html/asset/addoutevent.jsp</result>
+			<result name="ok" type="redirect">/asset/outeventist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="outeventist" class="asset.outeventist">
+			<result>/html/asset/outeventist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--审批  -->
+		<action name="managepurchaseaprvjob" class="asset.managepurchaseaprvjob">
+			<result>/html/asset/managepurchaseaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvepurchasejob" class="asset.approvepurchasejob">
+			<result>/html/asset/approvepurchasejob.jsp</result>
+			<result type="redirect" name="ok">/asset/managepurchaseaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpurchaseaprvjob" class="asset.viewpurchaseaprvjob">
+			<result>/html/asset/viewpurchaseaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看详情 -->
+		<action name="viewpurchaseventdetail" class="asset.viewpurchaseventdetail">
+			<result>/html/asset/viewpurchaseventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 删除未提交流程的任务 -->
+		<action name="delpurchaseevent" class="asset.delpurchaseevent">
+			<result type="redirect">/asset/addpropertyevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看资产采购任务详细 -->
+		<action name="viewpurchasejobdetail" class="asset.viewpurchasejobdetail">
+			<result>/html/asset/viewpurchasejobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看资产详情 -->
+		<action name="viewcycledetail" class="asset.viewcycledetail">
+			<result>/html/asset/viewpropertycycledetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 资产报废流程 -->
+		<action name="handlepropertyjob" class="asset.handlepropertyjob">
+			<result>/html/asset/handlepropertyjob.jsp</result>
+			<result name="waste">/html/asset/wasteapplyproperty.jsp</result>
+			<result name="ok" type="redirect">/asset/manageproperty.action</result>
+			<result name="store" type="redirect">/asset/addstoreevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 资产变动管理 -->
+		<action name="managehandleproperty" class="asset.managehandleproperty">
+			<result>/html/asset/managehandleproperty.jsp</result>
+			<result name="ok">/html/asset/managehandlepropertydept.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看资产变动详情，有流程 -->
+		<action name="viewpropertyledgerinfo" class="asset.viewpropertyledgerinfo">
+			<result>/html/asset/viewpropertyledgerinfo.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 取消资产变动申请 -->
+		<action name="cancelhandleproperty" class="asset.cancelhandleproperty">
+			<result type="redirect">/asset/managehandleproperty.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 资产状态变更 -->
+		<action name="updatepropertystatus" class="asset.updatepropertystatus">
+			<result>/html/asset/updatedevicestatus.jsp</result>
+			<result name="destroy" type="redirect">/asset/managehandleproperty.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 资产变动审批 -->
+		<action name="managehandleaprvjob" class="asset.managehandleaprvjob">
+			<result>/html/asset/managehandleaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewhandleaprvjob" class="asset.viewhandleaprvjob">
+			<result>/html/asset/viewhandleaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="handlejob" class="asset.handlejob">
+			<result>/html/asset/handlejob.jsp</result>
+			<result type="redirect" name="ok">/asset/managehandleaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewhandlejobdetail" class="asset.viewhandlejobdetail">
+			<result>/html/asset/viewhandlejobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 资产入库审批 -->
+		<action name="manageinaprvjob" class="asset.manageinaprvjob">
+			<result>/html/asset/managehandleaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewinaprvjob" class="asset.viewinaprvjob">
+			<result>/html/asset/viewhandleaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 资产类型管理 -->
+		<action name="managekind" class="asset.managekind">
+			<result>/html/asset/managekind.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addkind" class="asset.addkind">
+			<result>/html/asset/addkind.jsp</result>
+			<result name="insert" type="redirect">/asset/managekind.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatekind" class="asset.updatekind">
+			<result>/html/asset/updatekind.jsp</result>
+			<result name="update" type="redirect">/asset/managekind.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delkind" class="asset.delkind">
+			<result type="redirect">/asset/managekind.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageselfproperty" class="asset.manageselfproperty">
+			<result>/html/asset/manageselfproperty.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<!-- 资产入库，按41所按需采购 -->
+		<action name="addstorageevent" class="asset.addstorageevent">
+			<result>/html/asset/addstorageevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managestoragelist" class="asset.managestoragelist">
+			<result>/html/asset/managestoragelist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addstoragejob" class="asset.addstoragejob">
+			<result>/html/asset/addstoragejob.jsp</result>
+			<result name="ok" type="redirect">/asset/managestoragelist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewstorageeventdetail" class="asset.viewstorageeventdetail">
+			<result>/html/asset/viewstorageeventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatestoragestatus" class="asset.updatestoragestatus">
+			<result type="redirect">/asset/managestoragelist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managestorageaprvjob" class="asset.managestorageaprvjob">
+			<result>/html/asset/managestorageaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvestoragejob" class="asset.approvestoragejob">
+			<result>/html/asset/approvestoragejob.jsp</result>
+			<result type="redirect" name="ok">/asset/managestorageaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewstorageaprvjob" class="asset.viewstorageaprvjob">
+			<result>/html/asset/viewstorageaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 资产变更、报废，按41所按需采购 -->
+       <action name="addpropertywasteevent" class="asset.addpropertywasteevent">
+			<result>/html/asset/wasteapplyproperty.jsp</result>
+			<result type="redirect" name="ok" >/asset/manageproperty.action</result>
+			<result type="redirect" name="dept" >/asset/managedeptproperty.action</result>
+			<result type="redirect" name="self" >/asset/manageselfproperty.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>		
+		<action name="viewwasteeventdetail" class="asset.viewwasteeventdetail">
+			<result>/html/asset/viewwasteeventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatewastechangestatus" class="asset.updatewastechangestatus">
+			<result type="redirect">/asset/managehandleproperty.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managedeptproperty" class="asset.managedeptproperty">
+			<result>/html/asset/managedeptproperty.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="exportselfproperty" class="asset.exportselfproperty">
+			<result>/html/asset/exportproperty.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportdeptproperty" class="asset.exportdeptproperty">
+			<result>/html/asset/exportproperty.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportproperty" class="asset.exportproperty">
+			<result>/html/asset/exportproperty.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatepropertyevent" class="asset.updatepropertyevent">
+			<result>/html/asset/updatepropertyevent.jsp</result>
+			<result type="redirect" name="ok">asset/addpropertyevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--导入-->
+		<action name="importproperty" class="asset.importproperty">
+			<result>/html/asset/importproperty.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addurgentpropertyjob" class="asset.addurgentpropertyjob">
+			<result>/html/asset/addurgentpropertyjob.jsp</result>
+			<result name="ok" type="redirect">/asset/managepurchaselist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

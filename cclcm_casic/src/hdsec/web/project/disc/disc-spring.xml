@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="discMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.disc.mapper.DiscMapper" />
+	</bean>
+ 	<!-- 录入空白盘 -->
+	<bean id="disc.addspacecdjob" class="${common.package}.disc.action.AddSpaceCDJobAction" scope="prototype" />
+	<bean id="disc.managespacecdenterlistjob" class="${common.package}.disc.action.ManageSpaceCDEnterListJobAction" scope="prototype" />
+	<!-- 空白盘管理 -->
+	<bean id="disc.viewborrowspacecd" class="${common.package}.disc.action.ViewBorrowSpaceCDAction" scope="prototype" />
+	<bean id="disc.viewdeptspacecdledger" class="${common.package}.disc.action.ViewDeptSpaceCDLedgerAction" scope="prototype"/>
+	<bean id="disc.spacecdchangeuse" class="${common.package}.disc.action.SpaceCdChangeUseAction" scope="prototype"/>
+	<bean id="disc.viewdeptchangespacecdledger" class="${common.package}.disc.action.ViewDeptChangeSpaceCDLedgerAction" scope="prototype"/>
+	<bean id="disc.viewspacecdinfo" class="${common.package}.disc.action.ViewSpaceCdInfoAction" scope="prototype" />
+	<bean id="disc.addapplyspacecdjob" class="${common.package}.disc.action.AddApplySpaceCdJobAction" scope="prototype" />
+ 	<bean id="disc.addspacecdprocessjob" class="${common.package}.disc.action.AddSpaceCdProcessJobAction" scope="prototype" />
+	<bean id="disc.manageborrowspacecdlist" class="${common.package}.disc.action.ManageBorrowSpaceCdListAction" scope="prototype" />
+	<bean id="disc.viewspacecdledgerinfo" class="${common.package}.disc.action.ViewSpaceCdledgerInfoAction" scope="prototype" />
+	<bean id="disc.cancelhandlespacecd" class="${common.package}.disc.action.CancelHandleSpaceCDAction" scope="prototype" />
+	<bean id="disc.managespacecdaprvjob" class="${common.package}.disc.action.ManageSpaceCdAprvJobAction" scope="prototype" />
+	<bean id="disc.approvespacecdjob" class="${common.package}.disc.action.ApproveSpaceCdJobAction" scope="prototype" />
+	<bean id="disc.viewspacecdhandlejob" class="${common.package}.disc.action.ViewSpaceCdHandleJobAction" scope="prototype" />
+	<bean id="disc.viewselfspacecdledger" class="${common.package}.disc.action.ViewSelfSpaceCDLedgerAction" scope="prototype" />
+	<bean id="disc.spacecdchangeselfentitycd" class="${common.package}.disc.action.SpaceCdChangeSelfEntityCdAction" scope="prototype"/>
+	<bean id="disc.viewgivespacecdledger" class="${common.package}.disc.action.ViewGiveSpaceCDLedgerAction" scope="prototype"/>
+	<bean id="disc.spacecdchangedeptentitycd" class="${common.package}.disc.action.SpaceCdChangeDeptEntityCdAction" scope="prototype"/>
+	<bean id="disc.spacecdreturn" class="${common.package}.disc.action.SpaceCdReturnAction" scope="prototype"/>
+	<bean id="disc.viewspacecdhandlejobdetail" class="${common.package}.disc.action.ViewSpaceCDHandleJobDetailAction" scope="prototype"/>
+	<bean id="disc.submitspacecdevent" class="${common.package}.disc.action.SubmitSpaceCDEventAction" scope="prototype" />
+	<bean id="disc.viewspacecdstock" class="${common.package}.disc.action.ViewSpaceCDStockAction" scope="prototype" />
+	<bean id="disc.managespacecdlistjob" class="${common.package}.disc.action.ManageSpaceCDListJobAction" scope="prototype" />
+	<bean id="disc.viewwaitingjoblist" class="${common.package}.disc.action.ViewWaitingJobListAction" scope="prototype" />
+	<bean id="disc.managedeptspacecdledger" class="${common.package}.disc.action.ManageDeptSpaceCDLedgerAction" scope="prototype"/>
+	<!-- <bean id="disc.assignspacecdjob" class="${common.package}.disc.action.AssignSpaceCDJobAction" scope="prototype"/> -->
+	<bean id="disc.viewspacecdeventdetail" class="${common.package}.disc.action.ViewSpaceCDEventDetailAction" scope="prototype"/>
+	<bean id="disc.delspacecdevent" class="${common.package}.disc.action.DelSpaceCDEventAction" scope="prototype"/>
+	<bean id="disc.delmultispacecdevent" class="${common.package}.disc.action.DelMultiSpaceCDEventAction" scope="prototype"/>
+	<!-- <bean id="disc.cancelhandlespacecd" class="${common.package}.disc.action.CancelHandleSpaceCdAction" scope="prototype"/> -->	
+</beans> 

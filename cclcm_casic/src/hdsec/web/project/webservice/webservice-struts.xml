@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="webservice" namespace="/webservice" extends="struts-default">
+		<action name="postsuccburn" class="webservice.postsuccburn">
+			<result>/html/error.jsp</result>
+		</action>
+		<action name="oapaper" class="webservice.oapaper">
+			<result>/html/error.jsp</result>
+		</action>
+		<!-- 单点登录集成 -->
+		<action name="singlepointlogin" class="webservice.singlepointlogin">
+			<result type="redirect">/main.jsp</result>
+			<result name="pengdingwork" type="redirect">${DestURL}</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		<!-- 协同平台待办文件列表 -->
+		<action name="waittodo" class="webservice.waittodo">
+			<result>/html/client/waittodo.jsp</result>
+			<result name="fail">/html/client/fail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+		</action>
+		<action name="checkurl" class="webservice.checkurl">
+			<result type="redirect">${url}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result name="isnull">/html/client/nullurl.jsp</result>
+		</action>
+		<!-- 邦辰关键字集成接口 -->
+		<action name="caepkeywordspostinfo" class="webservice.caepkeywordspostinfo">
+			<result>/html/error.jsp</result>
+		</action>
+		<action name="keywordsfrombangchen" class="webservice.keywordsfrombangchen">
+			<result>/html/error.jsp</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="device" namespace="/device" extends="struts-default">
+	
+		<!-- 磁介质管理 -->
+		<action name="managedevice" class="device.managedevice">
+			<result>/html/device/managedevice.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="adddevice" class="device.adddevice">
+			<result>/html/device/adddevice.jsp</result>
+			<result name="ok" type="redirect">/device/managedevice.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatedevice" class="device.updatedevice">
+			<result>/html/device/updatedevice.jsp</result>
+			<result name="ok" type="redirect">/device/managedevice.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdevicedetail" class="device.updatedevice">
+			<result>/html/device/viewdevicedetail.jsp</result>
+			<result name="ok" type="redirect">/device/managedevice.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatedevicestatus" class="device.updatedevicestatus">
+			<result>/html/device/updatedevicestatus.jsp</result>
+			<result name="destroy" type="redirect">/device/managehandledevice.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="returndevice" class="device.returndevice">
+			<result>/html/device/updatedevicestatus.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	
+		<!-- 磁介质借入借出作业管理 -->
+		
+		<action name="managedeviceevent" class="device.managedeviceevent">
+			<result>/html/device/managedeviceevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatedeviceevent" class="device.updatedeviceevent">
+			<result>/html/device/updatedeviceevent.jsp</result>
+			<result type="redirect" name="ok">/device/submitdeviceevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deldeviceevent" class="device.deldeviceevent">
+			<result>/html/device/result.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdeviceeventdetail" class="device.viewdeviceeventdetail">
+			<result>/html/device/viewdeviceeventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdeviceeventlist" class="device.viewdeviceeventlist">
+			<result>/html/device/viewdeviceeventlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="distributedevice" class="device.distributedevice">
+			<result>/html/device/distributedevice.jsp</result>
+			<result name="ok" type="redirect">/device/viewdeviceeventlist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 添加借用申请 -->
+		<action name="adddeviceevent" class="device.adddeviceevent">
+			<result>/html/device/result.jsp</result>
+			<result name="ok" type="redirect">/device/submitdeviceevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 提交审批申请 -->
+		<action name="submitdeviceevent" class="device.submitdeviceevent">
+			<result>/html/device/submitdeviceevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 添加借用申请任务 -->
+		<action name="adddeviceprocessjob" class="device.adddeviceprocessjob">
+			<result>/html/device/adddeviceprocessjob.jsp</result>
+			<result name="ok">/html/device/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<!-- 查看借用申请列表 -->
+		<action name="managedevicejob" class="device.managedevicejob">
+			<result>/html/device/managedevicejob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看借用任务详细 -->
+		<action name="viewdevicejobdetail" class="device.viewdevicejobdetail">
+			<result>/html/device/viewdevicejobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 取消借用申请 -->
+		<action name="canceldeviceevent" class="device.canceldeviceevent">
+			<result>/html/device/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 审批磁介质借用任务 -->
+		<action name="managedeviceaprvjob" class="device.managedeviceaprvjob">
+			<result>/html/device/managedeviceaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvedevicejob" class="device.approvedevicejob">
+			<result>/html/device/approvedevicejob.jsp</result>
+			<result type="redirect" name="ok">/device/managedeviceaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdeviceaprvjob" class="device.viewdeviceaprvjob">
+			<result>/html/device/viewdeviceaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 磁介质销毁任务管理 -->
+		<action name="handledevicejob" class="device.handledevicejob">
+			<result>/html/device/handledevicejob.jsp</result>
+			<result name="ok" type="redirect">/device/managedevice.action</result>
+			<result name="personal" type="redirect">/ledger/viewpersonalledindeviceledger.action</result>
+			<result name="secError" type="redirect">/device/managedevice.action?secError=Y</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managehandledevice" class="device.managehandledevice">
+			<result>/html/device/managehandledevice.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="cancelhandledevice" class="device.cancelhandledevice">
+			<result type="redirect">/device/managehandledevice.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdeviceledgerinfo" class="device.viewdeviceledgerinfo">
+			<result>/html/device/viewdeviceledgerinfo.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 打印条码 -->
+		<action name="printbarcode" class="device.printbarcode">
+			<result>/html/device/barcodes.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 配置条码格式 -->
+		<action name="configbarcode" class="device.configbarcode">
+			<result>/html/device/configbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 磁介质类型管理 -->
+		<action name="managedevicetype" class="device.managedevicetype">
+			<result>/html/device/managedevicetype.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 添加磁介质类型 -->
+		<action name="adddevicetype" class="device.adddevicetype">
+			<result>/html/device/adddevicetype.jsp</result>
+			<result name="insert" type="redirect">/device/managedevicetype.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 修改磁介质类型 -->
+		<action name="updatedevicetype" class="device.updatedevicetype">
+			<result>/html/device/updatedevicetype.jsp</result>
+			<result name="update" type="redirect">/device/managedevicetype.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 删除磁介质类型 -->
+		<action name="deldevicetype" class="device.deldevicetype">
+			<result type="redirect">/device/managedevicetype.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 磁介质批量录入 -->
+		<action name="importdevice" class="device.importdevice">
+			<result>/html/device/importdevice.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 磁介质批量导出 -->
+		<action name="exportmanagedevice" class="device.exportmanagedevice">
+			<result>/html/ledger/managedevice.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	
+	<bean id="educationMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.education.mapper.EducationMapper" />
+	</bean>
+	<bean id="education.uploadlearningfile" class="${common.package}.education.action.UploadLearningFileAction" scope="prototype"/>	
+	<bean id="education.downloadlearningfile" class="${common.package}.education.action.DownloadLearningFileAction" scope="prototype"/>
+    <bean id="education.managetrainrecord" class="${common.package}.education.action.ManageTrainRecordAction" scope="prototype"/>
+	<bean id="education.addcentrainrecord" class="${common.package}.education.action.AddCenTrainRecordAction" scope="prototype"/>
+	<bean id="education.addouttrainrecord" class="${common.package}.education.action.AddOutTrainRecordAction" scope="prototype"/>
+	<bean id="education.viewrecorddetail" class="${common.package}.education.action.ViewRecordDetailAction" scope="prototype"/>
+	<bean id="education.deletetrainingrecord" class="${common.package}.education.action.DeleteTrainingRecordAction" scope="prototype"/>
+	<bean id="education.updatetrainingrecord" class="${common.package}.education.action.UpdateTrainingRecordAction" scope="prototype"/>
+	<bean id="education.manageclasshour" class="${common.package}.education.action.ManageClassHourAction" scope="prototype"/>
+	<bean id="education.updateclasshour" class="${common.package}.education.action.UpdateClassHourAction" scope="prototype"/>
+</beans>

@@ -1,0 +1,20 @@
+TABLE.treeControl{
+	border: none;
+	border-collapse: separate;
+	border-spacing : 10px;	
+}
+
+TR.treeControl{
+
+}
+
+TD.treeControl{
+
+	text-align : left;
+	font-size : 12px;
+	width:34px;
+}
+
+DIV.treeControl{
+	cursor : hand;
+}

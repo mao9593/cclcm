@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="securityuser" namespace="/securityuser" extends="struts-default">
+		<!-- 用户涉密等级变更 -->
+		<action name="adduserseclvchangeevent" class="securityuser.adduserseclvchangeevent">
+			<result>/html/securityuser/adduserseclvchangeevent.jsp</result>
+			<!-- <result name="add" type="redirect">/securityuser/manageuserseclvchangelist.action?type=NEW</result>
+			<result name="ok" type="redirect">/securityuser/manageuserseclvchangelist.action</result> -->
+			<result name="add" type="redirect">/securityuser/managesecusereventlist.action</result>
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageuserseclvchangelist" class="securityuser.manageuserseclvchangelist">
+			<result>/html/securityuser/manageuserseclvchangelist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewuseclvchangedetail" class="securityuser.viewuseclvchangedetail">
+			<result>/html/securityuser/viewuseclvchangedetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deluseclvchangeevent" class="securityuser.deluseclvchangeevent">
+			<result type="redirect">/securityuser/manageuserseclvchangelist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageuseclvchangeaprvjob" class="securityuser.manageuseclvchangeaprvjob">
+			<result>/html/securityuser/manageuseclvchangeaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveuseclvchangejob" class="securityuser.approveuseclvchangejob">
+			<result>/html/securityuser/approveuseclvchangejob.jsp</result>
+			<!-- <result type="redirect" name="ok">/securityuser/manageuseclvchangeaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewuseclvchangeaprvjob" class="securityuser.viewuseclvchangeaprvjob">
+			<result>/html/securityuser/viewuseclvchangeaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateuseclv" class="securityuser.updateuseclv">
+			<result name="ok" type="redirect">/securityuser/manageuseclvchangeaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+
+		<!-- 用户离职申请 -->
+		<action name="addresignevent" class="securityuser.addresignevent">
+			<result>/html/securityuser/addresignevent.jsp</result>
+			<!-- <result name="ok" type="redirect">/securityuser/manageresignlist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 用户离职作业列表 -->
+		<action name="manageresignlist" class="securityuser.manageresignlist">
+			<result>/html/securityuser/manageresignlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 用户离职作业详情 -->	
+		<action name="viewuresigndetail" class="securityuser.viewuresigndetail">
+			<result>/html/securityuser/viewuresigndetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 用户撤销离职作业申请 -->
+		<action name="deluresignevent" class="securityuser.deluresignevent">
+			<result type="redirect">/securityuser/manageresignlist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 用户离职待审批任务 -->
+		<action name="manageuresignaprvjob" class="securityuser.manageuresignaprvjob">
+			<result>/html/securityuser/manageuresignaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看用户离职审批记录 -->
+		<action name="viewuresignaprvjob" class="securityuser.viewuresignaprvjob">
+			<result>/html/securityuser/viewuresignaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 可审批人审批操作 -->
+		<action name="approveuresignjob" class="securityuser.approveuresignjob">
+			<result>/html/securityuser/approveuresignjob.jsp</result>
+			<!-- <result type="redirect" name="ok">/securityuser/manageuresignaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+
+		
+		<!-- 涉密人员因私出国 -->
+		<action name="adduserabroadevent" class="securityuser.adduserabroadevent">
+			<result>/html/securityuser/adduserabroadevent.jsp</result>
+			<!-- <result name="ok" type="redirect">/securityuser/manageuserabroadlist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="manageuserabroadlist" class="securityuser.manageuserabroadlist">
+			<result>/html/securityuser/manageuserabroadlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewuserabroaddetail" class="securityuser.viewuserabroaddetail">
+			<result>/html/securityuser/viewuserabroaddetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deluserabroadevent" class="securityuser.deluserabroadevent">
+			<result type="redirect">/securityuser/deluserabroadevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	 
+ 		<action name="manageuserabroadaprvjob" class="securityuser.manageuserabroadaprvjob">
+			<result>/html/securityuser/manageuserabroadaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> 
+		<action name="viewuserabroadaprvjob" class="securityuser.viewuserabroadaprvjob">
+			<result>/html/securityuser/viewuserabroadaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="approveuabroadjob" class="securityuser.approveuabroadjob">
+			<result>/html/securityuser/approveuabroadjob.jsp</result>
+			<!-- <result type="redirect" name="ok">/securityuser/manageuserabroadaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>		
+		
+		<!-- 涉密人员委托保密管理 -->	
+		<action name="adduserentrustevent" class="securityuser.adduserentrustevent">
+			<result>/html/securityuser/adduserentrustevent.jsp</result>
+			<!-- <result name="ok" type="redirect">/securityuser/manageuserentrustlist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageuserentrustlist" class="securityuser.manageuserentrustlist">
+			<result>/html/securityuser/manageuserentrustlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewuserentrustdetail" class="securityuser.viewuserentrustdetail">
+			<result>/html/securityuser/viewuserentrustdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deluserentrustevent" class="securityuser.deluserentrustevent">
+			<result type="redirect">/securityuser/deluserentrustevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> 
+ 		<action name="manageuserentrustaprvjob" class="securityuser.manageuserentrustaprvjob">
+			<result>/html/securityuser/manageuserentrustaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> 
+		<action name="viewuserentrustaprvjob" class="securityuser.viewuserentrustaprvjob">
+			<result>/html/securityuser/viewuserentrustaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="approveuserentrustjob" class="securityuser.approveuserentrustjob">
+			<result>/html/securityuser/approveuserentrustjob.jsp</result>
+			<!-- <result type="redirect" name="ok">/securityuser/manageuserentrustaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>			
+		
+		<!-- LOGO SET -->
+		<action name="logoset" class="securityuser.logoset">
+			<result>/html/securityuser/logoset.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 用户人员信息完善 -->	
+		<action name="adduserinfoevent" class="securityuser.adduserinfoevent">
+			<result>/html/securityuser/adduserinfoevent.jsp</result>
+			<result name="ok" type="redirect">/securityuser/manageuserinfolist.action</result>
+			<result name="index_ok">/html/securityuser/index_ok.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageuserinfolist" class="securityuser.manageuserinfolist">
+			<result>/html/securityuser/manageuserinfolist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewuserinfodetail" class="securityuser.viewuserinfodetail">
+			<result>/html/securityuser/viewuserinfodetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="deluserinfoevent" class="securityuser.deluserinfoevent">
+			<result type="redirect">/securityuser/deluserinfoevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> 
+ 		<action name="manageuserinfoaprvjob" class="securityuser.manageuserinfoaprvjob">
+			<result>/html/securityuser/manageuserinfoaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> 
+		<action name="viewuserinfoaprvjob" class="securityuser.viewuserinfoaprvjob">
+			<result>/html/securityuser/viewuserinfoaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="approveuserinfojob" class="securityuser.approveuserinfojob">
+			<result>/html/securityuser/approveuserinfojob.jsp</result>
+			<!-- <result type="redirect" name="ok">/securityuser/manageuserinfoaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>		
+
+		<!-- 岗位管理 yangjl-->
+		<action name="manageuserpost" class="securityuser.manageuserpost">
+			<result>/html/securityuser/manageuserpost.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="adduserpost" class="securityuser.adduserpost">
+			<result>/html/securityuser/adduserpost.jsp</result>
+			<result name="ok" type="redirect">/securityuser/manageuserpost.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deluserpost" class="securityuser.deluserpost">
+			<result type="redirect">/securityuser/manageuserpost.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateuserpost" class="securityuser.updateuserpost">
+			<result>/html/securityuser/updateuserpost.jsp</result>
+			<result name="ok" type="redirect">/securityuser/manageuserpost.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="recoveruserpost" class="securityuser.recoveruserpost">
+			<result type="redirect">/securityuser/manageuserpost.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+       <action name="clienttask" class="securityuser.clienttask">
+			<result>/html/securityuser/viewtasklist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="contanct" class="securityuser.contanct">
+			<result>/html/securityuser/contanct/contanct.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addcompanycontanct" class="securityuser.addcompanycontanct">
+			<result type="redirect">/securityuser/contanct.action</result>
+			<result type="redirect" name="ok">/html/securityuser/contanct/addcompanycontanct.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatecompanycontanct" class="securityuser.updatecompanycontanct">
+			<result>/html/securityuser/contanct/updatecompanycontanct.jsp</result>
+			<result type="redirect" name="OK">/securityuser/contanct.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deletecompanycontanct" class="securityuser.deletecompanycontanct">
+			<result>/html/securityuser/contanct/contanct.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="clientcontanct" class="securityuser.contanct">
+			<result>/html/securityuser/contanct/clientcontanct.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managealluserinfolist" class="securityuser.managealluserinfolist">
+			<result>/html/securityuser/managealluserinfolist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getuserinfo" class="securityuser.getuserinfo">
+			<result>/html/securityuser/getuserinfo.jsp</result>
+			<result name="noinfo">/html/securityuser/nouserinfo.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getresignuserinfo" class="securityuser.getresignuserinfo">
+			<result>/html/securityuser/getresignuserinfo.jsp</result>
+			<result name="noinfo">/html/securityuser/nouserinfo.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managejoblist" class="securityuser.managejoblist">
+			<result>/html/securityuser/managejoblist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+<!-- 		<action name="viewalljobdetail" class="securityuser.viewalljobdetail">
+			<result>/html/securityuser/managejoblist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> -->
+		<action name="fileupload" class="securityuser.fileupload">
+			<result>/html/securityuser/fileupload.jsp</result>
+			<result name="ok">/html/securityuser/fileuploadresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deluploadedfile" class="securityuser.deluploadedfile">
+			<result>/html/burn/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managebmsecuserlist" class="securityuser.managebmsecuserlist">
+			<result>/html/securityuser/managebmsecuserlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewbmuserinfodetail" class="securityuser.viewbmuserinfodetail">
+			<result>/html/securityuser/viewbmuserinfodetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="backupuserpartinfo" class="securityuser.backupuserpartinfo">
+			<result>/html/securityuser/managealluserinfolist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageapprovelist" class="securityuser.manageapprovelist">
+			<result>/html/securityuser/manageapprovelist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managesecusereventlist" class="securityuser.managesecusereventlist">
+			<result>/html/securityuser/managesecusereventlist.jsp</result>
+			<result name="secmanageBMC">/html/secmanage/managecheckeventlist.jsp</result>
+			<result name="secmanage">/html/secmanage/manageseceventlist.jsp</result>
+			<result name="publicity">/html/publicity/managepublicityeventlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delsecuserevent" class="securityuser.delsecuserevent">
+			<result type="redirect">/securityuser/managesecusereventlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageaprvjob" class="securityuser.manageaprvjob">
+			<result>/html/securityuser/manageaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action> 
+		<action name="viewaprvjob" class="securityuser.viewaprvjob">
+			<result>/html/securityuser/viewaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 导出人员信息台账 -->
+		<action name="exportbmsecuser" class="securityuser.exportbmsecuser">
+			<result>/html/computer/successful.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>		 
+	</package>
+</struts>

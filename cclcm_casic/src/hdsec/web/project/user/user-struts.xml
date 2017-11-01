@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="hdsec.web.project.login" namespace="/" extends="struts-default">
+		<action name="index" class="user.index">
+			<result>/html/portal.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result name="changepwd">/html/user/changepwd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result name="noOper">/html/error.jsp</result>
+		</action>
+		<action name="login" class="user.login">
+			<result type="redirect" name="ok">/index.action</result>
+			<result name="timeout">/html/user/login.jsp</result>
+			<result name="error">/html/user/login.jsp</result>
+			<result name="rediretError" type="redirect">${ctx}/login.action?status=${status}</result>
+			<result name="needUploadFile">/html/user/uploadpermissionfile.jsp</result>
+			<result name="submitActivationCode" type="redirect">${ctx}/submitactivationcode.action?register_code=${license}</result>
+		</action>
+		<action name="error" class="user.error">
+			<result>/html/error.jsp</result>
+			<result name="timeout">/html/user/timeout.jsp</result>
+		</action>
+		<action name="logout" class="user.logout">
+			<result type="redirect">/login.action</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 上传提交激活码 -->
+		<action name="submitactivationcode" class="user.submitactivationcode">
+			<result>/html/user/submitactivationcode.jsp</result>
+			<result name="ok" type="redirect">/login.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result name="needUploadFile">/html/user/uploadpermissionfile.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+	<package name="user" namespace="/user" extends="struts-default">
+		<action name="viewsecuser" class="user.viewsecuser">
+			<result>/html/user/viewsecuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getdeptlist" class="user.getdeptlist">
+			<result>/common/getdeptlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configcommontree" class="user.configcommontree">
+			<result>/common/configcommontree.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getalldeptlist" class="user.getalldeptlist">
+			<result>/common/getalldeptlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managesecuser" class="user.managesecuser">
+			<result>/html/user/managesecuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getdepttree" class="user.getdepttree">
+			<result>/html/user/getdepttree.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewuserbydept" class="user.viewuserbydept">
+			<result>/html/user/viewuserbydept.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managesecrole" class="user.managesecrole">
+			<result>/html/user/managesecrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addsecrole" class="user.addsecrole">
+			<result type="redirect">/user/managesecrole.action</result>
+			<result name="add">/html/user/addsecrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delsecrole" class="user.delsecrole">
+			<result type="redirect">/user/managesecrole.action?subsys_code=${subsys_code}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatesecrole" class="user.updatesecrole">
+			<result type="redirect">/user/managesecrole.action</result>
+			<result name="update">/html/user/updatesecrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewuserbyrole" class="user.viewuserbyrole">
+			<result>/html/user/viewuserbyrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="prepconfigrole" class="user.prepconfigrole">
+			<result>/html/user/prepconfigrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configroleapply" class="user.configroleapply">
+			<result>/html/http/xml_http_result.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configroleupdate" class="user.configroleupdate">
+			<result>/html/http/xml_http_result.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addsecuser" class="user.addsecuser">
+			<result>/html/user/addsecuser.jsp</result>
+			<result name="return" type="redirect">/user/viewuserbydept.action?dept_id=${dept_id}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="checkuserid" class="user.checkuserid">
+			<result>/html/user/checkuserid.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="setuserstatus" class="user.setuserstatus">
+			<result>/html/user/setuserstatus.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delsecuser" class="user.delsecuser">
+			<result>/html/user/delsecuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatesecuser" class="user.updatesecuser">
+			<result>/html/user/updatesecuser.jsp</result>
+			<result name="return" type="redirect">/user/viewuserbydept.action?dept_id=${dept_id}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatesecuserbase" class="user.updatesecuserbase">
+			<result>/html/user/updatesecuserbase.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="resetuserpwd" class="user.resetuserpwd">
+			<result>/html/user/resetuserpwd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatesecuserother" class="user.updatesecuserother">
+			<result>/html/user/updatesecuserother.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateuserdept" class="user.updateuserdept">
+			<result>/html/user/updatesecuserother.jsp</result>
+			<result name="done" type="redirect">/user/updatesecuserother.action?user_iidd=${user_iidd}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageuserrole" class="user.manageuserrole">
+			<result>/html/user/manageuserrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="selectrole" class="user.selectrole">
+			<result>/html/user/selectrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateuserrole" class="user.updateuserrole">
+			<result type="redirect">/user/updatesecuserother.action?user_iidd=${user_iidd}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageoper" class="user.manageoper">
+			<result>/html/user/manageoper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getopertree" class="user.getopertree">
+			<result>/common/getopertree.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configoper" class="user.configoper">
+			<result>/html/user/configoper.jsp</result>
+			<result name="introduce">/html/introduce.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addsecoper" class="user.addsecoper">
+			<result>/html/user/addsecoper.jsp</result>
+			<result name="insert" type="redirect">/user/manageoper.action?oper_code=${oper_code}&amp;subsys_code=${subsys_code}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delsecoper" class="user.delsecoper">
+			<result type="redirect">/user/manageoper.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatesecoper" class="user.updatesecoper">
+			<result>/html/user/updatesecoper.jsp</result>
+			<result name="update" type="redirect">/user/manageoper.action?oper_code=${oper_code}&amp;subsys_code=${subsys_code}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managedept" class="user.managedept">
+			<result>/html/user/managedept.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configdept" class="user.configdept">
+			<result>/html/user/configdept.jsp</result>
+			<result name="introduce">/html/introduce.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addsecdept" class="user.addsecdept">
+			<result>/html/user/addsecdept.jsp</result>
+			<result name="insert" type="redirect">/user/managedept.action?dept_id=${dept_id}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managedeptsubsys" class="user.managedeptsubsys">
+			<result>/html/user/managedeptsubsys.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatesecdept" class="user.updatesecdept">
+			<result>/html/user/updatesecdept.jsp</result>
+			<result name="update" type="redirect">/user/managedept.action?dept_id=${dept_id}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delsecdept" class="user.delsecdept">
+			<result type="redirect">/user/managedept.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managedeptpost" class="user.managedeptpost">
+			<result>/html/user/managedeptpost.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="onlineuserstatus" class="user.onlineuserstatus">
+			<result>/html/user/onlineuserstatus.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configoulimit" class="user.configoulimit">
+			<result>/html/user/configoulimit.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewonlineuser" class="user.viewonlineuser">
+			<result>/html/user/viewonlineuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewuserdetail" class="user.viewuserdetail">
+			<result>/html/user/viewuserdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managepost" class="user.managepost">
+			<result>/html/user/managepost.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addpost" class="user.addpost">
+			<result>/html/user/addpost.jsp</result>
+			<result name="insert" type="redirect">/user/managepost.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delpost" class="user.delpost">
+			<result type="redirect">/user/managepost.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatepost" class="user.updatepost">
+			<result>/html/user/updatepost.jsp</result>
+			<result name="update" type="redirect">/user/managepost.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewuserbypost" class="user.viewuserbypost">
+			<result>/html/user/viewuserbypost.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdeptbypost" class="user.viewdeptbypost">
+			<result>/html/user/viewdeptbypost.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configpostorder" class="user.configpostorder">
+			<result>/html/user/configpostorder.jsp</result>
+			<result name="config" type="redirect">/user/managepost.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configpostclass" class="user.configpostclass">
+			<result>/html/user/configpostclass.jsp</result>
+			<result name="config" type="redirect">/user/managepost.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageother" class="user.manageother">
+			<result>/html/user/manageother.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getconfigtree" class="user.getconfigtree">
+			<result>/html/user/getconfigtree.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managedepttype" class="user.managedepttype">
+			<result>/html/user/managedepttype.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="adddepttype" class="user.adddepttype">
+			<result>/html/user/adddepttype.jsp</result>
+			<result name="insert" type="redirect">/user/managedepttype.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deldepttype" class="user.deldepttypee">
+			<result type="redirect">/user/managedepttype.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatedepttype" class="user.updatedepttype">
+			<result>/html/user/updatedepttype.jsp</result>
+			<result name="update" type="redirect">/user/managedepttype.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdeptlevel" class="user.viewdeptlevel">
+			<result>/html/user/viewdeptlevel.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managesubsys" class="user.managesubsys">
+			<result>/html/user/managesubsys.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addsubsys" class="user.addsubsys">
+			<result>/html/user/addsubsys.jsp</result>
+			<result name="insert" type="redirect">/user/managesubsys.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatesubsys" class="user.updatesubsys">
+			<result>/html/user/updatesubsys.jsp</result>
+			<result name="update" type="redirect">/user/managesubsys.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delsubsys" class="user.delsubsys">
+			<result type="redirect">/user/managesubsys.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewseclevel" class="user.viewseclevel">
+			<result>/html/user/viewseclevel.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageterr" class="user.manageterr">
+			<result>/html/user/manageterr.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addterritory" class="user.addterritory">
+			<result>/html/user/addterritory.jsp</result>
+			<result name="insert" type="redirect">/user/manageterr.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delterritory" class="user.delterritory">
+			<result type="redirect">/user/manageterr.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateterritory" class="user.updateterritory">
+			<result>/html/user/updateterritory.jsp</result>
+			<result name="update" type="redirect">/user/manageterr.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addseclv" class="user.addseclv">
+			<result>/html/user/addseclv.jsp</result>
+			<result name="insert" type="redirect">/user/viewseclevel.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delseclv" class="user.delseclv">
+			<result type="redirect">/user/viewseclevel.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateseclv" class="user.updateseclv">
+			<result>/html/user/updateseclv.jsp</result>
+			<result name="update" type="redirect">/user/viewseclevel.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdeptbytype" class="user.viewdeptbytype">
+			<result>/html/user/viewdeptbytype.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdeptbylevel" class="user.viewdeptbylevel">
+			<result>/html/user/viewdeptbylevel.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdeptbyterr" class="user.viewdeptbyterr">
+			<result>/html/user/viewdeptbyterr.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewrealuser" class="user.viewrealuser">
+			<result>/html/user/viewrealuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getrealuser" class="user.getrealuser">
+			<result>/html/user/getrealuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delrealuser" class="user.delrealuser">
+			<result type="redirect">/user/viewrealuser.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecuserbyreal" class="user.viewsecuserbyreal">
+			<result>/html/user/viewsecuserbyreal.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updaterealuser" class="user.updaterealuser">
+			<result>/html/user/updaterealuser.jsp</result>
+			<result name="update" type="redirect">/user/viewrealuser.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecrole" class="user.viewsecrole">
+			<result>/html/user/viewsecrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecoper" class="user.viewsecoper">
+			<result>/html/user/viewsecoper.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewoperdetail" class="user.viewoperdetail">
+			<result>/html/user/viewoperdetail.jsp</result>
+			<result name="introduce">/html/introduce.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getadminrole" class="user.getadminrole">
+			<result>/html/user/getadminrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getspecialrole" class="user.getspecialrole">
+			<result>/html/user/getspecialrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configscopeterr" class="user.configscopeterr">
+			<result>/html/user/configscopeterr.jsp</result>
+			<result name="config">/html/http/xml_http_result.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configscopedept" class="user.configscopedept">
+			<result>/html/http/xml_http_result.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getscopedeptcode" class="user.getscopedeptcode">
+			<result>/html/http/xml_http_result.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatespecialrole" class="user.updatespecialrole">
+			<result>/html/user/getspecialrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateadminrole" class="user.updateadminrole">
+			<result>/html/user/getadminrole.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configlogin" class="user.configlogin">
+			<result>/html/user/configlogin.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="changepwd" class="user.changepwd">
+			<result>/html/user/changepwd.jsp</result>
+			<result name="fail">/html/user/changepwd.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 保持会话 -->
+		<action name="holdsession" class="user.holdsession">
+			<result>/html/user/holdsession.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 系统参数设置 -->
+		<action name="setupparam" class="user.setupparam">
+			<result>/html/user/setupparam.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- 管理涉密人员类别 -->
+		<action name="managesecurity" class="user.managesecurity">
+			<result>/html/user/managesecurity.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addsecurity" class="user.addsecurity">
+			<result>/html/user/addsecurity.jsp</result>
+			<result name="ok" type="redirect">/user/managesecurity.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delsecurity" class="user.delsecurity">
+			<result type="redirect">/user/managesecurity.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configsecurity" class="user.configsecurity">
+			<result>/html/user/configsecurity.jsp</result>
+			<result name="ok" type="redirect">/user/managesecurity.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecuritydetail" class="user.viewsecuritydetail">
+			<result>/html/user/viewsecuritydetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 配置部门管理员 -->
+		<action name="configdeptadmin" class="user.configdeptadmin">
+			<result>/html/user/configdeptadmin.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 批量导入用户 -->
+		<action name="importsecuser" class="user.importsecuser">
+			<result>/html/user/importsecuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 添加用户时卡号查重 -->
+		<action name="checkpassnum" class="user.checkpassnum">
+			<result>/html/user/checkpassnum.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 恢复已删除的用户 -->
+		<action name="recoversecuser" class="user.recoversecuser">
+			<result>/html/user/recoversecuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 恢复已停用的密级 -->
+		<action name="recoverseclv" class="user.recoverseclv">
+			<result type="redirect">/user/viewseclevel.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 一级目录排序 -->
+		<action name="managefirstdir" class="user.managefirstdir">
+			<result>/html/user/managefirstdir.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 更改一级目录排序值 -->
+		<action name="updatefirstdir" class="user.updatefirstdir">
+			<result>/html/user/updatefirstdir.jsp</result>
+			<result name="ok" type="redirect">/user/managefirstdir.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

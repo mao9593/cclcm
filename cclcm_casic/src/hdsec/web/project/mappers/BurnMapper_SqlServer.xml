@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.burn.mapper.BurnMapper">
+	<insert id="addBurnEvent" parameterType="burnevent">
+		<![CDATA[
+			insert into event_burn(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				usage_code,
+				project_code,
+				summ,
+				cd_num,
+				remaintimes,
+				cd_serial,
+				data_type,
+				file_num,
+				file_list,
+				file_seclevel,
+				apply_time,
+				is_proxy,
+				cycle_type,
+				period,
+				conf_code,
+				model_num,
+        	    post_num,
+                record_num,
+                disk_name,
+                base_mark,
+                step,
+                purpose
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{cd_num},
+				#{cd_num},
+				#{cd_serial},
+				#{data_type},
+				#{file_num},
+				#{file_list},
+				#{file_seclevel},
+				#{apply_time},
+				#{is_proxy},	
+				#{cycle_type},
+				#{period},
+				#{conf_code},
+				#{model_num},
+				#{post_num},
+				#{record_num},
+				#{disk_name},
+				#{base_mark},
+				#{step},
+				#{purpose})	
+		]]>
+	</insert>
+	<update id="updateBurnComment" parameterType="burnevent">
+		<![CDATA[
+			update job_process set comment=#{summ} where job_code = #{job_code}
+		]]>
+	</update>
+	<select id="getBurnEventList" parameterType="map" resultType="burnevent">
+		<![CDATA[
+			select eb.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_burn eb 
+				left join job_process jp on(eb.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(eb.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(eb.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (eb.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(eb.usage_code=syu.usage_code)
+				left join sys_project sp on (eb.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="event_codes != null and event_codes != ''" >
+				and event_code in 
+				<foreach item="item" index="index" collection="event_codes" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and eb.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and eb.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and eb.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and eb.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="proxyburn_user_iidd != null and proxyburn_user_iidd != ''" >
+  				<![CDATA[
+		 			and eb.proxyburn_user_iidd = #{proxyburn_user_iidd}
+				]]>
+  			</if>
+   			<choose>
+   				<when test="submitable">
+	   				<![CDATA[
+				 		and (eb.job_code is null)
+					]]>
+	   			</when>	
+	   			<otherwise>
+	   				<![CDATA[
+				 		and (eb.job_code is not null)
+					]]>
+	   				<if test="job_status != null and job_status != ''" >
+		   				<![CDATA[
+					 		and jp.job_status = #{job_status}
+						]]>
+		   			</if>
+		   			<if test="burn_status != null" >
+		   				<![CDATA[
+					 		and eb.burn_status = #{burn_status}
+						]]>
+		   			</if>
+	   			</otherwise>
+   			</choose>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getBurnEventByBurnCode" parameterType="string" resultType="burnevent">
+		<![CDATA[
+			select eb.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_burn eb 
+				left join job_process jp on(eb.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(eb.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(eb.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (eb.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(eb.usage_code=syu.usage_code)
+				left join sys_project sp on (eb.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delBurnEventByBurnCode" parameterType="string">
+		<![CDATA[
+			delete from event_burn where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_burn where event_code=#{event_code}
+		]]>
+	</select>
+	<update id="updateBurnEvent" parameterType="burnevent">
+		<![CDATA[
+			update event_burn set
+				seclv_code=#{seclv_code},
+				usage_code=#{usage_code},
+				project_code=#{project_code},
+				summ=#{summ},
+				cd_num=#{cd_num},
+				remaintimes=#{cd_num},
+				cd_serial=#{cd_serial},
+				data_type=#{data_type},
+				file_num=#{file_num},
+				file_list=#{file_list},
+				file_seclevel=#{file_seclevel},
+				is_proxy=#{is_proxy},
+				cycle_type=#{cycle_type},
+				conf_code=#{conf_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updateBurnEventFileInfo" parameterType="map">
+		<![CDATA[
+			update event_burn set
+				file_num=#{file_num},
+				file_list=#{file_list},
+				file_seclevel=#{file_seclevel}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getBurnEventListByJobCode" parameterType="string" resultType="burnevent">
+		<![CDATA[
+			select tn.file_list,tn.event_code,tn.seclv_code,tn.usage_code,tn.project_code,tn.apply_time,tn.summ,tn.burn_status,jp.jobType_code as jobType
+					,jp.job_status,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_burn tn
+				left join (select job_code,jobtype_code,job_status from job_process) jp on (tn.job_code=jp.job_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (tn.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(tn.usage_code=syu.usage_code)
+				left join sys_project sp on (tn.project_code=sp.project_code) 
+			where tn.job_code = #{job_code}
+		]]>
+	</select>
+	<update id="addBurnEventJobRel" parameterType="map">
+		<![CDATA[
+			update event_burn
+				set job_code=#{job_code},
+					cycle_type=#{cycle_type},
+					usage_code=#{usage_code},
+					summ = #{summ},
+					project_code=#{project_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updateBurnEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_burn
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updateBurnEventWithoutUsage" parameterType="burnevent">
+		<![CDATA[
+			update event_burn set
+				seclv_code=#{seclv_code},
+				project_code=#{project_code},
+				summ=#{summ},
+				cd_num=#{cd_num},
+				remaintimes=#{cd_num},
+				cd_serial=#{cd_serial},
+				data_type=#{data_type},
+				file_num=#{file_num},
+				file_list=#{file_list},
+				file_seclevel=#{file_seclevel},
+				is_proxy=#{is_proxy},
+				cycle_type=#{cycle_type}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getBurnPublicity" parameterType="String" resultType="burnpublicity">
+		<![CDATA[
+   			select * from PUBLICITY_BURN where event_code=#{event_code} and burn_states is null
+		]]>
+	</select>
+	<update id="updateBurnStatus" parameterType="map">
+		<![CDATA[
+			update PUBLICITY_BURN set burn_states=#{burn_states} where id in 
+		]]>
+		<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="updateBurnProxyUseridByEventCode" parameterType="map">
+		<![CDATA[
+			update event_burn set
+				proxyburn_user_iidd = #{proxyburn_user_iidd}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<insert id="AddKeywordBurnEvent" parameterType="map">					
+		<![CDATA[
+			insert into keyword_burn(
+				EVENT_CODE,
+				FILE_NAME,
+				USER_IIDD,
+				TID
+			)values(
+				#{event_code},
+				#{file_name},
+				#{user_iidd},
+				#{tid}
+			)
+		]]>
+	</insert>
+	<select id="getBurnTransID" parameterType="map" resultType="string">
+		<![CDATA[
+			select TID from keyword_burn
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="event_code != null and event_code != ''" >
+  				<![CDATA[
+		 			and event_code = #{event_code}
+				]]>
+  			</if>
+  			<if test="file_name != null and file_name != ''" >
+  				<![CDATA[
+		 			and UPPER(file_name) LIKE UPPER('%'+#{file_name}+'%')
+				]]>
+  			</if>
+   		</trim>
+	</select>
+	<update id="updateKeywordBurnEvent" parameterType="map">
+		<![CDATA[
+			update keyword_burn set
+				FILELIST = #{filelist},POLICY = #{policy},SCANTYPE = #{scantype}
+			where TID=#{tid}
+		]]>
+	</update>
+	<update id="updateKeywordBurnCallresultByTid" parameterType="map">
+		<![CDATA[
+			update keyword_burn set
+				call_result = #{call_result}
+			where TID=#{tid}
+		]]>
+	</update>
+	<insert id="addRisklistBurn" parameterType="riskkeywordsburn">					
+		<![CDATA[
+			insert into risklist_burn(
+				TID,
+				RISKCLASS,
+				HITCOUNT,
+				LEVELNAME,
+				SENSITVECONTENTS,
+				FILENAME,
+				FILETYPE
+			)values(
+				#{tid},
+				#{riskclass},
+				#{hitcount},
+				#{levelname},
+				#{sensitvecontents},
+				#{filename},
+				#{filetype}
+			)
+		]]>
+	</insert>
+	<select id="getRisklistBurn" parameterType="map" resultType="riskkeywordsburn">
+		<![CDATA[
+			select distinct riskclass,tid,hitcount,LEVELNAME,SENSITVECONTENTS,FILENAME,FILETYPE
+			 from RISKLIST_BURN 
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+  				<![CDATA[
+			 		and tid = #{tid}
+				]]>
+  			order by riskclass
+   		</trim>
+	</select>
+	<update id="updateKeywordBurnCheckresultByTid" parameterType="map">
+		<![CDATA[
+			update keyword_burn set
+				check_result = #{check_result}
+			where TID=#{tid}
+		]]>
+	</update>
+</mapper>  

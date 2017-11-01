@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="publicity" namespace="/publicity" extends="struts-default">
+		<action name="addreportevent" class="publicity.addreportevent">
+			<result>/html/publicity/addreportevent.jsp</result>
+		<!-- 	<result name="ok" type="redirect">/publicity/managereportlist.action</result> -->
+			<result name="ok" type="redirect">/securityuser/managesecusereventlist.action?module=publicity</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="viewreportdetail" class="publicity.viewreportdetail">
+			<result>/html/publicity/viewreportdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managereportlist" class="publicity.managereportlist">
+			<result>/html/publicity/managereportlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managereportaprvjob" class="publicity.managereportaprvjob">
+			<result>/html/publicity/managereportaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewreportaprvjob" class="publicity.viewreportaprvjob">
+			<result>/html/publicity/viewreportaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="approvereportjob" class="publicity.approvereportjob">
+			<result>/html/publicity/approvereportjob.jsp</result>
+			<!-- <result type="redirect" name="ok">/publicity/managereportaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action?module=publicity</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delreportevent" class="publicity.delreportevent">
+			<result type="redirect">/publicity/delreportevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deluploadedfile" class="publicity.deluploadedfile">
+			<result>/html/burn/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+	</package>
+</struts>

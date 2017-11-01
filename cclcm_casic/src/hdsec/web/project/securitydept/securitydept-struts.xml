@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="securitydept" namespace="/securitydept" extends="struts-default">	
+		<action name="mangesecuritydept" class="securitydept.mangesecuritydept">
+			<result>/html/securitydept/managesecuritydept.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addsecurityuser" class="securitydept.addsecurityuser">
+		    <result  type="redirect" >/securitydept/mangesecuritydept.action</result>
+			<result name="ok">/html/securitydept/addsecurityuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatesecuritydept" class="securitydept.updatesecuritydept">
+			<result>/html/securitydept/updatesecuritydept.jsp</result>
+			<result type="redirect" name="OK">/securitydept/mangesecuritydept.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deletesecuritydept" class="securitydept.deletesecuritydept">
+			<result>/html/securitydept/managesecuritydept.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="sercuritycounicl" class="securitydept.mangesecuritydept">
+			<result>/html/securitydept/securitycounicl.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="securityTeam" class="securitydept.mangesecuritydept">
+			<result>/html/securitydept/securityTeam.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="securityuser" class="securitydept.mangesecuritydept">
+			<result>/html/securitydept/securityuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsercuritycounicl" class="securitydept.mangesecuritydept">
+			<result>/html/securitydept/viewsecuritycounicl.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecurityTeam" class="securitydept.mangesecuritydept">
+			<result>/html/securitydept/viewsecurityTeam.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecurityuser" class="securitydept.mangesecuritydept">
+			<result>/html/securitydept/viewsecurityuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="mangesecert" class="securitydept.mangesecuritydept">
+			<result>/html/securitydept/managesecert.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addfixsecertuser" class="securitydept.addsecurityuser">
+		    <result  type="redirect" >/securitydept/mangesecert.action?type=SECERT</result>
+			<result name="ok">/html/securitydept/addfixsecertuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatefixsecertuser" class="securitydept.updatesecuritydept">
+			<result>/html/securitydept/updatefixsecertuser.jsp</result>
+			<result type="redirect" name="OK">/securitydept/mangesecert.action?type=SECERT</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="secertcounicl" class="securitydept.mangesecuritydept">
+			<result>/html/securitydept/secertcounicl.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="secertTeam" class="securitydept.mangesecuritydept">
+			<result>/html/securitydept/secertTeam.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecertcounicl" class="securitydept.mangesecuritydept">
+			<result>/html/securitydept/viewsecertcounicl.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewsecertTeam" class="securitydept.mangesecuritydept">
+			<result>/html/securitydept/viewsecertTeam.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

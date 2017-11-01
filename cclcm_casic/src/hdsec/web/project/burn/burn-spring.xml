@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="burnMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.burn.mapper.BurnMapper" />
+	</bean>
+	<!-- 刻录作业管理 -->
+	<bean id="burn.addburnevent" class="${common.package}.burn.action.AddBurnEventAction" scope="prototype" />
+	<bean id="burn.addnasburnevent" class="${common.package}.burn.action.AddNASBurnEventAction" scope="prototype" />
+	<bean id="burn.deluploadedfile" class="${common.package}.burn.action.DelUploadedFileAction" scope="prototype" />
+	<bean id="burn.manageburnevent" class="${common.package}.burn.action.ManageBurnEventAction" scope="prototype" />
+	<bean id="burn.managenasburnevent" class="${common.package}.burn.action.ManageNASBurnEventAction" scope="prototype" />
+	<bean id="burn.submitburnevent" class="${common.package}.burn.action.SubmitBurnEventAction" scope="prototype" />
+	<bean id="burn.viewburneventdetail" class="${common.package}.burn.action.ViewBurnEventDetailAction" scope="prototype" />
+	<bean id="burn.viewnasburneventdetail" class="${common.package}.burn.action.ViewNASBurnEventDetailAction" scope="prototype" />
+	<bean id="burn.updateburnevent" class="${common.package}.burn.action.UpdateBurnEventAction" scope="prototype" />
+	<bean id="burn.updatenasburnevent" class="${common.package}.burn.action.UpdateNASBurnEventAction" scope="prototype" />
+	<bean id="burn.delburnevent" class="${common.package}.burn.action.DelBurnEventAction" scope="prototype" />
+	<bean id="burn.downloadfile" class="${common.package}.burn.action.DownloadFileAction" scope="prototype" />
+	<bean id="burn.manageburnjob" class="${common.package}.burn.action.ManageBurnJobAction" scope="prototype" />
+	<bean id="burn.manageburnaprvjob" class="${common.package}.burn.action.ManageBurnAprvJobAction" scope="prototype"/>
+	<bean id="burn.approveburnjob" class="${common.package}.burn.action.ApproveBurnJobAction" scope="prototype"/>
+	<bean id="burn.viewburnaprvjob" class="${common.package}.burn.action.ViewBurnAprvJobAction" scope="prototype"/>
+	<bean id="burn.showrisklistburn" class="${common.package}.burn.action.ShowRisklistBurnAction" scope="prototype"/>
+</beans>

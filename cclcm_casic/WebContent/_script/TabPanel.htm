@@ -1,0 +1,68 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="zh-cn">
+<!-- <meta http-equiv="Content-Type" content="text/html; charset=gb2312"> 
+     modified by renmingfei 2013-07-08-->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>新建网页 1</title>
+<script src="TabPanel.js" language="jscript"></script>
+
+<style>
+<!--
+.activeTab { color: #000000; font-weight: bold; border: 2px ridge #C0C0C0; padding-left: 
+               2px; padding-right: 2px; padding-top: 1px; padding-bottom: 1px; 
+               background-color: #33CCFF; text-align:center }
+.otherTab { color: #777777; border: 1px solid #CCCCCC; padding-left: 2px; padding-right: 
+               2px; padding-top: 1px; padding-bottom: 1px; background-color: 
+               #FFFFFF; cursor : hand; text-align:center; font-style:italic }
+-->
+</style>
+
+<script language="jscript">
+<!--
+var tabPanel;
+function initTabPanel(){
+	tabPanel = new TabPanel("activeTab", "otherTab", false, document.getElementById("debugwin"));
+	tabPanel.addPage(document.getElementById("resTab"), document.getElementById("resPage"));
+	tabPanel.addPage(document.getElementById("ruleTab"), document.getElementById("rulePage"));
+	tabPanel.activePage(document.getElementById("resTab"));
+}
+//-->
+</script>
+</head>
+
+<body onload="initTabPanel();">
+
+<form method="POST" action="--WEBBOT-SELF--">
+<table border="0" width="100%" id="table1" cellpadding="0" cellspacing="0">
+	<tr>
+		<td height=20>
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td><div style="width: 100px;" id="resTab" onclick="tabPanel.activePage(this);">资源</div></td>
+				<td><div style="width: 100px;" id="ruleTab" onclick="tabPanel.activePage(this);">规则</div></td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+	<tr>
+		<td style="border:1px solid black">
+			<div style="width: 100px; height: 100px;" id="resPage">abc</div>
+			<div style="width: 100px; height: 100px;" id="rulePage">def</div>
+　		</td>
+	</tr>
+	<tr>
+		<td align="right">
+			<hr/>
+			<input type="submit" value="确定" onclick="">
+			<input type="button" value="取消" onclick="window.close();">
+			&nbsp;&nbsp;
+		</td>
+	</tr>
+</table>
+</form>
+<textarea id="debugwin" cols=80 rows=20></textarea>
+</body>
+
+</html>

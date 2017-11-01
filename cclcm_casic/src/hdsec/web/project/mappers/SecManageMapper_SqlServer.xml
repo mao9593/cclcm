@@ -1,0 +1,1004 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.secmanage.mapper.SecManageMapper">
+
+	<insert id="addResearchFieldInEvent" parameterType="researchfieldinevent">					
+		<![CDATA[
+			insert into event_researchfieldin(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				usage_code,
+				project_code,
+				summ,
+				contact_num,
+				visitor_company,
+				visitor_names,
+				field_site,
+				reason,
+				belongings,
+				rec_user_iidd,
+				rec_user_name,
+				enter_time,
+				leave_time			
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{contact_num},
+				#{visitor_company},
+				#{visitor_names},
+				#{field_site},
+				#{reason},
+			    #{belongings},
+				#{rec_user_iidd},
+				#{rec_user_name},
+				#{enter_time},
+				#{leave_time}
+				)
+		]]>
+	</insert>
+	<update id="updateResearchFieldInEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_researchfieldin
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getResearchFieldInEventList" parameterType="map" resultType="researchfieldinevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_researchfieldin er
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(er.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and er.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and er.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and er.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			<if test="rec_user_name != null and rec_user_name != ''" >
+   				<![CDATA[
+			 		and er.rec_user_name = #{rec_user_name}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getResearchFieldInEventByEventCode" parameterType="string" resultType="researchfieldinevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_researchfieldin er 
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=er.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_researchfieldin where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delDelResearchFieldInEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_researchfieldin where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getResearchFieldInEventListByJobCode" parameterType="string" resultType="researchfieldinevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_researchfieldin er 
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=er.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+			where er.job_code = #{job_code}
+		]]>
+	</select>
+	<insert id="addInternetEmailEvent" parameterType="internetemailevent">					
+		<![CDATA[
+			insert into event_email(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				usage_code,
+				project_code,
+				summ,
+				duty_user_id,
+				duty_user_name,
+				duty_dept_id,
+				duty_dept_name,
+				contact_num,
+				receive_org,
+				send_address,
+				cc_addrress,
+				title,
+				body,
+				file_num,
+				file_list,
+				reply_email			
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{duty_user_id},
+				#{duty_user_name},
+				#{duty_dept_id},
+				#{duty_dept_name},
+				#{contact_num},
+				#{receive_org},
+				#{send_address},
+				#{cc_addrress},
+				#{title},
+				#{body},
+				#{file_num},
+				#{file_list},
+				#{reply_email}
+				)
+		]]>
+	</insert>
+	<update id="updateInternetEmailEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_email set job_code=#{job_code} where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getInternetEmailEventList" parameterType="map" resultType="internetemailevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_email er
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(er.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and er.user_name = #{user_name}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and er.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and er.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getEmailJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_email where event_code = #{event_code}
+		]]>
+	</select>
+	<delete id="delDelInternetEmailEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_email where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getInternetEmailEventByEventCode" parameterType="string" resultType="internetemailevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_email er 
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=er.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getInternetEmailListByJobCode" parameterType="string" resultType="internetemailevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_email er 
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=er.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+			where er.job_code = #{job_code}
+		]]>
+	</select>
+		
+	<!-- 部门专项保密检查模块 -->
+	
+	<insert id="addSecCheckEvent" parameterType="seccheckevent">					
+		<![CDATA[
+			insert into event_seccheck(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				usage_code,
+				project_code,
+				summ,
+				contact_num,
+				check_content,
+				file_num,
+				file_list		
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{contact_num},	
+				#{check_content},			
+				#{file_num},
+				#{file_list}
+				)
+		]]>
+	</insert>
+	<update id="updateSecCheckEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_seccheck set job_code=#{job_code} where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getSecCheckEventList" parameterType="map" resultType="seccheckevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_seccheck er
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(er.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and er.user_name = #{user_name}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and er.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and er.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getSecCheckJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_seccheck where event_code = #{event_code}
+		]]>
+	</select>
+	<delete id="delDelSecCheckEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_seccheck where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getSecCheckEventByEventCode" parameterType="string" resultType="seccheckevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_seccheck er 
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=er.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getSecCheckListByJobCode" parameterType="string" resultType="seccheckevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_seccheck er 
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=er.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+			where er.job_code = #{job_code}
+		]]>
+	</select>	
+	<insert id="addExchangeMaterialEvent" parameterType="exchangematerialevent">					
+		<![CDATA[
+			insert into event_material(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				usage_code,
+				project_code,
+				summ,
+				contact_num,
+				file_list,
+				exc_object,
+				exc_location,
+				exc_type	
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{contact_num},	
+				#{file_list},
+				#{exc_object},
+				#{exc_location},
+				#{exc_type}
+				)
+		]]>
+	</insert>
+	<update id="updateExchangeMaterialEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_material set job_code=#{job_code} where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getExchangeMaterialEventList" parameterType="map" resultType="exchangematerialevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_material er
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(er.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and er.user_name = #{user_name}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and er.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and er.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getExchangeMaterialJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_material where event_code = #{event_code}
+		]]>
+	</select>
+	<delete id="delDelExchangeMaterialEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_material where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getExchangeMaterialEventByEventCode" parameterType="string" resultType="exchangematerialevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_material er 
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=er.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getExchangeMaterialListByJobCode" parameterType="string" resultType="exchangematerialevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_material er 
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=er.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+			where er.job_code = #{job_code}
+		]]>
+	</select>
+	<insert id="addFileOutMakeEvent" parameterType="fileoutmakeevent">					
+		<![CDATA[
+			insert into event_fileoutmake(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				usage_code,
+				project_code,
+				summ,
+				kind,
+				file_name,
+				file_count,
+				file_page,
+				file_seclv_code,
+				reason,
+				accompany_iidd,
+				accompany_name,
+				make_company		
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{kind},
+				#{file_name},
+				#{file_count},
+				#{file_page},
+				#{file_seclv_code},
+				#{reason},
+				#{accompany_iidd},
+				#{accompany_name},
+				#{make_company}
+				)
+		]]>
+	</insert>
+	<update id="updateFileOutMakeEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_fileoutmake
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getFileOutMakeEventList" parameterType="map" resultType="fileoutmakeevent">
+		<![CDATA[
+			select ef.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,fss.seclv_name file_seclv_name 
+			from event_fileoutmake ef
+				left join job_process jp on(ef.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ef.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ef.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ef.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ef.usage_code=syu.usage_code)
+				left join sys_project sp on (ef.project_code=sp.project_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) fss on (ef.file_seclv_code=fss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ef.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ef.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ef.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ef.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			<if test="rec_user_name != null and rec_user_name != ''" >
+   				<![CDATA[
+			 		and ef.rec_user_name = #{rec_user_name}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getFileOutMakeEventByEventCode" parameterType="string" resultType="fileoutmakeevent">
+		<![CDATA[
+			select ef.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,fss.seclv_name file_seclv_name 
+			from event_fileoutmake ef 
+				left join job_process jp on(ef.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ef.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=ef.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ef.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ef.usage_code=syu.usage_code)
+				left join sys_project sp on (ef.project_code=sp.project_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) fss on (ef.file_seclv_code=fss.seclv_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getJobCodeByFileOutMakeEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_fileoutmake where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delDelFileOutMakeEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_fileoutmake where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getFileOutMakeEventListByJobCode" parameterType="string" resultType="fileoutmakeevent">
+		<![CDATA[
+			select ef.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,fss.seclv_name file_seclv_name 
+			 from event_fileoutmake ef 
+				left join job_process jp on(ef.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ef.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=ef.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ef.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ef.usage_code=syu.usage_code)
+				left join sys_project sp on (ef.project_code=sp.project_code)
+				left join (select seclv_code,seclv_name from sec_user_seclv) fss on (ef.file_seclv_code=fss.seclv_code)
+			where ef.job_code = #{job_code}
+		]]>
+	</select>
+	
+	
+	<insert id="addExhibitionEvent" parameterType="exhibitionevent">
+		<![CDATA[
+			insert into event_exhibition(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				usage_code,
+				project_code,
+				summ,
+				contact_num,
+				exh_location,
+				exh_type,
+				exh_others,
+				exh_reason,
+				file_num,
+				file_list
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{contact_num},
+				#{exh_location},
+				#{exh_type},
+				#{exh_others},
+				#{exh_reason},
+				#{file_num},
+				#{file_list}
+				)
+		]]>
+	</insert>
+	
+	<select id="getExhibitionEventList" parameterType="map" resultType="exhibitionevent">
+		<![CDATA[
+			select ee.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_exhibition ee
+				left join job_process jp on(ee.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ee.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ee.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ee.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ee.usage_code=syu.usage_code)
+				left join sys_project sp on (ee.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ee.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ee.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ee.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ee.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	
+	<select id="getExhibitionEventByEventCode" parameterType="string" resultType="exhibitionevent">
+		<![CDATA[
+		select ee.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_exhibition ee 
+				left join job_process jp on(ee.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ee.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=ee.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ee.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ee.usage_code=syu.usage_code)
+				left join sys_project sp on (ee.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	
+	<select id="getExhibitionJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+		select job_code from event_exhibition where event_code=#{event_code}
+		]]>
+	</select>
+	
+	<select id="getExhibitionListByJobCode" parameterType="string" resultType="exhibitionevent">
+	<![CDATA[
+		select ee.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_exhibition ee 
+				left join job_process jp on(ee.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ee.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=ee.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ee.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ee.usage_code=syu.usage_code)
+				left join sys_project sp on (ee.project_code=sp.project_code)
+			where ee.job_code=#{job_code}
+		]]>
+	</select>
+	
+	<delete id="delDelExhibitionEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_exhibition where event_code=#{event_code}
+		]]>
+	</delete>
+	
+	<update id="updateExhibitionEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_exhibition
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+		<insert id="addPunishEvent" parameterType="punishrectifyevent">					
+		<![CDATA[
+			insert into event_punishrectify(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				usage_code,
+				project_code,
+				summ,
+				company_code,
+				company_name,
+				punish_dept_id,
+				punish_dept_name,
+				duty_user_iidd,
+				duty_user_name,
+				describe,
+				advise,
+				rectify_demand,
+				rectify_according,
+				rectify_time,
+				apply_type		
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{company_code},
+				#{company_name},
+				#{punish_dept_id},
+				#{punish_dept_name},
+				#{duty_user_iidd},
+				#{duty_user_name},
+				#{describe},
+				#{advise},
+				#{rectify_demand},
+				#{rectify_according},
+				#{rectify_time},
+				#{apply_type}
+				)
+		]]>
+	</insert>
+	<update id="updatePunishEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_punishrectify
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getPunishEventList" parameterType="map" resultType="punishrectifyevent">
+		<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,psd.dept_name as p_dept_name
+			from event_punishrectify ep
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)
+				left join (select dept_id,dept_name from sec_dept) psd on(ep.punish_dept_id=psd.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ep.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   			<if test="duty_user_name != null and duty_user_name != ''" >
+   				<![CDATA[
+			 		and ep.duty_user_name = #{duty_user_name}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getPunishJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_punishrectify where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delDelPunishEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_punishrectify where event_code=#{event_code}
+		]]>
+	</delete>
+	<select id="getPunishEventByEventCode" parameterType="string" resultType="punishrectifyevent">
+		<![CDATA[
+			select er.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,psd.dept_name as p_dept_name
+			from event_punishrectify er 
+				left join job_process jp on(er.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(er.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=er.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (er.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(er.usage_code=syu.usage_code)
+				left join sys_project sp on (er.project_code=sp.project_code)
+				left join (select dept_id,dept_name from sec_dept) psd on(er.punish_dept_id=psd.dept_id)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getPunishEventListByJobCode" parameterType="string" resultType="punishrectifyevent">
+	<![CDATA[
+		select ee.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,psd.dept_name as p_dept_name
+			from event_punishrectify ee 
+				left join job_process jp on(ee.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ee.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=ee.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ee.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ee.usage_code=syu.usage_code)
+				left join sys_project sp on (ee.project_code=sp.project_code)
+				left join (select dept_id,dept_name from sec_dept) psd on(ee.punish_dept_id=psd.dept_id)
+			where ee.job_code=#{job_code} order by ee.apply_time desc
+		]]>
+	</select>
+	<update id="addApproveFile" parameterType="map">
+		<![CDATA[
+			update event_seccheck
+				set approve_file_list=#{file_list},approve_file_num=#{file_num}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updateSecCheckEventFileInfo" parameterType="map">
+		<![CDATA[
+			update event_seccheck
+				set file_list=#{file_list},file_num=#{file_num}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updateSecCheckEvent" parameterType="map">
+		<![CDATA[
+			update event_seccheck
+				set contact_num=#{contact_num},
+				check_content=#{check_content},
+				file_list=#{file_list},
+				file_num=#{file_num},
+				apply_time=#{apply_time}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<insert id="addPaperPatentEvent" parameterType="paperpatentevent">
+		<![CDATA[
+			insert into event_paperpatent(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				usage_code,
+				project_code,
+				summ,
+				contact_num,
+				company_code,
+				company_name,
+				file_type,
+				title,
+				send_company,
+				file_num,
+				file_list
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},
+				#{apply_time},	
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{contact_num},
+				#{company_code},
+				#{company_name},
+				#{file_type},
+				#{title},
+				#{send_company},
+				#{file_num},
+				#{file_list}
+				)
+		]]>
+	</insert>
+	<update id="updatePaperPatentEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_paperpatent
+				set job_code=#{job_code}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getPaperPatentJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+		select job_code from event_paperpatent where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getPaperPatentListByJobCode" parameterType="string" resultType="paperpatentevent">
+	<![CDATA[
+		select ep.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_paperpatent ep 
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=ep.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)
+			where ep.job_code=#{job_code}
+		]]>
+	</select>
+	<select id="getPaperPatentEventList" parameterType="map" resultType="paperpatentevent">
+		<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_paperpatent ep
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ep.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and ep.user_name = #{user_name}
+				]]>
+   			</if>
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ep.apply_time <= #{endTime}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	<select id="getPaperPatentEventByEventCode" parameterType="string" resultType="paperpatentevent">
+		<![CDATA[
+			select ep.*,jp.job_status,su.user_name,sda.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_paperpatent ep 
+				left join job_process jp on(ep.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ep.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sda on(sda.dept_id=ep.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ep.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ep.usage_code=syu.usage_code)
+				left join sys_project sp on (ep.project_code=sp.project_code)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<delete id="delPaperPatentEventByEventCode" parameterType="string">
+		<![CDATA[
+			delete from event_paperpatent where event_code=#{event_code}
+		]]>
+	</delete>
+</mapper>  

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="carriermanage" namespace="/carriermanage" extends="struts-default">
+		<action name="addpersonalfileevent" class="carriermanage.addpersonalfileevent">
+			<result>/html/carriermanage/addpersonalfileevent.jsp</result>
+			<result name="ok" type="redirect">/carriermanage/managepersonalfileevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managepersonalfileevent" class="carriermanage.managepersonalfileevent">
+			<result>/html/carriermanage/managepersonalfileevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvepersonalfilejob" class="carriermanage.approvepersonalfilejob">
+			<result>/html/carriermanage/approvepersonalfilejob.jsp</result>
+			<result type="redirect" name="ok">/carriermanage/managepersonalfileaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managepersonalfileaprvjob" class="carriermanage.managepersonalfileaprvjob">
+			<result>/html/carriermanage/managepersonalfileaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewpersonalfileaprvjob" class="carriermanage.viewpersonalfileaprvjob">
+			<result>/html/carriermanage/viewpersonalfileaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 部门涉密资料统计台账查询 -->
+		<action name="managedeptsecfile" class="carriermanage.managedeptsecfile">
+			<result>/html/carriermanage/managedeptsecfile.jsp</result>
+			<result name="ok" type="redirect">/carriermanage/managedeptsecfile.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>		
+	</package>
+</struts>

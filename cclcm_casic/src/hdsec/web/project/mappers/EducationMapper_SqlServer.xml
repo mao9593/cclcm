@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.education.mapper.EducationMapper">
+	
+	<insert id="UploadLearningFile" parameterType="UploadEduFiles">					
+		<![CDATA[
+			insert into edu_file(
+				file_id,
+				file_name,
+				store_location,
+				pages,
+				upload_user,
+				upload_time,
+				file_type,
+				comment,
+				file_sec_lv,
+				file_edu_hour
+			)values(
+				#{file_id},
+				#{file_name},
+				#{store_location},
+				#{pages},
+				#{upload_user},
+				#{upload_time},
+				#{file_type},
+				#{comment},
+				#{file_sec_lv},
+				#{file_edu_hour}						
+				)
+		]]>
+	</insert>
+	
+	<select id="getLearningFileList" parameterType="map" resultType="UploadEduFiles">
+		<![CDATA[
+			select file_id,file_name,store_location,pages,upload_user,upload_time,file_type,comment,file_sec_lv,file_edu_hour 
+			from edu_file 		
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="file_type != null and file_type != ''" >
+				and file_type = #{file_type}   
+			</if>
+			<if test="file_name != null and file_name != ''" >  
+				and UPPER(file_name) LIKE UPPER('%'+#{file_name}+'%') 
+			</if>
+			<if test="file_id != null and file_id != ''" >
+				and file_id = #{file_id}   
+			</if>
+		</trim>
+			order by file_id asc
+	</select>
+	
+	<delete id="delUploadFileByName" parameterType="string">
+		<![CDATA[
+			delete from edu_file where file_name=#{file_name}
+		]]>
+	</delete>
+	<insert id="addEduTrainingRecord" parameterType="EduTrainingRecord">					
+		<![CDATA[
+			insert into edu_training_record(
+				course_id,
+				course_name,
+				training_type,
+				edu_user_iidds,
+				edu_user_names,
+	            start_time,
+	            end_time,
+	            class_hour,
+	            location,
+	            training_org,
+	            certificate_no,
+	            certificate_exp,
+	            summ,
+	            apply_time
+			)values(
+				#{course_id},
+				#{course_name},
+				#{training_type},
+				#{edu_user_iidds},
+				#{edu_user_names},
+				#{start_time},
+				#{end_time}	,
+				#{class_hour},
+				#{location},
+				#{training_org},
+				#{certificate_no},
+				#{certificate_exp},
+				#{summ},
+				#{apply_time}		
+				)
+		]]>
+	</insert>
+	<select id="getAllTrainingRecordList" resultType="EduTrainingRecord" parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+				select etr.*,su.user_name as edu_user_names,round(class_hour,2)as class_time
+				from EDU_TRAINING_RECORD etr
+				left join (select user_iidd,user_name from sec_user) su on(etr.EDU_USER_IIDDS=su.user_iidd)
+	
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="course_id != null and course_id != ''">
+				<![CDATA[
+					and UPPER(etr.course_id) LIKE UPPER('%'+#{course_id}+'%')
+				]]>
+			</if>	
+			<if test="course_name != null and course_name != ''">
+				<![CDATA[
+					and UPPER(etr.course_name) LIKE UPPER('%'+#{course_name}+'%')
+				]]>
+			</if>	
+			  <if test="training_type != null and training_type != ''">
+				<![CDATA[
+					and etr.training_type = #{training_type}
+				]]>
+			</if> 
+			<if test="edu_user_iidds != null and edu_user_iidds != ''">
+				<![CDATA[
+					and UPPER(etr.edu_user_iidds) LIKE UPPER('%'+#{edu_user_iidds}+','+'%')
+				]]>
+			</if>
+			<if test="class_hour != null and class_hour != ''">
+				<![CDATA[
+					and etr.class_hour = #{class_hour}
+				]]>
+			</if>
+			<if test="location != null and location != ''">
+				<![CDATA[
+					and etr.location = #{location}
+				]]>
+			</if>	
+			<if test="start_time != null and start_time != ''">
+				<![CDATA[
+					and etr.start_time >= #{start_time}
+				]]>
+			</if>	
+			<if test="end_time != null and end_time != ''">
+				<![CDATA[
+					and etr.end_time <= #{end_time}
+				]]>
+			</if>	
+			<if test="training_type != null and training_type != ''">
+				<![CDATA[
+					and etr.training_type = #{training_type}
+				]]>
+			</if>
+			<if test="noonline != null and noonline == 'noonline'">
+				<![CDATA[
+					and etr.training_type != 0
+				]]>
+			</if>
+		</trim>
+		<![CDATA[
+				order by etr.course_id desc
+   			]]>
+	</select>
+	<delete id="deleteTrainingRecord" parameterType="string">
+	<![CDATA[
+			delete from edu_training_record where course_id=#{course_id}
+		]]>
+	</delete>
+	
+	<select id="getTrainingRecordByCourseId" resultType="EduTrainingRecord"	parameterType="string">
+		<![CDATA[
+			select etr.*,su.user_name as edu_user_names
+				from EDU_TRAINING_RECORD etr
+				left join (select user_iidd,user_name from sec_user) su on(etr.EDU_USER_IIDDS=su.user_iidd)
+			where course_id = #{course_id}
+		]]>
+	</select>
+	<update id="updateTrainingRecord" parameterType="EduTrainingRecord">
+		<![CDATA[
+			update  edu_training_record
+				set course_name=#{course_name},
+					training_type=#{training_type},
+					edu_user_iidds=#{edu_user_iidds},
+					edu_user_names=#{edu_user_names},
+					start_time=#{start_time},
+					end_time=#{end_time},
+					class_hour=#{class_hour},
+					summ=#{summ},
+					location=#{location},
+					training_org=#{training_org},
+					certificate_no=#{certificate_no},
+					certificate_exp=#{certificate_exp}
+				where course_id=#{course_id}	
+		]]>
+	</update>
+	
+	<delete id="deleteClassHourRecord" parameterType="string">
+	<![CDATA[
+			delete from edu_class_hour where course_id=#{course_id}
+		]]>
+	</delete>
+	<update id="updateClassHourRecord" parameterType="map">
+		<![CDATA[
+			update  edu_class_hour
+				set course_name=#{course_name},
+					training_type=#{training_type},
+					user_iidd=#{user_iidd},
+					dept_id=#{dept_id},
+					class_hour_online=#{class_hour_online},
+					class_hour_centraining=#{class_hour_centraining},
+					class_hour_outtraining=#{class_hour_outtraining},
+					class_hour_total=#{class_hour_total},
+					summ=#{summ},
+					security_code=#{security_code}
+				where course_id=#{course_id}	
+		]]>
+	</update>
+	<select id="getAllClassHourList" resultType="ClassHour" parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+				select ech.* from EDU_CLASS_HOUR ech
+		]]>
+		<![CDATA[
+				order by ech.id desc
+   			]]>
+	</select>
+	<select id="getClassHourRecordByUserId" resultType="ClassHour" parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+	        select sd.dept_name,su.user_name,us.security_name,round (sum(CLASS_HOUR_ONLINE),2) as online ,sum(CLASS_HOUR_CENTRAINING) as centraining,
+				sum(CLASS_HOUR_OUTTRAINING) as outtraining,sum(CLASS_HOUR_ONLINE)+sum(CLASS_HOUR_CENTRAINING)+sum(CLASS_HOUR_OUTTRAINING) as totalhour   
+		        from EDU_CLASS_HOUR ech
+		        left join (select user_iidd,user_name,security_code from sec_user) su on (ech.user_iidd = su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ech.dept_id = sd.dept_id)
+				left join (select security_code,security_name from user_security) us on(su.security_code = us.security_code)
+		   ]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">	
+			<if test="user_iidd != null and user_iidd != ''">
+				<![CDATA[
+					and ech.user_iidd = #{user_iidd}
+				]]>
+			</if>	 
+			<if test="dept_id != null and dept_id != ''">
+				<![CDATA[
+					and ech.dept_id = #{dept_id}
+				]]>
+			</if>
+			<if test="edu_time != null and edu_time != '' and edu_time != 0 ">
+				<![CDATA[
+					and ech.apply_time >= #{edu_time} and ech.apply_time <= #{edu_time_after}
+				]]>
+			</if>
+		</trim>
+        group by dept_name,user_name,security_name
+	</select>
+	<insert id="addClassHour" parameterType="ClassHour">					
+		<![CDATA[
+			insert into edu_class_hour(
+				user_iidd,
+				dept_id,
+				course_id,
+				course_name,
+				training_type,
+				class_hour_online,
+				class_hour_centraining,
+				class_hour_outtraining,
+				class_hour_total,
+				security_code	
+			)values(
+				#{user_iidd},
+				#{dept_id},
+				#{course_id},
+				#{course_name},
+				#{training_type},
+				#{class_hour_online},
+				#{class_hour_centraining},
+				#{class_hour_outtraining},
+				#{class_hour_total},
+				#{security_code}
+				)
+		]]>
+	</insert>
+	<insert id="addClassHourRecord" parameterType="map">					
+		<![CDATA[
+			insert into edu_class_hour(
+				user_iidd,
+				dept_id,
+				course_id,
+				course_name,
+				training_type,
+				class_hour_online,
+				class_hour_centraining,
+				class_hour_outtraining,
+				class_hour_total,
+				summ,
+				apply_time
+			)values(
+				#{user_iidd},
+				#{dept_id},
+				#{course_id},
+				#{course_name},
+				#{training_type},
+				#{class_hour_online},
+				#{class_hour_centraining},
+				#{class_hour_outtraining},
+				#{class_hour_total},
+				#{summ},
+				#{apply_time}
+				)
+		]]>
+	</insert>
+	<select id="getUserClassHourOnlineByUserId" resultType="string" parameterType="map">
+		<![CDATA[
+		select round(sum(CLASS_HOUR_ONLINE),2) as online    
+        from EDU_CLASS_HOUR 
+		]]> 
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''">
+				<![CDATA[
+					and user_iidd = #{user_iidd}
+				]]>
+			</if>	
+			<if test="course_name != null and course_name != ''">
+				<![CDATA[
+					and course_name = #{course_name}
+				]]>
+			</if>	 
+		</trim>
+	</select>	
+	<select id="getCountByFileName" resultType="int" parameterType="string">
+		<![CDATA[
+		select count(1) from edu_file where file_name = #{file_name}
+		]]> 
+	</select>
+	<select id="getTotalHour" resultType="string">
+		<![CDATA[
+		select sum(FILE_EDU_HOUR) from EDU_FILE 
+		]]> 
+	</select>	
+	<select id="getTrainingRecordById" resultType="EduTrainingRecord"	parameterType="string">
+		<![CDATA[
+			select etr.*,su.user_name as edu_user_names
+				from EDU_TRAINING_RECORD etr
+				left join (select user_iidd,user_name from sec_user) su on(etr.EDU_USER_IIDDS=su.user_iidd)
+			where id = #{id}
+		]]>
+	</select>
+</mapper>  

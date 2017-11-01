@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.storage.mapper.StorageMapper">
+	<select id="getStorageList" parameterType="map" resultType="entitystorage">
+		<![CDATA[
+			select * from entity_storage es
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		and es.dept_id = #{dept_id}
+				]]>
+			</if>
+			<if test="duty_user_name != null and duty_user_name != ''">
+   				<![CDATA[
+			 		and UPPER(es.duty_user_name) like UPPER('%'+#{duty_user_name}+'%')
+				]]>
+			</if>
+			<if test="use_user_name != null and use_user_name != ''">
+   				<![CDATA[
+			 		and UPPER(es.use_user_name) like UPPER('%'+#{use_user_name}+'%')
+				]]>
+			</if>
+			<if test="use_user_iidd != null and use_user_iidd != ''">
+   				<![CDATA[
+			 		and es.use_user_iidd = #{use_user_iidd}
+				]]>
+			</if>
+			<if test="storage_barcode != null and storage_barcode != ''">
+   				<![CDATA[
+			 		and UPPER(es.storage_barcode) like UPPER('%'+#{storage_barcode}+'%')
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != ''">
+   				<![CDATA[
+			 		and es.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="med_type != null and med_type != ''">
+   				<![CDATA[
+			 		and es.med_type = #{med_type}
+				]]>
+			</if>
+			<if test="storage_status != null and storage_status != ''">
+   				<![CDATA[
+			 		and es.storage_status = #{storage_status.key}
+				]]>
+			</if>
+			<if test="storage_name != null and storage_name != ''">
+   				<![CDATA[
+			 		and UPPER(es.storage_name) like UPPER('%'+#{storage_name}+'%')
+				]]>
+			</if>
+		</trim>
+		<![CDATA[
+	 		order by seclv_code asc
+		]]>
+	</select>
+	<insert id="addStorage" parameterType="entitystorage">
+		<![CDATA[
+			insert into entity_storage(
+				storage_code,
+				storage_name,
+				input_user_iidd,
+				input_user_name,
+				dept_id,
+				dept_name,
+				storage_series,
+				storage_barcode,
+				med_type,
+				seclv_code,
+				seclv_name,
+				duty_user_iidd,
+				duty_user_name,
+				storage_model,
+				storage_detail,
+				input_time,
+				storage_status
+			)values(
+				#{storage_code},
+				#{storage_name},
+				#{input_user_iidd},
+				#{input_user_name},
+				#{dept_id},
+				#{dept_name},
+				#{storage_series},
+				#{storage_barcode},
+				#{med_type},
+				#{seclv_code},
+				#{seclv_name},
+				#{duty_user_iidd},
+				#{duty_user_name},
+				#{storage_model},
+				#{storage_detail},
+				#{input_time},
+				#{storage_status.key}
+			)
+		]]>
+	</insert>
+	<select id="getStorageByCode" parameterType="string" resultType="entitystorage">
+		<![CDATA[
+			select * from entity_storage es where storage_code=#{storage_code}
+		]]>
+	</select>
+	<update id="updateStorage" parameterType="entitystorage">
+		<![CDATA[
+			update entity_storage set
+				storage_name = #{storage_name},
+				dept_id = #{dept_id},
+				dept_name = #{dept_name},
+				storage_series = #{storage_series},
+				seclv_code = #{seclv_code},
+				seclv_name = #{seclv_name},
+				duty_user_iidd = #{duty_user_iidd},
+				duty_user_name = #{duty_user_name},
+				storage_model = #{storage_model},
+				storage_detail = #{storage_detail}
+			where storage_code = #{storage_code}
+		]]>
+	</update>
+	<update id="delStorageByCode" parameterType="string">
+		<![CDATA[
+			update entity_storage set is_sealed='Y' where storage_code=#{storage_code}
+		]]>
+	</update>
+	<update id="updateStorageStatus" parameterType="map">
+		<![CDATA[
+			update entity_storage set storage_status =#{storage_status} where storage_code=#{storage_code}
+		]]>
+	</update>
+	<update id="distributeStorage" parameterType="map">
+		<![CDATA[
+			update entity_storage set
+				use_user_iidd = #{use_user_iidd},
+				use_user_name = #{use_user_name}, 
+				storage_status =#{storage_status}
+			where storage_code=#{storage_code}
+		]]>
+	</update>
+	<update id="clearStorageUser" parameterType="string">
+		<![CDATA[
+			update entity_storage set
+				use_user_iidd = null,
+				use_user_name = null 
+			where storage_code=#{storage_code}
+		]]>
+	</update>
+		<select id="getStorageByBarcode" parameterType="string" resultType="entitystorage">
+		<![CDATA[
+			select * from entity_storage es where storage_barcode=#{storage_barcode}
+		]]>
+	</select>
+</mapper>  

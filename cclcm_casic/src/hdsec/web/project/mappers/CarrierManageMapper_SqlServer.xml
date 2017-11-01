@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.carriermanage.mapper.CarrierManageMapper">
+<insert id="addPersonalFileEvent" parameterType="PersonalFileevent">					
+		<![CDATA[
+			insert into event_carriermng(
+				event_code,
+				user_iidd,
+				dept_id,
+				seclv_code,
+				apply_time,
+				usage_code,
+				project_code,
+				summ,
+	            duty_user_id,
+	            duty_dept_id,
+	            duty_entp_id,
+	            file_num,
+	            file_year,
+	            file_quarter
+			)values(#{event_code},
+				#{user_iidd},
+				#{dept_id},
+				#{seclv_code},	
+				#{apply_time},
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{duty_user_id},
+				#{duty_dept_id},
+				#{duty_entp_id},
+				#{file_num},
+	            #{file_year},
+	            #{file_quarter}
+				)
+		]]>
+	</insert>
+	
+	<update id="updatePersonalFileEventJobCode" parameterType="map">
+		<![CDATA[
+			update event_carriermng set job_code=#{job_code} where event_code=#{event_code}
+		]]>
+	</update>
+	<insert id="addPersonalFileInfo" parameterType="PersonalFileInfo">					
+		<![CDATA[
+			insert into entity_personal_files(
+				event_code,
+			    duty_user_id,
+	            duty_dept_id,
+	            duty_entp_id,
+	            approve_status,
+				file_year,
+				file_quarter,
+				file_name,
+				file_seclv_code,
+				file_type,
+				other_type,
+				file_category,
+				file_quantity,
+				job_code,
+				summ
+			)values(#{event_code},
+				#{duty_user_id},
+				#{duty_dept_id},
+				#{duty_entp_id},
+				#{approve_status},
+				#{file_year},
+				#{file_quarter},
+				#{file_name},
+				#{file_seclv_code},
+				#{file_type},
+				#{other_type},
+				#{file_category},
+				#{file_quantity},
+				#{job_code},
+				#{summ}
+				)
+		]]>
+	</insert>
+		<select id="getPersonalFileEventListByJobCode" parameterType="string" resultType="personalfileevent">
+		<![CDATA[
+			select ecm.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_carriermng ecm 
+				left join job_process jp on(ecm.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ecm.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ecm.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ecm.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ecm.usage_code=syu.usage_code)
+				left join sys_project sp on (ecm.project_code=sp.project_code)
+			where ecm.job_code = #{job_code}
+		]]>
+	</select>
+
+	<select id="getFileInfo" parameterType="map" resultType="personalfileinfo">
+		<![CDATA[
+			select ec.*,su.user_name duty_user_name,sd.dept_name duty_dept_name,ss.seclv_name file_seclv_name   	
+			from entity_personal_files ec
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ec.duty_user_id=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ec.duty_dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ec.file_seclv_code=ss.seclv_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="file_seclv_code != null">
+				<![CDATA[
+					and ec.file_seclv_code = #{file_seclv_code}
+				]]>
+			</if>	
+			<if test="file_type != null and file_type != ''">
+				<![CDATA[
+					and ec.file_type = #{file_type}
+				]]>
+			</if>
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and ec.duty_user_id = #{duty_user_id}
+				]]>
+			</if>	
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				<![CDATA[
+					and ec.duty_dept_id = #{duty_dept_id}
+				]]>
+			</if>
+			<if test="duty_entp_id != null and duty_entp_id != ''">
+				<![CDATA[
+					and ec.duty_entp_id = #{duty_entp_id}
+				]]>
+			</if>
+			<if test="event_code != null and event_code != ''">
+				<![CDATA[
+					and ec.event_code = #{event_code}
+				]]>
+			</if>
+			<if test="file_year != null and file_year != ''" >
+   				<![CDATA[
+			 		and ec.file_year = #{file_year}
+				]]>
+   			</if>
+   			<if test="file_quarter != null and file_quarter != ''" >
+   				<![CDATA[
+			 		and ec.file_quarter = #{file_quarter}
+				]]>
+   			</if>
+			<if test="approve_status != null">
+				<![CDATA[
+					and ec.approve_status = #{approve_status}
+				]]>
+			</if>								
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>	
+		</trim>
+		<![CDATA[
+				order by ec.id desc
+   			]]>
+	</select>
+				
+	<select id="getPersonalFileEventList" parameterType="map" resultType="personalfileevent">
+	<![CDATA[
+			select ecm.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			from event_carriermng ecm 
+				left join job_process jp on(ecm.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ecm.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ecm.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ecm.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ecm.usage_code=syu.usage_code)
+				left join sys_project sp on (ecm.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="file_year != null and file_year != ''" >
+   				<![CDATA[
+			 		and ecm.file_year = #{file_year}
+				]]>
+   			</if>
+   			<if test="file_quarter != null and file_quarter != ''" >
+   				<![CDATA[
+			 		and ecm.file_quarter = #{file_quarter}
+				]]>
+   			</if>
+   			<if test="duty_entp_id != null and duty_entp_id != ''" >
+   				<![CDATA[
+			 		and ecm.duty_entp_id = #{duty_entp_id}
+				]]>
+   			</if>
+  			<if test="job_status != null and job_status != ''" >
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+   			</if>
+   		</trim>
+   		order by apply_time desc
+	</select>
+	
+	<update id="updateStatueEntityPersonalFile" parameterType="string">
+		<![CDATA[
+			update entity_personal_files set approve_status=1 where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getFileInfoSize" resultType="int" parameterType="map">
+		<![CDATA[
+			select  count(1)    	
+			from entity_personal_files ec 
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="file_seclv_code != null">
+				<![CDATA[
+					and ec.file_seclv_code = #{file_seclv_code}
+				]]>
+			</if>	
+			<if test="file_type != null and file_type != ''">
+				<![CDATA[
+					and ec.file_type = #{file_type}
+				]]>
+			</if>
+			<if test="duty_user_id != null and duty_user_id != ''">
+				<![CDATA[
+					and ec.duty_user_id = #{duty_user_id}
+				]]>
+			</if>	
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+				<![CDATA[
+					and ec.duty_dept_id = #{duty_dept_id}
+				]]>
+			</if>
+			<if test="duty_entp_id != null and duty_entp_id != ''">
+				<![CDATA[
+					and ec.duty_entp_id = #{duty_entp_id}
+				]]>
+			</if>
+			<if test="event_code != null and event_code != ''">
+				<![CDATA[
+					and ec.event_code = #{event_code}
+				]]>
+			</if>
+			<if test="approve_status != null">
+				<![CDATA[
+					and ec.approve_status = #{approve_status}
+				]]>
+			</if>			
+			<if test="file_year != null and file_year != ''" >
+   				<![CDATA[
+			 		and ec.file_year = #{file_year}
+				]]>
+   			</if>
+   			<if test="file_quarter != null and file_quarter != ''" >
+   				<![CDATA[
+			 		and ec.file_quarter = #{file_quarter}
+				]]>
+   			</if>					
+			<if test="scope_dept_ids != null and scope_dept_ids != ''" >
+				and ec.duty_dept_id in 
+				<foreach item="item" index="index" collection="scope_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>	
+		</trim>
+	</select>		
+</mapper>  

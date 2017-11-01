@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<SCRIPT LANGUAGE="JavaScript" src="IDCard.js"></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+function show(){
+try{
+	var idc = new IDCard("21040419800804031x");//("210802198204190515");//("210404800804031");
+}
+catch(e){
+	if (e.description == undefined){
+		alert(e);
+	}
+	else{
+		alert(e.description);
+	}
+	return;
+}
+	alert("Year = " + idc.getYear() + ", month = " + idc.getMonth() + ", day = " + idc.getDay() + ", native = " + idc.getNative() + ", sex = " + (idc.getSex() ? "男" : "女"));
+}
+
+
+function checkZInt(str) {
+	var reg = /^\d+$/;
+	if (str.match(reg)) {
+		//全部是数字
+		return true;
+	} else {
+		//含有其他字符
+		return false;
+	}
+}
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY onLoad="show();">
+
+</BODY>
+</HTML>

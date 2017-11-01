@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="change" namespace="/change" extends="struts-default">
+		<!-- 提交个人文件转部门申请 -->
+		<action name="viewpersonalpaperledger" class="change.viewpersonalpaperledger">
+			<result>/html/change/viewpersonalpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 提交部门文件转个人申请 -->
+		<action name="viewdeptpaperledger" class="change.viewdeptpaperledger">
+			<result>/html/change/viewdeptpaperledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 提交个人光盘转部门申请 -->
+		<action name="viewpersonalcdledger" class="change.viewpersonalcdledger">
+			<result>/html/change/viewpersonalcdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 提交部门光盘转个人申请 -->
+		<action name="viewdeptcdledger" class="change.viewdeptcdledger">
+			<result>/html/change/viewdeptcdledger.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 添加载体归属转换申请 -->
+		<action name="addchangeprocessjob" class="change.addchangeprocessjob">
+			<result>/html/change/addchangeprocessjob.jsp</result>
+			<result name="ok">/html/basic/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看申请记录 -->
+		<action name="managechangejob" class="change.managechangejob">
+			<result>/html/change/managechangejob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看载体转换任务详情 -->
+		<action name="viewchangejobdetail" class="change.viewchangejobdetail">
+			<result>/html/change/viewchangejobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看载体转换作业详情 -->
+		<action name="viewchangeeventdetail" class="change.viewchangeeventdetail">
+			<result>/html/change/viewchangeeventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看载体转换作业详情 -->
+		<action name="cancelchangeevent" class="change.cancelchangeevent">
+			<result>/html/basic/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看待审批列表 -->
+		<action name="managechangeaprvjob" class="change.managechangeaprvjob">
+			<result>/html/change/managechangeaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 审批载体转换任务 -->
+		<action name="approvechangejob" class="change.approvechangejob">
+			<result>/html/change/approvechangejob.jsp</result>
+			<result type="redirect" name="ok">/change/managechangeaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看已审批列表  -->
+		<action name="viewchangeaprvjob" class="change.viewchangeaprvjob">
+			<result>/html/change/viewchangeaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 载体归属转换管理列表  -->
+		<action name="managechangeeventlist" class="change.managechangeeventlist">
+			<result>/html/change/managechangeeventlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 归属变换-->
+		<action name="changeentityscope" class="change.changeentityscope">
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 选择转换的个人 -->
+		<action name="chooseviewuserbydept" class="change.chooseviewuserbydept">
+			<result>/html/change/chooseviewuserbydept.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managechangepersonalconfirm" class="change.managechangepersonalconfirm">
+			<result>/html/change/managechangepersonalconfirm.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="refusechangeentityscope" class="change.refusechangeentityscope">
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

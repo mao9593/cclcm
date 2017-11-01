@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="input" namespace="/input" extends="struts-default">
+	    
+		<!-- 添加电子文件导入申请 -->
+		<action name="addinputevent" class="input.addinputevent">
+			<result>/html/input/addinputevent.jsp</result>
+			<result name="true" type="redirect">/input/viewinputlistjob.action</result>
+			<result name="ok">/html/print/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="deluploadedfile" class="input.deluploadedfile">
+			<result>/html/input/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看电子文件导入申请 -->
+		<action name="viewinputlistjob" class="input.viewinputlistjob">
+			<result>/html/input/viewinputlistjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 撤销电子文件导入申请 -->
+		<action name="cancelinputevent" class="input.cancelinputevent">
+		    <result name="ok" type="redirect">/input/viewinputlistjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 待审批列表 -->
+		<action name="manageinputaprvjob" class="input.manageinputaprvjob">
+		    <result>/html/input/manageinputaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveinputjob" class="input.approveinputjob">
+		    <result>/html/input/approveinputjob.jsp</result>
+		    <result name="ok" type="redirect">/input/manageinputaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewinputeventdetail" class="input.viewinputeventdetail">
+		    <result>/html/input/viewinputeventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewinputjobdetail" class="input.viewinputjobdetail">
+			<result>/html/input/viewinputjobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看审批记录 -->
+		<action name="viewinputaprvjob" class="input.viewinputaprvjob">
+		    <result>/html/input/viewinputaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewinputaprvdetail" class="input.viewinputaprvdetail">
+		    <result>/html/input/viewinputaprvdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看已导入电子文件信息 -->
+		<action name="viewmanageinput" class="input.viewmanageinput">
+		    <result>/html/input/viewmanageinput.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="downloadinput" class="input.downloadinput">
+		    <result>/html/burn/blank.jsp</result>
+			<result name="blank">/html/burn/filenotexsit.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

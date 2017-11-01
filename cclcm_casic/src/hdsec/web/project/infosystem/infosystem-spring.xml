@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="infosystemMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.infosystem.mapper.InfosystemMapper" />
+	</bean>
+	<!-- 计算机维修添加-->
+	<bean id="infosystem.addcomputerrepairevent" class="${common.package}.infosystem.action.AddComputerRepairEventAction" scope="prototype" />
+	<!-- 计算机重装系统-->
+	<bean id="infosystem.addreinstallsystemevent" class="${common.package}.infosystem.action.AddReinstallSystemEventAction" scope="prototype" />
+	<!-- 计算机退网-->
+	<bean id="infosystem.addquitinternetevent" class="${common.package}.infosystem.action.AddQuitInternetEventAction" scope="prototype" />
+	<!-- USB-KEY申请-->
+	<bean id="infosystem.addusbkeyevent" class="${common.package}.infosystem.action.AddUsbkeyEventAction" scope="prototype" />
+	<!-- 开通端口申请-->
+	<bean id="infosystem.addopenportevent" class="${common.package}.infosystem.action.AddOpenPortEventAction" scope="prototype" />
+	<!-- 保留本地打印机申请-->
+	<bean id="infosystem.addlocalprinterevent" class="${common.package}.infosystem.action.AddLocalPrinterEventAction" scope="prototype" />
+	
+	<!--查看申请-->
+	<bean id="infosystem.viewinfosystemevent" class="${common.package}.infosystem.action.ViewInfosystemEventAction" scope="prototype" />
+	<!--查看申请详细-->
+	<bean id="infosystem.viewinfosystemeventdetail" class="${common.package}.infosystem.action.ViewInfosystemEventDetailAction" scope="prototype" />
+	<!--查看审批列表-->
+	<bean id="infosystem.manageinfosystemaprvjob" class="${common.package}.infosystem.action.ManageInfosystemAprvJobAction" scope="prototype" />
+	<!--审批-->
+	<bean id="infosystem.approveinfosystemjob" class="${common.package}.infosystem.action.ApproveInfosystemJobAction" scope="prototype" />
+	<!--查看已审批-->
+	<bean id="infosystem.viewinfosystemaprvjob" class="${common.package}.infosystem.action.ViewInfosystemAprvJobAction" scope="prototype" />
+	<!--查看USBKEY申请详细-->
+	<bean id="infosystem.viewusbkeyeventdetail" class="${common.package}.infosystem.action.ViewUsbkeyEventDetailAction" scope="prototype" />
+	<!--查看开通端口申请详细-->
+	<bean id="infosystem.viewopenporteventdetail" class="${common.package}.infosystem.action.ViewOpenPortEventDetailAction" scope="prototype" />
+	<!--查看本地打印申请详细-->
+	<bean id="infosystem.viewlocalprintereventdetail" class="${common.package}.infosystem.action.ViewLocalPrinterEventDetailAction" scope="prototype" />
+	<bean id="infosystem.approvelocalprinterjob" class="${common.package}.infosystem.action.ApproveLocalPrinterJobAction" scope="prototype" />
+	<bean id="infosystem.approveopenportjob" class="${common.package}.infosystem.action.ApproveOpenPortJobAction" scope="prototype" />
+	<bean id="infosystem.approvequitinternetjob" class="${common.package}.infosystem.action.ApproveQuitInternetJobAction" scope="prototype" />
+	<bean id="infosystem.approvereinstallsystemjob" class="${common.package}.infosystem.action.ApproveReinstallSystemJobAction" scope="prototype" />
+	<bean id="infosystem.approveusbkeyjob" class="${common.package}.infosystem.action.ApproveUsbkeyJobAction" scope="prototype" />
+	<bean id="infosystem.approvecomputerrepairjob" class="${common.package}.infosystem.action.ApproveComputerRepairJobAction" scope="prototype" />
+	
+</beans>

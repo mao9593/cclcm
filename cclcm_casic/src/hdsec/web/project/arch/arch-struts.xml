@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="arch" namespace="/arch" extends="struts-default">
+           
+         <action name="addcustomform" class="arch.addcustomform">
+			<result>/html/arch/addcustomform.jsp</result>
+			<result name="ok" type="redirect">/arch/managetemplate.action</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+         <action name="managetemplate" class="arch.managetemplate">
+			<result>/html/arch/managetemplate.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+         <action name="addtype" class="arch.addtype">
+			<result >/html/arch/addtype.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+				<action name="managedict" class="arch.managedict">
+			<result>/html/arch/managedict.jsp</result>
+			<result name="ok" type="redirect">/arch/managedict.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="adddict" class="arch.adddict">
+			<result>/html/arch/adddict.jsp</result>
+			<result name="insert" type="redirect">/arch/managedict.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatedict" class="arch.updatedict">
+			<result>/html/arch/updatedict.jsp</result>
+			<result name="update" type="redirect">/arch/managedict.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="setdictused" class="arch.setdictused">
+			<result type="redirect">/arch/managedict.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageborrowlen" class="arch.manageborrowlen">
+			<result>/html/arch/manageborrowlen.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="setborrowlen" class="arch.setborrowlen">
+			<result type="redirect">/arch/manageborrowlen.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewarchtemplate" class="arch.viewarchtemplate">
+			<result >/html/arch/viewarchtemplate.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateoneproperty" class="arch.updateoneproperty">
+			<result >/html/arch/dictionary.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getdictionary" class="arch.getdictionary">
+			<result >/html/arch/dictionary.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addpropertykeys" class="arch.addpropertykeys">
+			<result type="redirect">/arch/managetemplate.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 第一次同步20150726 -->
+		<action name="viewarchbyuser" class="arch.viewarchbyuser">
+			<result>/html/arch/viewarchbyuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewarchdetail" class="arch.viewarchdetail">
+			<result>/html/arch/viewarchdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managedos" class="arch.managedos">
+			<result>/html/arch/managedos.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getarchtypetree" class="arch.getarchtypetree">
+			<result>/html/arch/getarchtypetree.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configarchtype" class="arch.configarchtype">
+			<result>/html/arch/configarchtype.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="additem" class="arch.additem">
+			<result>/html/arch/additem.jsp</result>
+			<result name="insert" type="redirect">/arch/managedos.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configitem" class="arch.configitem">
+			<result>/html/arch/configitem.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="adddos" class="arch.adddos">
+			<result>/html/arch/adddos.jsp</result>
+			<result name="insert" type="redirect">/arch/managedos.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdosdetail" class="arch.viewdosdetail">
+			<result>/html/arch/viewdosdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managearch" class="arch.managearch">
+			<result>/html/arch/managearch.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="gettree" class="arch.gettree">
+			<result>/html/arch/gettree.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdosarch" class="arch.viewdosarch">
+			<result>/html/arch/viewdosarch.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addarch" class="arch.addarch">
+			<result>/html/arch/addarch.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="savearch" class="arch.savearch">
+			<result type="redirect">/arch/viewdosarch.action?id=${id}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatedos" class="arch.updatedos">
+			<result>/html/arch/updatedos.jsp</result>
+			<result name="update" type="redirect">/arch/viewdosdetail.action?id=${id}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deletedos" class="arch.deletedos">
+			<result type="redirect">/arch/managedos.action</result>
+			<result name="forbid" type="redirect">/arch/viewdosdetail.action?id=${id}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="lendarch" class="arch.lendarch">
+			<result>/html/arch/lendarch.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="returnarch" class="arch.returnarch">
+			<result>/html/arch/returnarch.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="setarchlent" class="arch.setarchlent">
+			<result>/html/arch/ajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="setarchreturn" class="arch.setarchreturn">
+			<result>/html/arch/ajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<action name="addarchprocessjob" class="arch.addarchprocessjob">
+			<result>/html/arch/addarchprocessjob.jsp</result>
+			<result name="ok">/html/print/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="getnextapprover" class="arch.getnextapprover">
+			<result>/html/arch/getnextapprover.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageaprvjob" class="arch.manageaprvjob">
+			<result>/html/arch/manageaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvearchjob" class="arch.approvearchjob">
+			<result>/html/arch/approvearchjob.jsp</result>
+			<result type="redirect" name="ok">/arch/manageaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewkeeparchbyuser" class="arch.viewkeeparchbyuser">
+			<result>/html/arch/viewkeeparchbyuser.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewarchbrwapply" class="arch.viewarchbrwapply">
+			<result>/html/arch/viewarchbrwapply.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="batchimportarch" class="arch.batchimportarch">
+			<result>/html/arch/batchimportarch.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="importarch" class="arch.importarch">
+			<result type="redirect">/arch/batchimportarch.action?msg=${msg}</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="reprintbarcode" class="arch.reprintbarcode">
+			<result>/html/copy/barcodes.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="configbarcode" class="arch.configbarcode">
+			<result>/html/arch/configbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="chkinputarchbarcode" class="arch.chkinputarchbarcode">
+			<result>/html/arch/getchkresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="cancelarchevent" class="arch.cancelarchevent">
+			<result>/html/arch/getchkresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="renewarchprocessjob" class="arch.renewarchprocessjob">
+			<result>/html/arch/renewarchprocessjob.jsp</result>
+			<result name="ok">/html/print/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="renewarch" class="arch.renewarch">
+			<result>/html/arch/renewarch.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="setarchrenew" class="arch.setarchrenew">
+			<result>/html/arch/ajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deletearch" class="arch.deletearch">
+			<result>/html/arch/ajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewupdatearch" class="arch.viewupdatearch">
+			<result>/html/arch/viewupdatearch.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewdeletelist" class="arch.viewdeletelist">
+			<result>/html/arch/viewdeletelist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="deletethorougharch" class="arch.deletethorougharch">
+			<result>/html/arch/ajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatearch" class="arch.updatearch">
+			<result>/html/arch/ajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="askingtoreturn" class="arch.askingtoreturn">
+			<result>/html/arch/ajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="exportarchexcel" class="arch.exportarchexcel">
+			<result>/html/arch/viewdosarch.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

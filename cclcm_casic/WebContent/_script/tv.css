@@ -1,0 +1,23 @@
+.TreeNode {
+	padding:0px;
+	margin:0px;
+}
+
+.TreeNode img { 
+	border:0px
+}
+
+.normal {
+	font:						Menu;
+	text-decoration:		none;
+	margin-left:			3px;
+	padding:				1px;
+	width:					2px;
+	color:					#000000;
+	background-color:	#FFFFFF;
+}
+
+.selected { 
+	color:			HighLightText;
+	background:	#FFFFFF;
+}

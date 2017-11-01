@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="passport" namespace="/passport" extends="struts-default">
+		<!-- 护照信息添加-->
+		<action name="addpassport" class="passport.addpassport">
+				<result>/html/passport/addpassport.jsp</result>
+				<result name="ok" type="redirect">/passport/managepassport.action</result>
+				<result name="exception">/html/error.jsp</result>
+			    <result name="input">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看护照台账 -->
+		<action name="managepassport" class="passport.managepassport">
+			<result>/html/passport/managepassport.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 护照批量录入 -->
+		<action name="importpassport" class="passport.importpassport">
+			<result>/html/passport/importpassport.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 通过护照号码查看护照信息 -->
+		<action name="viewpassportdetail" class="passport.viewpassportdetail">
+			<result>/html/passport/viewpassportdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 修改护照信息 -->
+		<action name="updatepassport" class="passport.updatepassport">
+			<result>/html/passport/updatepassport.jsp</result>
+			<result name="ok" type="redirect">/passport/managepassport.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+			<!-- 导出护照信息 -->
+		<action name="exportpassport" class="passport.exportpassport">
+			<result>/html/passport/successful.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+	
+
+
+</struts>

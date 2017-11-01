@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	
+	<bean id="changeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.change.mapper.ChangeMapper" />
+	</bean>
+	<!-- 个人文件转部门申请 -->
+	<bean id="change.viewpersonalpaperledger" class="${common.package}.change.action.ViewPersonalPaperLedgerAction" scope="prototype" />
+	<!-- 部门文件转个人申请 -->
+	<bean id="change.viewdeptpaperledger" class="${common.package}.change.action.ViewDeptPaperLedgerAction" scope="prototype" />
+	<!-- 个人光盘转部门申请 -->
+	<bean id="change.viewpersonalcdledger" class="${common.package}.change.action.ViewPersonalCDLedgerAction" scope="prototype" />
+	<!-- 部门光盘转个人申请 -->
+	<bean id="change.viewdeptcdledger" class="${common.package}.change.action.ViewDeptCDLedgerAction" scope="prototype" />
+	<!-- 添加载体归属转换申请 -->
+	<bean id="change.addchangeprocessjob" class="${common.package}.change.action.AddChangeProcessJobAction" scope="prototype" />
+	<!-- 查看申请记录 -->
+	<bean id="change.managechangejob" class="${common.package}.change.action.ManageChangeJobAction" scope="prototype" />
+	<!-- 查看载体转换任务详情 -->
+	<bean id="change.viewchangejobdetail" class="${common.package}.change.action.ViewChangeJobDetailAction" scope="prototype" />
+	<!-- 查看载体转换作业详情 -->
+	<bean id="change.viewchangeeventdetail" class="${common.package}.change.action.ViewChangeEventDetailAction" scope="prototype" />
+	<!-- 删除载体转换作业 -->
+	<bean id="change.cancelchangeevent" class="${common.package}.change.action.CancelChangeEventAction" scope="prototype" />
+	<!-- 查看待审批列表 -->
+	<bean id="change.managechangeaprvjob" class="${common.package}.change.action.ManageChangeAprvJobAction" scope="prototype" />
+	<!-- 审批载体转换任务  -->
+	<bean id="change.approvechangejob" class="${common.package}.change.action.ApproveChangeJobAction" scope="prototype" />
+	<!-- 查看已审批列表  -->
+	<bean id="change.viewchangeaprvjob" class="${common.package}.change.action.ViewChangeAprvJobAction" scope="prototype" />
+	<!-- 删除载体转换作业 -->
+	<bean id="change.managechangeeventlist" class="${common.package}.change.action.ManageChangeEventListAction" scope="prototype" />
+	<!-- 归属变换-->
+	<bean id="change.changeentityscope" class="${common.package}.change.action.ChangeEntityScopeAction" scope="prototype" />
+	<!-- 个人-->
+	<bean id="change.chooseviewuserbydept" class="${common.package}.user.action.ViewUserByDeptAction" scope="prototype" />
+	<bean id="change.managechangepersonalconfirm" class="${common.package}.change.action.ManageChangePersonalConfirmAction" scope="prototype" />
+	<bean id="change.refusechangeentityscope" class="${common.package}.change.action.RefuseChangeEntityScopeAction" scope="prototype" />
+	
+</beans>

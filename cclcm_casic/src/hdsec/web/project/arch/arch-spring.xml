@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="archMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="${common.package}.arch.mapper.ArchMapper" />
+	</bean>
+	<bean id="arch.addcustomform" class="${common.package}.arch.action.AddCustomFormAction" scope="prototype" />
+	<bean id="arch.managetemplate" class="${common.package}.arch.action.ManageTemplateAction" scope="prototype" />
+	<bean id="arch.addtype" class="${common.package}.arch.action.AddTypeAction" scope="prototype" />
+	<bean id="arch.managedict" class="${common.package}.arch.action.ManageDictAction" scope="prototype" />
+	<bean id="arch.adddict" class="${common.package}.arch.action.AddDictAction" scope="prototype" />
+	<bean id="arch.updatedict" class="${common.package}.arch.action.UpdateDictAction" scope="prototype" />
+	<bean id="arch.setdictused" class="${common.package}.arch.action.SetDictUsedAction" scope="prototype" />
+	<bean id="arch.manageborrowlen" class="${common.package}.arch.action.ManageBorrowLenAction" scope="prototype" />
+	<bean id="arch.setborrowlen" class="${common.package}.arch.action.SetBorrowLenAction" scope="prototype" />
+	<bean id="arch.viewarchtemplate" class="${common.package}.arch.action.ViewArchTemplateAction" scope="prototype" />
+	<bean id="arch.updateoneproperty" class="${common.package}.arch.action.UpateOnePropertyAction" scope="prototype" />
+	<bean id="arch.getdictionary" class="${common.package}.arch.action.GetDictionaryAction" scope="prototype" />
+	<bean id="arch.addpropertykeys" class="${common.package}.arch.action.AddPropertyKeysAction" scope="prototype" />
+	<bean id="arch.viewarchbyuser" class="${common.package}.arch.action.ViewArchByUserAction" scope="prototype" />
+	<bean id="arch.viewarchdetail" class="${common.package}.arch.action.ViewArchDetailAction" scope="prototype" />
+	<bean id="arch.managedos" class="${common.package}.arch.action.ManageDosAction" scope="prototype" />
+	<bean id="arch.getarchtypetree" class="${common.package}.arch.action.GetArchTypeTreeAction" scope="prototype" />
+	<bean id="arch.configarchtype" class="${common.package}.arch.action.ConfigArchTypeAction" scope="prototype" />
+	<bean id="arch.additem" class="${common.package}.arch.action.AddItemAction" scope="prototype" />
+	<bean id="arch.configitem" class="${common.package}.arch.action.ConfigItemAction" scope="prototype" />
+	<bean id="arch.adddos" class="${common.package}.arch.action.AddDosAction" scope="prototype" />
+	<bean id="arch.viewdosdetail" class="${common.package}.arch.action.ViewDosDetailAction" scope="prototype" />
+	<bean id="arch.managearch" class="${common.package}.arch.action.ManageArchAction" scope="prototype" />
+	<bean id="arch.gettree" class="${common.package}.arch.action.GetTreeAction" scope="prototype" />
+	<bean id="arch.viewdosarch" class="${common.package}.arch.action.ViewDosArchAction" scope="prototype" />
+	<bean id="arch.addarch" class="${common.package}.arch.action.AddArchAction" scope="prototype" />
+	<bean id="arch.savearch" class="${common.package}.arch.action.SaveArchAction" scope="prototype" />
+    <bean id="arch.updatedos" class="${common.package}.arch.action.UpdateDosAction" scope="prototype" />
+	<bean id="arch.deletedos" class="${common.package}.arch.action.DeleteDosAction" scope="prototype" />
+	<bean id="arch.lendarch" class="${common.package}.arch.action.LendArchAction" scope="prototype" />
+	<bean id="arch.returnarch" class="${common.package}.arch.action.ReturnArchAction" scope="prototype" />
+	<bean id="arch.setarchlent" class="${common.package}.arch.action.SetArchLentAction" scope="prototype" />
+	<bean id="arch.setarchreturn" class="${common.package}.arch.action.SetArchReturnAction" scope="prototype" />
+	<!-- 20150728 23:08-->
+	<bean id="arch.addarchprocessjob" class="${common.package}.arch.action.AddArchProcessJobAction" scope="prototype" />
+	<bean id="arch.getnextapprover" class="${common.package}.arch.action.GetNextApproverAction" scope="prototype" />
+	<bean id="arch.manageaprvjob" class="${common.package}.arch.action.ManageAprvJobAction" scope="prototype" />
+	<bean id="arch.approvearchjob" class="${common.package}.arch.action.ApproveArchJobAction" scope="prototype" />
+	<bean id="arch.viewkeeparchbyuser" class="${common.package}.arch.action.ViewKeepArchByUserAction" scope="prototype" />
+	<bean id="arch.viewarchbrwapply" class="${common.package}.arch.action.ViewArchBrwApplyAction" scope="prototype" />
+	<bean id="arch.batchimportarch" class="${common.package}.arch.action.BatchImportArchAction" scope="prototype" />
+	<bean id="arch.importarch" class="${common.package}.arch.action.ImportArchAction" scope="prototype" />
+	<bean id="arch.reprintbarcode" class="${common.package}.arch.action.ReprintBarcodeAction" scope="prototype" />
+	<bean id="arch.configbarcode" class="${common.package}.arch.action.ConfigBarcodeAction" scope="prototype" />
+	<bean id="arch.chkinputarchbarcode" class="${common.package}.arch.action.ChkInputArchBarcodeAction" scope="prototype" />
+	<bean id="arch.cancelarchevent" class="${common.package}.arch.action.CancelArchEventAction" scope="prototype" />
+	<bean id="arch.renewarchprocessjob" class="${common.package}.arch.action.RenewArchProcessJobAction" scope="prototype" />
+	<bean id="arch.renewarch" class="${common.package}.arch.action.RenewArchAction" scope="prototype" />
+	<bean id="arch.setarchrenew" class="${common.package}.arch.action.SetArchRenewAction" scope="prototype" />
+	<bean id="arch.deletearch" class="${common.package}.arch.action.DeleteArchAction" scope="prototype" />
+	<bean id="arch.viewupdatearch" class="${common.package}.arch.action.ViewUpdateArchAction" scope="prototype" />
+	<bean id="arch.viewdeletelist" class="${common.package}.arch.action.ViewDeleteListAction" scope="prototype" />
+	<bean id="arch.deletethorougharch" class="${common.package}.arch.action.DeleteThoroughArchAction" scope="prototype" />
+	<bean id="arch.updatearch" class="${common.package}.arch.action.UpdateArchAction" scope="prototype" />
+	<bean id="arch.askingtoreturn" class="${common.package}.arch.action.AskingToReturnAction" scope="prototype" />
+	<bean id="arch.exportarchexcel" class="${common.package}.arch.action.ExportArchExcelAction" scope="prototype" />
+</beans>

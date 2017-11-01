@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<!-- 指定别名包，则该包下的类自动拥有别名，别名为类名全部字母小写 -->
+	<typeAliases>
+		<package name="basic.model"/>
+	</typeAliases>
+	<!-- 
+	<mappers>
+		<mapper resource="hdsec/web/project/mappers/UserMapper.xml"/>
+		<mapper resource="hdsec/web/project/mappers/LogMapper.xml"/>
+		<mapper resource="hdsec/web/project/mappers/ActivitiMapper.xml"/>
+	</mappers>
+	 -->
+	 <mappers>
+		<mapper resource="basic/mappers/BasicMapper_SqlServer.xml"/>
+	</mappers>
+</configuration>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "classpath:org/springframework/beans/factory/xml/spring-beans-2.0.dtd">
+<beans>
+	<bean id="mappers" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="mapperInterface" value="basic.mapper.Mappers" />
+	</bean>
+	<bean id="testProcedure" class="basic.TestProcedure">
+		<property name="mappers" ref="mappers" />
+	</bean>
+	<bean id="testXML" class="basic.TestXML">
+		<property name="mappers" ref="mappers" />
+	</bean>
+	<bean id="proxyworkservice" class="org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter">  
+    	<property name="baseAddress" value="http\://10.21.164.24\:8080/"></property>  
+	</bean>
+</beans>

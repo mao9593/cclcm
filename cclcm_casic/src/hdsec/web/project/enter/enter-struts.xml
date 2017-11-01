@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="enter" namespace="/enter" extends="struts-default">
+		<!-- 添加录入申请 -->
+		<action name="addpersonalpaperenterevent" class="enter.addpersonalpaperenterevent">
+			<result>/html/enter/addpersonalpaperenterevent.jsp</result>
+			<result name="ok" type="redirect">/enter/submitenterevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addpersonalcdenterevent" class="enter.addpersonalcdenterevent">
+			<result>/html/enter/addpersonalcdenterevent.jsp</result>
+			<result name="ok" type="redirect">/enter/submitenterevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="adddeptpaperenterevent" class="enter.adddeptpaperenterevent">
+			<result>/html/enter/adddeptpaperenterevent.jsp</result>
+			<result name="ok" type="redirect">/enter/submitenterevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="adddeptcdenterevent" class="enter.adddeptcdenterevent">
+			<result>/html/enter/adddeptcdenterevent.jsp</result>
+			<result name="ok" type="redirect">/enter/submitenterevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 录入作业管理 -->
+		<action name="addenterevent" class="enter.addenterevent">
+			<result>/html/enter/addenterevent.jsp</result>
+			<result name="ok" type="redirect">/enter/submitenterevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageenterevent" class="enter.manageenterevent">
+			<result>/html/enter/manageenterevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageenterpaperlist" class="enter.manageenterpaperlist">
+			<result>/html/enter/manageenterpaperlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageentercdlist" class="enter.manageentercdlist">
+			<result>/html/enter/manageentercdlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="submitenterevent" class="enter.submitenterevent">
+			<result>/html/enter/submitenterevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateenterevent" class="enter.updateenterevent">
+			<result name="personalpaper">/html/enter/updatepersonalpaperenterevent.jsp</result>
+			<result name="personalcd">/html/enter/updatepersonalcdenterevent.jsp</result>
+			<result name="deptpaper">/html/enter/updatedeptpaperenterevent.jsp</result>
+			<result name="deptcd">/html/enter/updatedeptcdenterevent.jsp</result>
+			<result type="redirect" name="ok">/enter/submitenterevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>	
+		<action name="updateenterstatus" class="enter.updateenterstatus">
+			<result >/html/enter/barcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delenterevent" class="enter.delenterevent">
+			<result type="redirect">/enter/submitenterevent.action</result>
+			<result name="delfile" type="redirect">/enter/addpersonalpaperenterevent.action</result>
+			<result name="deldisk" type="redirect"> /enter/addpersonalcdenterevent.action</result>
+			<result name="deldepfile" type="redirect">/enter/adddeptpaperenterevent.action</result>
+			<result name="deldepdisk" type="redirect"> /enter/adddeptcdenterevent.action</result>
+			<result name="delscanfile" type="redirect">/enter/addscanevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewentereventdetail" class="enter.viewentereventdetail">
+			<result>/html/enter/viewentereventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 录入任务管理 -->
+		<action name="manageenterjob" class="enter.manageenterjob">
+			<result>/html/basic/managejob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 提交录入审批 -->
+		<action name="addenterprocessjob" class="enter.addenterprocessjob">
+			<result>/html/enter/addenterprocessjob.jsp</result>
+			<result name="ok">/html/enter/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 录入申请列表 -->
+		<action name="manageenterlistjob" class="enter.manageenterlistjob">
+			<result>/html/enter/manageenterlistjob.jsp</result>
+		<!-- 	<result name="scan">/html/enter/managescanlistjob.jsp</result> -->
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 扫描录入申请列表 -->
+		<action name="manageenterscanlistjob" class="enter.manageenterscanlistjob">
+			<result>/html/enter/manageenterlistjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看录入任务详细 -->
+		<action name="viewenterjobdetail" class="enter.viewenterjobdetail">
+			<result>/html/enter/viewenterjobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="cancelenterevent" class="enter.cancelenterevent">
+			<result>/html/enter/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 审批录入任务 -->
+		<action name="manageenteraprvjob" class="enter.manageenteraprvjob">
+			<result>/html/enter/manageenteraprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveenterjob" class="enter.approveenterjob">
+			<result>/html/enter/approveenterjob.jsp</result>
+			<result type="redirect" name="ok">/enter/manageenteraprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewenteraprvjob" class="enter.viewenteraprvjob">
+			<result>/html/enter/viewenteraprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 配置条码格式 -->
+		<action name="configbarcode" class="enter.configbarcode">
+			<result>/html/enter/configbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 补打条码 -->
+		<action name="reprintbarcode" class="enter.reprintbarcode">
+			<result>/html/enter/barcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 预填条码时查重 -->
+		<action name="checkbarcode" class="enter.checkbarcode">
+			<result>/html/enter/checkbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 录入文件、光盘历史记录 -->
+		<action name="enterpaperhistory" class="enter.enterpaperhistory">
+			<result>/html/enter/enterpaperhistory.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="entercdhistory" class="enter.entercdhistory">
+			<result>/html/enter/entercdhistory.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 扫描录入申请 -->
+		<action name="addscanevent" class="enter.addscanevent">
+			<result>/html/enter/addscanevent.jsp</result>
+			<result name="ok" type="redirect">/enter/submitenterevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 扫描录入管理 -->
+		<action name="managescanlist" class="enter.managescanlist">
+			<result>/html/enter/managescanlist.jsp</result>
+			<result name="self_success">/html/enter/manageselfscanlist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 上传扫描文件 -->
+		<action name="uploadscanfiles" class="basic.uploadscanfiles">
+			<result>/html/enter/uploadscanfiles.jsp</result>
+			<result name="ok" type="redirect">/enter/managescanlist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 批量删除录入任务 -->
+		<action name="deleteenterjob" class="enter.deleteenterjob">
+		    <result name="deletefile" type="redirect">/enter/addpersonalpaperenterevent.action</result>
+			<result name="deletedisk" type="redirect"> /enter/addpersonalcdenterevent.action</result>
+			<result name="deletedepfile" type="redirect">/enter/adddeptpaperenterevent.action</result>
+			<result name="deletedepdisk" type="redirect"> /enter/adddeptcdenterevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 预发条码 -->
+		<action name="presendbarcode" class="enter.presendbarcode">
+			<result >/html/enter/barcode.jsp</result>
+			<result name="ok">/html/enter/presendbarcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 个人磁介质录入申请记录 -->
+		<action name="addpersonaldeviceenterevent" class="enter.addpersonaldeviceenterevent">
+			<result>/html/enter/addpersonaldeviceenterevent.jsp</result>
+			<result name="ok" type="redirect">/enter/submitenterevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 个人磁介质录入管理 -->
+		<action name="manageenterdevicelist" class="enter.manageenterdevicelist">
+			<result>/html/enter/manageenterdevicelist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 个人磁介质录入记录 -->
+		<action name="enterdevicehistory" class="enter.enterdevicehistory">
+			<result>/html/enter/enterdevicehistory.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

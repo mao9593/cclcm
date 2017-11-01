@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="secplace" namespace="/secplace" extends="struts-default">
+		<!-- 计算机批添加-->
+		<action name="addsecplace" class="secplace.addsecplace">
+				<result>/html/secplace/addsecplace.jsp</result>
+				<result name="ok" type="redirect">/secplace/managesecplace.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看涉密场所台账-->
+		<action name="managesecplace" class="secplace.managesecplace">
+				<result>/html/secplace/managesecplace.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 修改涉密场所-->
+		<action name="updatesecplace" class="secplace.updatesecplace">
+				<result>/html/secplace/updatesecplace.jsp</result>
+				<result name="ok" type="redirect">/secplace/managesecplace.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 通过条码号查看涉密场所详细信息-->
+		<action name="viewsecplacedetail" class="secplace.viewsecplacedetail">
+				<result>/html/secplace/viewsecplacedetail.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--添加外来人员进入涉密场所申请-->
+		<action name="addentersecplaceevent" class="secplace.addentersecplaceevent">
+				<result>/html/secplace/addentersecplaceevent.jsp</result>
+				<!-- <result name="ok" type="redirect">/secplace/viewentersecplaceevent.action</result> -->
+				<result name="ok" type="redirect">/securityuser/managesecusereventlist.action?module=secmanage</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--添加涉密场所申请-->
+		<action name="addsecplaceevent" class="secplace.addsecplaceevent">
+				<result>/html/secplace/addsecplaceevent.jsp</result>
+				<result name="ok" type="redirect">/secplace/viewsecplaceevent.action</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--查看涉密场所申请列表-->
+		<action name="viewsecplaceevent" class="secplace.viewsecplaceevent">
+				<result>/html/secplace/viewsecplaceevent.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--查看涉密场所申请详细信息-->
+		<action name="viewsecplaceeventdetail" class="secplace.viewsecplaceeventdetail">
+				<result>/html/secplace/viewsecplaceeventdetail.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--查看涉密场所申请待审批列表-->
+		<action name="managesecplaceaprvjob" class="secplace.managesecplaceaprvjob">
+				<result>/html/secplace/managesecplaceaprvjob.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--查看涉密场所申请已审批列表-->
+		<action name="viewsecplaceaprvjob" class="secplace.viewsecplaceaprvjob">
+				<result>/html/secplace/viewsecplaceaprvjob.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--查看进入涉密场所申请列表-->
+		<action name="viewentersecplaceevent" class="secplace.viewentersecplaceevent">
+				<result>/html/secplace/viewentersecplaceevent.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--查看进入涉密场所待审批列表-->
+		<action name="manageentersecplaceaprvjob" class="secplace.manageentersecplaceaprvjob">
+				<result>/html/secplace/manageentersecplaceaprvjob.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--查看进入涉密场所已审批列表-->
+		<action name="viewentersecplaceaprvjob" class="secplace.viewentersecplaceaprvjob">
+				<result>/html/secplace/viewentersecplaceaprvjob.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--查看进入涉密场所申请详细-->
+		<action name="viewentersecplaceeventdetail" class="secplace.viewentersecplaceeventdetail">
+				<result>/html/secplace/viewentersecplaceeventdetail.jsp</result>
+				<result name="exception">/html/error.jsp</result>
+				<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--审批进入涉密场所-->
+		<action name="approveentersecplacejob" class="secplace.approveentersecplacejob">
+			<result>/html/secplace/approveentersecplacejob.jsp</result>
+			<!-- <result type="redirect" name="ok">/secplace/manageentersecplaceaprvjob.action</result> -->
+			<result type="redirect" name="ok">/securityuser/manageaprvjob.action?module=secmanage</result>
+			<result name="exception">/html/error.jsp</result> 
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--删除上传的文件-->
+		<action name="deluploadedfile" class="secplace.deluploadedfile">
+			<result>/html/secplace/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result> 
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!--审批涉密场所-->
+		<action name="approvesecplacejob" class="secplace.approvesecplacejob">
+			<result>/html/secplace/approvesecplacejob.jsp</result>
+			<result type="redirect" name="ok">/secplace/managesecplaceaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result> 
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!--删除事件-->
+		<action name="deleteevent" class="secplace.deleteevent">
+			<result type="redirect">/secplace/viewsecplaceevent.action</result>
+			<result type="redirect" name="ok_enter">/secplace/viewentersecplaceevent.action</result>
+			<result name="exception">/html/error.jsp</result> 
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 获得匹配的涉密场所 -->
+		<action name="getfuzzysecplace" class="secplace.getfuzzysecplace">
+			<result>/html/secplace/getfuzzysecplace.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

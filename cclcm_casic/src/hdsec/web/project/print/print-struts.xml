@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<package name="print" namespace="/print" extends="struts-default">
+		<action name="viewprinter" class="print.viewprinter">
+			<result>/html/print/viewprinter.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="manageprintevent" class="print.manageprintevent">
+			<result>/html/print/manageprintevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="submitprintevent" class="print.submitprintevent">
+			<result>/html/print/submitprintevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="draftprintevent" class="print.draftprintevent">
+			<result>/html/print/draftprintevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewprinteventdetail" class="print.viewprinteventdetail">
+			<result>/html/print/viewprinteventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="delprintevent" class="print.delprintevent">
+			<result type="redirect">/print/submitprintevent.action</result>
+			<result name="fix" type="redirect">/print/managefixedaccording.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateprintdraft" class="print.updateprintdraft">
+			<result>/html/print/updateprintdraft.jsp</result>
+			<result name="ok" type="redirect">/print/draftprintevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updateprintevent" class="print.updateprintevent">
+			<result>/html/print/updateprintevent.jsp</result>
+			<result name="ok" type="redirect">/print/submitprintevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="cancelprintevent" class="print.cancelprintevent">
+			<result>/html/print/getajaxresult.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 查看打印审批单 -->
+		<action name="manageprintjob" class="print.manageprintjob">
+			<result>/html/print/manageprintjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 打印预览 -->
+		<action name="showprintfile" class="print.showprintfile">
+			<result>/html/print/showprintfile.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		<!-- linux打印预览 -->
+		<action name="showprintfilelinux" class="print.showprintfilelinux">
+			<result>/html/print/showprintfilelinux.jsp</result>
+			<result name="exception">/html/linuxshowerror.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+				<!-- linux异步删除文件 -->
+		<action name="deletefile" class="print.deletefile">
+			<result name="ok">/html/print/showprintfilelinux.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		
+		
+		<!-- 给用户组配置默认打印机 -->
+		<action name="configdeptprinter" class="print.configdeptprinter">
+			<result>/html/print/configdeptprinter.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 添加打印申请 -->
+		<action name="addprintprocessjob" class="print.addprintprocessjob">
+			<result>/html/print/addprintprocessjob.jsp</result>
+			<result type="redirect" name="ok">/print/manageprintjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+			<result type="redirect" name="print">/print/printbyself.action</result>
+			<result name="nnd">/html/print/getajaxresult.jsp</result> 
+		</action>
+		<!-- 审批打印任务 -->
+		<action name="manageprintaprvjob" class="print.manageprintaprvjob">
+			<result>/html/print/manageprintaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approveprintjob" class="print.approveprintjob">
+			<result>/html/print/approveprintjob.jsp</result>
+			<result type="redirect" name="ok">/print/manageprintaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewprintaprvjob" class="print.viewprintaprvjob">
+			<result>/html/print/viewprintaprvjob.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewprintjobdetail" class="print.viewprintjobdetail">
+			<result>/html/print/viewprintjobdetail.jsp</result>
+			<result name="special">/html/print/viewspecialjobdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 批量删除打印作业 -->
+		<action name="delmultiprintevent" class="print.delmultiprintevent">
+			<result type="redirect">/print/submitprintevent.action</result>
+			<result name="special" type="redirect">/print/addspecialprintevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 控制台文件预览 -->
+		<action name="showprintfileforconsole" class="print.showprintfileforconsole">
+			<result>/html/print/showprintfile.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 补打条码 -->
+		<action name="reprintbarcode" class="print.reprintbarcode">
+			<result>/html/copy/barcodes.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- 替换页打印 -->
+		<action name="replacepageprint" class="print.replacepageprint">
+			<result>/html/print/replacepageprint.jsp</result>
+			<result name="ok" type="redirect">/print/updateprintevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<!-- OA特殊打印 -->
+		<action name="addspecialprintevent" class="print.addspecialprintevent">
+			<result>/html/print/addspecialprintevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addspecialprocessjob" class="print.addspecialprocessjob">
+			<result>/html/print/addspecialprocessjob.jsp</result>
+			<result name="ok" type="redirect">/print/managespecialprintevent.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managespecialprintevent" class="print.managespecialprintevent">
+			<result>/html/print/managespecialprintevent.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="viewspecialprinteventdetail" class="print.viewspecialprinteventdetail">
+			<result>/html/print/viewspecialprinteventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="approvespecialprintjob" class="print.approvespecialprintjob">
+			<result>/html/print/approvespecialprintjob.jsp</result>
+			<result type="redirect" name="ok">/print/manageprintaprvjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managespecialprintlist" class="print.managespecialprintlist">
+			<result>/html/print/managespecialprintlist.jsp</result>
+			<result type="redirect" name="ok">/print/managespecialprintlist.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatespecialstatus" class="print.updatespecialstatus">
+			<result >/html/print/barcode.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="printbyself" class="print.printbyself">
+			<result>/html/print/printself.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="changespecialprinteventdetail" class="print.changespecialprinteventdetail">
+			<result>/html/print/changespecialprinteventdetail.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="specialprintpaperhistory" class="print.specialprintpaperhistory">
+			<result >/html/print/specialprintpaperhistory.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="ensuresubevent" class="print.ensuresubevent">
+			<result>/html/print/ensuresubevent.jsp</result>
+			<result name="ok" type="redirect">/print/addprintprocess.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="returnreadstatus" class="print.returnreadstatus">
+			<result>/html/print/returnreadstatus.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="showrisklist" class="print.showrisklist">
+			<result>/html/print/showrisklist.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="remarkprintjob" class="print.remarkprintjob">
+			<result type="redirect">/print/approveprintjob.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="managefixedaccording" class="print.managefixedaccording">
+			<result>/html/print/managefixedaccording.jsp</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="addfixedaccording" class="print.addfixedaccording">
+			<result>/html/print/addfixedaccording.jsp</result>
+			<result name="ok" type="redirect">/print/managefixedaccording.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+		<action name="updatefixedaccording" class="print.updatefixedaccording">
+			<result>/html/print/updatefixedaccording.jsp</result>
+			<result name="ok" type="redirect">/print/managefixedaccording.action</result>
+			<result name="exception">/html/error.jsp</result>
+			<result type="redirect" name="error">/error.action</result>
+		</action>
+	</package>
+</struts>

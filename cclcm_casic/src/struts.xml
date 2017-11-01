@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "classpath:struts-2.0.dtd">
+
+<struts>
+	<include file="hdsec/web/project/user/user-struts.xml" />
+	<include file="hdsec/web/project/log/log-struts.xml" />
+	<include file="hdsec/web/project/activiti/activiti-struts.xml"/>
+	<include file="hdsec/web/project/print/print-struts.xml"/>
+	<include file="hdsec/web/project/basic/basic-struts.xml"/>
+	<include file="hdsec/web/project/burn/burn-struts.xml"/>
+	<include file="hdsec/web/project/ledger/ledger-struts.xml"/>
+	<include file="hdsec/web/project/device/device-struts.xml"/>
+	<include file="hdsec/web/project/client/client-struts.xml"/>
+	<include file="hdsec/web/project/copy/copy-struts.xml"/>
+	<include file="hdsec/web/project/enter/enter-struts.xml"/>
+	<include file="hdsec/web/project/transfer/transfer-struts.xml"/>
+	<include file="hdsec/web/project/borrow/borrow-struts.xml"/>
+	<include file="hdsec/web/project/storage/storage-struts.xml"/>
+	<include file="hdsec/web/project/change/change-struts.xml"/>
+	<include file="hdsec/web/project/webservice/webservice-struts.xml"/>
+	<!-- 
+	<include file="hdsec/web/project/archives/archives-struts.xml"/>
+	<include file="hdsec/web/project/archiveType/archiveType-struts.xml"/>
+	<include file="hdsec/web/project/file/file-struts.xml"/>
+	<include file="hdsec/web/project/form/form-struts.xml"/>
+	-->
+	<include file="hdsec/web/project/input/input-struts.xml"/>
+	 
+	 <include file="hdsec/web/project/arch/arch-struts.xml"/>
+	 <include file="hdsec/web/project/disc/disc-struts.xml"/>
+	 <include file="hdsec/web/project/asset/asset-struts.xml"/>
+	<include file="hdsec/web/project/computer/computer-struts.xml"/>
+	<!-- <include file="hdsec/web/project/plan/plan-struts.xml"/>  -->
+	<include file="hdsec/web/project/secplace/secplace-struts.xml"/>
+	<include file="hdsec/web/project/secactivity/secactivity-struts.xml"/>
+	<include file="hdsec/web/project/securityuser/securityuser-struts.xml"/>
+    <include file="hdsec/web/project/education/education-struts.xml"/>
+	<include file="hdsec/web/project/publicity/publicity-struts.xml"/> 
+	<include file="hdsec/web/project/secmanage/secmanage-struts.xml"/>
+	<include file="hdsec/web/project/securitydept/securitydept-struts.xml"/>  
+	<include file="hdsec/web/project/infosystem/infosystem-struts.xml"/> 
+	<include file="hdsec/web/project/passport/passport-struts.xml"/> 
+	<include file="hdsec/web/project/carriermanage/carriermanage-struts.xml"/>
+	<constant name="struts.multipart.maxSize" value="104857600"/>
+</struts>

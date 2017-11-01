@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.activiti.mapper.ActivitiMapper">
+	
+	<select id="getApproveProcessList" parameterType="map" resultType="approveprocess">
+		<![CDATA[
+			select ap.* from approve_process ap	
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="process_name !=null and process_name != ''" >
+   				<![CDATA[
+			 		and UPPER(process_name) LIKE UPPER('%'+#{process_name}+'%')
+				]]>
+   			</if>
+   			<if test="dept_id !=null and dept_id != ''" >
+   				<![CDATA[
+			 		and charindex(','+#{dept_id}+',',','+ap.dept_id+',') > 0
+				]]>
+   			</if>
+   			<if test="seclv_code !=null and seclv_code != ''" >
+   				<![CDATA[
+   					and charindex(','+#{seclv_code}+',',','+ap.seclv_code+',') > 0 
+				]]>
+   			</if>
+   			<if test="jobType_code !=null and jobType_code != ''" >
+   				<![CDATA[
+			 		and charindex(','+#{jobType_code}+',',','+ap.jobType_code+',') > 0
+				]]>
+   			</if>
+   		</trim>			
+	</select>
+	<insert id="addProcess" parameterType="approveprocess">
+		<![CDATA[
+			insert into approve_process(process_id, process_name,dept_id,seclv_code,jobtype_code,step_dept,step_role,total_steps,usage_code) 
+				values(#{process_id},#{process_name},#{dept_id},#{seclv_code},#{jobType_code},#{step_dept},#{step_role},#{total_steps},#{usage_code})
+		]]>
+	</insert>
+	<delete id="delProcessByProcessId" parameterType="string">
+		<![CDATA[
+			delete from approve_process where process_id =#{process_id}
+		]]>
+	</delete>
+	<select id="getProcessNameById" parameterType="string" resultType="string">
+		<![CDATA[
+			select distinct process_name from approve_process where process_id=#{process_id} 
+		]]>
+	</select>
+	<update id="updateProcess" parameterType="approveprocess">
+		<![CDATA[
+			update approve_process 
+				set process_name=#{process_name},
+					dept_id=#{dept_id},
+					seclv_code=#{seclv_code},
+					jobType_code =#{jobType_code},
+					step_dept=#{step_dept},
+					step_role=#{step_role},
+					total_steps=#{total_steps},
+					usage_code=#{usage_code}
+			where   process_id=#{process_id}
+		]]>
+	</update>
+	<select id="getProcessById" parameterType="string" resultType="approveprocess">
+		<![CDATA[
+			select ap.* from approve_process ap	where ap.process_id=#{process_id}
+		]]>
+	</select>
+	<select id="getApproversByDeptRole" parameterType="map" resultType="approveruser">
+		<![CDATA[
+			SELECT SU.USER_IIDD,USER_NAME,RANK FROM SEC_USER SU
+				LEFT JOIN SEC_ROLE_USER SRU ON (SU.USER_IIDD = SRU.USER_IIDD) 
+			WHERE DEPT_ID = #{dept_id} AND ROLE_ID=#{role_id} AND SU.IS_SEALED = 'N'
+			UNION
+			SELECT SU.USER_IIDD,USER_NAME,RANK FROM SEC_USER SU 
+				LEFT JOIN SEC_DEPT_ADMIN SDA ON (SU.USER_IIDD=SDA.USER_IIDD) 
+			WHERE SDA.DEPT_ID = #{dept_id} AND SDA.TYPEFLAG = 'PARTTIME' AND SU.IS_SEALED = 'N' 
+		]]>
+		<![CDATA[
+   			order by RANK asc
+   		]]>
+	</select>
+	<select id="getProcessByKey" parameterType="map" resultType="approveprocess">
+		<![CDATA[
+			select ap.* from approve_process ap	
+			where charindex(','+#{dept_id}+',',','+ap.dept_id+',') > 0
+   					and charindex(','+#{seclv_code}+',',','+ap.seclv_code+',') > 0 
+			 		and charindex(','+#{jobType_code}+',',','+ap.jobType_code+',') > 0
+			 		and (ap.usage_code is null or ap.usage_code='')
+		]]>
+	</select>
+	<insert id="addProcessRecord" parameterType="processrecord">
+		<![CDATA[
+			insert into process_record(
+				job_code,jobType_code,jobType_name,user_iidd,user_name,dept_name,operation,opinion,op_time)
+			values(#{job_code},#{jobType.jobTypeCode},#{jobType.jobTypeName},#{user_iidd},#{user_name},#{dept_name},
+					#{operation},#{opinion},#{op_time})
+		]]>
+	</insert>
+	<select id="getProcessRecordList" parameterType="processrecord" resultType="processrecord">
+		<![CDATA[
+			select * from process_record	
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+   			<if test="job_code !=null and job_code != ''" >
+   				<![CDATA[
+			 		and job_code = #{job_code}
+				]]>
+   			</if>
+   			<if test="jobType !=null and jobType != ''" >
+   				<![CDATA[
+			 		and jobtype_code = #{jobType.jobTypeCode}
+				]]>
+   			</if>
+   			<if test="user_iidd !=null and user_iidd != ''" >
+   				<![CDATA[
+			 		and UPPER(user_iidd) like UPPER('%'+#{user_iidd}+'%')
+				]]>
+   			</if>
+   			<if test="user_name !=null and user_name != ''" >
+   				<![CDATA[
+			 		and UPPER(user_name) like UPPER('%'+#{user_name}+'%')
+				]]>
+   			</if>
+   			<if test="dept_name !=null and dept_name != ''" >
+   				<![CDATA[
+			 		and UPPER(dept_name) like UPPER('%'+#{dept_name}+'%')
+				]]>
+   			</if>
+   			<if test="operation !=null and operation != ''" >
+   				<![CDATA[
+			 		and UPPER(operation) like UPPER('%'+#{operation}+'%')
+				]]>
+   			</if>
+   		</trim>
+   		<![CDATA[
+   			order by op_time asc
+   		]]>
+	</select>
+	<select id="getProcessByUsageKey" parameterType="map" resultType="approveprocess">
+		<![CDATA[
+			select ap.* from approve_process ap	
+			where charindex(','+#{dept_id}+',',','+ap.dept_id+',') > 0
+   					and charindex(','+#{seclv_code}+',',','+ap.seclv_code+',') > 0 
+			 		and charindex(','+#{jobType_code}+',',','+ap.jobType_code+',') > 0
+			 		and charindex(','+#{usage_code}+',',','+ap.usage_code+',') > 0
+		]]>
+	</select>
+</mapper> 

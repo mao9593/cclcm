@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hdsec.web.project.enter.mapper.EnterMapper">
+	
+	<!-- 录入作业管理 -->
+	<insert id="addEnterEvent" parameterType="enterevent">					
+		<![CDATA[
+			insert into event_import(
+				user_iidd,
+				dept_id,
+				event_code,
+				seclv_code,
+				usage_code,
+				project_code,
+				summ,				
+				apply_time,
+				zipfile,
+				medium_serial,
+				page_num,
+				source,
+				place,
+				import_status,
+				file_type,
+				scope,
+				scope_dept_id,
+				period,
+				file_kind,
+				enter_num,
+				file_num,
+				paper_barcode,
+				company,
+				publish_type,
+				fileid,
+				company_send,
+				urgency_lv,
+				filed_date,
+				publish_limits, 
+				create_type,
+				create_user_name,
+				src_code,
+				confidential_num
+			)values(#{user_iidd},
+				#{dept_id},
+				#{event_code},
+				#{seclv_code},
+				#{usage_code},
+				#{project_code},
+				#{summ},
+				#{apply_time},	
+				#{zipfile},
+				#{medium_serial},
+				#{page_num},
+				#{source},
+				#{place},
+				#{import_status},
+				#{file_type},
+				#{scope},
+				#{scope_dept_id},
+				#{period},
+				#{file_kind},
+				#{enter_num},
+				#{file_num},
+				#{paper_barcode},
+				#{company},
+				#{publish_type},
+				#{fileid},
+				#{company_send},
+				#{urgency_lv},
+				#{filed_date},
+				#{publish_limits}, 
+				#{create_type},
+				#{create_user_name},
+				#{src_code},
+				#{confidential_num}
+				)
+		]]>
+	</insert>
+	<select id="getEnterEventList" parameterType="map" resultType="enterevent">
+		<![CDATA[
+			select ei.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,jp.job_code
+			 from event_import ei 
+				left join job_process jp on(ei.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ei.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ei.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ei.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ei.usage_code=syu.usage_code)
+				left join sys_project sp on (ei.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="admin_user_iidd != null and admin_user_iidd != ''">
+		 		and ((ei.dept_id in 
+				<foreach item="item" index="index" collection="admin_dept_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+		 		and ei.scope='PERSON')  or (ei.user_iidd = #{admin_user_iidd} and ei.scope='DEPT'))
+				
+			</if>
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ei.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+   			<if test="zipfile != null and zipfile != ''" >
+   				<![CDATA[
+			 		and UPPER(ei.zipfile) like UPPER('%'+#{zipfile}+'%')
+				]]>
+   			</if>
+   			<if test="user_name != null and user_name != ''" >
+   				<![CDATA[
+			 		and su.user_name = #{user_name}
+				]]>
+   			</if>
+   			<if test="dept_name != null and dept_name != ''" >
+   				<![CDATA[
+			 		and sd.dept_name = #{dept_name}
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ei.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="file_type != null and file_type != ''" >
+   				<![CDATA[
+			 		and ei.file_type = #{file_type}
+				]]>
+   			</if>	
+   			<if test="import_status != null">
+	   			<![CDATA[
+				 	and ei.import_status = #{import_status}
+				]]>	
+			</if>		
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ei.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ei.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="scope != null and scope != ''" >
+   				<![CDATA[
+			 		and ei.scope = #{scope}
+				]]>
+   			</if>
+   			<if test="file_num != null and file_num != ''" >
+   				<![CDATA[
+			 		and ei.file_num = #{file_num}
+				]]>
+   			</if>
+   			<choose>
+   				<when test="submitable">
+	   				<![CDATA[
+				 		and (ei.job_code is null)
+					]]>
+	   			</when>	
+	   			<otherwise>
+	   				<![CDATA[
+				 		and (ei.job_code is not null)
+					]]>
+	   				<if test="job_status != null and job_status != ''" >
+		   				<![CDATA[
+					 		and jp.job_status = #{job_status}
+						]]>
+		   			</if>
+	   			</otherwise>
+   			</choose>
+   			<if test="event_ids != null and event_ids != ''" >
+				and id in 
+				<foreach item="item" index="index" collection="event_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+   			order by import_status asc , apply_time desc
+   		</trim>
+	</select>
+	
+	<select id="getSelfEnterEventList" parameterType="map" resultType="enterevent">
+		<![CDATA[
+			select ei.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_import ei 
+				left join job_process jp on(ei.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ei.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ei.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ei.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ei.usage_code=syu.usage_code)
+				left join sys_project sp on (ei.project_code=sp.project_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="user_iidd != null and user_iidd != ''" >
+   				<![CDATA[
+			 		and ei.user_iidd = #{user_iidd}
+				]]>
+   			</if>
+			<if test="zipfile != null and zipfile != ''" >
+   				<![CDATA[
+			 		and UPPER(ei.zipfile) like UPPER('%'+#{zipfile}+'%')
+				]]>
+   			</if>
+   			<if test="seclv_code != null and seclv_code != ''" >
+   				<![CDATA[
+			 		and ei.seclv_code = #{seclv_code}
+				]]>
+   			</if>
+   			<if test="file_type != null and file_type != ''" >
+   				<![CDATA[
+			 		and ei.file_type = #{file_type}
+				]]>
+   			</if>	
+   			<if test="import_status != null">
+	   			<![CDATA[
+				 	and ei.import_status = #{import_status}
+				]]>	
+			</if>		
+   			<if test="startTime != null and startTime != ''" >
+   				<![CDATA[
+			 		and ei.apply_time >= #{startTime}
+				]]>
+   			</if>
+   			<if test="endTime != null and endTime != ''" >
+   				<![CDATA[
+			 		and ei.apply_time <= #{endTime}
+				]]>
+   			</if>
+   			<if test="scope != null and scope != ''" >
+   				<![CDATA[
+			 		and ei.scope = #{scope}
+				]]>
+   			</if>
+   			<if test="file_num != null and file_num != ''" >
+   				<![CDATA[
+			 		and ei.file_num = #{file_num}
+				]]>
+   			</if>
+   			<choose>
+   				<when test="submitable">
+	   				<![CDATA[
+				 		and (ei.job_code is null)
+					]]>
+	   			</when>	
+	   			<otherwise>
+	   				<![CDATA[
+				 		and (ei.job_code is not null)
+					]]>
+	   				<if test="job_status != null and job_status != ''" >
+		   				<![CDATA[
+					 		and jp.job_status = #{job_status}
+						]]>
+		   			</if>
+	   			</otherwise>
+   			</choose>
+   			<if test="event_ids != null and event_ids != ''" >
+				and id in 
+				<foreach item="item" index="index" collection="event_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+   			order by import_status asc , apply_time desc
+   		</trim>
+	</select>
+	
+	<select id="getEnterEventByEnterCode" parameterType="string" resultType="enterevent">
+		<![CDATA[
+			select ei.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,
+			sdscope.dept_name scope_dept_name,importsu.user_name import_user_name
+			 from event_import ei
+				left join job_process jp on(ei.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ei.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ei.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ei.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ei.usage_code=syu.usage_code)
+				left join sys_project sp on (ei.project_code=sp.project_code)
+				left join (select dept_id,dept_name from sec_dept) sdscope on(sdscope.dept_id=ei.scope_dept_id)
+				left join (select user_iidd,user_name from sec_user) importsu on(ei.import_user_iidd=importsu.user_iidd)
+			where event_code=#{event_code}
+		]]>
+	</select>
+	<select id="getJobCodeByEventCode" parameterType="string" resultType="string">
+		<![CDATA[
+			select job_code from event_import where event_code=#{event_code}
+		]]>
+	</select>
+	<update id="updateEnterEvent" parameterType="enterevent">
+		<![CDATA[
+			update event_import set
+				seclv_code=#{seclv_code},
+				usage_code=#{usage_code},
+				project_code=#{project_code},
+				summ=#{summ},
+				zipfile=#{zipfile},
+				medium_serial=#{medium_serial},
+				page_num=#{page_num},
+				source=#{source},
+				place=#{place},
+				import_status=#{import_status},
+				file_type=#{file_type},
+				scope=#{scope},
+				scope_dept_id=#{scope_dept_id},
+				period=#{period},
+				enter_num=#{enter_num},
+				src_code=#{src_code},
+				confidential_num=#{confidential_num}
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<update id="updateEnterEventState" parameterType="map">
+		<![CDATA[
+			update event_import set
+				import_status=#{import_status},
+				finish_time=#{finish_time},
+				import_user_iidd=#{import_user_iidd},
+				medium_serial=#{medium_serial}
+			where event_code=#{event_code}	
+		]]>	
+	</update>
+	<delete id="delEnterEventByEnterCode" parameterType="string">
+		<![CDATA[
+			delete from event_import where event_code=#{event_code}
+		]]>
+	</delete>
+	<insert id="addPaperledger" parameterType="entitypaper">					
+		<![CDATA[
+			insert into entity_paper(
+				paper_barcode,
+				event_code,
+				user_iidd,
+				user_name,
+				dept_id,
+				dept_name,
+				duty_user_iidd,
+				duty_user_name,	
+				duty_dept_id,			
+				duty_dept_name,
+				seclv_code,
+				print_time,
+				print_result,
+				file_title,
+				fileID,
+				project_code,				
+				page_count,
+				paper_state,
+				create_type,
+				scope,
+				scope_dept_id,
+				scope_dept_name,
+				color,
+				print_direct,
+				print_double,
+				page_size,
+				company,
+				publish_type,
+				company_send,
+				urgency_lv,
+				filed_date,
+				publish_limits,
+				summ,
+				expire_time,
+				merge_state		
+			)values(
+				#{paper_barcode},
+				#{event_code},
+				#{user_iidd},
+				#{user_name},
+				#{dept_id},
+				#{dept_name},
+				#{duty_user_iidd},
+				#{duty_user_name},
+				#{duty_dept_id},
+				#{duty_dept_name},
+				#{seclv_code},
+				#{print_time},
+				#{print_result},	
+				#{file_title},
+				#{fileID},				
+				#{project_code},
+				#{page_count},
+				#{paper_state},
+				#{create_type},
+				#{scope},
+				#{scope_dept_id},
+				#{scope_dept_name},
+				#{color},
+				#{print_direct},
+				#{print_double},
+				#{page_size},
+				#{company},
+				#{publish_type},
+				#{company_send},
+				#{urgency_lv},
+				#{filed_date},
+				#{publish_limits},
+				#{summ},
+				#{expire_time},
+				#{merge_state}			
+				)
+		]]>
+	</insert>
+	<insert id="addCDledger" parameterType="entitycd">					
+		<![CDATA[
+			insert into entity_cd(
+				cd_barcode,
+				event_code,
+				user_iidd,
+				user_name,
+				dept_id,
+				dept_name,
+				duty_user_iidd,
+				duty_user_name,	
+				duty_dept_id,			
+				duty_dept_name,
+				seclv_code,
+				burn_time,
+				burn_result,
+				file_list,
+				project_code,				
+				cd_state,
+				create_type,
+				scope,
+				scope_dept_id,
+				scope_dept_name							
+			)values(
+				#{cd_barcode},
+				#{event_code},
+				#{user_iidd},
+				#{user_name},
+				#{dept_id},
+				#{dept_name},
+				#{duty_user_iidd},
+				#{duty_user_name},
+				#{duty_dept_id},
+				#{duty_dept_name},
+				#{seclv_code},
+				#{burn_time},
+				#{burn_result},	
+				#{file_list},				
+				#{project_code},
+				#{cd_state},
+				#{create_type},
+				#{scope},
+				#{scope_dept_id},
+				#{scope_dept_name}
+				)
+		]]>
+	</insert>
+	<select id="getEnterBarcodeSize" parameterType="String" resultType="int">
+		<![CDATA[
+			select count(1) from event_import where medium_serial=#{medium_serial}
+		]]>
+	</select>
+	<update id="addEnterEventJobRel" parameterType="map">
+		<![CDATA[
+			update event_import
+				set job_code=#{job_code},
+					usage_code=#{usage_code},
+					project_code=#{project_code}
+			where id=#{id}
+		]]>
+	</update>
+	<select id="getEnterEventListByJobCode" parameterType="string" resultType="enterevent">
+		<![CDATA[
+			select ei.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name
+			 from event_import ei
+				left join job_process jp on(ei.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ei.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ei.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ei.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ei.usage_code=syu.usage_code)
+				left join sys_project sp on (ei.project_code=sp.project_code)
+			where ei.job_code = #{job_code}
+		]]>
+	</select>
+	<update id="cancelEnterEventByEventCode" parameterType="string">
+		<![CDATA[
+			update event_import set
+				job_code = null
+			where event_code=#{event_code}
+		]]>
+	</update>
+	<select id="getEnterEventCountByJobCode" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from event_import where job_code=#{job_code}
+		]]>
+	</select>
+	<select id="getEnterEventCountByMediumSerial" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(1) from event_import 
+			where medium_serial=#{barcode}
+		]]>
+	</select>
+	<select id="getEventCodeByBarcode" parameterType="string" resultType="string">
+		<![CDATA[
+			select event_code from event_import 
+			where medium_serial=#{barcode}
+		]]>
+	</select>
+	<select id="getEnterProcessJobListByInstanceId" resultType="enterprocessjob">
+		<![CDATA[
+			select distinct jp.*,ss.seclv_name,su.user_name,sd.dept_name,ei.file_type
+			from job_process jp
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (jp.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) su on (jp.user_iidd = su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(jp.dept_id = sd.dept_id)
+				left join (select job_code,file_type from event_import) ei on (jp.job_code=ei.job_code)
+			where jp.instance_id in
+		]]>
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		order by start_time desc
+	</select>
+	<select id="getEnterApprovedJobByInstanceIds" parameterType="map" resultType="enterprocessjob">
+		<![CDATA[
+			select jp.*,ss.seclv_name,su.user_name,sd.dept_name,ei.file_type
+			from job_process jp
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (jp.seclv_code=ss.seclv_code)
+				left join (select user_iidd,user_name from sec_user) su on (jp.user_iidd = su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(jp.dept_id = sd.dept_id)
+				left join (select job_code,file_type from event_import) ei on (jp.job_code=ei.job_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="seclv_code != null and seclv_code != ''">
+   				<![CDATA[
+			 		and jp.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		and UPPER(su.user_name) like UPPER('%'+#{user_name}+'%')
+				]]>
+			</if>
+			<if test="instanceIds != null and instanceIds != ''">
+				and instance_id in
+				<foreach item="item" index="index" collection="instanceIds"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</trim>
+	</select>
+	<select id="deleteEnterJob" parameterType="String">
+		<![CDATA[
+			delete from event_import where id=#{id};
+		]]>
+	</select>
+	
+	<select id="getEnterEventJoinImportByCDBarcode" parameterType="string" resultType="reprintcd">
+		<![CDATA[
+				select ed.*,sus.seclv_name,et.apply_time  from entity_cd ed
+				left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code) 
+				left join event_import et on (ed.event_code = et.event_code)
+				where ed.cd_barcode=#{cd_barcode}
+		]]>
+	</select>
+	<select id="getEnterEventJoinBurnByCDBarcode" parameterType="string" resultType="reprintcd">
+		<![CDATA[
+				select ed.*,sus.seclv_name,et.apply_time  from entity_cd ed
+				left join sec_user_seclv sus on (ed.seclv_code=sus.seclv_code) 
+				left join event_burn et on (ed.event_code = et.event_code)
+				where ed.cd_barcode=#{cd_barcode}
+		]]>
+	</select>
+	<select id="getEnterEventCDBarcode" parameterType="string" resultType="reprintcd">
+		<![CDATA[
+				select ed.*,sus.seclv_name,et.apply_time from entity_cd ed
+				left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code) 
+				left join event_import et on (ed.event_code = et.event_code)
+				left join event_burn en on (ed.event_code = en.event_code)
+				where ed.cd_barcode=#{cd_barcode}
+		]]>
+	</select>
+	<update id="updateCDSrccode" parameterType="map">
+		<![CDATA[
+			update entity_cd set
+				src_code = #{src_code}
+			where cd_barcode=#{barcode}
+		]]>
+	</update>
+	<update id="updateDeviceSrccode" parameterType="map">
+		<![CDATA[
+			update entity_device set
+				src_code = #{src_code}
+			where DEVICE_BARCODE = #{barcode}
+		]]>
+	</update>
+	<update id="updatePaperSrccode" parameterType="map">
+		<![CDATA[
+			update entity_paper set
+				src_code = #{src_code}
+			where paper_barcode = #{barcode}
+		]]>
+	</update>
+	<select id="getEnterEventByMediumSerial" parameterType="string" resultType="enterevent">
+		<![CDATA[
+			select ei.*,jp.job_status,su.user_name,sd.dept_name,ss.seclv_name,syu.usage_name,sp.project_name,
+			sdscope.dept_name scope_dept_name,importsu.user_name import_user_name
+			from event_import ei
+				left join job_process jp on(ei.job_code=jp.job_code)
+				left join (select user_iidd,user_name,dept_id from sec_user) su on(ei.user_iidd=su.user_iidd)
+				left join (select dept_id,dept_name from sec_dept) sd on(ei.dept_id=sd.dept_id)
+				left join (select seclv_code,seclv_name from sec_user_seclv) ss on (ei.seclv_code=ss.seclv_code)
+				left join sys_usage syu on(ei.usage_code=syu.usage_code)
+				left join sys_project sp on (ei.project_code=sp.project_code)
+				left join (select dept_id,dept_name from sec_dept) sdscope on(sdscope.dept_id=ei.scope_dept_id)
+				left join (select user_iidd,user_name from sec_user) importsu on(ei.import_user_iidd=importsu.user_iidd)
+			where ei.medium_serial=#{medium_serial}
+		]]>
+	</select>
+	<select id="getEnterEventEnterCancel" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(*) from event_import where job_code=#{job_code} and IMPORT_STATUS != 0
+		]]>
+	</select>
+	<update id="updatePaperConfidentialnum" parameterType="map">
+		<![CDATA[
+			update entity_paper set
+				confidential_num = #{confidential_num}
+			where paper_barcode = #{barcode}
+		]]>
+	</update>
+	<update id="updateCDConfidentialnum" parameterType="map">
+		<![CDATA[
+			update entity_cd set
+				confidential_num = #{confidential_num}
+			where cd_barcode=#{barcode}
+		]]>
+	</update>
+	<update id="updateDeviceConfidentialnum" parameterType="map">
+		<![CDATA[
+			update entity_device set
+				confidential_num = #{confidential_num}
+			where DEVICE_BARCODE = #{barcode}
+		]]>
+	</update>
+</mapper>  
