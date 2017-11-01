@@ -220,14 +220,14 @@ function SubmitAll()
              return false;
 		}
 	}
-function selectRecvUserCR(word){
+  function selectRecvUserCR(word){
     var url = "${ctx}/basic/getfuzzyuser.action?source=CR";
-    if(word != ""){   	
-	   callServer1(url,"fuzzy="+word);   	
+    if(word != ""){
+	   callServer1(url,"fuzzy="+word);
     }else{
 	   document.getElementById("allOptionsCR").innerHTML="";
     }
-} 
+}
 function updateResult(){
 	if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 			if(xmlHttp.responseText.toString().length > 154){
@@ -239,7 +239,13 @@ function updateResult(){
 			document.getElementById("allOptionsCR").innerHTML="";
 	}
 }
- function add_TrueCR(){
+  function addRecvUser(){
+	var choose_name = $("#carryout_user_names").val() + $("#carryout_user_name").val() + ",";
+	var user_iidds =  $("#carryout_user_iidds").val() + $("#carryout_user_iidd").val() + ",";
+	$("#carryout_user_names").val(choose_name);
+	$("#carryout_user_iidds").val(user_iidd);
+}
+   function add_TrueCR(){
 	var carryout_user_iidd=$("#allOptionCR").val();
 	var carryout_user_name=$("#allOptionCR option[value='"+carryout_user_iidd+"']").text();
 	//carryout_user_name=carryout_user_name.substring(0,carryout_user_name.indexOf("/"));
@@ -377,7 +383,8 @@ function selectSendMode(val){
 		    	<td><input type="text" name="ledger_use" id="ledger_use"/></td> -->		   				     
 			     <td align="center">携带人： </td>
 				 <td>
-					<input type="text" id="carryout_user_name" name="carryout_user_name" vaule="${carryout_user_name}" onkeyup="selectRecvUserCR(this.value);"/><br>
+					<input type="text" id="carryout_user_name" name="carryout_user_name" vaule="${carryout_user_name}" onkeyup="selectRecvUserCR(this.value);"/><!--  -->
+					<input class="button_2003" onclick="addRecvUser();" type="button" value="添加" /><br>
     		        <div id="allOptionsCR" class="containDiv" style="position:absolute;border:0px solid black;padding:0px"></div>
 				 </td>
 				 <td align="center"><font color="red">*</font>&nbsp;已添加的携带人：</td>

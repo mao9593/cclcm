@@ -553,4 +553,7 @@ public interface LedgerMapper {
 	List<EntityCD> getAllRejectCDList(Map<String, Object> map, RowBounds rbs);
 
 	int getAllRejectCDSize(Map<String, Object> map);
+	
+	// 更新接收人和接收单位
+	void updateSendByBarcode(Map<String, Object> map);
 }

@@ -3702,6 +3702,16 @@
 		 			,job_code = null
 				]]>
 	 		</if>
+	 		<if test="page_count != null " >
+	 			<![CDATA[
+		 			,page_count = #{page_count}
+				]]>
+	 		</if>
+	 		<if test="file_title != null and scope_dept_name != '' " >
+	 			<![CDATA[
+		 			,file_title = #{file_title}
+				]]>
+	 		</if>
  		</trim>
  		where paper_barcode = #{paper_barcode}
 	</update>
@@ -8578,4 +8588,12 @@
 			</if>
 		</trim>
 	</select>
+	
+	<!-- 更新接收人和接收单位 -->
+	<update id="updateSendByBarcode" parameterType="map">
+		<![CDATA[
+		update job_process set output_user_name = #{update_user_name}, output_dept_name = #{update_dept_name} 
+		where job_code=#{job_code}
+		]]>
+	</update>
 </mapper>  

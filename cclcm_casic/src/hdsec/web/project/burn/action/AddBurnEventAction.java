@@ -11,14 +11,18 @@ import hdsec.web.project.common.PropertyUtil;
 import hdsec.web.project.common.util.MD5;
 import hdsec.web.project.common.util.PrefixFilenameFilter;
 import hdsec.web.project.user.model.SecLevel;
+import hdsec.web.project.user.model.SecUser;
 
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.http.HttpEntity;
@@ -75,6 +79,44 @@ public class AddBurnEventAction extends BurnBaseAction {
 	private static int state = -1;
 	private static String succ;
 	private String is_special_burn = "N";
+	
+	private String output_undertaker = "";
+	private List<SecUser> output_undertakerList = null;
+	private String send_way = "";
+	private String carryout_user_iidds = "";
+	private String carryout_user_names = "";
+
+	public String getCarryout_user_iidds() {
+		return carryout_user_iidds;
+	}
+
+	public void setCarryout_user_iidds(String carryout_user_iidds) {
+		this.carryout_user_iidds = carryout_user_iidds;
+	}
+
+	public String getOutput_undertaker() {
+		return output_undertaker;
+	}
+
+	public void setOutput_undertaker(String output_undertaker) {
+		this.output_undertaker = output_undertaker;
+	}
+
+	public String getSend_way() {
+		return send_way;
+	}
+
+	public void setSend_way(String send_way) {
+		this.send_way = send_way;
+	}
+
+	public String getCarryout_user_names() {
+		return carryout_user_names;
+	}
+
+	public void setCarryout_user_names(String carryout_user_names) {
+		this.carryout_user_names = carryout_user_names;
+	}
 
 	public String getIs_special_burn() {
 		return is_special_burn;
@@ -182,6 +224,24 @@ public class AddBurnEventAction extends BurnBaseAction {
 
 	public List<SysProject> getProjectList() {
 		return basicService.getSysProjectList();
+	}
+	
+	// 获取外发承办人列表(仅部门文件管理员)
+	public List<SecUser> getOutput_undertakerList() {
+		String parent_dept_id = basicService.getParentDeptIdByCurrentId(getCurUser().getDept_id());
+		Map<String, Object> map0 = new HashMap<String, Object>();
+		map0.put("dept_id", getCurUser().getDept_id());
+		map0.put("parent_dept_id", parent_dept_id);
+		output_undertakerList = basicService.getOutputUndertakersByDeptId(map0);
+
+		Set<String> set = new HashSet<String>();
+		List<SecUser> sulist = new ArrayList<SecUser>();
+		for (SecUser item : output_undertakerList) {
+			if (set.add(item.getUser_iidd())) {
+				sulist.add(item);
+			}
+		}
+		return sulist;
 	}
 
 	private void SendToBchenKeywords(String user_iidd, String event_code, String MD5file_name) throws Exception {
@@ -444,11 +504,16 @@ public class AddBurnEventAction extends BurnBaseAction {
 			} else {
 				jobType_code = "BURN_" + cycle_type;
 			}
-
+			
+			carryout_user_iidds = carryout_user_iidds.isEmpty() ? "" : carryout_user_iidds.substring(0,
+					carryout_user_iidds.length() - 1);
+			carryout_user_names = carryout_user_names.isEmpty() ? "" : carryout_user_names.substring(0,
+					carryout_user_names.length() - 1);
 			JobTypeEnum jobType = JobTypeEnum.valueOf(jobType_code);
 			event.setJobType(jobType);
 			event.setConf_code(conf_code);
-			burnService.addBurnEvent(event, next_approver, output_dept_name, output_user_name, comment);
+			burnService.addBurnEvent(event, next_approver, output_dept_name, output_user_name, comment,
+					output_undertaker, carryout_user_iidds, carryout_user_names, send_way);
 
 			Map<String, Object> map1 = new HashMap<String, Object>();
 			map1.put("event_code", event_code);

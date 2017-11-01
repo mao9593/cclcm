@@ -16,10 +16,15 @@ public interface BurnService {
 	 * @param output_dept_name
 	 * @param output_user_name
 	 * @param comment
+	 * @param output_undertaker
+	 * @param carryout_user_iidds
+	 * @param carryout_user_names
+	 * @param send_way
 	 * @throws Exception
 	 */
 	void addBurnEvent(BurnEvent event, String next_approver, String output_dept_name, String output_user_name,
-			String comment) throws Exception;
+			String comment, String output_undertaker, String carryout_user_iidds, String carryout_user_names,
+			String send_way) throws Exception;
 
 	/**
 	 * 查看刻录作业列表
