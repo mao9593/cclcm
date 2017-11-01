@@ -89,10 +89,12 @@
 	}
 	function confirmSendCD(cd_barcode,send_way){		
 		var url = "${ctx}/ledger/confirmsendcd.action?cd_barcode="+escape(cd_barcode) + "&send_way=" + escape(send_way);
-		var rValue=window.showModalDialog(url,'', 'dialogHeight:410px;dialogWidth:400px;center:yes;status:no;scroll:no;help:no;unadorned:no;resizable:no');
+		var rValue=window.showModalDialog(url,'', 'dialogHeight:260px;dialogWidth:400px;center:yes;status:no;scroll:no;help:no;unadorned:no;resizable:no');
 		if(rValue != null && rValue!= undefined){
 		        $("#comment").val(rValue.comment);
 		        $("#output_confidential_num").val(rValue.outputconfidentialnum);
+		        $("#update_user_name").val(rValue.updateusername);
+				$("#update_dept_name").val(rValue.updatedeptname);
 				callServerPostForm1(url,document.forms[0]);		
 		}
 	}
@@ -135,6 +137,8 @@
 	<input type="hidden" name="comment" id="comment"/>
 	<input type="hidden" name="reject_type" id="reject_type"/>
 	<input type="hidden" name="output_confidential_num" id="output_confidential_num"/>
+	<input type="hidden" name="update_user_name" id="update_user_name"/>
+	<input type="hidden" name="update_dept_name" id="update_dept_name"/>
 	<!-- <input type="hidden" name="cd_barcode" id="cd_barcode"/> -->
 </form>
 <form id="QueryCondForm" method="GET" action="${ctx}/ledger/handlesendcd.action" name="QueryCondForm">

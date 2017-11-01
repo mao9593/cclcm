@@ -202,7 +202,8 @@ public class PrintServiceImpl implements PrintService {
 			JobTypeEnum jobType, String next_approver, String output_dept_name, String output_user_name,
 			String comment, List<String> eventIdList, String usage_code, String project_code,
 			Map<String, String> fileSeclvMap, Map<String, String> filePrintCountMap, Map<String, String> fileColorMap,
-			Map<String, String> filePrintDoubleMap, Map<String, String> fileTitleMap, Date start_time, Integer copy_num)
+			Map<String, String> filePrintDoubleMap, Map<String, String> fileTitleMap, Date start_time, Integer copy_num,
+			String send_way,String output_undertaker,String carryout_user_names)
 			throws Exception {
 		logger.debug("addProcessJob extend copy");
 		ApproveProcess process = basicPrcManage.getApproveProcessByKey(dept_id, String.valueOf(seclv_code),
@@ -220,6 +221,9 @@ public class PrintServiceImpl implements PrintService {
 		job.setOutput_dept_name(output_dept_name);
 		job.setOutput_user_name(output_user_name);
 		job.setComment(comment);
+		job.setSend_way(send_way);
+		job.setOutput_undertaker(output_undertaker);
+		job.setCarryout_user_names(carryout_user_names);
 		// 开启流程
 		basicPrcManage.addActivitiApply(job, process);
 		// 把任务信息插入数据库

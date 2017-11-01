@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.struts2.ServletActionContext;
 import org.springframework.util.StringUtils;
 
 public class HandleModifyJobAction extends LedgerBaseAction {
@@ -50,6 +51,33 @@ public class HandleModifyJobAction extends LedgerBaseAction {
 	private String next_approver;
 	private List<EntityPaper> entityList = null;
 	private List<EntityCD> entityCDList = null;
+	private String file_title = "";
+	private Integer page_count = null;
+	private String page_counts="";
+
+	public String getPage_counts() {
+		return page_counts;
+	}
+
+	public void setPage_counts(String page_counts) {
+		this.page_counts = page_counts;
+	}
+
+	public String getFile_title() {
+		return file_title;
+	}
+
+	public void setFile_title(String file_title) {
+		this.file_title = file_title;
+	}
+
+	public Integer getPage_count() {
+		return page_count;
+	}
+
+	public void setPage_count(Integer page_count) {
+		this.page_count = page_count;
+	}
 
 	public String getFlag() {
 		return flag;
@@ -323,7 +351,7 @@ public class HandleModifyJobAction extends LedgerBaseAction {
 		if (flag.equalsIgnoreCase("Y")) {
 			ledgerService.addProcessJob(getCurUser().getUser_iidd(), getCurUser().getDept_id(), seclv_code, event_ids,
 					entity_type, modify_status, trg_seclv, usage_code, project_code, summ, getFileTitleList(),
-					next_approver);
+					next_approver,file_titles,page_counts); 
 			insertCommonLog("提交" + JobTypeEnum.MODIFY_SECLV.getJobTypeName() + "申请:" + log_file_name);
 			return "ok";
 		} else {

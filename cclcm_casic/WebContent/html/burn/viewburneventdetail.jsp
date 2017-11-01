@@ -116,7 +116,15 @@ function getFrameReturn(){
     	<td align="center">保密编号： </td>
     	<td><font color="blue"><b>&nbsp;${event.conf_code}</b></font></td>
   	</tr>
+  	<tr>
+		<td align="center">外发承办人： </td>
+    	<td><font color="blue"><b>${job.output_undertaker}</b></font></td> 
+    	<td align="center">外发方式： </td>
+    	<td><font color="blue"><b>${job.send_way == '0'?'专人携带':'机要'}</b></font></td>
+    </tr>
   	<tr height="50">
+  		<td align="center">携带人： </td>	
+    	<td><font color="blue"><b>${job.carryout_user_names}</b></font></td>	
   		<td align="center">委托刻录人：</td>
   		<td colspan="5"><font color="blue"><b>&nbsp;${empty proxyoutput_user_name?'无':proxyoutput_user_name}</b></font></td>
   	</tr>

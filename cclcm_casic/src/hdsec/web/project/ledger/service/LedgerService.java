@@ -1,4 +1,4 @@
-﻿package hdsec.web.project.ledger.service;
+﻿﻿package hdsec.web.project.ledger.service;
 
 import hdsec.web.project.activiti.model.JobTypeEnum;
 import hdsec.web.project.activiti.model.ProcessJob;
@@ -123,7 +123,7 @@ public interface LedgerService {
 	 * @param comment
 	 * @param output_confidential_num
 	 */
-	void confirmSendCD(String cd_barcode, SecUser user, String comment, String output_confidential_num);
+	void confirmSendCD(String cd_barcode, SecUser user, String comment, String output_confidential_num,String update_user_name, String update_dept_name);
 
 	/**
 	 * 
@@ -134,7 +134,7 @@ public interface LedgerService {
 	 * @param comment
 	 * @param output_confidential_num
 	 */
-	void confirmSendPaper(String paper_barcode, SecUser user, String comment, String output_confidential_num);
+	void confirmSendPaper(String paper_barcode, SecUser user, String comment, String output_confidential_num, String update_user_name, String update_dept_name);
 
 	/**
 	 * 
@@ -543,7 +543,7 @@ public interface LedgerService {
 	 */
 	void addProcessJob(String user_iidd, String dept_id, Integer seclv_code, String event_ids, String entity_type,
 			Integer modify_status, Integer trg_seclv, String usage_code, String project_code, String summ,
-			Map<String, String> getFileTitleList, String next_approver) throws Exception;
+			Map<String, String> getFileTitleList, String next_approver,String file_titles,String page_counts) throws Exception;
 
 	/**
 	 * 

@@ -206,7 +206,8 @@ public interface PrintService {
 			JobTypeEnum jobType, String next_approver, String output_dept_name, String output_user_name,
 			String comment, List<String> eventIdList, String usage_code, String project_code,
 			Map<String, String> fileSeclvMap, Map<String, String> filePrintCountMap, Map<String, String> fileColorMap,
-			Map<String, String> filePrintDoubleMap, Map<String, String> fileTitleMap, Date start_time, Integer copy_num)
+			Map<String, String> filePrintDoubleMap, Map<String, String> fileTitleMap, Date start_time, Integer copy_num,
+			String send_way,String output_undertaker,String carryout_user_names)
 			throws Exception;
 
 	List<FixAccording> getFixAccordingByType(Map<String, Object> map);

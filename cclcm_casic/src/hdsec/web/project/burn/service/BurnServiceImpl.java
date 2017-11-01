@@ -41,7 +41,8 @@ public class BurnServiceImpl implements BurnService {
 
 	@Override
 	public void addBurnEvent(BurnEvent event, String next_approver, String output_dept_name, String output_user_name,
-			String comment) throws Exception {
+			String comment, String output_undertaker, String carryout_user_iidds, String carryout_user_names,
+			String send_way) throws Exception {
 		logger.debug("addBurnEvent" + event.getEvent_code());
 		burnMapper.addBurnEvent(event);
 		ApproveProcess process = basicPrcManage
@@ -57,7 +58,8 @@ public class BurnServiceImpl implements BurnService {
 		String job_code = event.getUser_iidd() + "-" + event.getJobType().getJobTypeCode() + "-"
 				+ System.currentTimeMillis();
 		ProcessJob job = new ProcessJob(job_code, event.getUser_iidd(), event.getDept_id(), event.getSeclv_code(),
-				event.getJobType(), new Date(), job_status, next_approver, next_approver_name, process.getProcess_id());
+				event.getJobType(), new Date(), job_status, next_approver, next_approver_name, process.getProcess_id(),
+				send_way, carryout_user_iidds, carryout_user_names, output_undertaker);
 		job.setOutput_dept_name(output_dept_name);
 		job.setOutput_user_name(output_user_name);
 		job.setComment(comment);
