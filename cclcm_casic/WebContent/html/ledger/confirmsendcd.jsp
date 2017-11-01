@@ -15,9 +15,7 @@
 	<script>
 	$(document).ready(function(){
 			onHover();
-			if('${send_way}' == 0 && $("#hid")){
-				$("#hid").hide();
-			}
+			if('${send_way}' == 0){$("#hid").hide();}
 		});
 	function chk(){		
 		if($("#output_confidential_num").val().trim()==""){
@@ -36,8 +34,6 @@
 		var result = new Object();
 		if($("#send_way").val().trim() == 1) {
 			if (chk()) {
-				result.updateusername = $("#update_user_name").val().trim();
-				result.updatedeptname = $("#update_dept_name").val().trim();
 				result.outputconfidentialnum = $("#output_confidential_num").val().trim();
 				result.comment = $("#comment").val().trim();
 				window.returnValue=result;	
@@ -62,19 +58,7 @@
 	<tr>
 		<td class="title_box" colspan="2">&nbsp;</td>
 	</tr>
-	<tr > 
-		<td align="center">接收人：</td>
-    	<td align="center">
-    		<input type="text" id="update_user_name" name="update_user_name" value="" size="32"/>
-    	</td>
-    </tr>
-	<tr > 
-		<td align="center">接收单位：</td>
-    	<td align="center">
-    		<input type="text" id="update_dept_name" name="update_dept_name" value="" size="32"/>
-    	</td>
-    </tr>
-	<tr > 
+	<tr id='hid'> 
 		<td align="center"><font color="red">*</font>&nbsp;外发机要号：</td>
     	<td align="center">
     		<input type="text" id="output_confidential_num" name="output_confidential_num" value="" size="32"/>

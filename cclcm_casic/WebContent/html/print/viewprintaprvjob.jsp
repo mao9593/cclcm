@@ -16,6 +16,9 @@
 	function clearFindForm(){
 		$("#user_name").val("");
 		$("#seclv_code").val("");
+		$("#secret_time").val("");
+		$("#file_scope").val("");
+		$("#seclv_accord").val("");
 	}
 	//-->
 	</script>
@@ -43,8 +46,22 @@
 									<option value="${seclv.seclv_code}" <s:if test="#request.seclv1==#seclv.seclv_code">selected="selected"</s:if>>${seclv.seclv_name}</option>
 								</s:iterator>
 							</select>&nbsp;&nbsp;
-			    		</td> 
-				        <td align="center">
+			    		</td>
+			    		<td align="center" width="10%" >&nbsp;保密期限：</td>
+			    		<td width="20%">
+				 			<input type="text" name="secret_time" value="${secret_time}" size="15" id="secret_time"/>&nbsp;
+				 		</td>
+					</tr>
+					<tr>
+						<td align="center" width="10%" >&nbsp;知悉范围：</td>
+				    	<td width="20%">
+				 			<input type="text" name="file_scope" value="${file_scope}" size="15" id="file_scope"/>&nbsp;
+				 		</td>
+					    <td align="center" width="10%" >&nbsp;定密依据：</td>
+						<td width="20%">
+				 			<input type="text" name="seclv_accord" value="${seclv_accord}" size="15" id="seclv_accord"/>&nbsp;
+				 		</td>
+						<td align="center" colspan="2">
 							&nbsp;<input name="button" type="submit" class="button_2003" value="查询">&nbsp;
 							&nbsp;<input name="button" type="button" class="button_2003" value="清空" onclick="clearFindForm();">
 						</td>

@@ -30,10 +30,6 @@ function init(){
 	onHover();
 	$("#tr_send input").attr("disabled",true);
 	$("#tr_send").hide();
-	$("#carryuser_hid input").attr("disabled",true);
-	$("#carryuser_hid").hide();
-	$("#carryuser_hids input").attr("disabled",true);
-	$("#carryuser_hids").hide();
 	uploadfilelimit = ${uploadfilelimit};
 	uploadfiletypes = "${uploadfiletypes}";
 //	UnloadMovie("*.swf");
@@ -137,7 +133,7 @@ function chk()
 	}
 	//是否选择了用途
 	if($("#usage_code").val() == ""){
-		alert("请选择输出方式");
+		alert("请选择用途");
 		$("#usage_code").focus();
 		return false;
 	}
@@ -154,21 +150,6 @@ function chk()
     } */
 	//是否填写了接收人
 	if($("#cycle_type").val() == "SEND"){
-		if($("#output_undertaker").val().trim() == ""){
-			alert("请选择外发承办人");
-			$("#output_undertaker").focus();
-			return false;
-		}
-		if($("#output_user_name").val().trim() == ""){
-			alert("请填写接收人");
-			$("#output_user_name").focus();
-			return false;
-		}
-		if($("#send_way").val().trim() == ""){
-			alert("请选择外发方式");
-			$("#send_way").focus();
-			return false;
-		}
 		if($("#output_dept_name").val().trim() == ""){
 			alert("请填写接收单位");
 			$("#output_dept_name").focus();
@@ -179,12 +160,10 @@ function chk()
 			$("#output_dept_name").focus();
 			return false;
 		}
-		if($("#send_way").val().trim() == 0){
-			if($("#carryout_user_names").val().trim() == ""){
-				alert("请添加携带人");
-				$("#carryout_user_name").focus();
-				return false;
-			}
+		if($("#output_user_name").val().trim() == ""){
+			alert("请填写接收人");
+			$("#output_user_name").focus();
+			return false;
 		}
 	}
 	if($("label").size() == 0){
@@ -342,15 +321,10 @@ function selectCycle(cycle){
 	if(cycle == "SEND"){
 		$("#tr_send input").attr("disabled",false);
 		$("#tr_send").show();
-		$("#carryuser_hid input").attr("disabled",false);
-		$("#carryuser_hid").show();
-		$("#carryuser_hids input").attr("disabled",false);
 	}else{
 		$("#submit_btn").attr("disabled",false);
 		$("#tr_send input").attr("disabled",true);
 		$("#tr_send").hide();
-		$("#carryuser_hid input").attr("disabled",true);
-		$("#carryuser_hid").hide();
 	}
 	if(cycle == "REMAIN"){
 		$("#period").show();
@@ -358,13 +332,6 @@ function selectCycle(cycle){
 		$("#period").val("S");
 		$("#period").hide();
 	}
-}
-function selectSendMode(val){
-   	if(val=="0"){
-       $("#carryuser_hids").show();
-   	}else{
-       $("#carryuser_hids").hide();
-   	}
 }
 function selectSeclv(seclv){
 	if(seclv == ""){
@@ -377,7 +344,7 @@ function selectSeclv(seclv){
 }
 function selectUsage(usage){
 	if(usage == ""){
-		alert("请选择输出方式,以确认审批流程");
+		alert("请选择用途,以确认审批流程");
 		$("#usage_code").focus();
 		return false;
 	}else if($("#seclv_med").val() != "" && $("#cycle_type").val() != ""){
@@ -557,12 +524,6 @@ var errorAlert = false;
 		document.getElementById("allOptions").innerHTML="";
 	}
 }
-  function addRecvUser(){
-	var choose_name = $("#carryout_user_names").val() + $("#carryout_user_name").val() + ",";
-	var user_iidds =  $("#carryout_user_iidds").val() + $("#carryout_user_iidd").val() + ",";
-	$("#carryout_user_names").val(choose_name);
-	$("#carryout_user_iidds").val(user_iidd);
-}
 function updateResult(){
 	if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 			if(xmlHttp.responseText.toString().length > 154){
@@ -656,17 +617,11 @@ function setIsSpecial(is_special){
     	<td width="23%"><font color="blue"><b>${curUser.user_name}</b></font></td>
     	<td width="10%" align="center">用户部门： </td>
     	<td width="23%"><font color="blue"><b>${curUser.dept_name}</b></font></td>
-    	<td width="10%" align="center"><font color="red">*</font>&nbsp;状态： </td>
-    	<td>
-    	<select name="cycle_type" id="cycle_type" onchange="selectCycle(this.value);">
-            <option value="REMAIN">留用</option>
-            <option value="FILE">归档</option>
-            <option value="SEND">外发</option>
-        </select>&nbsp;&nbsp;&nbsp;
-        <select name="period" id="period">
-            <option value="S">短期</option>
-            <option value="L">长期</option>
-        </select>
+    	<td width="10%" align="center">&nbsp; </td>
+    	<td align="center">&nbsp; </td>
+		<input type="hidden" name="cycle_type" id="cycle_type" value="REMAIN"/>
+		<input type="hidden" name="period" id="period" value="S"/>
+    	</td> 	
 	</tr>
 	<tr height="40"> 
 		<td align="center"><font color="red">*</font>&nbsp;作业密级：</td>
@@ -678,7 +633,7 @@ function setIsSpecial(is_special){
 				</s:iterator>
 			</select>
 		</td>
-    	<td align="center"><font color="red">*</font>&nbsp;输出方式： </td>
+    	<td align="center"><font color="red">*</font>&nbsp;用途： </td>
     	<td>
    			<select name="usage_code" id="usage_code" onchange="selectUsage(this.value);">
 	   			<option value="">--请选择--</option>
@@ -722,42 +677,10 @@ function setIsSpecial(is_special){
 
 	</tr>
   	<tr id="tr_send"  height="40"> 
-  		<td align="center"><font color="red">*</font>外发承办人： </td>
-    	<td>
-    		<select id="output_undertaker" name="output_undertaker">
-		         <option value="">--请选择--</option>
-		         <s:iterator value="#request.output_undertakerList" var="item">
-			     <option value="${item.user_iidd}">${item.user_name}/${item.dept_name}</option>
-		         </s:iterator>
-	        </select>
-    	</td>
+    	<td align="center"><font color="red">*</font>&nbsp;接收单位： </td>
+    	<td><textarea name="output_dept_name" id="output_dept_name" title="刻录状态为外发时，才需要填写接收单位和接收人"> </textarea></td> 
     	<td align="center"><font color="red">*</font>&nbsp;接收人： </td>
-    	<td><input type="text" name="output_user_name" id="output_user_name" title="刻录状态为外发时，才需要填写接收单位和接收人"/></td>
-	</tr>
-	<tr id='carryuser_hid'>
-		<td align="center"><font color="red">*</font>外发方式：</td>
-	    <td>
-	     	<select name="send_way" id="send_way" onchange="selectSendMode(this.value)">
-				<option value="">--请选择---</option>
-				<option value="0">专人携带</option>
-				<option value="1">发机要</option>
-			</select>
-	    </td>
-	    <td align="center"><font color="red">*</font>&nbsp;接收单位： </td>
-    	<td colspan="3"><textarea name="output_dept_name" id="output_dept_name" title="刻录状态为外发时，才需要填写接收单位和接收人"> </textarea></td> 
-    </tr>
-	<tr id='carryuser_hids'>
-		 <td align="center">携带人： </td>
-		 <td>
-			<input type="text" id="carryout_user_name" name="carryout_user_name" vaule="${carryout_user_name}" onkeyup="selectRecvUserCR(this.value);"/>
-			<input class="button_2003" onclick="addRecvUser();" type="button" value="添加" /><br>
-  		    <div id="allOptionsCR" class="containDiv" style="position:absolute;border:0px solid black;padding:0px"></div>
-		 </td>
-		 <td align="center"><font color="red">*</font>&nbsp;已添加的携带人：</td>
-   		 <td colspan="3">
-            <textarea readonly="true" name="carryout_user_names" id="carryout_user_names" rows="2" cols="45"></textarea>
-      	    <input type="hidden"  name="carryout_user_iidds" id="carryout_user_iidds" >
-      	</td>
+    	<td colspan="3"><input type="text" name="output_user_name" id="output_user_name" title="刻录状态为外发时，才需要填写接收单位和接收人"/></td>
 	</tr>
 	<tr id="tr_approver" style="display: none">
   		<td align="center" id="selApprover1">选择审批人：</td>

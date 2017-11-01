@@ -22,34 +22,6 @@ function chkSubmit()
 		$("#seclv_code").focus();
 		return false;
 	}
-	var file_titles="";
-	var page_counts="";
-	var strs=$("input[name='event_ids']").val().split(":"); //字符分割 
-	for (var i=0;i<strs.length ;i++ ){ 
-	 	var paper_barcode=strs[i];
-	 	if(!paper_barcode || paper_barcode.trim()=='' ){
-	 		continue;
-	 	}
-		var file_title=$("#file_title_"+paper_barcode).val();
-		var page_count=$("#page_count_"+paper_barcode).val();
-		if(file_title && file_title.trim() !='' && !new RegExp(":").test(file_title.trim()) && !new RegExp(",").test(file_title.trim()) ){
-			file_titles += i==0?file_title.trim():":"+file_title.trim();
-		}else{
-			alert("请填写合法文件名称");
-			$("#file_title_"+paper_barcode).focus();
-			return false;
-		}
-		var r = /^\+?[1-9][0-9]*$/;　　//判断是否为正整数
-		if(page_count && r.test(page_count.trim())){
-			page_counts += i==0?page_count.trim():":"+page_count.trim();
-		}else{
-			alert("页码填写不合法");
-			$("#page_count_"+paper_barcode).focus();
-			return false;
-		}
-	} 
-	$("#file_titles").val(file_titles);
-	$("#page_counts").val(page_counts);
 	//是否选择了审批人员
 	if($("#next_approver_all option").size() > 0 && $("#next_approver_sel option").size() == 0){
 		alert("请选择审批人员");
@@ -115,13 +87,12 @@ function getAjaxResult(){
 	<input type="hidden" name="dept_id" value="${curUser.dept_id}"/>
 	<input type="hidden" name="jobType" id="jobType" value="MODIFY_SECLV"/>
 	<input type="hidden" name="usage_code" id="usage_code" value="MODIFY_SECLV"/>
-	<input type="hidden" name="event_ids"   value="${event_ids}"/>
+	<input type="hidden" name="event_ids" value="${event_ids}"/>
 	<input type="hidden" name="flag" value="Y"/> <!-- 错误！输入不能为对象，只能为字符串或数字 -->
     <input type="hidden" name="file_titles" id="file_titles"/>
     <input type="hidden" name="next_approver" id="next_approver"/>
     <input type="hidden" name="trg_seclv" id="trg_seclv"/>
     <input type="hidden" name="entity_type" value="${entity_type}"/>
-    <input type="hidden" name="page_counts" id="page_counts"/>
 	<tr>
 	    <td colspan="6" class="title_box">生成审批单</td>
 	</tr>
@@ -177,16 +148,10 @@ function getAjaxResult(){
 				<display:column title="序号">
 					<c:out value="${item_rowNum}"/>
 				</display:column>
-				<display:column title="文件名" >
-                    <input type="text"  value="${item.file_title}" id="file_title_${item.paper_barcode}" />
-                </display:column>
+				<display:column property="file_title" title="文件名"/>
 				<display:column property="paper_barcode" title="载体条码"/>
 				<display:column property="create_type_name" title="制作方式"/>
 				<display:column property="seclv_name" title="文件原密级"/>
-				
-				<display:column title="页数" >
-                    <input type="text"  value="${item.page_count}" id="page_count_${item.paper_barcode}" />
-                </display:column>
 				<display:column property="print_time" sortable="true" title="制作时间"/>
 			</display:table>
 			</c:if>
@@ -210,7 +175,6 @@ function getAjaxResult(){
 	      <input class="button_2003" type="button" value="返回" onclick="javascript:history.go(-1)">&nbsp;
 	    </td>
 	</tr>
-
 </table>
 </body>
 </html>

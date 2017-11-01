@@ -672,6 +672,9 @@ public class AutoCommonExportAction extends LogExportXlsAction {
 		if (ExportPaperEnum.TITLE36.isEntityStateUsed()) {
 			cteateCell(row, index++, changeNullOrEmpty(paper.getFail_remark()));// 备注
 		}
+		if (ExportPaperEnum.TITLE37.isEntityStateUsed()) {
+			cteateCell(row, index++, changeNullOrEmpty(paper.getConfidential_num()));// 机要号
+		}
 	}
 
 	private void insertSysCVSRow(HSSFSheet sh, SysCVS cvs, int rownum) {

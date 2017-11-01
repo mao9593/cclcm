@@ -94,12 +94,10 @@
 	}
 	function confirmSendPaper(paper_barcode, send_way){
 		var url = "${ctx}/ledger/confirmsendpaper.action?paper_barcode="+escape(paper_barcode) + "&send_way=" + escape(send_way);
-		var rValue=window.showModalDialog(url,'', 'dialogHeight:260px;dialogWidth:400px;center:yes;status:no;scroll:no;help:no;unadorned:no;resizable:no');
+		var rValue=window.showModalDialog(url,'', 'dialogHeight:210px;dialogWidth:400px;center:yes;status:no;scroll:no;help:no;unadorned:no;resizable:no');
 		if(rValue != null && rValue!= undefined){
 			$("#comment").val(rValue.comment);
 			$("#output_confidential_num").val(rValue.outputconfidentialnum);
-			$("#update_user_name").val(rValue.updateusername);
-			$("#update_dept_name").val(rValue.updatedeptname);
 			callServerPostForm1(url,document.forms[0]);
 		//alert("原有单号："+send_num+"传回单号："+rValue.send_num);
 			/* if(send_num == rValue.send_num){
@@ -141,8 +139,6 @@
 	<input type="hidden" name="reject_ok" value="Y" />
 	<input type="hidden" name="comment" id="comment"/>
 	<input type="hidden" name="output_confidential_num" id="output_confidential_num"/>
-	<input type="hidden" name="update_user_name" id="update_user_name"/>
-	<input type="hidden" name="update_dept_name" id="update_dept_name"/>
 	<input type="hidden" name="reject_type" id="reject_type"/>
 </form>
 <form id="QueryCondForm" method="GET" action="${ctx}/ledger/handlesendpaper.action" name="QueryCondForm">

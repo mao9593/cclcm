@@ -96,30 +96,6 @@
 			document.getElementById("allOptionsCR").innerHTML="";
 		}
 	}
-	function chkSubmit(){
-		if($(":checkbox:checked[value!='']").size()>0){
-			var paper_barcodes="";
-			var paper_ids     ="";
-			var i=0;
-			$(":checkbox:checked[value!='']").each(function(){
-				var paper_barcode = $(this).val();
-				var paper_id      = $(this).attr("id")
-				paper_barcodes   += i==0?paper_barcode:","+paper_barcode;
-				paper_ids        += i==0?paper_id     :","+paper_id;
-				i++;
-			});
-			$("#_chk").val(paper_barcodes);
-			$("#paper_id").val(paper_ids);
-			//alert($("#_chk").val());
-			//alert($("#paper_id").val());
-			$("#LedgerQueryCondForm").attr("action","${ctx}/basic/handlepaperjob.action");
-			$("#LedgerQueryCondForm").submit();
-			return true;
-		}else{
-			alert("请先勾选文件任务");
-			return false;
-		}
-	}
 	</script>
   </head>
   <body oncontextmenu="self.event.returnValue=false">
@@ -132,8 +108,8 @@
 	</form> --%>
   	<form id="LedgerQueryCondForm" method="GET" action="${ctx}/ledger/viewreplacepage.action">
   		<input type="hidden" name="_chk" id="_chk"/>
-  		<input type="hidden" name="jobType" value="DESTROY_PAPER_BYSELF"/> 
-  		<input type="hidden" name="replacePageFlag" value="${replacePageFlag}"/> <!-- Y -->
+  		<input type="hidden" name="jobType" value="DESTROY_PAPER_BYSELF"/>
+  		<input type="hidden" name="replacePageFlag" value="Y"/>
   		<input type="hidden" name="retrieve_pagenum" id="retrieve_pagenum"/>
 	 	<input type="hidden" name="fail_remark" id="fail_remark"/>
 	 	<input type="hidden" name="paper_id" id="paper_id"/>
@@ -206,16 +182,6 @@
 	   				<td>
 	   				<display:table requestURI="${ctx}/ledger/viewdestroyreplacepage.action" id="item" class="displaytable" name="paperLedgerList"
 	   					pagesize="${pageSize}" sort="page" partialList="true" size="${totalSize}" excludedParams="*" form="LedgerQueryCondForm">
-	   					<display:column title="选择">							
-			   					<c:choose>
-									<c:when test="${item.paper_state == 0}">
-										<input type="checkbox"  value="${item.paper_barcode}" id="${item.paper_id}"/>
-									</c:when>
-									<c:otherwise>
-										${item.paper_state_name}
-									</c:otherwise>
-								</c:choose>
-						</display:column>
 						<display:column title="序号">
 							<c:out value="${item_rowNum}"/>
 						</display:column>
@@ -263,13 +229,6 @@
 	     </td>
 	</tr>
 	</table>
-	<table width="95%" align="center" border="0" cellspacing="0" cellpadding="0" align="center" class="table_only_border">
-	<tr height="40">
-		<td align="center">
-			<input type="button" value="批量销毁" class="button_2003" style="margin-left: 30px" onclick="return chkSubmit();"/>
-		</td>
-	</tr>
-</table>
 </form>
   </body>
 </html>

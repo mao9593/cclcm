@@ -18,24 +18,6 @@ public class ConfirmSendCDAction extends LedgerBaseAction {
 	private String type = "N";// 判断确认入口是否个人闭环界面-郭姣-20160302
 	private String output_confidential_num = ""; // 外发机要号
 	private String send_way = "";
-	private String update_user_name = ""; // 更新接收人
-	private String update_dept_name = ""; // 更新接收单位
-
-	public String getUpdate_user_name() {
-		return update_user_name;
-	}
-
-	public void setUpdate_user_name(String update_user_name) {
-		this.update_user_name = update_user_name;
-	}
-
-	public String getUpdate_dept_name() {
-		return update_dept_name;
-	}
-
-	public void setUpdate_dept_name(String update_dept_name) {
-		this.update_dept_name = update_dept_name;
-	}
 
 	public String getSend_way() {
 		return send_way;
@@ -105,7 +87,7 @@ public class ConfirmSendCDAction extends LedgerBaseAction {
 					setResult("缺少参数[光盘编号],状态修改失败");
 				} else {
 					SecUser user = getCurUser();
-					ledgerService.confirmSendCD(cd_barcode, user, comment, output_confidential_num, update_user_name, update_dept_name);
+					ledgerService.confirmSendCD(cd_barcode, user, comment, output_confidential_num);
 					setResult("外发已确认");
 					insertCommonLog("管理员[" + user.getUser_name() + "]确认光盘[" + cd_barcode + "]已外发");
 				}

@@ -392,7 +392,7 @@ public class LedgerServiceImpl implements LedgerService {
 	}
 
 	@Override
-	public void confirmSendCD(String cd_barcode, SecUser user, String comment, String output_confidential_num, String update_user_name, String update_dept_name) {
+	public void confirmSendCD(String cd_barcode, SecUser user, String comment, String output_confidential_num) {
 		logger.debug("confirmSendCD");
 		EntityCD cd = getCDByBarcode(cd_barcode);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -436,35 +436,16 @@ public class LedgerServiceImpl implements LedgerService {
 		// 此时entity_cd的job_code记录的就是外发时的job_code
 		cycleitem_recv.setJob_code(job_code);
 		ledgerMapper.addCycleItem(cycleitem_recv);
-		// 生成载体生命周期记录：接收
-		CycleItem cycleitem_recvs = new CycleItem();
-		cycleitem_recvs.setBarcode(cd_barcode);
-		cycleitem_recvs.setEntity_type("CD");
-		cycleitem_recvs.setOper_time(new Date());
-		cycleitem_recvs.setUser_name(update_user_name);
-		cycleitem_recvs.setDept_name(update_dept_name);
-		cycleitem_recvs.setOper("RECV");
-		// 每次生命周期都记录job_code,以便查询审批记录 add
-		// 此时entity_cd的job_code记录的就是外发时的job_code
-		cycleitem_recvs.setJob_code(job_code);
-		ledgerMapper.addCycleItem(cycleitem_recvs);
 
 		// 更新外发备注
 		Map<String, Object> map_update = new HashMap<String, Object>();
 		map_update.put("cd_barcode", cd_barcode);
 		map_update.put("comment", comment);
 		ledgerMapper.updateCDSendCommentByBarcode(map_update);
-		
-		// 更新接收人和接收单位
-		Map<String, Object> update_user = new HashMap<String, Object>();
-		update_user.put("job_code", job_code);
-		update_user.put("update_user_name", update_user_name);
-		update_user.put("update_dept_name", update_dept_name);
-		ledgerMapper.updateSendByBarcode(update_user);
 	}
 
 	@Override
-	public void confirmSendPaper(String paper_barcode, SecUser user, String comment, String output_confidential_num, String update_user_name, String update_dept_name) {
+	public void confirmSendPaper(String paper_barcode, SecUser user, String comment, String output_confidential_num) {
 		logger.debug("confirmSendPaper");
 		EntityPaper paper = getPaperByBarcode(paper_barcode);
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -507,30 +488,12 @@ public class LedgerServiceImpl implements LedgerService {
 		// 每次生命周期都记录job_code,以便查询审批记录 add by liuyaling 2015-05-21
 		cycleitem_recv.setJob_code(job_code);
 		ledgerMapper.addCycleItem(cycleitem_recv);
-		// 生成载体生命周期记录：接收
-		CycleItem cycleitem_recvs = new CycleItem();
-		cycleitem_recvs.setBarcode(paper_barcode);
-		cycleitem_recvs.setEntity_type("PAPER");
-		cycleitem_recvs.setOper_time(new Date());
-		cycleitem_recvs.setUser_name(update_user_name);
-		cycleitem_recvs.setDept_name(update_dept_name);
-		cycleitem_recvs.setOper("RECV");
-		// 每次生命周期都记录job_code,以便查询审批记录 add
-		cycleitem_recvs.setJob_code(job_code);
-		ledgerMapper.addCycleItem(cycleitem_recvs);
 
 		// 更新外发备注
 		Map<String, Object> map_update = new HashMap<String, Object>();
 		map_update.put("paper_barcode", paper_barcode);
 		map_update.put("comment", comment);
 		ledgerMapper.updatePaperSendCommentByBarcode(map_update);
-		
-		// 更新接收人和接收单位
-		Map<String, Object> update_user = new HashMap<String, Object>();
-		update_user.put("job_code", job_code);
-		update_user.put("update_user_name", update_user_name);
-		update_user.put("update_dept_name", update_dept_name);
-		ledgerMapper.updateSendByBarcode(update_user);
 	}
 
 	@Override
@@ -1194,7 +1157,7 @@ public class LedgerServiceImpl implements LedgerService {
 	@Override
 	public void addProcessJob(String user_iidd, String dept_id, Integer seclv_code, String event_ids,
 			String entity_type, Integer modify_status, Integer trg_seclv, String usage_code, String project_code,
-			String summ, Map<String, String> getFileTitleList, String next_approver,String file_titles,String page_counts) throws Exception {
+			String summ, Map<String, String> getFileTitleList, String next_approver) throws Exception {
 		// 密级变更添加流程和event
 		ApproveProcess process = basicPrcManage.getApproveProcessByKey(dept_id, String.valueOf(seclv_code),
 				JobTypeEnum.MODIFY_SECLV.getJobTypeCode(), usage_code, true);
@@ -1214,12 +1177,7 @@ public class LedgerServiceImpl implements LedgerService {
 		basicPrcManage.addActivitiApply(job, process);
 		// 把任务信息插入数据库
 		basicMapper.addProcessJob(job);
-		String[] barcodes    =event_ids.split(":");
-		for (int i=0 ;i<barcodes.length;i++) {
-			String barcode = barcodes[i];
-			if(null==barcode || "".equals(barcode.trim())){
-				continue;
-			}
+		for (String barcode : event_ids.split(":")) {
 			if (entity_type.equals("Paper")) {
 				EntityPaper entity = ledgerMapper.getPaperByBarcode(barcode);
 				String event_code = user_iidd + entity.getPaper_id() + System.currentTimeMillis();
@@ -1230,8 +1188,6 @@ public class LedgerServiceImpl implements LedgerService {
 				ledgerMapper.addEventModify(event);
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("paper_barcode", barcode);
-				map.put("page_count", Integer.parseInt(page_counts.split(":")[i]));
-				map.put("file_title", file_titles.split(":")[i]);
 				map.put("paper_state", 13);// 将状态更新为“变更中”
 				// 更新entity表中的paper_state;
 				ledgerMapper.updatePaperState(map);

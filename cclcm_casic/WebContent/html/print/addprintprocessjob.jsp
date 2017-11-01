@@ -15,8 +15,6 @@ $(document).ready(function(){
     addSelectAllCheckbox();
     $("#tr_send input").attr("disabled",true);
     $("#tr_send").hide();
-    $("#tr_sendout").hide();
-    $("#carryuser_hids").hide();
     $("#submit_btn").attr("disabled",true);
     $("#for_display").show();
     $("#copy_number").hide();
@@ -108,23 +106,6 @@ function chkSubmit()
             $("#output_user_name").focus();
             return false;
         }
-        if($("#output_undertaker").val().trim() == ""){  output_undertaker
-        	alert("请填写外发承办人");
-            $("#output_undertaker").focus();
-            return false;
-        }
-        if($("#send_way").val().trim() == ""){  
-        	alert("请填写外发方式");
-            $("#send_way").focus();
-            return false;
-        }else if($("#send_way").val().trim() == "0"){  
-        	if($("#carryout_user_names").val().trim() == ""){  
-	        	alert("请添加携带人");
-	            $("#carryout_user_names").focus();
-	            return false;
-        	}
-        }
-        
     }
     //是否选择了用途
     
@@ -420,20 +401,12 @@ function selectCycle(cycle){
         $("#tr_send").show();
         $("#tr_merge input").attr("disabled",true);
         $("#tr_merge").hide();
-        $("#tr_sendout").show();
-        if($("#send_way").val()=="0"){
-      		$("#carryuser_hids").show();
-	   	}else{
-	       $("#carryuser_hids").hide();
-	   	}
     }else{
         $("#submit_btn").attr("disabled",false);
         $("#tr_merge input").attr("disabled",false);
         $("#tr_merge").show();
         $("#tr_send input").attr("disabled",true);
         $("#tr_send").hide();
-        $("#tr_sendout").hide();
-        $("#carryuser_hids").hide();
     }
     if(cycle == "REMAIN"){
         $("#period").show();
@@ -638,19 +611,6 @@ function selectSecretTime(){
 		});
 	}
 }
-function addRecvUser(){
-	var choose_name = $("#carryout_user_names").val() + $("#carryout_user_name").val() + ",";
-	var user_iidds =  $("#carryout_user_iidds").val() + $("#carryout_user_iidd").val() + ",";
-	$("#carryout_user_names").val(choose_name);
-	$("#carryout_user_iidds").val(user_iidd);
-}
-function selectSendMode(val){
-   	if(val=="0"){
-       $("#carryuser_hids").show();
-   	}else{
-       $("#carryuser_hids").hide();
-   	}
-}
 </script>
 </head>
 <body oncontextmenu="self.event.returnValue=false">
@@ -732,38 +692,6 @@ function selectSendMode(val){
         <td id="for_display" colspan="2">&nbsp;</td>
         
     </tr>
-    <tr id="tr_sendout"  height="40"> 
-  		<td align="center"><font color="red">*</font>外发承办人： </td>
-    	<td>
-    		<select id="output_undertaker" name="output_undertaker">
-		         <option value="">--请选择--</option>
-		         <s:iterator value="#request.output_undertakerList" var="item">
-			     <option value="${item.user_iidd}">${item.user_name}/${item.dept_name}</option>
-		         </s:iterator>
-	        </select>
-    	</td>
-    	<td align="center"><font color="red">*</font>外发方式：</td>
-	    <td>
-	     	<select name="send_way" id="send_way" onchange="selectSendMode(this.value)">
-				<option value="">--请选择---</option>
-				<option value="0">专人携带</option>
-				<option value="1">发机要</option>
-			</select>
-	    </td>
-	</tr>
-	<tr id='carryuser_hids'>
-		 <td align="center">携带人： </td>
-		 <td>
-			<input type="text" id="carryout_user_name" name="carryout_user_name" vaule="${carryout_user_name}" onkeyup="selectRecvUserCR(this.value);"/>
-			<input class="button_2003" onclick="addRecvUser();" type="button" value="添加" /><br>
-  		    <div id="allOptionsCR" class="containDiv" style="position:absolute;border:0px solid black;padding:0px"></div>
-		 </td>
-		 <td align="center"><font color="red">*</font>&nbsp;已添加的携带人：</td>
-   		 <td colspan="3">
-            <textarea readonly="true" name="carryout_user_names" id="carryout_user_names" rows="2" cols="45"></textarea>
-      	    <input type="hidden"  name="carryout_user_iidds" id="carryout_user_iidds" >
-      	</td>
-	</tr>
     <tr id="tr_send"> 
         <td align="center"><font color="red">*</font>接收单位： </td>
         <td><textarea name="output_dept_name" id="output_dept_name" title="打印状态为外发时，才需要填写接收单位和接收人"> </textarea></td> 
@@ -783,8 +711,8 @@ function selectSendMode(val){
     <tr>
        <td align="center"><font color="red">*</font>是否需要定密</td>
         <td>
-        	<input type="radio" value="Y" name="is_secret" onclick="setIsSecret(this.value)"/><font color="blue">是&nbsp;&nbsp;</font>
-        	<input type="radio" value="N" name="is_secret" onclick="setIsSecret(this.value)" checked/><font color="blue">否&nbsp;&nbsp;</font>
+        <input type="radio" value="Y" name="is_secret" onclick="setIsSecret(this.value)"/><font color="blue">是&nbsp;&nbsp;</font>
+        <input type="radio" value="N" name="is_secret" onclick="setIsSecret(this.value)" checked/><font color="blue">否&nbsp;&nbsp;</font>
         </td>
        <td>&nbsp;</td>
        <td>&nbsp;</td>

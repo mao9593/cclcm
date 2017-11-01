@@ -3702,16 +3702,6 @@
 		 			,job_code = null
 				]]>
 	 		</if>
-	 		<if test="page_count != null " >
-	 			<![CDATA[
-		 			,page_count = #{page_count}
-				]]>
-	 		</if>
-	 		<if test="file_title != null and scope_dept_name != '' " >
-	 			<![CDATA[
-		 			,file_title = #{file_title}
-				]]>
-	 		</if>
  		</trim>
  		where paper_barcode = #{paper_barcode}
 	</update>
@@ -7935,12 +7925,657 @@
 		</trim>
 		and (ed.PID_barcode is null or ed.PID_barcode = '')
 	</select>
-	
-	<!-- 更新接收人和接收单位 -->
-	<update id="updateSendByBarcode" parameterType="map">
+	<select id="getAllRejectPaperList" resultType="entitypaper" parameterType="map" resultSetType="SCROLL_SENSITIVE">
 		<![CDATA[
-		update job_process set output_user_name = #{update_user_name}, output_dept_name = #{update_dept_name} 
-		where job_code=#{job_code}
+			select distinct  ed.*,sus.seclv_name,sp.project_name,jp.jobtype_code,jp.job_status,ru.user_name retrieve_user_name,du.user_name destroy_user_name,sr.box_name as retrieve_box_name,jp.output_user_name,jp.output_dept_name,
+				ep.keyword_content,dp.dept_cs,sj_job.start_time,jp.send_way 
+			from reject_record rr 
+				left join (select paper_barcode,paper_state,seclv_code,project_code,retrieve_user_iidd,destroy_user_iidd,event_code,retrieve_box_code,job_code,duty_dept_id,duty_user_name,duty_dept_name,file_title,page_count,user_name,dept_name,print_time 
+					from entity_paper)ed on (ed.paper_barcode=rr.entity_barcode)
+				left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code)
+				left join (select project_code,project_name from sys_project) sp on(ed.project_code = sp.project_code)
+				left join (select job_code,jobtype_code,job_status,output_user_name,output_dept_name,send_way from job_process) jp on(ed.job_code = jp.job_code) 
+				left join (select user_iidd, user_name from sec_user) ru on(ru.user_iidd = ed.retrieve_user_iidd)	
+				left join (select user_iidd, user_name from sec_user) du on(du.user_iidd = ed.destroy_user_iidd)
+				left join (select box_code, box_name from sys_recyclebox) sr on(sr.box_code = ed.retrieve_box_code)
+				left join (select event_code,keyword_content,print_type from event_print) ep on (ep.event_code = ed.event_code)
+				left join (select barcode,job_code from event_senddestroy) sd_event on (sd_event.barcode = ed.paper_barcode)
+				left join (select job_code,job_status from job_process) sd_job on(sd_event.job_code = sd_job.job_code)
+				left join sec_dept dp on(ed.duty_dept_id = dp.dept_id)
+				left join (select job_code,start_time from job_process) sj_job on(ed.job_code = sj_job.job_code)
 		]]>
-	</update>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="file_title != null and file_title != ''">
+   				<![CDATA[
+			 		and UPPER(ed.file_title) LIKE UPPER('%'+#{file_title}+'%')
+				]]>
+			</if>
+			<if test="entity_type!=null and entity_type!=''">
+			 	<![CDATA[
+			 		and rr.entity_type=#{entity_type}
+			 	]]>
+			</if>
+			<if test="paper_barcode != null and paper_barcode != ''">
+   				<![CDATA[
+			 		and UPPER(ed.paper_barcode) LIKE UPPER('%'+#{paper_barcode}+'%')
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != '' ">
+   				<![CDATA[
+			 		and ed.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="duty_user_name != null and duty_user_name != ''">
+   				<![CDATA[
+			 		and UPPER(ed.duty_user_name) LIKE UPPER('%'+#{duty_user_name}+'%') 
+				]]>
+			</if>
+			<if test="duty_user_iidd != null and duty_user_iidd != ''">
+   				<![CDATA[
+			 		and ed.duty_user_iidd = #{duty_user_iidd}
+				]]>
+			</if>
+			<if test="duty_dept_name != null and duty_dept_name != ''">
+   				<![CDATA[
+			 		and UPPER(ed.duty_dept_name) LIKE UPPER('%'+#{duty_dept_name}+'%') 
+				]]>
+			</if>
+			<if test="dept_id != null and dept_id != ''">
+   				<![CDATA[
+			 		and ed.dept_id = #{dept_id}
+				]]>
+			</if>
+			<if test="dept_name != null and dept_name != ''">
+   				<![CDATA[
+			 		and ed.dept_name = #{dept_name}
+				]]>
+			</if>
+			<if test="dept_iidd != null and dept_iidd != ''">
+   				<![CDATA[
+			 		and ed.dept_id = #{dept_iidd}
+				]]>
+			</if>
+			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		and ed.user_name = #{user_name}
+				]]>
+			</if>
+			<if test="dept_ids != null and dept_ids != ''">
+				and ed.duty_dept_id in
+				<foreach item="item" index="index" collection="dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="admin_dept_ids != null and admin_dept_ids != ''">
+				and ed.duty_dept_id in
+				<foreach item="item" index="index" collection="admin_dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</trim>
+		<choose>
+			<when test="retrieve_time_sortable">
+   				<![CDATA[
+			 		order by ed.retrieve_time desc
+				]]>
+			</when>
+			<when test="destroy_time_sortable">
+   				<![CDATA[
+			 		order by ed.destroy_time desc
+				]]>
+			</when>
+			<when test="start_time_sortable">
+   				<![CDATA[
+			 		order by sj_job.start_time desc
+				]]>
+			</when>
+			<otherwise>
+   				<![CDATA[
+			 		order by ed.print_time desc
+				]]>
+			</otherwise>
+		</choose>
+	</select>
+	<select id="getAllRejectPaperSize" resultType="int" parameterType="map">
+		<![CDATA[
+			select count(distinct rr.entity_barcode) from reject_record rr
+			left join (select paper_barcode,paper_state,seclv_code,project_code,retrieve_user_iidd,destroy_user_iidd,event_code,retrieve_box_code,job_code,duty_dept_id,duty_user_name,duty_dept_name,file_title,page_count,user_name,dept_name,print_time 
+				from entity_paper)ed on (ed.paper_barcode=rr.entity_barcode)
+			left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code)
+			left join (select event_code,conf_code from event_burn) eb on (eb.event_code = ed.event_code)
+			left join (select barcode,job_code from event_senddestroy) sd_event on (sd_event.barcode = ed.paper_barcode)
+			left join (select job_code,job_status from job_process) sd_job on(sd_event.job_code = sd_job.job_code)
+			left join sec_dept dp on(ed.duty_dept_id = dp.dept_id)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="entity_type !=null and entity_type !=''">
+				<![CDATA[
+					 and rr.entity_type =#{entity_type}
+				]]>
+			</if>
+			<if test="file_list != null and file_list != ''">
+				<![CDATA[
+				 and UPPER(ed.file_list) LIKE UPPER('%'+#{file_list}+'%')
+				]]>
+			</if>
+		    <if test="event_ids != null and event_ids != ''" >
+				and ed.cd_barcode in 
+				<foreach item="item" index="index" collection="event_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		    <if test="barcodes != null and barcodes != ''" >
+				and ed.cd_barcode in 
+				<foreach item="item" index="index" collection="barcodes" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="user_iidd != null and user_iidd != ''">
+				<![CDATA[
+				 and ed.duty_user_iidd = #{user_iidd}
+				]]>
+			</if>
+			<if test="user_id != null and user_id != ''">
+				<![CDATA[
+					and ed.user_iidd = #{user_id}
+				]]>
+			</if>
+			<if test="output_undertaker != null and output_undertaker != ''">
+				<![CDATA[
+					and (ed.output_undertaker = #{output_undertaker} or ed.output_undertaker is null)
+				]]>
+			</if>
+			<if test="is_burn_result">
+				<![CDATA[
+					and ed.cd_state in (0, 8, 9)
+				]]>
+			</if>
+			<if test="is_recycled">
+				<![CDATA[
+					and ed.cd_state =1 
+				]]>
+			</if>
+			<if test="is_sendes">
+				<![CDATA[
+					and ed.cd_state =1
+				]]>
+			</if>
+			<if test="is_sendes_1">
+				<![CDATA[
+					and ed.cd_state =11
+				]]>
+			</if>
+			<if test="is_retrieved">
+				<![CDATA[
+					and ed.cd_state = 11 and jp.job_status = 'true'
+				]]>
+			</if>
+			<if test="is_retrieve">
+				<![CDATA[
+					and ed.cd_state = 0 and ed.job_code is null
+				]]>
+			</if>
+			<if test="is_transfer">
+				<![CDATA[
+					and ed.cd_state = 0
+				]]>
+			</if>
+			<if test="is_handle">
+				<![CDATA[
+					and ed.cd_state = 0
+				]]>
+			</if>
+			<if test="data_type != null and data_type != ''">
+   				<![CDATA[
+			 		and ed.data_type = #{data_type}
+				]]>
+			</if>
+			<if test="cd_barcode != null and cd_barcode != ''">
+   				<![CDATA[
+			 		and UPPER(ed.cd_barcode) LIKE UPPER('%'+#{cd_barcode}+'%')
+				]]>
+			</if>
+			<if test="send_num != null and send_num != ''">
+   				<![CDATA[
+			 		and UPPER(ed.send_num) LIKE UPPER('%'+#{send_num}+'%')
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != ''">
+   				<![CDATA[
+			 		and ed.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="duty_user_name != null and duty_user_name != ''">
+   				<![CDATA[
+			 		and UPPER(ed.duty_user_name) LIKE UPPER('%'+#{duty_user_name}+'%') 
+				]]>
+			</if>
+			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		and ed.user_name = #{user_name}
+				]]>
+			</if>
+			<if test="dept_iidd != null and dept_iidd != ''">
+   				<![CDATA[
+			 		and ed.dept_id = #{dept_iidd}
+				]]>
+			</if>
+			<if test="dept_name != null and dept_name != ''">
+   				<![CDATA[
+			 		and ed.dept_name = #{dept_name}
+				]]>
+			</if>
+			<if test="duty_user_iidd != null and duty_user_iidd != ''">
+   				<![CDATA[
+			 		and ed.duty_user_iidd = #{duty_user_iidd}
+				]]>
+			</if>
+			<if test="start_time != null and start_time != ''">
+				<choose>
+					<when test="time_type=='retrieve'">
+						<![CDATA[
+					 		and ed.retrieve_time >= #{start_time}
+						]]>
+					</when>
+					<when test="time_type=='destroy'">
+						<![CDATA[
+					 		and ed.destroy_time >= #{start_time}
+						]]>
+					</when>
+					<otherwise>
+		   				<![CDATA[
+					 		and ed.burn_time >= #{start_time}
+						]]>
+					</otherwise>
+				</choose>
+			</if>
+			<if test="end_time != null and end_time != ''">
+				<choose>
+					<when test="time_type=='retrieve'">
+						<![CDATA[
+			 				and ed.retrieve_time <= #{end_time}
+						]]>
+					</when>
+					<when test="time_type=='destroy'">
+						<![CDATA[
+			 				and ed.destroy_time <= #{end_time}
+						]]>
+					</when>
+					<otherwise>
+						<![CDATA[
+			 				and ed.burn_time <= #{end_time}
+						]]>
+					</otherwise>
+				</choose>
+			</if>
+			<if test="cd_state != null and cd_state != ''">
+				<choose>
+					<when test="output_undertaker != null and output_undertaker != ''">
+						<![CDATA[
+			 				and (ed.cd_state = #{cd_state} or ed.cd_state=8)
+						]]>
+					</when>
+					<otherwise>
+						<![CDATA[
+			 				and ed.cd_state = #{cd_state}
+						]]>
+					</otherwise>
+				</choose>
+			</if>
+			<if test="job_status != null and job_status != ''">
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="scope_dept != null and scope_dept != ''">
+   				<![CDATA[
+			 		and ed.scope = #{scope_dept}
+				]]>
+			</if>
+			<if test="scope_dept_id != null and scope_dept_id != ''">
+   				<![CDATA[
+			 		and ed.scope_dept_id = #{scope_dept_id}
+				]]>
+			</if>
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+   				<![CDATA[
+			 		and ed.duty_dept_id = #{duty_dept_id}
+				]]>
+			</if>
+			<if test="jobtype_code != null and jobtype_code != ''">
+   				<![CDATA[
+			 		and jp.jobtype_code = #{jobtype_code}
+				]]>
+			</if>
+			<if test="create_type != null and create_type != ''">
+   				<![CDATA[
+			 		and ed.create_type = #{create_type}
+				]]>
+			</if>
+			<if test="dept_ids != null and dept_ids != ''">
+				and ed.duty_dept_id in
+				<foreach item="item" index="index" collection="dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		
+			<if test="admin_dept_ids != null and admin_dept_ids != ''">
+				and ed.duty_dept_id in
+				<foreach item="item" index="index" collection="admin_dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		
+	
+			<if test="barcodes != null and barcodes != ''" >
+				and ed.cd_barcode in 
+				<foreach item="item" index="index" collection="barcodes" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		
+			<if test="seclv_codes != null and seclv_codes != ''">
+				and ed.seclv_code in 
+				<foreach item="item" index="index" collection="seclv_codes" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</trim>
+	</select>
+		<select id="getAllRejectCDList" resultType="entitycd"
+		parameterType="map" resultSetType="SCROLL_SENSITIVE">
+		<![CDATA[
+			select  distinct  ed.*,sus.seclv_name,sp.project_name,jp.jobtype_code,jp.job_status,ru.user_name retrieve_user_name,du.user_name destroy_user_name,sr.box_name as retrieve_box_name,jp.output_user_name,jp.output_dept_name,
+				dp.dept_cs,sj_job.start_time,jp.send_way from reject_record rr
+				 left join( select cd_barcode,seclv_code,project_code,job_code,retrieve_user_iidd,destroy_user_iidd,event_code,retrieve_box_code,duty_dept_id,duty_user_name,burn_time,conf_code,duty_dept_name,user_name,dept_name,file_list from entity_cd )ed on(rr.entity_barcode=ed.cd_barcode)
+				 left join sec_user_seclv sus on(ed.seclv_code=sus.seclv_code)
+				 left join (select project_code,project_name from sys_project) sp on(ed.project_code = sp.project_code)
+				 left join (select job_code,jobtype_code,job_status,output_user_name,output_dept_name, send_way from job_process) jp on(ed.job_code = jp.job_code)
+				 left join (select user_iidd, user_name from sec_user) ru on(ru.user_iidd = ed.retrieve_user_iidd)	
+				 left join (select user_iidd, user_name from sec_user) du on(du.user_iidd = ed.destroy_user_iidd)	
+				 left join (select event_code,conf_code from event_burn) eb on (eb.event_code = ed.event_code)
+				 left join (select box_code, box_name from sys_recyclebox) sr on(sr.box_code = ed.retrieve_box_code)
+				 left join (select barcode,job_code from event_senddestroy) sd_event on (sd_event.barcode = ed.cd_barcode)
+				 left join (select job_code,job_status from job_process) sd_job on(sd_event.job_code = sd_job.job_code)
+				 left join sec_dept dp on(ed.duty_dept_id = dp.dept_id)
+				 left join (select job_code,start_time from job_process) sj_job on(ed.job_code = sj_job.job_code)
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="entity_type != null and entity_type != ''">
+				<![CDATA[
+				 and rr.entity_type =#{entity_type}
+				]]>
+			</if>
+			<if test="file_list != null and file_list != ''">
+				<![CDATA[
+				 and UPPER(ed.file_list) LIKE UPPER('%'+#{file_list}+'%')
+				]]>
+			</if>
+            <if test="event_ids != null and event_ids != ''" >
+				and ed.cd_barcode in 
+				<foreach item="item" index="index" collection="event_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="user_iidd != null and user_iidd != ''">
+				<![CDATA[
+					and ed.duty_user_iidd = #{user_iidd}
+				]]>
+			</if>
+			<if test="user_id != null and user_id != ''">
+				<![CDATA[
+					and ed.user_iidd = #{user_id}
+				]]>
+			</if>
+			<if test="data_type != null and data_type != ''">
+   				<![CDATA[
+			 		and ed.data_type = #{data_type}
+				]]>
+			</if>
+			<if test="cd_barcode != null and cd_barcode != ''">
+   				<![CDATA[
+			 		and UPPER(ed.cd_barcode) LIKE UPPER('%'+#{cd_barcode}+'%')
+				]]>
+			</if>
+			<if test="send_num != null and send_num != ''">
+   				<![CDATA[
+			 		and UPPER(ed.send_num) LIKE UPPER('%'+#{send_num}+'%')
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != ''">
+   				<![CDATA[
+			 		and ed.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="duty_user_name != null and duty_user_name != ''">
+   				<![CDATA[
+			 		and UPPER(ed.duty_user_name) LIKE UPPER('%'+#{duty_user_name}+'%') 
+				]]>
+			</if>
+			<if test="duty_user_iidd != null and duty_user_iidd != ''">
+   				<![CDATA[
+			 		and ed.duty_user_iidd = #{duty_user_iidd}
+				]]>
+			</if>
+			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		and ed.user_name = #{user_name}
+				]]>
+			</if>
+			<if test="dept_iidd != null and dept_iidd != ''">
+   				<![CDATA[
+			 		and ed.dept_id = #{dept_iidd}
+				]]>
+			</if>
+			<if test="dept_name != null and dept_name != ''">
+   				<![CDATA[
+			 		and ed.dept_name = #{dept_name}
+				]]>
+			</if>
+			<if test="cd_state != null and cd_state != ''">
+				<choose>
+					<when test="output_undertaker != null and output_undertaker != ''">
+						<![CDATA[
+			 				and (ed.cd_state = #{cd_state} or ed.cd_state=8)
+						]]>
+					</when>
+					<otherwise>
+						<![CDATA[
+			 				and ed.cd_state = #{cd_state}
+						]]>
+					</otherwise>
+				</choose>
+			</if>
+			<if test="job_status != null and job_status != ''">
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+   				<![CDATA[
+			 		and ed.duty_dept_id = #{duty_dept_id}
+				]]>
+			</if>
+			<if test="dept_ids != null and dept_ids != ''">
+				and ed.duty_dept_id in
+				<foreach item="item" index="index" collection="dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="admin_dept_ids != null and admin_dept_ids != ''">
+				and ed.duty_dept_id in
+				<foreach item="item" index="index" collection="admin_dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="expire_status ==2">
+   				<![CDATA[
+			 		and (ed.expire_time > #{expire_time} and ed.expire_time < #{coming_expire_time})
+				]]>
+			</if>
+			<if test="borrow_dept_id != null and borrow_dept_id != ''">
+   				<![CDATA[
+			 		and (ed.duty_dept_id = #{borrow_dept_id} or ed.duty_dept_id in(select br_dept_id from dept_open_scope dos where dos.dept_id=#{borrow_dept_id}))
+				]]>
+			</if>
+			<if test="supervise_user_iidd != null and supervise_user_iidd != ''">
+   				<![CDATA[
+			 		and ed.supervise_user_iidd = #{supervise_user_iidd}
+				]]>
+			</if>
+			<if test="seclv_codes != null and seclv_codes != ''">
+				and ed.seclv_code in 
+				<foreach item="item" index="index" collection="seclv_codes" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</trim>
+	</select>
+		<select id="getAllRejectCDSize" resultType="int" parameterType="map">
+		<![CDATA[
+			select count(distinct rr.entity_barcode) from reject_record rr
+			left join( select cd_barcode,seclv_code,project_code,job_code,retrieve_user_iidd,destroy_user_iidd,event_code,retrieve_box_code,duty_dept_id,duty_user_name,burn_time,conf_code,duty_dept_name,user_name,dept_name,file_list from entity_cd )ed on(rr.entity_barcode=ed.cd_barcode)
+			left join (select job_code,jobtype_code,job_status from job_process) jp on(ed.job_code = jp.job_code)
+			left join (select event_code,conf_code from event_burn) eb on (eb.event_code = ed.event_code)
+			left join (select barcode,job_code from event_senddestroy) sd_event on (sd_event.barcode = ed.cd_barcode)
+			left join (select job_code,job_status from job_process) sd_job on(sd_event.job_code = sd_job.job_code)
+			left join sec_dept dp on(ed.duty_dept_id = dp.dept_id) 
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="entity_type != null and entity_type !=''">
+				<![CDATA[
+				 and rr.entity_type =#{entity_type}
+				]]>
+			</if>
+			<if test="file_list != null and file_list != ''">
+				<![CDATA[
+				 and UPPER(ed.file_list) LIKE UPPER('%'+#{file_list}+'%')
+				]]>
+			</if>
+		    <if test="event_ids != null and event_ids != ''" >
+				and ed.cd_barcode in 
+				<foreach item="item" index="index" collection="event_ids" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="user_iidd != null and user_iidd != ''">
+				<![CDATA[
+				 and ed.duty_user_iidd = #{user_iidd}
+				]]>
+			</if>
+			<if test="user_id != null and user_id != ''">
+				<![CDATA[
+					and ed.user_iidd = #{user_id}
+				]]>
+			</if>
+			<if test="cd_barcode != null and cd_barcode != ''">
+   				<![CDATA[
+			 		and UPPER(ed.cd_barcode) LIKE UPPER('%'+#{cd_barcode}+'%')
+				]]>
+			</if>
+			<if test="send_num != null and send_num != ''">
+   				<![CDATA[
+			 		and UPPER(ed.send_num) LIKE UPPER('%'+#{send_num}+'%')
+				]]>
+			</if>
+			<if test="seclv_code != null and seclv_code != ''">
+   				<![CDATA[
+			 		and ed.seclv_code = #{seclv_code}
+				]]>
+			</if>
+			<if test="duty_user_name != null and duty_user_name != ''">
+   				<![CDATA[
+			 		and UPPER(ed.duty_user_name) LIKE UPPER('%'+#{duty_user_name}+'%') 
+				]]>
+			</if>
+			<if test="user_name != null and user_name != ''">
+   				<![CDATA[
+			 		and ed.user_name = #{user_name}
+				]]>
+			</if>
+			<if test="dept_iidd != null and dept_iidd != ''">
+   				<![CDATA[
+			 		and ed.dept_id = #{dept_iidd}
+				]]>
+			</if>
+			<if test="dept_name != null and dept_name != ''">
+   				<![CDATA[
+			 		and ed.dept_name = #{dept_name}
+				]]>
+			</if>
+			<if test="duty_user_iidd != null and duty_user_iidd != ''">
+   				<![CDATA[
+			 		and ed.duty_user_iidd = #{duty_user_iidd}
+				]]>
+			</if>
+		
+			<if test="job_status != null and job_status != ''">
+   				<![CDATA[
+			 		and jp.job_status = #{job_status}
+				]]>
+			</if>
+			<if test="scope_dept != null and scope_dept != ''">
+   				<![CDATA[
+			 		and ed.scope = #{scope_dept}
+				]]>
+			</if>
+			<if test="scope_dept_id != null and scope_dept_id != ''">
+   				<![CDATA[
+			 		and ed.scope_dept_id = #{scope_dept_id}
+				]]>
+			</if>
+			<if test="duty_dept_id != null and duty_dept_id != ''">
+   				<![CDATA[
+			 		and ed.duty_dept_id = #{duty_dept_id}
+				]]>
+			</if>
+			<if test="jobtype_code != null and jobtype_code != ''">
+   				<![CDATA[
+			 		and jp.jobtype_code = #{jobtype_code}
+				]]>
+			</if>
+			<if test="create_type != null and create_type != ''">
+   				<![CDATA[
+			 		and ed.create_type = #{create_type}
+				]]>
+			</if>
+			<if test="dept_ids != null and dept_ids != ''">
+				and ed.duty_dept_id in
+				<foreach item="item" index="index" collection="dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="retrieve_box_code != null and retrieve_box_code != ''">
+   				<![CDATA[
+			 		and ed.retrieve_box_code = #{retrieve_box_code}
+				]]>
+			</if>
+			<if test="admin_dept_ids != null and admin_dept_ids != ''">
+				and ed.duty_dept_id in
+				<foreach item="item" index="index" collection="admin_dept_ids"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="admin_dept_ids_made != null and admin_dept_ids_made != ''">
+				and ed.dept_id in
+				<foreach item="item" index="index" collection="admin_dept_ids_made"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="conf_code != null and conf_code != ''">
+   				<![CDATA[
+			 		and UPPER(eb.conf_code) LIKE UPPER('%'+#{conf_code}+'%')
+				]]>
+			</if>
+		</trim>
+	</select>
 </mapper>  

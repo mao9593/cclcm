@@ -196,12 +196,6 @@ function updateResult(){
 			document.getElementById("allOptionsCR").innerHTML="";
 	}
 }
-  function addRecvUser(){
-	var choose_name = $("#carryout_user_names").val() + $("#carryout_user_name").val() + ",";
-	var user_iidds =  $("#carryout_user_iidds").val() + $("#carryout_user_iidd").val() + ",";
-	$("#carryout_user_names").val(choose_name);
-	$("#carryout_user_iidds").val(user_iidd);
-}
  function add_TrueCR(){
 	var carryout_user_iidd=$("#allOptionCR").val();
 	var carryout_user_name=$("#allOptionCR option[value='"+carryout_user_iidd+"']").text();
@@ -336,8 +330,7 @@ function selectSendMode(val){
 			<tr id='carryuser_hid'>
 				 <td align="center">携带人： </td>
 				 <td>
-					<input type="text" id="carryout_user_name" name="carryout_user_name" vaule="${carryout_user_name}" onkeyup="selectRecvUserCR(this.value);"/>
-					<input class="button_2003" onclick="addRecvUser();" type="button" value="添加" /><br>
+					<input type="text" id="carryout_user_name" name="carryout_user_name" vaule="${carryout_user_name}" onkeyup="selectRecvUserCR(this.value);"/><br>
     		        <div id="allOptionsCR" class="containDiv" style="position:absolute;border:0px solid black;padding:0px"></div>
 				 </td>
 				 <td align="center"><font color="red">*</font>&nbsp;已添加的携带人：</td>
